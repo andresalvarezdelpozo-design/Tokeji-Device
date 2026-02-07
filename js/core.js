@@ -324,8 +324,6 @@ function onOk() {
         const opciones = ['amigos', 'tokes', 'todex', 'qr', 'combates', 'carcasa'];
         console.log('Seleccionado:', opciones[selectedIndex]);
         soundSelect();
-        if (selectedIndex !== 5) {
-        alert('Próximamente: ' + opciones[selectedIndex]);
     }
 }
 
