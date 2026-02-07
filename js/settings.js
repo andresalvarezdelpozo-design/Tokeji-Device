@@ -1,5 +1,5 @@
 // ==========================================
-// TOKEJI - MÓDULO 3: AJUSTES (Carcasa) - VERSIÓN ESTABLE CORREGIDA
+// TOKEJI - MÓDULO 3: AJUSTES (VERSIÓN FINAL)
 // ==========================================
 
 const COLORES_CARCASA = [
@@ -14,20 +14,18 @@ const COLORES_CARCASA = [
 const SETTINGS_ITEMS = [
     { id: 'sound', icon: '🔊', label: 'Sonido', type: 'toggle' },
     { id: 'vibrate', icon: '📳', label: 'Vibración', type: 'toggle' },
-    { id: 'color', icon: '🎨', label: 'Color dispositivo', type: 'color' },
-    { id: 'reset', icon: '🗑️', label: 'REINICIAR TODO', type: 'danger' }
+    { id: 'color', icon: '🎨', label: 'Color', type: 'color' },
+    { id: 'reset', icon: '🗑️', label: 'Reiniciar', type: 'danger' }
 ];
 
 let settingsSelected = 0;
 let colorSelected = 0;
-let colorPickerOpen = false;
 let settingsConfig = {
     sound: true,
     vibrate: true,
     carcasa_color: 'morado'
 };
 
-// Variable global para controlar sonido
 window.audioEnabled = true;
 
 // ==========================================
@@ -35,13 +33,10 @@ window.audioEnabled = true;
 // ==========================================
 
 function initSettings() {
-    console.log('🔧 Inicializando Settings...');
-    
     const saved = localStorage.getItem('tokeji_config');
     if (saved) {
         try { 
-            const parsed = JSON.parse(saved);
-            settingsConfig = { ...settingsConfig, ...parsed };
+            settingsConfig = JSON.parse(saved);
             window.audioEnabled = settingsConfig.sound;
         } catch(e) {}
     }
@@ -49,8 +44,6 @@ function initSettings() {
     aplicarColorCarcasa(settingsConfig.carcasa_color);
     crearPaginaSettings();
     addSettingsStyles();
-    
-    console.log('✅ Settings listo');
 }
 
 function crearPaginaSettings() {
@@ -69,9 +62,7 @@ function crearPaginaSettings() {
     `;
     screen.appendChild(page);
     
-    if (typeof pages !== 'undefined') {
-        pages.settings = page;
-    }
+    if (typeof pages !== 'undefined') pages.settings = page;
 }
 
 function addSettingsStyles() {
@@ -80,7 +71,7 @@ function addSettingsStyles() {
     const style = document.createElement('style');
     style.id = 'settings-styles';
     style.textContent = `
-        .settings-page { padding: 15px 10px; }
+        .settings-page { padding: 40px 15px 15px 15px; }
         .settings-page.active { display: flex; }
         
         .settings-title {
@@ -88,28 +79,29 @@ function addSettingsStyles() {
             font-size: 18px;
             font-weight: 900;
             color: var(--text-color);
-            margin-bottom: 15px;
-            margin-top: 10px;
+            margin-bottom: 20px;
         }
         
         .settings-list {
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 10px;
             flex: 1;
             overflow-y: auto;
+            width: 100%;
         }
         
         .setting-item {
             background: white;
             border-radius: 12px;
-            padding: 12px;
+            padding: 14px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             box-shadow: 0 4px 0 #e2e8f0;
             border: 3px solid transparent;
             transition: all 0.2s;
+            width: 100%;
         }
         
         .setting-item.selected {
@@ -132,7 +124,7 @@ function addSettingsStyles() {
         .setting-label {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
             font-size: 14px;
             font-weight: 800;
             color: var(--text-color);
@@ -152,7 +144,6 @@ function addSettingsStyles() {
             background: #e2e8f0;
             border-radius: 12px;
             position: relative;
-            cursor: pointer;
             transition: background 0.3s;
         }
         
@@ -199,11 +190,10 @@ function addSettingsStyles() {
             text-align: center;
             font-size: 11px;
             color: #94a3b8;
-            margin-top: 10px;
+            margin-top: 15px;
             font-weight: 600;
         }
         
-        /* Color picker */
         .color-picker-overlay {
             position: absolute;
             top: 0;
@@ -217,6 +207,7 @@ function addSettingsStyles() {
             justify-content: center;
             z-index: 100;
             border-radius: 17px;
+            padding: 20px;
         }
         
         .color-picker-overlay.active {
@@ -227,8 +218,8 @@ function addSettingsStyles() {
             background: white;
             border-radius: 20px;
             padding: 20px;
-            width: 90%;
-            max-width: 280px;
+            width: 100%;
+            max-width: 260px;
         }
         
         .color-picker-title {
@@ -259,7 +250,6 @@ function addSettingsStyles() {
             box-shadow: 0 0 0 3px #8b5cf6;
         }
         
-        /* Modal Tokeji */
         .tokeji-modal {
             position: absolute;
             top: 0;
@@ -273,6 +263,7 @@ function addSettingsStyles() {
             justify-content: center;
             z-index: 200;
             border-radius: 17px;
+            padding: 20px;
         }
         
         .tokeji-modal.active {
@@ -283,10 +274,9 @@ function addSettingsStyles() {
             background: white;
             border-radius: 20px;
             padding: 25px;
-            width: 85%;
-            max-width: 240px;
+            width: 100%;
+            max-width: 260px;
             text-align: center;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
         }
         
         .modal-icon {
@@ -297,7 +287,6 @@ function addSettingsStyles() {
         .modal-title {
             font-size: 16px;
             font-weight: 900;
-            color: var(--text-color);
             margin-bottom: 8px;
         }
         
@@ -325,14 +314,18 @@ function addSettingsStyles() {
             transition: all 0.1s;
         }
         
-        .modal-btn:active {
-            transform: translateY(4px);
-            box-shadow: 0 0 0 rgba(0,0,0,0.2);
+        .modal-btn.selected {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 0 rgba(0,0,0,0.2);
         }
         
         .modal-btn-cancel {
             background: #e2e8f0;
             color: #64748b;
+        }
+        
+        .modal-btn-cancel.selected {
+            background: #cbd5e1;
         }
         
         .modal-btn-danger {
@@ -341,8 +334,7 @@ function addSettingsStyles() {
         }
         
         .modal-btn-danger.selected {
-            transform: scale(1.05);
-            box-shadow: 0 6px 0 #c53030;
+            background: linear-gradient(145deg, #e53e3e, #c53030);
         }
     `;
     document.head.appendChild(style);
@@ -371,7 +363,7 @@ function renderSettingsList() {
             controlHTML = `<div class="color-picker-inline"><div class="color-dot-sm selected" style="background: ${color.hex}"></div></div>`;
         }
         else if (item.type === 'danger') {
-            controlHTML = `<span style="color: #dc2626; font-size: 12px; font-weight: 800;">›››</span>`;
+            controlHTML = `<span style="color: #dc2626; font-size: 12px; font-weight: 800;">›</span>`;
         }
         
         div.innerHTML = `
@@ -432,7 +424,6 @@ function updateColorSelection() {
 function cerrarColorPicker() {
     const overlay = document.getElementById('color-picker-overlay');
     if (overlay) overlay.remove();
-    colorPickerOpen = false;
 }
 
 function seleccionarColor() {
@@ -443,7 +434,7 @@ function seleccionarColor() {
     aplicarColorCarcasa(color.id);
     cerrarColorPicker();
     renderSettingsList();
-    if (typeof soundSuccess === 'function') soundSuccess();
+    if (typeof soundSuccess === 'function' && window.audioEnabled) soundSuccess();
 }
 
 function aplicarColorCarcasa(colorId) {
@@ -455,22 +446,21 @@ function aplicarColorCarcasa(colorId) {
 }
 
 // ==========================================
-// MODAL DE CONFIRMACIÓN
+// MODAL
 // ==========================================
 
 let modalSelected = 0;
 let modalCallback = null;
 
-function mostrarModalConfirmacion(titulo, texto, icono, onConfirm) {
+function mostrarModal(titulo, texto, icono, onConfirm) {
     const screen = document.querySelector('.screen');
     if (!screen) {
-        // Fallback si no hay screen
-        if (confirm('¿Borrar todos los datos?')) onConfirm();
+        if (confirm(texto)) onConfirm();
         return;
     }
     
     modalCallback = onConfirm;
-    modalSelected = 1; // Por defecto en "Borrar" (más peligroso)
+    modalSelected = 0;
     
     const modal = document.createElement('div');
     modal.className = 'tokeji-modal';
@@ -481,8 +471,8 @@ function mostrarModalConfirmacion(titulo, texto, icono, onConfirm) {
             <div class="modal-title">${titulo}</div>
             <div class="modal-text">${texto}</div>
             <div class="modal-buttons">
-                <button class="modal-btn modal-btn-cancel" id="modal-btn-0">Cancelar</button>
-                <button class="modal-btn modal-btn-danger selected" id="modal-btn-1">Borrar</button>
+                <button class="modal-btn modal-btn-cancel selected" id="modal-0">Cancelar</button>
+                <button class="modal-btn modal-btn-danger" id="modal-1">Borrar</button>
             </div>
         </div>
     `;
@@ -498,8 +488,8 @@ function cerrarModal() {
 }
 
 function updateModalButtons() {
-    const btn0 = document.getElementById('modal-btn-0');
-    const btn1 = document.getElementById('modal-btn-1');
+    const btn0 = document.getElementById('modal-0');
+    const btn1 = document.getElementById('modal-1');
     if (btn0) btn0.classList.toggle('selected', modalSelected === 0);
     if (btn1) btn1.classList.toggle('selected', modalSelected === 1);
 }
@@ -509,49 +499,42 @@ function updateModalButtons() {
 // ==========================================
 
 function settingsHandleUp() {
-    // Modal activo
     if (document.getElementById('reset-modal')) {
         modalSelected = 0;
         updateModalButtons();
         return true;
     }
     
-    // Color picker activo
-    if (colorPickerOpen) {
+    if (document.getElementById('color-picker-overlay')) {
         colorSelected = (colorSelected - 1 + COLORES_CARCASA.length) % COLORES_CARCASA.length;
         updateColorSelection();
         return true;
     }
     
-    // Lista normal
     settingsSelected = (settingsSelected - 1 + SETTINGS_ITEMS.length) % SETTINGS_ITEMS.length;
     renderSettingsList();
     return true;
 }
 
 function settingsHandleDown() {
-    // Modal activo
     if (document.getElementById('reset-modal')) {
         modalSelected = 1;
         updateModalButtons();
         return true;
     }
     
-    // Color picker activo
-    if (colorPickerOpen) {
+    if (document.getElementById('color-picker-overlay')) {
         colorSelected = (colorSelected + 1) % COLORES_CARCASA.length;
         updateColorSelection();
         return true;
     }
     
-    // Lista normal
     settingsSelected = (settingsSelected + 1) % SETTINGS_ITEMS.length;
     renderSettingsList();
     return true;
 }
 
 function settingsHandleOk() {
-    // Modal activo
     if (document.getElementById('reset-modal')) {
         if (modalSelected === 1 && modalCallback) {
             modalCallback();
@@ -561,16 +544,16 @@ function settingsHandleOk() {
         return true;
     }
     
+    if (document.getElementById('color-picker-overlay')) {
+        seleccionarColor();
+        return true;
+    }
+    
     const item = SETTINGS_ITEMS[settingsSelected];
     
     if (item.type === 'toggle') {
         settingsConfig[item.id] = !settingsConfig[item.id];
-        
-        // Aplicar cambio de sonido inmediatamente
-        if (item.id === 'sound') {
-            window.audioEnabled = settingsConfig.sound;
-        }
-        
+        if (item.id === 'sound') window.audioEnabled = settingsConfig.sound;
         localStorage.setItem('tokeji_config', JSON.stringify(settingsConfig));
         renderSettingsList();
         return true;
@@ -578,20 +561,14 @@ function settingsHandleOk() {
     
     if (item.type === 'color') {
         mostrarColorPicker();
-        colorPickerOpen = true;
         return true;
     }
     
     if (item.type === 'danger') {
-        mostrarModalConfirmacion(
-            '¿REINICIAR?',
-            'Se borrarán todos tus datos, amigos, emojis y configuración. Esta acción no se puede deshacer.',
-            '🗑️',
-            () => {
-                localStorage.clear();
-                location.reload();
-            }
-        );
+        mostrarModal('¿REINICIAR?', 'Se borrarán todos tus datos. Esta acción no se puede deshacer.', '🗑️', () => {
+            localStorage.clear();
+            location.reload();
+        });
         return true;
     }
     
@@ -599,14 +576,12 @@ function settingsHandleOk() {
 }
 
 function settingsHandleBack() {
-    // Modal activo
     if (document.getElementById('reset-modal')) {
         cerrarModal();
         return true;
     }
     
-    // Color picker activo
-    if (colorPickerOpen) {
+    if (document.getElementById('color-picker-overlay')) {
         cerrarColorPicker();
         return true;
     }
@@ -615,26 +590,21 @@ function settingsHandleBack() {
 }
 
 // ==========================================
-// INTEGRACIÓN CON CORE.JS
+// INTEGRACIÓN
 // ==========================================
 
 function integrarConCore() {
-    console.log('🔗 Integrando Settings...');
-    
     if (typeof onOk !== 'function') {
         setTimeout(integrarConCore, 100);
         return;
     }
     
-    // Guardar referencias originales
     const core_onOk = onOk;
     const core_onBack = onBack;
     const core_onUp = onUp;
     const core_onDown = onDown;
     
-    // Sobrescribir onOk
     window.onOk = function() {
-        // Si estamos en settings
         if (typeof currentPage !== 'undefined' && currentPage === 'settings') {
             if (settingsHandleOk()) {
                 if (typeof soundSelect === 'function' && window.audioEnabled) soundSelect();
@@ -642,7 +612,6 @@ function integrarConCore() {
             }
         }
         
-        // Si estamos en menú y seleccionamos Carcasa (índice 5)
         if (typeof currentPage !== 'undefined' && currentPage === 'menu' && 
             typeof selectedIndex !== 'undefined' && selectedIndex === 5) {
             settingsSelected = 0;
@@ -655,7 +624,6 @@ function integrarConCore() {
         core_onOk();
     };
     
-    // Sobrescribir onBack
     window.onBack = function() {
         if (typeof currentPage !== 'undefined' && currentPage === 'settings') {
             if (settingsHandleBack()) {
@@ -666,11 +634,9 @@ function integrarConCore() {
             if (typeof soundBack === 'function' && window.audioEnabled) soundBack();
             return;
         }
-        
         core_onBack();
     };
     
-    // Sobrescribir onUp
     window.onUp = function() {
         if (typeof currentPage !== 'undefined' && currentPage === 'settings') {
             settingsHandleUp();
@@ -680,7 +646,6 @@ function integrarConCore() {
         core_onUp();
     };
     
-    // Sobrescribir onDown
     window.onDown = function() {
         if (typeof currentPage !== 'undefined' && currentPage === 'settings') {
             settingsHandleDown();
@@ -690,7 +655,6 @@ function integrarConCore() {
         core_onDown();
     };
     
-    // Parchear funciones de sonido para respetar el toggle
     if (typeof playTone === 'function') {
         const originalPlayTone = playTone;
         window.playTone = function(freq, duration, type) {
@@ -698,8 +662,6 @@ function integrarConCore() {
             originalPlayTone(freq, duration, type);
         };
     }
-    
-    console.log('✅ Settings integrado');
 }
 
 // ==========================================
