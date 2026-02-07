@@ -1,13 +1,12 @@
 // ==========================================
-// TOKEJI - MÓDULO 4: AMIGOS + QR (CORREGIDO)
+// TOKEJI - MÓDULO 4: AMIGOS + QR (CON CÁMARA REAL)
 // ==========================================
 
-// Datos locales
 let contactos = {};
 let amigoSeleccionado = null;
 let amigosListIndex = 0;
-let amigosActionIndex = 0; // 0=Escanear, 1=Mi QR
-let amigosMode = 'list'; // 'list' o 'actions'
+let amigosActionIndex = 0;
+let amigosMode = 'list';
 
 // ==========================================
 // INICIALIZACIÓN
@@ -16,7 +15,6 @@ let amigosMode = 'list'; // 'list' o 'actions'
 function initAmigos() {
     console.log('👥 Inicializando Amigos...');
     
-    // Cargar contactos guardados
     const saved = localStorage.getItem('tokeji_contactos');
     if (saved) {
         try { contactos = JSON.parse(saved); } catch(e) {}
@@ -24,111 +22,99 @@ function initAmigos() {
     
     crearPaginasAmigos();
     addAmigosStyles();
+    integrarAmigosConCore();
     
-    console.log('✅ Amigos listo, contactos:', Object.keys(contactos).length);
+    console.log('✅ Amigos listo');
 }
 
 // ==========================================
-// CREAR PÁGINAS EN EL DOM
+// CREAR PÁGINAS
 // ==========================================
 
 function crearPaginasAmigos() {
     const screen = document.querySelector('.screen');
-    if (!screen) {
-        console.error('❌ No se encontró .screen');
-        return;
-    }
+    if (!screen) return;
     
-    // Página Amigos (lista)
+    // Página Amigos
     if (!document.getElementById('page-amigos')) {
-        const pageAmigos = document.createElement('div');
-        pageAmigos.className = 'page amigos-page';
-        pageAmigos.id = 'page-amigos';
-        pageAmigos.innerHTML = `
+        const page = document.createElement('div');
+        page.className = 'page amigos-page';
+        page.id = 'page-amigos';
+        page.innerHTML = `
             <div class="amigos-header">
                 <div class="amigos-title">MIS AMIGOS</div>
                 <div class="amigos-count" id="amigos-count">0 amigos</div>
             </div>
-            <div class="amigos-list" id="amigos-list"></div>
+            <div class="amigos-list" id="amigos-list">
+                <div class="amigos-empty">
+                    <div class="empty-icon">👻</div>
+                    <div class="empty-text">No tienes amigos aún</div>
+                    <div class="empty-hint">Escanea un QR para añadir</div>
+                </div>
+            </div>
             <div class="amigos-actions">
                 <div class="action-btn selected" data-index="0">
                     <span class="action-icon">📷</span>
-                    <span class="action-label">Escanear</span>
+                    <span class="action-label">Escanear QR</span>
                 </div>
                 <div class="action-btn" data-index="1">
                     <span class="action-icon">📱</span>
-                    <span class="action-label">Mi QR</span>
+                    <span class="action-label">Mi Código</span>
                 </div>
             </div>
         `;
-        screen.appendChild(pageAmigos);
-        
-        // Registrar en pages global
-        if (typeof pages !== 'undefined') {
-            pages.amigos = pageAmigos;
-            console.log('✅ Página amigos registrada');
-        }
+        screen.appendChild(page);
+        if (typeof pages !== 'undefined') pages.amigos = page;
     }
     
-    // Página Escanear QR
+    // Página Escanear (con cámara real)
     if (!document.getElementById('page-escanear')) {
-        const pageEscanear = document.createElement('div');
-        pageEscanear.className = 'page escanear-page';
-        pageEscanear.id = 'page-escanear';
-        pageEscanear.innerHTML = `
+        const page = document.createElement('div');
+        page.className = 'page escanear-page';
+        page.id = 'page-escanear';
+        page.innerHTML = `
             <div class="escanear-header">
                 <div class="escanear-title">ESCANEAR QR</div>
+                <button class="cerrar-btn" onclick="cerrarEscanear()">✕</button>
             </div>
-            <div class="escanear-area" id="escanear-area">
-                <div class="camera-placeholder" id="camera-placeholder">
-                    <div class="camera-icon">📷</div>
-                    <div class="camera-text">Pulsa OK para activar cámara</div>
-                </div>
-                <video id="qr-video" style="display:none;width:100%;height:100%;object-fit:cover;border-radius:12px;"></video>
+            <div class="escanear-container">
+                <video id="qr-video" autoplay playsinline></video>
                 <canvas id="qr-canvas" style="display:none;"></canvas>
-            </div>
-            <div class="escanear-hint">Apunta al QR de tu amigo</div>
-            <div class="escanear-manual">
-                <div class="manual-btn selected" id="btn-manual">⌨️ Introducir código manual</div>
+                <div class="escanear-overlay">
+                    <div class="marco-qr"></div>
+                    <div class="escanear-texto">Apunta al código QR</div>
+                </div>
             </div>
         `;
-        screen.appendChild(pageEscanear);
-        
-        if (typeof pages !== 'undefined') {
-            pages.escanear = pageEscanear;
-        }
+        screen.appendChild(page);
+        if (typeof pages !== 'undefined') pages.escanear = page;
     }
     
     // Página Mi QR
     if (!document.getElementById('page-miqr')) {
-        const pageMiQR = document.createElement('div');
-        pageMiQR.className = 'page miqr-page';
-        pageMiQR.id = 'page-miqr';
-        pageMiQR.innerHTML = `
+        const page = document.createElement('div');
+        page.className = 'page miqr-page';
+        page.id = 'page-miqr';
+        page.innerHTML = `
             <div class="miqr-header">
-                <div class="miqr-title">MI CÓDIGO</div>
+                <div class="miqr-title">MI CÓDIGO QR</div>
             </div>
-            <div class="miqr-area">
-                <div class="qr-container" id="qr-container">
-                    <div class="qr-loading">Generando...</div>
+            <div class="miqr-content">
+                <div class="qr-display" id="qr-display"></div>
+                <div class="miqr-datos">
+                    <div class="miqr-nombre" id="miqr-nombre"></div>
+                    <div class="miqr-id" id="miqr-id"></div>
                 </div>
-                <div class="miqr-info">
-                    <div class="miqr-name" id="miqr-name">Usuario</div>
-                    <div class="miqr-id" id="miqr-id">ID: ----</div>
-                </div>
+                <div class="miqr-instruccion">Muéstralo a tus amigos para que te escaneen</div>
             </div>
-            <div class="miqr-hint">Muéstralo a tus amigos</div>
         `;
-        screen.appendChild(pageMiQR);
-        
-        if (typeof pages !== 'undefined') {
-            pages.miqr = pageMiQR;
-        }
+        screen.appendChild(page);
+        if (typeof pages !== 'undefined') pages.miqr = page;
     }
 }
 
 // ==========================================
-// ESTILOS CSS
+// ESTILOS
 // ==========================================
 
 function addAmigosStyles() {
@@ -137,353 +123,70 @@ function addAmigosStyles() {
     const style = document.createElement('style');
     style.id = 'amigos-styles';
     style.textContent = `
-        /* Página Amigos */
-        .amigos-page { 
-            padding: 40px 15px 15px 15px; 
-            display: none;
-            flex-direction: column;
-            height: 100%;
-        }
+        /* AMIGOS */
+        .amigos-page { padding: 40px 15px 15px; display: none; flex-direction: column; height: 100%; }
         .amigos-page.active { display: flex; }
         
-        .amigos-header {
-            text-align: center;
-            margin-bottom: 15px;
-            flex-shrink: 0;
-        }
+        .amigos-header { text-align: center; margin-bottom: 15px; }
+        .amigos-title { font-size: 18px; font-weight: 900; color: var(--text-color); }
+        .amigos-count { font-size: 12px; color: #94a3b8; margin-top: 4px; font-weight: 700; }
         
-        .amigos-title {
-            font-size: 18px;
-            font-weight: 900;
-            color: var(--text-color);
-        }
+        .amigos-list { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; margin-bottom: 15px; }
         
-        .amigos-count {
-            font-size: 12px;
-            color: #94a3b8;
-            margin-top: 4px;
-            font-weight: 700;
-        }
+        .amigos-empty { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; opacity: 0.6; }
+        .empty-icon { font-size: 50px; margin-bottom: 10px; }
+        .empty-text { font-size: 16px; font-weight: 800; color: var(--text-color); }
+        .empty-hint { font-size: 12px; color: #94a3b8; margin-top: 5px; }
         
-        .amigos-list {
-            flex: 1;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            margin-bottom: 15px;
-            min-height: 0;
-        }
+        .amigo-item { background: white; border-radius: 12px; padding: 12px; display: flex; align-items: center; gap: 12px; box-shadow: 0 4px 0 #e2e8f0; border: 3px solid transparent; }
+        .amigo-item.selected { border-color: #8b5cf6; transform: translateX(5px); box-shadow: 0 6px 0 #8b5cf6; background: #f3f0ff; }
+        .amigo-avatar { width: 40px; height: 40px; background: linear-gradient(145deg, #8b5cf6, #7c3aed); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; }
+        .amigo-info { flex: 1; }
+        .amigo-nombre { font-size: 14px; font-weight: 800; color: var(--text-color); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .amigo-id { font-size: 10px; color: #94a3b8; font-family: monospace; }
         
-        .amigos-empty {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100%;
-            opacity: 0.6;
-            padding: 20px;
-        }
+        .amigos-actions { display: flex; gap: 10px; padding-top: 10px; border-top: 2px solid #e2e8f0; }
+        .action-btn { flex: 1; background: white; border-radius: 12px; padding: 12px; display: flex; flex-direction: column; align-items: center; gap: 5px; box-shadow: 0 4px 0 #e2e8f0; border: 3px solid transparent; cursor: pointer; }
+        .action-btn.selected { border-color: #8b5cf6; background: #f3f0ff; box-shadow: 0 6px 0 #8b5cf6; transform: translateY(-2px); }
+        .action-icon { font-size: 24px; }
+        .action-label { font-size: 11px; font-weight: 800; color: var(--text-color); }
         
-        .empty-icon {
-            font-size: 50px;
-            margin-bottom: 10px;
-        }
-        
-        .empty-text {
-            font-size: 16px;
-            font-weight: 800;
-            color: var(--text-color);
-            text-align: center;
-        }
-        
-        .empty-hint {
-            font-size: 12px;
-            color: #94a3b8;
-            margin-top: 5px;
-            text-align: center;
-        }
-        
-        .amigo-item {
-            background: white;
-            border-radius: 12px;
-            padding: 12px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            box-shadow: 0 4px 0 #e2e8f0;
-            border: 3px solid transparent;
-            transition: all 0.2s;
-            flex-shrink: 0;
-        }
-        
-        .amigo-item.selected {
-            border-color: #8b5cf6;
-            transform: translateX(5px);
-            box-shadow: 0 6px 0 #8b5cf6;
-            background: #f3f0ff;
-        }
-        
-        .amigo-avatar {
-            width: 40px;
-            height: 40px;
-            background: linear-gradient(145deg, #8b5cf6, #7c3aed);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-            flex-shrink: 0;
-        }
-        
-        .amigo-info {
-            flex: 1;
-            min-width: 0;
-        }
-        
-        .amigo-nombre {
-            font-size: 14px;
-            font-weight: 800;
-            color: var(--text-color);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-        
-        .amigo-id {
-            font-size: 10px;
-            color: #94a3b8;
-            font-family: monospace;
-        }
-        
-        .amigo-estado {
-            width: 10px;
-            height: 10px;
-            background: #48bb78;
-            border-radius: 50%;
-            flex-shrink: 0;
-        }
-        
-        .amigos-actions {
-            display: flex;
-            gap: 10px;
-            padding-top: 10px;
-            border-top: 2px solid #e2e8f0;
-            flex-shrink: 0;
-        }
-        
-        .action-btn {
-            flex: 1;
-            background: white;
-            border-radius: 12px;
-            padding: 12px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 5px;
-            box-shadow: 0 4px 0 #e2e8f0;
-            border: 3px solid transparent;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        
-        .action-btn.selected {
-            border-color: #8b5cf6;
-            background: #f3f0ff;
-            box-shadow: 0 6px 0 #8b5cf6;
-            transform: translateY(-2px);
-        }
-        
-        .action-icon {
-            font-size: 24px;
-        }
-        
-        .action-label {
-            font-size: 11px;
-            font-weight: 800;
-            color: var(--text-color);
-        }
-        
-        /* Página Escanear */
-        .escanear-page { 
-            padding: 40px 15px 15px 15px; 
-            display: none;
-            flex-direction: column;
-            height: 100%;
-        }
+        /* ESCANEAR */
+        .escanear-page { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: black; z-index: 50; display: none; flex-direction: column; }
         .escanear-page.active { display: flex; }
         
-        .escanear-header {
-            text-align: center;
-            margin-bottom: 15px;
-            flex-shrink: 0;
-        }
+        .escanear-header { display: flex; justify-content: space-between; align-items: center; padding: 15px; background: rgba(0,0,0,0.8); color: white; }
+        .escanear-title { font-size: 16px; font-weight: 800; }
+        .cerrar-btn { background: #ff4444; color: white; border: none; border-radius: 50%; width: 32px; height: 32px; font-size: 16px; cursor: pointer; }
         
-        .escanear-title {
-            font-size: 18px;
-            font-weight: 900;
-            color: var(--text-color);
-        }
+        .escanear-container { flex: 1; position: relative; overflow: hidden; }
+        #qr-video { width: 100%; height: 100%; object-fit: cover; }
         
-        .escanear-area {
-            flex: 1;
-            background: #1a1a2e;
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            overflow: hidden;
-            margin-bottom: 15px;
-            border: 4px solid #8b5cf6;
-            min-height: 0;
-        }
+        .escanear-overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; pointer-events: none; }
+        .marco-qr { width: 200px; height: 200px; border: 3px solid #00ff00; border-radius: 20px; box-shadow: 0 0 0 9999px rgba(0,0,0,0.5); }
+        .escanear-texto { color: white; margin-top: 20px; font-size: 14px; font-weight: 700; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
         
-        .camera-placeholder {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            color: white;
-            opacity: 0.7;
-            text-align: center;
-            padding: 20px;
-        }
-        
-        .camera-icon {
-            font-size: 60px;
-            margin-bottom: 10px;
-        }
-        
-        .camera-text {
-            font-size: 14px;
-            font-weight: 700;
-        }
-        
-        .escanear-hint {
-            text-align: center;
-            font-size: 12px;
-            color: #64748b;
-            margin-bottom: 10px;
-            font-weight: 600;
-            flex-shrink: 0;
-        }
-        
-        .escanear-manual {
-            padding-top: 10px;
-            border-top: 2px solid #e2e8f0;
-            flex-shrink: 0;
-        }
-        
-        .manual-btn {
-            background: white;
-            border-radius: 12px;
-            padding: 14px;
-            text-align: center;
-            font-size: 13px;
-            font-weight: 800;
-            color: var(--text-color);
-            box-shadow: 0 4px 0 #e2e8f0;
-            border: 3px solid transparent;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        
-        .manual-btn.selected {
-            border-color: #8b5cf6;
-            background: #f3f0ff;
-            box-shadow: 0 6px 0 #8b5cf6;
-            transform: translateX(5px);
-        }
-        
-        /* Página Mi QR */
-        .miqr-page { 
-            padding: 40px 15px 15px 15px; 
-            display: none;
-            flex-direction: column;
-            height: 100%;
-        }
+        /* MI QR */
+        .miqr-page { padding: 40px 15px 15px; display: none; flex-direction: column; height: 100%; }
         .miqr-page.active { display: flex; }
         
-        .miqr-header {
-            text-align: center;
-            margin-bottom: 15px;
-            flex-shrink: 0;
-        }
+        .miqr-header { text-align: center; margin-bottom: 20px; }
+        .miqr-title { font-size: 18px; font-weight: 900; color: var(--text-color); }
         
-        .miqr-title {
-            font-size: 18px;
-            font-weight: 900;
-            color: var(--text-color);
-        }
+        .miqr-content { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px; }
+        .qr-display { background: white; padding: 20px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .qr-display img { width: 200px; height: 200px; display: block; }
         
-        .miqr-area {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 20px;
-            min-height: 0;
-        }
-        
-        .qr-container {
-            background: white;
-            padding: 20px;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-        }
-        
-        .qr-container img {
-            width: 180px;
-            height: 180px;
-            display: block;
-        }
-        
-        .qr-loading {
-            width: 180px;
-            height: 180px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #94a3b8;
-            font-weight: 700;
-        }
-        
-        .miqr-info {
-            text-align: center;
-        }
-        
-        .miqr-name {
-            font-size: 20px;
-            font-weight: 900;
-            color: var(--text-color);
-            margin-bottom: 5px;
-        }
-        
-        .miqr-id {
-            font-size: 12px;
-            color: #94a3b8;
-            font-family: monospace;
-            background: #f1f5f9;
-            padding: 5px 10px;
-            border-radius: 8px;
-            display: inline-block;
-        }
-        
-        .miqr-hint {
-            text-align: center;
-            font-size: 11px;
-            color: #94a3b8;
-            margin-top: 15px;
-            font-weight: 600;
-            flex-shrink: 0;
-        }
+        .miqr-datos { text-align: center; }
+        .miqr-nombre { font-size: 20px; font-weight: 900; color: var(--text-color); margin-bottom: 5px; }
+        .miqr-id { font-size: 12px; color: #94a3b8; font-family: monospace; background: #f1f5f9; padding: 5px 15px; border-radius: 20px; }
+        .miqr-instruccion { font-size: 12px; color: #64748b; text-align: center; font-weight: 600; }
     `;
     document.head.appendChild(style);
 }
 
 // ==========================================
-// RENDERIZAR LISTA DE AMIGOS
+// RENDERIZAR AMIGOS
 // ==========================================
 
 function renderAmigos() {
@@ -491,11 +194,7 @@ function renderAmigos() {
     
     const list = document.getElementById('amigos-list');
     const count = document.getElementById('amigos-count');
-    
-    if (!list || !count) {
-        console.error('❌ No se encontró lista o contador');
-        return;
-    }
+    if (!list || !count) return;
     
     const amigosArray = Object.entries(contactos);
     count.textContent = `${amigosArray.length} amigo${amigosArray.length !== 1 ? 's' : ''}`;
@@ -522,7 +221,6 @@ function renderAmigos() {
                 <div class="amigo-nombre">${nombre}</div>
                 <div class="amigo-id">${id}</div>
             </div>
-            <div class="amigo-estado"></div>
         `;
         list.appendChild(div);
     });
@@ -533,95 +231,163 @@ function renderAmigos() {
 }
 
 function updateAmigosSelection() {
-    // Actualizar selección en lista
     const items = document.querySelectorAll('.amigo-item');
     items.forEach((item, idx) => {
         item.classList.toggle('selected', idx === amigosListIndex && amigosMode === 'list');
     });
     
-    // Actualizar selección en botones de acción
     const buttons = document.querySelectorAll('.action-btn');
     buttons.forEach((btn, idx) => {
         btn.classList.toggle('selected', idx === amigosActionIndex && amigosMode === 'actions');
     });
-    
-    // Scroll al seleccionado si es de la lista
-    if (amigosMode === 'list') {
-        const selected = items[amigosListIndex];
-        if (selected) {
-            selected.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-        }
-    }
 }
 
 // ==========================================
-// ESCANEAR QR (SIMPLIFICADO)
+// CÁMARA QR (IGUAL QUE DAME UN TOQUE)
 // ==========================================
 
-function iniciarEscaneo() {
-    alert('📷 Cámara: En una versión final aquí se activaría la cámara.\n\nPor ahora, usa "Introducir código manual" para añadir amigos.');
+let videoStream = null;
+
+function iniciarEscanear() {
+    console.log('📷 Iniciando cámara...');
+    
+    // Mostrar página
+    if (typeof showPage === 'function') {
+        showPage('escanear');
+    } else {
+        // Fallback si showPage no existe
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.getElementById('page-escanear')?.classList.add('active');
+        if (typeof currentPage !== 'undefined') currentPage = 'escanear';
+    }
+    
+    // Cargar jsQR si no está
+    if (typeof jsQR === 'undefined') {
+        const script = document.createElement('script');
+        script.src = 'https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js';
+        script.onload = () => activarCamara();
+        document.head.appendChild(script);
+    } else {
+        activarCamara();
+    }
 }
 
-// ==========================================
-// AÑADIR AMIGO MANUAL
-// ==========================================
+function activarCamara() {
+    const video = document.getElementById('qr-video');
+    if (!video) return;
+    
+    navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } })
+        .then(stream => {
+            videoStream = stream;
+            video.srcObject = stream;
+            video.play();
+            scanQRFrame();
+        })
+        .catch(err => {
+            console.error('Error cámara:', err);
+            alert('No se pudo acceder a la cámara: ' + err.message);
+            cerrarEscanear();
+        });
+}
 
-function mostrarEntradaManual() {
-    const id = prompt('Introduce el ID de tu amigo:\n(Ejemplo: abc123)');
+function scanQRFrame() {
+    if (!videoStream) return;
     
-    if (!id || !id.trim()) return;
+    const video = document.getElementById('qr-video');
+    const canvas = document.getElementById('qr-canvas');
     
-    const idLimpio = id.trim();
-    
-    if (idLimpio === user?.id) {
-        alert('❌ No puedes añadirte a ti mismo');
+    if (!video || !canvas || video.readyState !== video.HAVE_ENOUGH_DATA) {
+        requestAnimationFrame(scanQRFrame);
         return;
     }
     
-    if (contactos[idLimpio]) {
-        alert('⚠️ Este amigo ya está en tu lista');
+    const ctx = canvas.getContext('2d');
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    ctx.drawImage(video, 0, 0);
+    
+    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    const code = jsQR(imageData.data, canvas.width, canvas.height);
+    
+    if (code && code.data) {
+        detenerCamara();
+        procesarQR(code.data);
         return;
     }
     
-    // Añadir amigo
-    const nombre = `Amigo_${idLimpio.slice(0, 4)}`;
-    contactos[idLimpio] = nombre;
+    requestAnimationFrame(scanQRFrame);
+}
+
+function detenerCamara() {
+    if (videoStream) {
+        videoStream.getTracks().forEach(track => track.stop());
+        videoStream = null;
+    }
+}
+
+function cerrarEscanear() {
+    detenerCamara();
+    if (typeof showPage === 'function') {
+        showPage('amigos');
+    } else {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.getElementById('page-amigos')?.classList.add('active');
+        if (typeof currentPage !== 'undefined') currentPage = 'amigos';
+    }
+}
+
+function procesarQR(data) {
+    console.log('📱 QR detectado:', data);
+    
+    const partes = data.split('|');
+    const id = partes[0].trim();
+    const nombre = partes[1] ? partes[1].trim() : `Amigo_${id.slice(0,4)}`;
+    
+    if (!id) {
+        alert('QR inválido');
+        cerrarEscanear();
+        return;
+    }
+    
+    if (contactos[id]) {
+        alert('Este amigo ya está en tu lista');
+        cerrarEscanear();
+        return;
+    }
+    
+    contactos[id] = nombre;
     localStorage.setItem('tokeji_contactos', JSON.stringify(contactos));
     
     alert(`✅ ¡${nombre} añadido!`);
-    
-    // Volver a lista y actualizar
-    if (typeof showPage === 'function') {
-        showPage('amigos');
-        renderAmigos();
-    }
+    cerrarEscanear();
+    renderAmigos();
 }
 
 // ==========================================
-// GENERAR MI QR
+// MI QR
 // ==========================================
 
-function generarMiQR() {
-    const container = document.getElementById('qr-container');
-    const nameEl = document.getElementById('miqr-name');
+function mostrarMiQR() {
+    const display = document.getElementById('qr-display');
+    const nombreEl = document.getElementById('miqr-nombre');
     const idEl = document.getElementById('miqr-id');
     
-    if (!container || !user) {
-        console.error('❌ No hay container o user');
-        return;
-    }
+    if (!display || !user) return;
     
     const nombre = user.nombre || 'Usuario';
     const id = user.id || '----';
     
-    if (nameEl) nameEl.textContent = nombre;
+    if (nombreEl) nombreEl.textContent = nombre;
     if (idEl) idEl.textContent = `ID: ${id}`;
     
-    // Generar QR con API
     const qrData = `${id}|${nombre}`;
-    const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(qrData)}`;
+    const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(qrData)}`;
     
-    container.innerHTML = `<img src="${qrUrl}" alt="Mi QR" style="width:180px;height:180px;">`;
+    display.innerHTML = `<img src="${qrUrl}" alt="Mi QR">`;
+    
+    if (typeof showPage === 'function') {
+        showPage('miqr');
+    }
 }
 
 // ==========================================
@@ -629,87 +395,67 @@ function generarMiQR() {
 // ==========================================
 
 function amigosHandleUp() {
-    if (currentPage === 'amigos') {
-        const totalAmigos = Object.keys(contactos).length;
-        
-        if (amigosMode === 'actions') {
-            // Subir de botones a lista
-            if (totalAmigos > 0) {
-                amigosMode = 'list';
-                amigosListIndex = totalAmigos - 1;
-            }
-        } else {
-            // Navegar en lista
-            if (totalAmigos > 0) {
-                amigosListIndex = (amigosListIndex - 1 + totalAmigos) % totalAmigos;
-            }
-        }
-        updateAmigosSelection();
-        return true;
+    if (currentPage !== 'amigos') return false;
+    
+    const totalAmigos = Object.keys(contactos).length;
+    
+    if (amigosMode === 'actions') {
+        amigosMode = 'list';
+        amigosListIndex = Math.max(0, totalAmigos - 1);
+    } else if (totalAmigos > 0) {
+        amigosListIndex = (amigosListIndex - 1 + totalAmigos) % totalAmigos;
     }
-    return false;
+    
+    updateAmigosSelection();
+    return true;
 }
 
 function amigosHandleDown() {
-    if (currentPage === 'amigos') {
-        const totalAmigos = Object.keys(contactos).length;
-        
-        if (amigosMode === 'list') {
-            // Si estamos en el último amigo, bajar a botones
-            if (amigosListIndex >= totalAmigos - 1) {
-                amigosMode = 'actions';
-                amigosActionIndex = 0;
-            } else {
-                // Siguiente amigo
-                amigosListIndex++;
-            }
+    if (currentPage !== 'amigos') return false;
+    
+    const totalAmigos = Object.keys(contactos).length;
+    
+    if (amigosMode === 'list') {
+        if (amigosListIndex >= totalAmigos - 1) {
+            amigosMode = 'actions';
+            amigosActionIndex = 0;
         } else {
-            // Navegar entre botones
-            amigosActionIndex = (amigosActionIndex + 1) % 2;
+            amigosListIndex++;
         }
-        updateAmigosSelection();
-        return true;
+    } else {
+        amigosActionIndex = (amigosActionIndex + 1) % 2;
     }
-    return false;
+    
+    updateAmigosSelection();
+    return true;
 }
 
 function amigosHandleOk() {
     if (currentPage === 'amigos') {
         if (amigosMode === 'actions') {
             if (amigosActionIndex === 0) {
-                // Escanear
-                if (typeof showPage === 'function') showPage('escanear');
+                iniciarEscanear();
             } else {
-                // Mi QR
-                generarMiQR();
-                if (typeof showPage === 'function') showPage('miqr');
+                mostrarMiQR();
             }
         } else {
-            // Seleccionar amigo (para futuro: enviar toke)
             const amigos = Object.keys(contactos);
             if (amigos.length > 0) {
                 amigoSeleccionado = amigos[amigosListIndex];
-                alert(`Seleccionado: ${contactos[amigoSeleccionado]}\n\n(En el futuro podrás enviarle un Toke)`);
+                console.log('Amigo seleccionado:', amigoSeleccionado);
             }
         }
         return true;
     }
-    
-    if (currentPage === 'escanear') {
-        const manualBtn = document.querySelector('.manual-btn');
-        if (manualBtn?.classList.contains('selected')) {
-            mostrarEntradaManual();
-        } else {
-            iniciarEscaneo();
-        }
-        return true;
-    }
-    
     return false;
 }
 
 function amigosHandleBack() {
-    if (currentPage === 'escanear' || currentPage === 'miqr') {
+    if (currentPage === 'escanear') {
+        cerrarEscanear();
+        return true;
+    }
+    if (currentPage === 'miqr') {
         if (typeof showPage === 'function') showPage('amigos');
         return true;
     }
@@ -721,80 +467,70 @@ function amigosHandleBack() {
 // ==========================================
 
 function integrarAmigosConCore() {
-    console.log('🔗 Integrando Amigos con Core...');
-    
-    // Esperar a que existan las funciones del core
     if (typeof onOk !== 'function') {
         setTimeout(integrarAmigosConCore, 100);
         return;
     }
     
-    // Guardar referencias originales
+    console.log('🔗 Integrando Amigos...');
+    
     const core_onOk = window.onOk;
     const core_onBack = window.onBack;
     const core_onUp = window.onUp;
     const core_onDown = window.onDown;
     
-    // Sobrescribir onOk
     window.onOk = function() {
-        // Menú -> Amigos (índice 0)
-        if (typeof currentPage !== 'undefined' && currentPage === 'menu' && 
-            typeof selectedIndex !== 'undefined' && selectedIndex === 0) {
-            console.log('👉 Navegando a Amigos desde menú');
+        // Menú -> Amigos
+        if (currentPage === 'menu' && selectedIndex === 0) {
+            console.log('👉 Menú -> Amigos');
             renderAmigos();
-            if (typeof showPage === 'function') showPage('amigos');
-            if (typeof soundSelect === 'function' && window.audioEnabled !== false) soundSelect();
+            showPage('amigos');
+            if (typeof soundSelect === 'function') soundSelect();
             return;
         }
         
         // Páginas de amigos
-        if (typeof currentPage !== 'undefined' && 
-            (currentPage === 'amigos' || currentPage === 'escanear' || currentPage === 'miqr')) {
+        if (['amigos', 'escanear', 'miqr'].includes(currentPage)) {
             if (amigosHandleOk()) {
-                if (typeof soundSelect === 'function' && window.audioEnabled !== false) soundSelect();
+                if (typeof soundSelect === 'function') soundSelect();
                 return;
             }
         }
         
-        // Llamar función original
         core_onOk();
     };
     
-    // Sobrescribir onBack
     window.onBack = function() {
-        if (typeof currentPage !== 'undefined' && 
-            (currentPage === 'amigos' || currentPage === 'escanear' || currentPage === 'miqr')) {
+        if (['amigos', 'escanear', 'miqr'].includes(currentPage)) {
             if (amigosHandleBack()) {
-                if (typeof soundBack === 'function' && window.audioEnabled !== false) soundBack();
+                if (typeof soundBack === 'function') soundBack();
                 return;
             }
         }
         core_onBack();
     };
     
-    // Sobrescribir onUp
     window.onUp = function() {
-        if (typeof currentPage !== 'undefined' && currentPage === 'amigos') {
+        if (currentPage === 'amigos') {
             if (amigosHandleUp()) {
-                if (typeof soundNav === 'function' && window.audioEnabled !== false) soundNav();
+                if (typeof soundNav === 'function') soundNav();
                 return;
             }
         }
         core_onUp();
     };
     
-    // Sobrescribir onDown
     window.onDown = function() {
-        if (typeof currentPage !== 'undefined' && currentPage === 'amigos') {
+        if (currentPage === 'amigos') {
             if (amigosHandleDown()) {
-                if (typeof soundNav === 'function' && window.audioEnabled !== false) soundNav();
+                if (typeof soundNav === 'function') soundNav();
                 return;
             }
         }
         core_onDown();
     };
     
-    console.log('✅ Amigos integrado correctamente');
+    console.log('✅ Amigos integrado');
 }
 
 // ==========================================
@@ -803,10 +539,8 @@ function integrarAmigosConCore() {
 
 function startAmigos() {
     initAmigos();
-    integrarAmigosConCore();
 }
 
-// Esperar a que el DOM esté listo
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => setTimeout(startAmigos, 300));
 } else {
