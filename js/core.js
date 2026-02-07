@@ -1,5 +1,5 @@
 // ==========================================
-// TOKEJI - MÓDULO 2: CORE COMPLETO (CORREGIDO)
+// TOKEJI - MÓDULO 2: CORE COMPLETO (CON AMIGOS INTEGRADO)
 // ==========================================
 
 // ==========================================
@@ -32,6 +32,10 @@ let consentSelected = 0;
 let isFirstTime = false;
 let tempUser = {};
 let user = null;
+
+// Estado de Amigos
+let amigosContactos = {};
+let amigosBotonSeleccionado = 0; // 0=Escanear, 1=MiQR
 
 // Referencias DOM
 let pages = {};
@@ -137,7 +141,11 @@ function showPage(pageName) {
             updateMenu();
         } else if (pageName === 'consent') {
             updateConsent();
+        } else if (pageName === 'amigos') {
+            initAmigos();
         }
+    } else {
+        console.error('❌ Página no encontrada:', pageName);
     }
 }
 
@@ -202,7 +210,135 @@ function updateHome() {
 }
 
 // ==========================================
-// ACCIONES
+// AMIGOS (INTEGRADO EN CORE)
+// ==========================================
+
+function initAmigos() {
+    console.log('👥 Inicializando página de Amigos...');
+    
+    // Cargar contactos
+    const saved = localStorage.getItem('tokeji_contactos');
+    if (saved) {
+        try { 
+            amigosContactos = JSON.parse(saved); 
+            console.log('📋 Contactos cargados:', Object.keys(amigosContactos).length);
+        } catch(e) {
+            console.error('Error cargando contactos:', e);
+        }
+    }
+    
+    // Reset selección
+    amigosBotonSeleccionado = 0;
+    updateAmigosUI();
+}
+
+function updateAmigosUI() {
+    const contador = document.getElementById('amigos-contador');
+    const lista = document.getElementById('amigos-lista');
+    const btnEscanear = document.getElementById('amigo-btn-escanear');
+    const btnMiQR = document.getElementById('amigo-btn-miqr');
+    
+    if (!contador || !lista || !btnEscanear || !btnMiQR) {
+        console.error('❌ Elementos de amigos no encontrados');
+        return;
+    }
+    
+    const numAmigos = Object.keys(amigosContactos).length;
+    contador.textContent = `${numAmigos} amigo${numAmigos !== 1 ? 's' : ''}`;
+    
+    // Actualizar botones
+    if (amigosBotonSeleccionado === 0) {
+        btnEscanear.style.borderColor = '#8b5cf6';
+        btnEscanear.style.background = '#f3f0ff';
+        btnEscanear.style.boxShadow = '0 6px 0 #8b5cf6';
+        btnEscanear.style.transform = 'translateX(5px)';
+        
+        btnMiQR.style.borderColor = 'transparent';
+        btnMiQR.style.background = 'white';
+        btnMiQR.style.boxShadow = '0 4px 0 #e2e8f0';
+        btnMiQR.style.transform = 'none';
+    } else {
+        btnEscanear.style.borderColor = 'transparent';
+        btnEscanear.style.background = 'white';
+        btnEscanear.style.boxShadow = '0 4px 0 #e2e8f0';
+        btnEscanear.style.transform = 'none';
+        
+        btnMiQR.style.borderColor = '#8b5cf6';
+        btnMiQR.style.background = '#f3f0ff';
+        btnMiQR.style.boxShadow = '0 6px 0 #8b5cf6';
+        btnMiQR.style.transform = 'translateX(5px)';
+    }
+}
+
+function amigosNavegar(direccion) {
+    if (direccion === 'abajo') {
+        amigosBotonSeleccionado = (amigosBotonSeleccionado + 1) % 2;
+    } else if (direccion === 'arriba') {
+        amigosBotonSeleccionado = (amigosBotonSeleccionado - 1 + 2) % 2;
+    }
+    updateAmigosUI();
+    return true;
+}
+
+function amigosOk() {
+    if (amigosBotonSeleccionado === 0) {
+        // Escanear QR
+        alert('📷 Aquí se abriría la cámara para escanear QR\n\n(En una versión completa, esto abriría la cámara como en Dame un Toque)');
+    } else {
+        // Mi QR
+        mostrarMiQR();
+    }
+    return true;
+}
+
+function mostrarMiQR() {
+    const nombre = user?.nombre || 'Usuario';
+    const id = user?.id || '----';
+    
+    // Crear modal
+    const modal = document.createElement('div');
+    modal.id = 'modal-miqr';
+    modal.style.cssText = `
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: #f8fafc;
+        z-index: 200;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        box-sizing: border-box;
+    `;
+    
+    const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(id + '|' + nombre)}`;
+    
+    modal.innerHTML = `
+        <div style="font-size: 20px; font-weight: 900; margin-bottom: 20px; color: #2d3748;">MI CÓDIGO QR</div>
+        <div style="background: white; padding: 20px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); margin-bottom: 20px;">
+            <img src="${qrUrl}" style="width: 180px; height: 180px; display: block;">
+        </div>
+        <div style="text-align: center; margin-bottom: 10px;">
+            <div style="font-size: 18px; font-weight: 800; color: #2d3748;">${nombre}</div>
+            <div style="font-size: 12px; color: #64748b; font-family: monospace;">ID: ${id}</div>
+        </div>
+        <div style="font-size: 11px; color: #94a3b8; text-align: center; margin-bottom: 30px;">Muéstralo a tus amigos</div>
+        <button onclick="cerrarModalMiQR()" style="padding: 12px 30px; background: #8b5cf6; color: white; border: none; border-radius: 12px; font-size: 16px; font-weight: 800; cursor: pointer; box-shadow: 0 4px 0 #5b21b6;">◄ Volver</button>
+    `;
+    
+    document.querySelector('.screen').appendChild(modal);
+}
+
+function cerrarModalMiQR() {
+    const modal = document.getElementById('modal-miqr');
+    if (modal) modal.remove();
+}
+
+// ==========================================
+// ACCIONES PRINCIPALES
 // ==========================================
 
 function onUp() {
@@ -230,6 +366,10 @@ function onUp() {
         updateHome();
         soundNav();
     }
+    else if (currentPage === 'amigos') {
+        amigosNavegar('arriba');
+        soundNav();
+    }
 }
 
 function onDown() {
@@ -255,6 +395,10 @@ function onDown() {
         user.estado = ESTADOS[(idx + 1) % ESTADOS.length].id;
         saveUser(user);
         updateHome();
+        soundNav();
+    }
+    else if (currentPage === 'amigos') {
+        amigosNavegar('abajo');
         soundNav();
     }
 }
@@ -303,6 +447,7 @@ function onOk() {
     else if (currentPage === 'setup-avatar') {
         const animal = ANIMALES_INICIALES[selectedIndex];
         user = {
+            id: 'tkj_' + Math.random().toString(36).substr(2, 9),
             nombre: tempUser.nombre,
             avatar_inicial: animal.id,
             avatar_actual: animal.id,
@@ -323,6 +468,18 @@ function onOk() {
     else if (currentPage === 'menu') {
         const opciones = ['amigos', 'tokes', 'todex', 'qr', 'combates', 'carcasa'];
         console.log('Seleccionado:', opciones[selectedIndex]);
+        
+        if (selectedIndex === 0) {
+            // Ir a Amigos
+            showPage('amigos');
+            soundSelect();
+        } else {
+            soundSelect();
+            alert('Próximamente: ' + opciones[selectedIndex]);
+        }
+    }
+    else if (currentPage === 'amigos') {
+        amigosOk();
         soundSelect();
     }
 }
@@ -342,6 +499,15 @@ function onBack() {
     }
     else if (currentPage === 'home') {
         // No volver a splash
+    }
+    else if (currentPage === 'amigos') {
+        // Cerrar modal si está abierto
+        const modal = document.getElementById('modal-miqr');
+        if (modal) {
+            modal.remove();
+        } else {
+            showPage('menu');
+        }
     }
 }
 
@@ -441,8 +607,11 @@ function init() {
         'setup-name': document.getElementById('page-setup-name'),
         'setup-avatar': document.getElementById('page-setup-avatar'),
         home: document.getElementById('page-home'),
-        menu: document.getElementById('page-menu')
+        menu: document.getElementById('page-menu'),
+        amigos: document.getElementById('page-amigos') // <-- NUEVA PÁGINA
     };
+    
+    console.log('Páginas registradas:', Object.keys(pages));
     
     // Verificar usuario
     const saved = loadUser();
