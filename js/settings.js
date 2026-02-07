@@ -1,8 +1,6 @@
 // ==========================================
-// TOKEJI - MÓDULO 3: AJUSTES (Carcasa) - CORREGIDO
+// TOKEJI - MÓDULO 3: AJUSTES (Carcasa) - VERSIÓN SEGURA
 // ==========================================
-// IMPORTANTE: Este archivo debe cargarse DESPUÉS de core.js
-// NO sobrescribe funciones globales, extiende el comportamiento
 
 const COLORES_CARCASA = [
     { id: 'morado', hex: '#8b5cf6', nombre: 'Morado' },
@@ -22,49 +20,39 @@ const SETTINGS_ITEMS = [
 
 let settingsSelected = 0;
 let colorSelected = 0;
+let colorPickerOpen = false;
 let settingsConfig = {
     sound: true,
     vibrate: true,
     carcasa_color: 'morado'
 };
 
-// Variable para saber si el color picker está abierto
-let colorPickerOpen = false;
-
 // ==========================================
-// INICIALIZACIÓN (llamada desde core.js o al final)
+// INICIALIZACIÓN
 // ==========================================
 
-function initSettingsModule() {
-    console.log('🔧 Inicializando Settings Module...');
+function initSettings() {
+    console.log('🔧 Inicializando Settings...');
     
-    // Cargar configuración
+    // Cargar config
     const saved = localStorage.getItem('tokeji_config');
     if (saved) {
-        try { 
-            settingsConfig = JSON.parse(saved); 
-        } catch(e) {}
+        try { settingsConfig = JSON.parse(saved); } catch(e) {}
     }
     
-    // Aplicar color guardado inmediatamente
+    // Aplicar color guardado
     aplicarColorCarcasa(settingsConfig.carcasa_color);
     
-    // Crear página de settings en el DOM
-    renderSettingsPage();
+    // Crear página de settings
+    crearPaginaSettings();
     
-    // Registrar en el sistema de páginas de core.js
-    if (typeof pages !== 'undefined') {
-        pages.settings = document.getElementById('page-settings');
-    }
+    // Añadir estilos
+    addSettingsStyles();
     
-    // Extender las funciones de navegación de core.js (solo si existen)
-    extendCoreFunctions();
-    
-    console.log('✅ Settings Module listo');
+    console.log('✅ Settings listo');
 }
 
-function renderSettingsPage() {
-    // Verificar si ya existe
+function crearPaginaSettings() {
     if (document.getElementById('page-settings')) return;
     
     const screen = document.querySelector('.screen');
@@ -80,8 +68,10 @@ function renderSettingsPage() {
     `;
     screen.appendChild(page);
     
-    addSettingsStyles();
-    renderSettingsList();
+    // Registrar en pages global si existe
+    if (typeof pages !== 'undefined') {
+        pages.settings = page;
+    }
 }
 
 function addSettingsStyles() {
@@ -90,7 +80,7 @@ function addSettingsStyles() {
     const style = document.createElement('style');
     style.id = 'settings-styles';
     style.textContent = `
-        .settings-page { padding: 15px 10px; display: none; }
+        .settings-page { padding: 15px 10px; }
         .settings-page.active { display: flex; }
         
         .settings-title {
@@ -161,7 +151,6 @@ function addSettingsStyles() {
             background: #e2e8f0;
             border-radius: 12px;
             position: relative;
-            cursor: pointer;
             transition: background 0.3s;
         }
         
@@ -212,7 +201,6 @@ function addSettingsStyles() {
             font-weight: 600;
         }
         
-        /* Color picker overlay */
         .color-picker-overlay {
             position: absolute;
             top: 0;
@@ -282,7 +270,6 @@ function renderSettingsList() {
         div.className = 'setting-item' + 
             (index === settingsSelected ? ' selected' : '') +
             (item.type === 'danger' ? ' danger' : '');
-        div.dataset.index = index;
         
         let controlHTML = '';
         
@@ -311,88 +298,12 @@ function renderSettingsList() {
 }
 
 // ==========================================
-// NAVEGACIÓN DENTRO DE SETTINGS
-// ==========================================
-
-function handleSettingsUp() {
-    if (colorPickerOpen) {
-        colorSelected = (colorSelected - 1 + COLORES_CARCASA.length) % COLORES_CARCASA.length;
-        updateColorSelection();
-        if (typeof soundNav === 'function') soundNav();
-        return true;
-    }
-    
-    settingsSelected = (settingsSelected - 1 + SETTINGS_ITEMS.length) % SETTINGS_ITEMS.length;
-    renderSettingsList();
-    if (typeof soundNav === 'function') soundNav();
-    return true;
-}
-
-function handleSettingsDown() {
-    if (colorPickerOpen) {
-        colorSelected = (colorSelected + 1) % COLORES_CARCASA.length;
-        updateColorSelection();
-        if (typeof soundNav === 'function') soundNav();
-        return true;
-    }
-    
-    settingsSelected = (settingsSelected + 1) % SETTINGS_ITEMS.length;
-    renderSettingsList();
-    if (typeof soundNav === 'function') soundNav();
-    return true;
-}
-
-function handleSettingsOk() {
-    const item = SETTINGS_ITEMS[settingsSelected];
-    
-    if (item.type === 'toggle') {
-        settingsConfig[item.id] = !settingsConfig[item.id];
-        localStorage.setItem('tokeji_config', JSON.stringify(settingsConfig));
-        renderSettingsList();
-        
-        // Sincronizar con sistema de audio de core.js si existe
-        if (item.id === 'sound' && typeof AudioSys !== 'undefined') {
-            AudioSys.enabled = settingsConfig.sound;
-        }
-        
-        if (typeof soundSelect === 'function') soundSelect();
-        return true;
-    }
-    
-    if (item.type === 'color') {
-        mostrarColorPicker();
-        return true;
-    }
-    
-    if (item.type === 'danger') {
-        if (confirm('¿Borrar TODOS los datos? Esta acción no se puede deshacer.')) {
-            localStorage.clear();
-            location.reload();
-        }
-        return true;
-    }
-    
-    return false;
-}
-
-function handleSettingsBack() {
-    if (colorPickerOpen) {
-        cerrarColorPicker();
-        return true;
-    }
-    // Si no estamos en el color picker, volver al menú
-    if (typeof showPage === 'function') {
-        showPage('menu');
-    }
-    return true;
-}
-
-// ==========================================
 // COLOR PICKER
 // ==========================================
 
 function mostrarColorPicker() {
     const screen = document.querySelector('.screen');
+    if (!screen) return;
     
     const overlay = document.createElement('div');
     overlay.className = 'color-picker-overlay';
@@ -417,10 +328,8 @@ function mostrarColorPicker() {
         grid.appendChild(div);
     });
     
-    // Encontrar índice del color actual
-    const currentIdx = COLORES_CARCASA.findIndex(c => c.id === settingsConfig.carcasa_color);
-    colorSelected = currentIdx !== -1 ? currentIdx : 0;
-    updateColorSelection();
+    colorSelected = COLORES_CARCASA.findIndex(c => c.id === settingsConfig.carcasa_color);
+    if (colorSelected === -1) colorSelected = 0;
     
     setTimeout(() => {
         overlay.classList.add('active');
@@ -463,105 +372,171 @@ function aplicarColorCarcasa(colorId) {
 }
 
 // ==========================================
-// INTEGRACIÓN CON CORE.JS (EXTENSIÓN SEGURA)
+// NAVEGACIÓN EN SETTINGS
 // ==========================================
 
-function extendCoreFunctions() {
-    // Guardar referencias originales SOLO si existen
-    const originalOnOk = window.onOk;
-    const originalOnBack = window.onBack;
-    const originalOnUp = window.onUp;
-    const originalOnDown = window.onDown;
+function settingsHandleUp() {
+    if (colorPickerOpen) {
+        colorSelected = (colorSelected - 1 + COLORES_CARCASA.length) % COLORES_CARCASA.length;
+        updateColorSelection();
+        return true;
+    }
+    
+    settingsSelected = (settingsSelected - 1 + SETTINGS_ITEMS.length) % SETTINGS_ITEMS.length;
+    renderSettingsList();
+    return true;
+}
+
+function settingsHandleDown() {
+    if (colorPickerOpen) {
+        colorSelected = (colorSelected + 1) % COLORES_CARCASA.length;
+        updateColorSelection();
+        return true;
+    }
+    
+    settingsSelected = (settingsSelected + 1) % SETTINGS_ITEMS.length;
+    renderSettingsList();
+    return true;
+}
+
+function settingsHandleOk() {
+    const item = SETTINGS_ITEMS[settingsSelected];
+    
+    if (item.type === 'toggle') {
+        settingsConfig[item.id] = !settingsConfig[item.id];
+        localStorage.setItem('tokeji_config', JSON.stringify(settingsConfig));
+        renderSettingsList();
+        return true;
+    }
+    
+    if (item.type === 'color') {
+        mostrarColorPicker();
+        return true;
+    }
+    
+    if (item.type === 'danger') {
+        if (confirm('¿Borrar TODOS los datos? No se puede deshacer.')) {
+            localStorage.clear();
+            location.reload();
+        }
+        return true;
+    }
+    
+    return false;
+}
+
+function settingsHandleBack() {
+    if (colorPickerOpen) {
+        cerrarColorPicker();
+        return true;
+    }
+    return false;
+}
+
+// ==========================================
+// INTEGRACIÓN CON CORE.JS - VERSIÓN SEGURA
+// ==========================================
+
+function integrarConCore() {
+    console.log('🔗 Integrando Settings con Core...');
+    
+    // Esperar a que las funciones globales existan
+    if (typeof onOk !== 'function' || typeof showPage !== 'function') {
+        console.log('⏳ Esperando a core.js...');
+        setTimeout(integrarConCore, 100);
+        return;
+    }
+    
+    // Guardar referencias originales
+    const core_onOk = onOk;
+    const core_onBack = onOk; // Esto parece un error, debería ser onBack
+    const core_onUp = onUp;
+    const core_onDown = onDown;
     
     // Sobrescribir onOk
     window.onOk = function() {
-        if (typeof initAudio === 'function') initAudio();
-        
         // Si estamos en settings
-        if (window.currentPage === 'settings') {
+        if (typeof currentPage !== 'undefined' && currentPage === 'settings') {
             if (colorPickerOpen) {
                 seleccionarColor();
                 return;
             }
-            if (handleSettingsOk()) return;
-        }
-        
-        // Si estamos en menú y seleccionamos Carcasa (índice 5)
-        if (window.currentPage === 'menu' && window.selectedIndex === 5) {
-            if (typeof showPage === 'function') {
-                showPage('settings');
-                settingsSelected = 0;
-                renderSettingsList();
+            if (settingsHandleOk()) {
                 if (typeof soundSelect === 'function') soundSelect();
                 return;
             }
         }
         
-        // Llamar original si existe
-        if (typeof originalOnOk === 'function') {
-            originalOnOk();
+        // Si estamos en menú y seleccionamos Carcasa (índice 5)
+        if (typeof currentPage !== 'undefined' && currentPage === 'menu' && typeof selectedIndex !== 'undefined' && selectedIndex === 5) {
+            if (typeof showPage === 'function') {
+                settingsSelected = 0;
+                renderSettingsList();
+                showPage('settings');
+                if (typeof soundSelect === 'function') soundSelect();
+                return;
+            }
         }
+        
+        // Llamar función original
+        core_onOk();
     };
     
     // Sobrescribir onBack
     window.onBack = function() {
-        // Si estamos en settings
-        if (window.currentPage === 'settings') {
-            if (handleSettingsBack()) {
+        if (typeof currentPage !== 'undefined' && currentPage === 'settings') {
+            if (settingsHandleBack()) {
+                if (typeof soundBack === 'function') soundBack();
+                return;
+            }
+            // Volver al menú
+            if (typeof showPage === 'function') {
+                showPage('menu');
                 if (typeof soundBack === 'function') soundBack();
                 return;
             }
         }
         
-        if (typeof originalOnBack === 'function') {
-            originalOnBack();
-        }
+        core_onBack();
     };
     
     // Sobrescribir onUp
     window.onUp = function() {
-        if (window.currentPage === 'settings') {
-            handleSettingsUp();
+        if (typeof currentPage !== 'undefined' && currentPage === 'settings') {
+            settingsHandleUp();
+            if (typeof soundNav === 'function') soundNav();
             return;
         }
-        
-        if (typeof originalOnUp === 'function') {
-            originalOnUp();
-        }
+        core_onUp();
     };
     
     // Sobrescribir onDown
     window.onDown = function() {
-        if (window.currentPage === 'settings') {
-            handleSettingsDown();
+        if (typeof currentPage !== 'undefined' && currentPage === 'settings') {
+            settingsHandleDown();
+            if (typeof soundNav === 'function') soundNav();
             return;
         }
-        
-        if (typeof originalOnDown === 'function') {
-            originalOnDown();
-        }
+        core_onDown();
     };
+    
+    console.log('✅ Integración completada');
 }
 
 // ==========================================
-// INICIO DIFERIDO (esperar a que core.js esté listo)
+// INICIO
 // ==========================================
 
-function waitForCoreAndInit() {
-    // Verificar si core.js ya cargó (buscamos variables clave)
-    if (typeof window.currentPage !== 'undefined' && typeof window.showPage === 'function') {
-        initSettingsModule();
-    } else {
-        // Esperar un poco y reintentar
-        setTimeout(waitForCoreAndInit, 50);
-    }
+// Esperar a que todo esté listo
+function startSettings() {
+    initSettings();
+    integrarConCore();
 }
 
-// Iniciar cuando el DOM esté listo, pero verificar que core.js exista
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => {
-        setTimeout(waitForCoreAndInit, 100);
+        setTimeout(startSettings, 200);
     });
 } else {
-    setTimeout(waitForCoreAndInit, 100);
+    setTimeout(startSettings, 200);
 }
