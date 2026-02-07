@@ -742,7 +742,7 @@
                 <div class="tokes-counter" id="tokes-counter">🎯 30/30</div>
             </div>
 
-            <!-- MENÚ -->
+                <!-- MENÚ -->
             <div class="page menu-page" id="page-menu">
                 <div class="menu-title">MENÚ</div>
                 <div class="menu-grid">
@@ -772,6 +772,33 @@
                     </div>
                 </div>
             </div>
+
+            <!-- PÁGINA AMIGOS (NUEVA) -->
+            <div class="page amigos-page" id="page-amigos" style="padding: 40px 15px 15px; display: none; opacity: 0;">
+                <div style="text-align: center; margin-bottom: 20px;">
+                    <div style="font-size: 20px; font-weight: 900; color: #2d3748;">MIS AMIGOS</div>
+                    <div style="font-size: 12px; color: #8b5cf6; font-weight: 700;" id="amigos-contador">0 amigos</div>
+                </div>
+                
+                <div id="amigos-lista" style="height: 200px; overflow-y: auto; margin-bottom: 15px;">
+                    <div style="text-align: center; padding: 40px 20px; opacity: 0.6;">
+                        <div style="font-size: 50px; margin-bottom: 10px;">👻</div>
+                        <div style="font-size: 16px; font-weight: 800; color: #2d3748;">No tienes amigos aún</div>
+                        <div style="font-size: 12px; color: #64748b; margin-top: 5px;">Escanea un QR para añadir</div>
+                    </div>
+                </div>
+                
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                    <button id="amigo-btn-escanear" style="display: flex; align-items: center; gap: 15px; background: white; border: 3px solid #8b5cf6; border-radius: 15px; padding: 15px; box-shadow: 0 6px 0 #8b5cf6; width: 100%; text-align: left; cursor: pointer;">
+                        <span style="font-size: 28px;">📷</span>
+                        <span style="font-size: 16px; font-weight: 800; color: #2d3748;">Escanear QR</span>
+                    </button>
+                    <button id="amigo-btn-miqr" style="display: flex; align-items: center; gap: 15px; background: white; border: 3px solid transparent; border-radius: 15px; padding: 15px; box-shadow: 0 4px 0 #e2e8f0; width: 100%; text-align: left; cursor: pointer;">
+                        <span style="font-size: 28px;">📱</span>
+                        <span style="font-size: 16px; font-weight: 800; color: #2d3748;">Mi Código</span>
+                    </button>
+                </div>
+            </div>
         </div>
 
         <div class="hardware-buttons">
@@ -797,6 +824,6 @@
     <script src="js/core.js"></script>
     <script src="js/app.js"></script> 
     <script src="js/settings.js"></script>
-    <script src="js/amigos.js"></script>
+    <!-- Ya no necesitas amigos.js porque está integrado en core.js -->
 </body>
 </html>
