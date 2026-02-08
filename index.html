@@ -33,7 +33,6 @@
       font-family: 'Nunito', sans-serif;
     }
 
-    /* DISPOSITIVO */
     .device {
       width: 340px;
       height: 620px;
@@ -78,7 +77,6 @@
       pointer-events: none;
     }
 
-    /* PANTALLA - TAMAÑO CORREGIDO */
     .screen-container {
       width: 100%;
       flex: 1;
@@ -128,7 +126,6 @@
       position: relative;
     }
 
-    /* PAGINAS */
     .page { 
       display: none; 
       width: 100%; 
@@ -143,7 +140,6 @@
       to { opacity: 1; transform: scale(1); }
     }
 
-    /* SPLASH */
     #page-splash {
       justify-content: center;
       align-items: center;
@@ -179,7 +175,6 @@
       50% { opacity: 1; }
     }
 
-    /* SETUP */
     .setup-title {
       font-family: 'Fredoka One', cursive;
       font-size: 16px;
@@ -208,7 +203,6 @@
       box-shadow: 0 0 0 4px rgba(255,107,157,0.2);
     }
 
-    /* HOME */
     .home-main {
       flex: 1;
       display: flex;
@@ -265,7 +259,6 @@
       border-radius: 10px;
     }
 
-    /* MENU GRID - CON SCROLL */
     .menu-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -317,7 +310,6 @@
       transform: scale(1.2) rotate(-5deg);
     }
 
-    /* LISTAS CON SCROLL */
     .list-container {
       width: 100%;
       flex: 1;
@@ -363,6 +355,7 @@
       transition: all 0.2s;
       flex-shrink: 0;
       width: 100%;
+      cursor: pointer;
     }
 
     .scan-btn.focused {
@@ -370,7 +363,6 @@
       box-shadow: 0 0 0 4px rgba(192,132,252,0.4), 0 4px 0 #9333EA;
     }
 
-    /* TOKES CON COLORES */
     .toke-item {
       background: white;
       border: 3px solid #F3F4F6;
@@ -400,7 +392,6 @@
     .toke-item.t5 { border-color: #0081ff; background: linear-gradient(145deg, #f0f8ff, #f5fbff); }
     .toke-item.t5.focused { box-shadow: 0 4px 0 #0067cc; }
 
-    /* QR */
     .qr-container {
       flex: 1;
       display: flex;
@@ -423,7 +414,6 @@
       display: block;
     }
 
-    /* TODEX */
     .todex-grid {
       display: grid;
       grid-template-columns: repeat(5, 1fr);
@@ -458,7 +448,6 @@
       z-index: 10;
     }
 
-    /* COMBATES - MÁS PEQUEÑOS */
     .combate-container {
       flex: 1;
       display: flex;
@@ -485,6 +474,7 @@
       align-items: center;
       justify-content: center;
       max-height: 120px;
+      cursor: pointer;
     }
 
     .combate-card.focused {
@@ -502,22 +492,6 @@
       box-shadow: 0 0 0 4px rgba(255,217,61,0.4), 0 5px 0 #EA580C;
     }
 
-    .combate-icon {
-      font-size: 30px;
-      margin-bottom: 5px;
-    }
-
-    .combate-title {
-      font-size: 14px;
-      margin-bottom: 3px;
-    }
-
-    .combate-desc {
-      font-size: 9px;
-      opacity: 0.9;
-    }
-
-    /* SETTINGS */
     .settings-list {
       width: 100%;
       flex: 1;
@@ -579,7 +553,6 @@
       left: 22px;
     }
 
-    /* SELECTORES MODALES */
     .selector-modal {
       position: absolute;
       top: 0;
@@ -635,7 +608,6 @@
       box-shadow: 0 0 20px rgba(255,255,255,0.5);
     }
 
-    /* RESPONSE MODAL */
     .response-modal {
       position: absolute;
       top: 0;
@@ -683,6 +655,7 @@
       align-items: center;
       transition: all 0.2s;
       box-shadow: 0 5px 0 rgba(0,0,0,0.1);
+      cursor: pointer;
     }
 
     .response-btn.focused {
@@ -712,6 +685,7 @@
       border: 3px solid rgba(255,255,255,0.3);
       color: white;
       background: rgba(255,255,255,0.2);
+      cursor: pointer;
     }
 
     .response-action.focused {
@@ -720,7 +694,6 @@
       border-color: white;
     }
 
-    /* BOTONES FÍSICOS - MÁS PEQUEÑOS */
     .controls {
       margin-top: 15px;
       display: flex;
@@ -806,7 +779,6 @@
       font-weight: 700;
     }
 
-    /* MSG BAR */
     .msg-bar {
       position: absolute;
       bottom: 0;
@@ -827,7 +799,6 @@
       transform: translateY(0);
     }
 
-    /* SCROLLBAR */
     ::-webkit-scrollbar { width: 4px; }
     ::-webkit-scrollbar-thumb { background: #FFB8D0; border-radius: 2px; }
   </style>
@@ -908,7 +879,7 @@
           <!-- CONTACTS -->
           <div class="page" id="page-contacts">
             <div class="setup-title">Tus Amigos</div>
-            <button class="scan-btn focused" id="scan-btn">📷 Escanear QR</button>
+            <button class="scan-btn focused" id="scan-btn" onclick="app.scanQR()">📷 Escanear QR</button>
             <div class="list-container" id="contacts-list"></div>
           </div>
 
@@ -933,15 +904,15 @@
           <div class="page" id="page-combates">
             <div class="setup-title">⚔️ Arena</div>
             <div class="combate-container">
-              <div class="combate-card focused" data-index="0">
-                <div class="combate-icon">🤖</div>
-                <div class="combate-title">VS IA</div>
-                <div class="combate-desc">Practica contra la IA</div>
+              <div class="combate-card focused" data-index="0" onclick="app.jugarVSIA()">
+                <div style="font-size: 30px; margin-bottom: 5px;">🤖</div>
+                <div style="font-size: 14px; margin-bottom: 3px;">VS IA</div>
+                <div style="font-size: 9px; opacity: 0.9;">Practica contra la IA</div>
               </div>
-              <div class="combate-card vs-amigo" data-index="1">
-                <div class="combate-icon">⚔️</div>
-                <div class="combate-title">VS Amigo</div>
-                <div class="combate-desc">Retea a tus contactos</div>
+              <div class="combate-card vs-amigo" data-index="1" onclick="app.jugarVSAmigo()">
+                <div style="font-size: 30px; margin-bottom: 5px;">⚔️</div>
+                <div style="font-size: 14px; margin-bottom: 3px;">VS Amigo</div>
+                <div style="font-size: 9px; opacity: 0.9;">Retea a tus contactos</div>
               </div>
             </div>
           </div>
@@ -1033,7 +1004,7 @@
 <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
 <script>
 // ========================================
-// TOKEJI v3 - ARREGLOS COMPLETOS
+// TOKEJI - VERSIÓN FUNCIONAL
 // ========================================
 
 const BACK = "https://dame-un-toque-1.onrender.com";
@@ -1041,31 +1012,33 @@ const BACK = "https://dame-un-toque-1.onrender.com";
 // AUDIO
 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 function playSound(type) {
-  if (!app.state.settings.sonido) return;
-  const osc = audioCtx.createOscillator();
-  const gain = audioCtx.createGain();
-  osc.connect(gain);
-  gain.connect(audioCtx.destination);
-  
-  if (type === 'move') {
-    osc.frequency.value = 600;
-    gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.03);
-    osc.start(audioCtx.currentTime);
-    osc.stop(audioCtx.currentTime + 0.03);
-  } else if (type === 'select') {
-    osc.frequency.value = 1000;
-    gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
-    osc.start(audioCtx.currentTime);
-    osc.stop(audioCtx.currentTime + 0.1);
-  } else if (type === 'back') {
-    osc.frequency.value = 300;
-    gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.08);
-    osc.start(audioCtx.currentTime);
-    osc.stop(audioCtx.currentTime + 0.08);
-  }
+  if (!app?.state?.settings?.sonido) return;
+  try {
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+    
+    if (type === 'move') {
+      osc.frequency.value = 600;
+      gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.03);
+      osc.start(audioCtx.currentTime);
+      osc.stop(audioCtx.currentTime + 0.03);
+    } else if (type === 'select') {
+      osc.frequency.value = 1000;
+      gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+      osc.start(audioCtx.currentTime);
+      osc.stop(audioCtx.currentTime + 0.1);
+    } else if (type === 'back') {
+      osc.frequency.value = 300;
+      gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.08);
+      osc.start(audioCtx.currentTime);
+      osc.stop(audioCtx.currentTime + 0.08);
+    }
+  } catch(e) {}
 }
 
 // DATOS
@@ -1092,14 +1065,16 @@ const ESTADOS = [
 ];
 
 const TOKES_TYPES = [
-  { id: 1, emoji: '🔥', name: 'On Fire', desc: '¡Estás imparable!', color: '#ff0066', bg: '#fff0f3' },
-  { id: 2, emoji: '💕', name: 'Crush', desc: 'Pienso en ti', color: '#ff3388', bg: '#fff0f5' },
-  { id: 3, emoji: '💪', name: 'Ánimo', desc: '¡Tú puedes!', color: '#00c598', bg: '#f0fff9' },
-  { id: 4, emoji: '📅', name: 'Planes', desc: '¿Quedamos?', color: '#ffb800', bg: '#fffbf0' },
-  { id: 5, emoji: '🚨', name: 'Urgente', desc: '¡Necesito ayuda!', color: '#0081ff', bg: '#f0f8ff' }
+  { id: 1, emoji: '🔥', name: 'On Fire', desc: '¡Estás imparable!', color: '#ff0066' },
+  { id: 2, emoji: '💕', name: 'Crush', desc: 'Pienso en ti', color: '#ff3388' },
+  { id: 3, emoji: '💪', name: 'Ánimo', desc: '¡Tú puedes!', color: '#00c598' },
+  { id: 4, emoji: '📅', name: 'Planes', desc: '¿Quedamos?', color: '#ffb800' },
+  { id: 5, emoji: '🚨', name: 'Urgente', desc: '¡Necesito ayuda!', color: '#0081ff' }
 ];
 
-// APP CONTROLLER
+const EMOJIS_LIST = ['😊','❤️','👍','🔥','💯','🤥','👾','💕','🚀','🎯','🦾','🙌','👏','💋','🐻','🐝','🌈','☀️','🌙','⭐','🌸','📸','🚗','🌷','🍀','🍕','👅','🍟','🌮','🍰','🎂','🍫','☕','🥤','🏀','⚽','🎾','🏆','🎮','🎲','🎸','🎺','🎨','📚','💡','🔧','😱','📱','💻','🛸','🥷','😇','🧟‍♂️','👽','🎩','🧙','🧚','🧜','💃🏻','🦋','🦅','🦈','🐅','🐘','🦒','🦏','🌍','📦','🏴‍☠️','✨','🚨','👑','🦄','🦁','🧌','🦉','🐣','🐉','🐲','🦕','🦖','🌋','🗿','🪄','⚡','💀','👻','🤢','🤡','🎪','🍾','🎆','🎇','🫶','🏃‍♂️','🧟‍♀️','🤖','🧊','😈','🔫','💅','🎐','🎀','🎁','🎰','✈️','🥵','🥶','⌚️','⚓️','🛁','🪒','🪤','💣','🏍️','🍒','🌪️','👙','🧩','🍪','🏎️','🎓','🧸','✂️','🕳️','❤️‍🔥','🥳','⚰️','🎈','🎉','👩🏻‍❤️‍👨','🦊','💦','🚪','🎎','⚠️','🛌','🤮','🫡','💎','🛹','💸','💵','💊','💶','🎟️','⚜️','💳','💿','📀'];
+
+// APP
 const app = {
   state: {
     currentPage: 'splash',
@@ -1116,13 +1091,23 @@ const app = {
     },
     inSelector: false,
     selectorType: null,
-    selectorIndex: 0
+    selectorIndex: 0,
+    pendingToque: null
   },
   
-  contactos: JSON.parse(localStorage.getItem("cts") || "{}"),
-  todex: JSON.parse(localStorage.getItem("todex") || '{"captured": [], "total": 0}'),
+  contactos: {},
+  todex: { captured: [], total: 0 },
 
   init() {
+    // Cargar datos
+    try {
+      this.contactos = JSON.parse(localStorage.getItem("cts") || "{}");
+      this.todex = JSON.parse(localStorage.getItem("todex") || '{"captured": [], "total": 0}');
+    } catch(e) {
+      this.contactos = {};
+      this.todex = { captured: [], total: 0 };
+    }
+    
     this.applyColor();
     this.updateClock();
     setInterval(() => this.updateClock(), 60000);
@@ -1137,36 +1122,49 @@ const app = {
     
     // Verificar toques entrantes
     setInterval(() => this.checkIncoming(), 10000);
+    
+    console.log('Tokeji iniciado');
   },
 
   updateClock() {
     const now = new Date();
-    document.getElementById('clock').textContent = 
-      String(now.getHours()).padStart(2,'0') + ':' + 
-      String(now.getMinutes()).padStart(2,'0');
+    const clock = document.getElementById('clock');
+    if (clock) {
+      clock.textContent = String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0');
+    }
   },
 
   applyColor() {
-    const c = COLORES[this.state.settings.color];
+    const c = COLORES[this.state.settings.color] || COLORES[0];
     document.documentElement.style.setProperty('--device-color', c.hex);
     document.documentElement.style.setProperty('--device-dark', c.shadow);
     
-    // Cambiar gradiente del dispositivo
     const device = document.getElementById('device');
-    device.style.background = `linear-gradient(145deg, ${c.gradient[0]} 0%, ${c.gradient[1]} 50%, ${c.gradient[2]} 100%)`;
+    if (device) {
+      device.style.background = `linear-gradient(145deg, ${c.gradient[0]} 0%, ${c.gradient[1]} 50%, ${c.gradient[2]} 100%)`;
+    }
   },
 
   showPage(page, save = true) {
+    console.log('Cambiando a página:', page);
+    
     if (save && this.state.currentPage !== page) {
       this.state.history.push(this.state.currentPage);
     }
     
+    // Ocultar todas las páginas
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    document.getElementById('page-' + page).classList.add('active');
-    this.state.currentPage = page;
+    
+    // Mostrar la nueva
+    const pageEl = document.getElementById('page-' + page);
+    if (pageEl) {
+      pageEl.classList.add('active');
+      this.state.currentPage = page;
+    }
+    
     this.state.inSelector = false;
     
-    // Inicializar foco según página
+    // Inicializar según página
     switch(page) {
       case 'menu':
         this.state.focus = { type: 'menu', index: this.state.menuIndex };
@@ -1213,10 +1211,13 @@ const app = {
       this.state.inSelector = false;
       return;
     }
-    if (document.getElementById('response-modal').classList.contains('active')) {
-      document.getElementById('response-modal').classList.remove('active');
+    
+    const responseModal = document.getElementById('response-modal');
+    if (responseModal && responseModal.classList.contains('active')) {
+      responseModal.classList.remove('active');
       return;
     }
+    
     if (this.state.history.length > 0) {
       const prev = this.state.history.pop();
       this.showPage(prev, false);
@@ -1230,12 +1231,15 @@ const app = {
   // ========================================
   
   handleBack() {
+    console.log('BACK presionado');
     playSound('back');
     this.goBack();
   },
 
   handleOK() {
+    console.log('OK presionado, página:', this.state.currentPage);
     playSound('select');
+    
     const { currentPage, focus, inSelector } = this.state;
     
     if (inSelector) {
@@ -1243,7 +1247,8 @@ const app = {
       return;
     }
     
-    if (document.getElementById('response-modal').classList.contains('active')) {
+    const responseModal = document.getElementById('response-modal');
+    if (responseModal && responseModal.classList.contains('active')) {
       this.handleResponseOK();
       return;
     }
@@ -1253,25 +1258,35 @@ const app = {
         const nombre = localStorage.getItem('miNombre');
         this.showPage(nombre ? 'home' : 'setup');
         break;
+        
       case 'setup':
         const nom = document.getElementById('miNombre').value.trim();
-        if (!nom) return this.showMsg('Escribe tu nombre');
+        if (!nom) {
+          this.showMsg('Escribe tu nombre');
+          return;
+        }
         localStorage.setItem('miNombre', nom);
         this.generarQR();
         this.showPage('home');
         break;
+        
       case 'home':
         this.showPage('menu');
         break;
+        
       case 'menu':
         const items = ['tokes', 'contacts', 'qr', 'todox', 'combates', 'settings'];
-        this.showPage(items[focus.index]);
+        const dest = items[focus.index];
+        console.log('Navegando a:', dest);
+        this.showPage(dest);
         break;
+        
       case 'tokes':
         this.state.selectedToke = TOKES_TYPES[focus.index];
         this.showPage('contacts');
         this.showMsg(`Enviar: ${this.state.selectedToke.name}`);
         break;
+        
       case 'contacts':
         if (focus.index === 0) {
           this.scanQR();
@@ -1282,16 +1297,19 @@ const app = {
           }
         }
         break;
+        
       case 'todox':
         const id = focus.index + 1;
         if (this.todex.captured.includes(id)) {
           this.showEmojiDetail(id);
         }
         break;
+        
       case 'combates':
         if (focus.index === 0) this.jugarVSIA();
         else this.jugarVSAmigo();
         break;
+        
       case 'settings':
         this.activateSetting(focus.index);
         break;
@@ -1299,15 +1317,16 @@ const app = {
   },
 
   handleUp() {
+    console.log('UP');
     playSound('move');
-    const { type, index } = this.state.focus;
     
     if (this.state.inSelector) {
       this.navigateSelector('up');
       return;
     }
     
-    if (document.getElementById('response-modal').classList.contains('active')) {
+    const responseModal = document.getElementById('response-modal');
+    if (responseModal && responseModal.classList.contains('active')) {
       if (this.state.focus.index >= 2) {
         this.state.focus.index -= 2;
         this.updateResponseFocus();
@@ -1315,12 +1334,15 @@ const app = {
       return;
     }
 
+    const { type, index } = this.state.focus;
+    
     switch(type) {
       case 'menu':
         if (index >= 2) {
           this.state.focus.index -= 2;
           this.state.menuIndex = this.state.focus.index;
           this.updateMenuFocus();
+          this.scrollToFocused('menu-grid');
         }
         break;
       case 'tokes':
@@ -1329,20 +1351,21 @@ const app = {
           this.state.focus.index--;
           if (type === 'tokes') this.updateTokesFocus();
           else this.updateSettingsFocus();
+          this.scrollToFocused(type === 'tokes' ? 'tokes-list' : 'settings-list');
         }
         break;
       case 'contacts':
         if (index > 0) {
           this.state.focus.index--;
           this.updateContactsFocus();
-          this.scrollIfNeeded('contacts-list');
+          this.scrollToFocused('contacts-list');
         }
         break;
       case 'grid':
         if (index >= 5) {
           this.state.focus.index -= 5;
           this.updateGridFocus();
-          this.scrollIfNeeded('todex-grid');
+          this.scrollToFocused('todex-grid');
         }
         break;
     }
@@ -1350,15 +1373,16 @@ const app = {
   },
 
   handleDown() {
+    console.log('DOWN');
     playSound('move');
-    const { type, index } = this.state.focus;
     
     if (this.state.inSelector) {
       this.navigateSelector('down');
       return;
     }
     
-    if (document.getElementById('response-modal').classList.contains('active')) {
+    const responseModal = document.getElementById('response-modal');
+    if (responseModal && responseModal.classList.contains('active')) {
       if (this.state.focus.index < 4) {
         this.state.focus.index += 2;
         if (this.state.focus.index > 5) this.state.focus.index = 5;
@@ -1367,21 +1391,22 @@ const app = {
       return;
     }
 
+    const { type, index } = this.state.focus;
+    
     switch(type) {
       case 'menu':
-        // Navegar dentro del menú, no salir
         if (index < 4) {
           this.state.focus.index += 2;
           this.state.menuIndex = this.state.focus.index;
           this.updateMenuFocus();
-          this.scrollIfNeeded('menu-grid');
+          this.scrollToFocused('menu-grid');
         }
         break;
       case 'tokes':
         if (index < TOKES_TYPES.length - 1) {
           this.state.focus.index++;
           this.updateTokesFocus();
-          this.scrollIfNeeded('tokes-list');
+          this.scrollToFocused('tokes-list');
         }
         break;
       case 'contacts':
@@ -1389,14 +1414,14 @@ const app = {
         if (index < maxContacts) {
           this.state.focus.index++;
           this.updateContactsFocus();
-          this.scrollIfNeeded('contacts-list');
+          this.scrollToFocused('contacts-list');
         }
         break;
       case 'grid':
         if (index < 145) {
           this.state.focus.index += 5;
           this.updateGridFocus();
-          this.scrollIfNeeded('todex-grid');
+          this.scrollToFocused('todex-grid');
         }
         break;
       case 'combates':
@@ -1409,7 +1434,7 @@ const app = {
         if (index < 4) {
           this.state.focus.index++;
           this.updateSettingsFocus();
-          this.scrollIfNeeded('settings-list');
+          this.scrollToFocused('settings-list');
         }
         break;
     }
@@ -1417,15 +1442,16 @@ const app = {
   },
 
   handleLeft() {
+    console.log('LEFT');
     playSound('move');
-    const { type, index } = this.state.focus;
     
     if (this.state.inSelector) {
       this.navigateSelector('left');
       return;
     }
     
-    if (document.getElementById('response-modal').classList.contains('active')) {
+    const responseModal = document.getElementById('response-modal');
+    if (responseModal && responseModal.classList.contains('active')) {
       if (this.state.focus.index === 5) {
         this.state.focus.index = 4;
         this.updateResponseFocus();
@@ -1436,6 +1462,8 @@ const app = {
       return;
     }
 
+    const { type, index } = this.state.focus;
+    
     switch(type) {
       case 'menu':
         if (index % 2 === 1) {
@@ -1455,15 +1483,16 @@ const app = {
   },
 
   handleRight() {
+    console.log('RIGHT');
     playSound('move');
-    const { type, index } = this.state.focus;
     
     if (this.state.inSelector) {
       this.navigateSelector('right');
       return;
     }
     
-    if (document.getElementById('response-modal').classList.contains('active')) {
+    const responseModal = document.getElementById('response-modal');
+    if (responseModal && responseModal.classList.contains('active')) {
       if (this.state.focus.index === 4) {
         this.state.focus.index = 5;
         this.updateResponseFocus();
@@ -1474,6 +1503,8 @@ const app = {
       return;
     }
 
+    const { type, index } = this.state.focus;
+    
     switch(type) {
       case 'menu':
         if (index % 2 === 0 && index < 5) {
@@ -1512,7 +1543,7 @@ const app = {
     const scanBtn = document.getElementById('scan-btn');
     const items = document.querySelectorAll('#contacts-list .list-item');
     
-    scanBtn.classList.toggle('focused', this.state.focus.index === 0);
+    if (scanBtn) scanBtn.classList.toggle('focused', this.state.focus.index === 0);
     items.forEach((el, i) => {
       el.classList.toggle('focused', i === this.state.focus.index - 1);
     });
@@ -1546,8 +1577,9 @@ const app = {
     });
   },
 
-  scrollIfNeeded(containerId) {
+  scrollToFocused(containerId) {
     const container = document.getElementById(containerId);
+    if (!container) return;
     const focused = container.querySelector('.focused');
     if (focused) {
       focused.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
@@ -1560,6 +1592,8 @@ const app = {
   
   renderTokes() {
     const container = document.getElementById('tokes-list');
+    if (!container) return;
+    
     container.innerHTML = TOKES_TYPES.map((t, i) => `
       <div class="toke-item t${t.id} ${i === 0 ? 'focused' : ''}" data-index="${i}">
         <span style="font-size: 24px;">${t.emoji}</span>
@@ -1573,6 +1607,8 @@ const app = {
 
   renderContacts() {
     const container = document.getElementById('contacts-list');
+    if (!container) return;
+    
     const lista = Object.entries(this.contactos);
     
     if (lista.length === 0) {
@@ -1592,40 +1628,52 @@ const app = {
 
   renderTodex() {
     const grid = document.getElementById('todex-grid');
-    document.getElementById('todex-count').textContent = `${this.todex.captured.length}/150`;
+    const count = document.getElementById('todex-count');
+    if (!grid || !count) return;
     
-    const emojis = ['😊','❤️','👍','🔥','💯','🤥','👾','💕','🚀','🎯','🦾','🙌','👏','💋','🐻','🐝','🌈','☀️','🌙','⭐','🌸','📸','🚗','🌷','🍀','🍕','👅','🍟','🌮','🍰','🎂','🍫','☕','🥤','🏀','⚽','🎾','🏆','🎮','🎲','🎸','🎺','🎨','📚','💡','🔧','😱','📱','💻','🛸','🥷','😇','🧟‍♂️','👽','🎩','🧙','🧚','🧜','💃🏻','🦋','🦅','🦈','🐅','🐘','🦒','🦏','🌍','📦','🏴‍☠️','✨','🚨','👑','🦄','🦁','🧌','🦉','🐣','🐉','🐲','🦕','🦖','🌋','🗿','🪄','⚡','💀','👻','🤢','🤡','🎪','🍾','🎆','🎇','🫶','🏃‍♂️','🧟‍♀️','🤖','🧊','😈','🔫','💅','🎐','🎀','🎁','🎰','✈️','🥵','🥶','⌚️','⚓️','🛁','🪒','🪤','💣','🏍️','🍒','🌪️','👙','🧩','🍪','🏎️','🎓','🧸','✂️','🕳️','❤️‍🔥','🥳','⚰️','🎈','🎉','👩🏻‍❤️‍👨','🦊','💦','🚪','🎎','⚠️','🛌','🤮','🫡','💎','🛹','💸','💵','💊','💶','🎟️','⚜️','💳','💿','📀'];
+    count.textContent = `${this.todex.captured.length}/150`;
     
     grid.innerHTML = Array(150).fill(0).map((_, i) => {
       const captured = this.todex.captured.includes(i+1);
-      const emoji = captured ? (emojis[i] || '✨') : '•';
+      const emoji = captured ? (EMOJIS_LIST[i] || '✨') : '•';
       return `<div class="emoji-card ${captured ? 'captured' : ''} ${i === 0 ? 'focused' : ''}" data-index="${i}">${emoji}</div>`;
     }).join('');
   },
 
   updateHome() {
     const nom = localStorage.getItem('miNombre') || 'Amigo';
-    document.getElementById('home-name').textContent = nom;
-    document.getElementById('tokes-badge').textContent = `🎯 ${this.state.toquesRestantes}/30`;
+    const nameEl = document.getElementById('home-name');
+    const badgeEl = document.getElementById('tokes-badge');
+    const statusEl = document.getElementById('home-status');
+    
+    if (nameEl) nameEl.textContent = nom;
+    if (badgeEl) badgeEl.textContent = `🎯 ${this.state.toquesRestantes}/30`;
     
     const st = ESTADOS.find(e => e.id === this.state.settings.status) || ESTADOS[0];
-    const el = document.getElementById('home-status');
-    el.textContent = `${st.emoji} ${st.label}`;
-    el.style.background = `linear-gradient(145deg, ${st.color}, ${this.adjustColor(st.color, -30)})`;
-    el.style.boxShadow = `0 3px 0 ${this.adjustColor(st.color, -50)}`;
+    if (statusEl) {
+      statusEl.textContent = `${st.emoji} ${st.label}`;
+      statusEl.style.background = `linear-gradient(145deg, ${st.color}, ${this.adjustColor(st.color, -30)})`;
+      statusEl.style.boxShadow = `0 3px 0 ${this.adjustColor(st.color, -50)}`;
+    }
   },
 
   updateSettingsUI() {
-    document.getElementById('toggle-sonido').classList.toggle('active', this.state.settings.sonido);
-    document.getElementById('toggle-vibra').classList.toggle('active', this.state.settings.vibracion);
+    const sonidoToggle = document.getElementById('toggle-sonido');
+    const vibraToggle = document.getElementById('toggle-vibra');
+    const colorPreview = document.getElementById('color-preview');
+    const statusText = document.getElementById('status-text');
+    
+    if (sonidoToggle) sonidoToggle.classList.toggle('active', this.state.settings.sonido);
+    if (vibraToggle) vibraToggle.classList.toggle('active', this.state.settings.vibracion);
     
     const c = COLORES[this.state.settings.color];
-    document.getElementById('color-preview').style.background = c.hex;
+    if (colorPreview && c) colorPreview.style.background = c.hex;
     
     const st = ESTADOS.find(e => e.id === this.state.settings.status);
-    const stEl = document.getElementById('status-text');
-    stEl.textContent = st ? st.label : 'Disponible';
-    stEl.style.color = st ? st.color : '#10B981';
+    if (statusText) {
+      statusText.textContent = st ? st.label : 'Disponible';
+      statusText.style.color = st ? st.color : '#10B981';
+    }
   },
 
   // ========================================
@@ -1669,6 +1717,7 @@ const app = {
     
     const modal = document.getElementById('color-selector');
     const grid = document.getElementById('color-grid');
+    if (!modal || !grid) return;
     
     grid.innerHTML = COLORES.map((c, i) => `
       <div class="selector-item ${i === this.state.selectorIndex ? 'focused' : ''}" 
@@ -1688,6 +1737,7 @@ const app = {
     
     const modal = document.getElementById('status-selector');
     const grid = document.getElementById('status-grid');
+    if (!modal || !grid) return;
     
     grid.innerHTML = ESTADOS.map((s, i) => `
       <div class="selector-item ${i === this.state.selectorIndex ? 'focused' : ''}" 
@@ -1702,6 +1752,8 @@ const app = {
 
   navigateSelector(dir) {
     const items = document.querySelectorAll('.selector-modal.active .selector-item');
+    if (!items.length) return;
+    
     items[this.state.selectorIndex].classList.remove('focused');
     
     if (this.state.selectorType === 'color') {
@@ -1718,7 +1770,9 @@ const app = {
       else if (dir === 'up' && this.state.selectorIndex >= 2) this.state.selectorIndex -= 2;
     }
     
-    items[this.state.selectorIndex].classList.add('focused');
+    if (items[this.state.selectorIndex]) {
+      items[this.state.selectorIndex].classList.add('focused');
+    }
     this.vibrar();
   },
 
@@ -1727,13 +1781,16 @@ const app = {
       this.state.settings.color = this.state.selectorIndex;
       localStorage.setItem('colorIndex', this.state.selectorIndex);
       this.applyColor();
-      this.showMsg(`🎨 ${COLORES[this.state.selectorIndex].name}`);
+      const c = COLORES[this.state.selectorIndex];
+      this.showMsg(`🎨 ${c ? c.name : 'Color'}`);
     } else {
       const s = ESTADOS[this.state.selectorIndex];
-      this.state.settings.status = s.id;
-      localStorage.setItem('status', s.id);
-      this.showMsg(`${s.emoji} ${s.label}`);
-      this.updateHome();
+      if (s) {
+        this.state.settings.status = s.id;
+        localStorage.setItem('status', s.id);
+        this.showMsg(`${s.emoji} ${s.label}`);
+        this.updateHome();
+      }
     }
     
     document.querySelectorAll('.selector-modal').forEach(m => m.classList.remove('active'));
@@ -1748,11 +1805,14 @@ const app = {
   generarQR() {
     const nom = localStorage.getItem('miNombre') || 'Amigo';
     const texto = `${miID}|${nom}`;
-    document.getElementById('qr-mio').innerHTML = 
-      `<img src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(texto)}" alt="QR"/>`;
+    const qrDiv = document.getElementById('qr-mio');
+    if (qrDiv) {
+      qrDiv.innerHTML = `<img src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(texto)}" alt="QR"/>`;
+    }
   },
 
   async scanQR() {
+    // Crear modal
     const modal = document.createElement('div');
     modal.className = 'selector-modal active';
     modal.style.zIndex = '200';
@@ -1762,14 +1822,14 @@ const app = {
         <video id="scan-video" style="width: 250px; height: 250px; object-fit: cover; border-radius: 15px; display: block;" autoplay playsinline muted></video>
         <div style="text-align: center; margin-top: 10px; color: #666; font-size: 11px;">Enfoca el código QR</div>
       </div>
-      <button onclick="this.closest('.selector-modal').remove()" style="margin-top: 15px; padding: 12px 25px; background: #EF4444; color: white; border: none; border-radius: 20px; font-weight: 800; font-family: 'Nunito';">Cancelar</button>
+      <button onclick="this.closest('.selector-modal').remove()" style="margin-top: 15px; padding: 12px 25px; background: #EF4444; color: white; border: none; border-radius: 20px; font-weight: 800; font-family: 'Nunito'; cursor: pointer;">Cancelar</button>
     `;
     document.body.appendChild(modal);
     
     try {
-      // Forzar HTTPS para getUserMedia
+      // Verificar HTTPS
       if (location.protocol !== 'https:' && location.hostname !== 'localhost') {
-        this.showMsg('⚠️ Se necesita HTTPS para la cámara');
+        this.showMsg('⚠️ Se necesita HTTPS');
         modal.remove();
         return;
       }
@@ -1779,14 +1839,21 @@ const app = {
       });
       
       const video = document.getElementById('scan-video');
+      if (!video) {
+        stream.getTracks().forEach(t => t.stop());
+        modal.remove();
+        return;
+      }
+      
       video.srcObject = stream;
       
-      // Esperar a que video cargue
-      await new Promise(resolve => {
+      // Esperar a que cargue
+      await new Promise((resolve, reject) => {
         video.onloadedmetadata = () => {
-          video.play();
-          resolve();
+          video.play().then(resolve).catch(reject);
         };
+        video.onerror = reject;
+        setTimeout(reject, 5000);
       });
       
       const canvas = document.createElement('canvas');
@@ -1799,29 +1866,37 @@ const app = {
           return;
         }
         
-        canvas.width = video.videoWidth;
-        canvas.height = video.videoHeight;
-        ctx.drawImage(video, 0, 0);
-        
-        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-        const code = jsQR(imageData.data, canvas.width, canvas.height);
-        
-        if (code && code.data) {
-          clearInterval(scanInterval);
-          stream.getTracks().forEach(t => t.stop());
-          modal.remove();
-          this.procesarQR(code.data);
+        try {
+          canvas.width = video.videoWidth || 300;
+          canvas.height = video.videoHeight || 300;
+          ctx.drawImage(video, 0, 0);
+          
+          const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+          const code = jsQR(imageData.data, canvas.width, canvas.height);
+          
+          if (code && code.data) {
+            clearInterval(scanInterval);
+            stream.getTracks().forEach(t => t.stop());
+            modal.remove();
+            this.procesarQR(code.data);
+          }
+        } catch(e) {
+          console.error('Error escaneando:', e);
         }
       }, 300);
       
     } catch(err) {
       console.error('Error cámara:', err);
       modal.remove();
-      this.showMsg('❌ Error: ' + (err.name === 'NotAllowedError' ? 'Permiso denegado' : 'Cámara no disponible'));
+      let msg = 'Error cámara';
+      if (err.name === 'NotAllowedError') msg = 'Permiso denegado';
+      else if (err.name === 'NotFoundError') msg = 'Cámara no encontrada';
+      this.showMsg('❌ ' + msg);
     }
   },
 
   procesarQR(data) {
+    console.log('QR detectado:', data);
     const parts = data.split('|');
     if (parts.length >= 2) {
       const [id, nombre] = parts;
@@ -1835,7 +1910,7 @@ const app = {
         return;
       }
     }
-    this.showMsg('QR inválido o es el tuyo');
+    this.showMsg('QR inválido');
   },
 
   // ========================================
@@ -1908,89 +1983,103 @@ const app = {
   },
 
   showEmojiDetail(id) {
-    const emojis = ['😊','❤️','👍','🔥','💯','🤥','👾','💕','🚀','🎯','🦾','🙌','👏','💋','🐻','🐝','🌈','☀️','🌙','⭐','🌸','📸','🚗','🌷','🍀','🍕','👅','🍟','🌮','🍰','🎂','🍫','☕','🥤','🏀','⚽','🎾','🏆','🎮','🎲','🎸','🎺','🎨','📚','💡','🔧','😱','📱','💻', '🛸','🥷','😇','🧟‍♂️','👽','🎩','🧙','🧚','🧜','💃🏻','🦋','🦅','🦈','🐅','🐘','🦒','🦏','🌍','📦','🏴‍☠️','✨','🚨','👑','🦄','🦁','🧌','🦉','🐣','🐉','🐲','🦕','🦖','🌋','🗿','🪄','⚡','💀','👻','🤢','🤡','🎪','🍾','🎆','🎇','🫶','🏃‍♂️','🧟‍♀️','🤖','🧊','😈','🔫','💅','🎐','🎀','🎁','🎰','✈️','🥵','🥶','⌚️','⚓️','🛁','🪒','🪤','💣','🏍️','🍒','🌪️','👙','🧩','🍪','🏎️','🎓','🧸','✂️','🕳️','❤️‍🔥','🥳','⚰️','🎈','🎉','👩🏻‍❤️‍👨','🦊','💦','🚪','🎎','⚠️','🛌','🤮','🫡','💎','🛹','💸','💵','💊','💶','🎟️','⚜️','💳','💿','📀'];
-const emoji = emojis[id-1] || '✨';
-this.showMsg(${emoji} #${id});
-},
-// ========================================
-// RESPUESTAS A TOQUES
-// ========================================
-checkIncoming() {
-if (this.state.currentPage === 'splash' || this.state.currentPage === 'setup') return;
-fetch(`${BACK}/toques-pendientes?userId=${miID}`)
-  .then(r => r.json())
-  .then(data => {
-    if (data.ok && data.toques && data.toques.length > 0) {
-      // Mostrar el primero
-      this.mostrarRespuestaToque(data.toques[0]);
-    }
-  })
-  .catch(() => {});
+    const emoji = EMOJIS_LIST[id-1] || '✨';
+    this.showMsg(`${emoji} #${id}`);
   },
-mostrarRespuestaToque(toque) {
-const modal = document.getElementById('response-modal');
-const nombre = this.contactos[toque.de] || 'Alguien';
-document.getElementById('response-title').textContent = ${toque.emoji} Toque de ${nombre};
-modal.classList.add('active');
-// Reset focus
-this.state.focus = { type: 'response', index: 0 };
-this.updateResponseFocus();
 
-// Guardar toque pendiente
-this.state.pendingToque = toque;
-},
-handleResponseOK() {
-const idx = this.state.focus.index;
-const modal = document.getElementById('response-modal');
-if (idx === 4) { // Ignorar
-  modal.classList.remove('active');
-  this.state.pendingToque = null;
-} else { // Responder
-  const respuestas = ['💕','😂','🙏','🔥'];
-  const respuesta = respuestas[idx] || respuestas[0];
+  // ========================================
+  // RESPUESTAS A TOQUES
+  // ========================================
   
-  // Enviar respuesta al servidor
-  if (this.state.pendingToque) {
-    fetch(`${BACK}/respuesta`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        de: miID,
-        para: this.state.pendingToque.de,
-        respuesta: respuesta,
-        emoji: respuesta
+  checkIncoming() {
+    if (this.state.currentPage === 'splash' || this.state.currentPage === 'setup') return;
+    
+    fetch(`${BACK}/toques-pendientes?userId=${miID}`)
+      .then(r => r.json())
+      .then(data => {
+        if (data.ok && data.toques && data.toques.length > 0) {
+          this.mostrarRespuestaToque(data.toques[0]);
+        }
       })
-    }).catch(() => {});
-  }
+      .catch(() => {});
+  },
+
+  mostrarRespuestaToque(toque) {
+    const modal = document.getElementById('response-modal');
+    const title = document.getElementById('response-title');
+    if (!modal || !title) return;
+    
+    const nombre = this.contactos[toque.de] || 'Alguien';
+    title.textContent = `${toque.emoji} Toque de ${nombre}`;
+    modal.classList.add('active');
+    
+    this.state.focus = { type: 'response', index: 0 };
+    this.updateResponseFocus();
+    this.state.pendingToque = toque;
+  },
+
+  handleResponseOK() {
+    const idx = this.state.focus.index;
+    const modal = document.getElementById('response-modal');
+    if (!modal) return;
+    
+    if (idx === 4) { // Ignorar
+      modal.classList.remove('active');
+      this.state.pendingToque = null;
+    } else { // Responder
+      const respuestas = ['💕','😂','🙏','🔥'];
+      const respuesta = respuestas[idx] || respuestas[0];
+      
+      if (this.state.pendingToque) {
+        fetch(`${BACK}/respuesta`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            de: miID,
+            para: this.state.pendingToque.de,
+            respuesta: respuesta
+          })
+        }).catch(() => {});
+      }
+      
+      this.showMsg(`Respondiste ${respuesta}`);
+      modal.classList.remove('active');
+      this.state.pendingToque = null;
+    }
+  },
+
+  // ========================================
+  // UTILIDADES
+  // ========================================
   
-  this.showMsg(`Respondiste ${respuesta}`);
-  modal.classList.remove('active');
-  this.state.pendingToque = null;
-}
-},
-// ========================================
-// UTILIDADES
-// ========================================
-showMsg(text) {
-const bar = document.getElementById('msg-bar');
-bar.textContent = text;
-bar.classList.add('show');
-setTimeout(() => bar.classList.remove('show'), 2500);
-},
-vibrar() {
-if (this.state.settings.vibracion && navigator.vibrate) {
-navigator.vibrate(15);
-}
-},
-adjustColor(color, amt) {
-const num = parseInt(color.replace('#',''), 16);
-const r = Math.max(0, Math.min(255, (num >> 16) + amt));
-const g = Math.max(0, Math.min(255, ((num >> 8) & 0x00FF) + amt));
-const b = Math.max(0, Math.min(255, (num & 0x0000FF) + amt));
-return '#' + ((r << 16) | (g << 8) | b).toString(16).padStart(6,'0');
-}
+  showMsg(text) {
+    const bar = document.getElementById('msg-bar');
+    if (!bar) return;
+    bar.textContent = text;
+    bar.classList.add('show');
+    setTimeout(() => bar.classList.remove('show'), 2500);
+  },
+
+  vibrar() {
+    if (this.state.settings.vibracion && navigator.vibrate) {
+      navigator.vibrate(15);
+    }
+  },
+
+  adjustColor(color, amt) {
+    const num = parseInt(color.replace('#',''), 16);
+    const r = Math.max(0, Math.min(255, (num >> 16) + amt));
+    const g = Math.max(0, Math.min(255, ((num >> 8) & 0x00FF) + amt));
+    const b = Math.max(0, Math.min(255, (num & 0x0000FF) + amt));
+    return '#' + ((r << 16) | (g << 8) | b).toString(16).padStart(6,'0');
+  }
 };
-// Iniciar app
-app.init();
+
+// INICIAR CUANDO CARGUE LA PÁGINA
+window.onload = function() {
+  console.log('Window loaded, iniciando app...');
+  app.init();
+};
+</script>
 </body>
 </html>
