@@ -1,9 +1,5 @@
 // ==========================================
-// TOKEJI - MÓDULO 2: CORE COMPLETO (CON AMIGOS INTEGRADO)
-// ==========================================
-
-// ==========================================
-// DATOS
+// TOKEJI - CORE (Navegación base, setup, audio)
 // ==========================================
 
 const ANIMALES_INICIALES = [
@@ -22,38 +18,24 @@ const ESTADOS = [
     { id: "no_molestar", emoji: "🔴", color: "#fc8181" }
 ];
 
-// ==========================================
-// ESTADO
-// ==========================================
-
+// Estado global
 let currentPage = 'splash';
 let selectedIndex = 0;
 let consentSelected = 0;
 let isFirstTime = false;
 let tempUser = {};
 let user = null;
-
-// Estado de Amigos
-let amigosContactos = {};
-let amigosBotonSeleccionado = 0; // 0=Escanear, 1=MiQR
-
-// Referencias DOM
 let pages = {};
 let buttons = {};
 
-// ==========================================
-// AUDIO
-// ==========================================
-
+// Audio
 let audioCtx = null;
 
 function initAudio() {
     if (!audioCtx) {
         try {
             audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        } catch(e) {
-            console.log('Audio no disponible');
-        }
+        } catch(e) {}
     }
     if (audioCtx && audioCtx.state === 'suspended') {
         audioCtx.resume();
@@ -92,10 +74,7 @@ function vibrate(pattern) {
     }
 }
 
-// ==========================================
-// LOCALSTORAGE
-// ==========================================
-
+// LocalStorage
 function saveUser(data) {
     localStorage.setItem('tokeji_user', JSON.stringify(data));
 }
@@ -109,75 +88,64 @@ function loadUser() {
     }
 }
 
-// ==========================================
-// NAVEGACIÓN
-// ==========================================
-
+// Navegación de páginas
 function showPage(pageName) {
     console.log('Mostrando página:', pageName);
     
-    // Ocultar todas
     Object.values(pages).forEach(page => {
         if (page) {
             page.classList.remove('active');
+            page.style.display = 'none';
             page.style.opacity = '0';
         }
     });
     
-    // Mostrar target
     const target = pages[pageName];
     if (target) {
+        target.style.display = 'flex';
+        void target.offsetWidth;
         target.classList.add('active');
-        setTimeout(() => target.style.opacity = '1', 10);
+        target.style.opacity = '1';
         currentPage = pageName;
-        selectedIndex = 0;
         
-        // Inicializar página específica
-        if (pageName === 'setup-avatar') {
-            renderAnimals();
-        } else if (pageName === 'home') {
-            updateHome();
-        } else if (pageName === 'menu') {
+        // Hooks para páginas específicas
+        if (pageName === 'menu') {
+            selectedIndex = 0;
             updateMenu();
+        } else if (pageName === 'setup-avatar') {
+            selectedIndex = 0;
+            renderAnimals();
         } else if (pageName === 'consent') {
+            consentSelected = 0;
             updateConsent();
-        } else if (pageName === 'amigos') {
-            initAmigos();
+        } else if (pageName === 'amigos' && typeof initAmigos === 'function') {
+            initAmigos(); // Llamada al módulo externo
         }
-    } else {
-        console.error('❌ Página no encontrada:', pageName);
     }
 }
 
-// ==========================================
-// RENDER
-// ==========================================
-
+// Renderizado básico
 function renderAnimals() {
     const grid = document.getElementById('animals-grid');
     if (!grid) return;
-    
     grid.innerHTML = '';
     ANIMALES_INICIALES.forEach((animal, index) => {
         const div = document.createElement('div');
         div.className = 'animal-option' + (index === 0 ? ' selected' : '');
         div.textContent = animal.emoji;
-        div.dataset.index = index;
         grid.appendChild(div);
     });
     selectedIndex = 0;
 }
 
 function updateAnimals() {
-    const options = document.querySelectorAll('.animal-option');
-    options.forEach((opt, idx) => {
+    document.querySelectorAll('.animal-option').forEach((opt, idx) => {
         opt.classList.toggle('selected', idx === selectedIndex);
     });
 }
 
 function updateMenu() {
-    const buttons = document.querySelectorAll('.menu-btn');
-    buttons.forEach((btn, idx) => {
+    document.querySelectorAll('.menu-btn').forEach((btn, idx) => {
         btn.classList.toggle('selected', idx === selectedIndex);
     });
 }
@@ -191,7 +159,6 @@ function updateConsent() {
 
 function updateHome() {
     if (!user) return;
-    
     const animal = ANIMALES_INICIALES.find(a => a.id === user.avatar_inicial) || ANIMALES_INICIALES[0];
     const estado = ESTADOS.find(e => e.id === user.estado) || ESTADOS[0];
     
@@ -209,138 +176,7 @@ function updateHome() {
     if (counterEl) counterEl.textContent = `🎯 ${user.tokes_hoy}/30`;
 }
 
-// ==========================================
-// AMIGOS (INTEGRADO EN CORE)
-// ==========================================
-
-function initAmigos() {
-    console.log('👥 Inicializando página de Amigos...');
-    
-    // Cargar contactos
-    const saved = localStorage.getItem('tokeji_contactos');
-    if (saved) {
-        try { 
-            amigosContactos = JSON.parse(saved); 
-            console.log('📋 Contactos cargados:', Object.keys(amigosContactos).length);
-        } catch(e) {
-            console.error('Error cargando contactos:', e);
-        }
-    }
-    
-    // Reset selección
-    amigosBotonSeleccionado = 0;
-    updateAmigosUI();
-}
-
-function updateAmigosUI() {
-    const contador = document.getElementById('amigos-contador');
-    const lista = document.getElementById('amigos-lista');
-    const btnEscanear = document.getElementById('amigo-btn-escanear');
-    const btnMiQR = document.getElementById('amigo-btn-miqr');
-    
-    if (!contador || !lista || !btnEscanear || !btnMiQR) {
-        console.error('❌ Elementos de amigos no encontrados');
-        return;
-    }
-    
-    const numAmigos = Object.keys(amigosContactos).length;
-    contador.textContent = `${numAmigos} amigo${numAmigos !== 1 ? 's' : ''}`;
-    
-    // Actualizar botones
-    if (amigosBotonSeleccionado === 0) {
-        btnEscanear.style.borderColor = '#8b5cf6';
-        btnEscanear.style.background = '#f3f0ff';
-        btnEscanear.style.boxShadow = '0 6px 0 #8b5cf6';
-        btnEscanear.style.transform = 'translateX(5px)';
-        
-        btnMiQR.style.borderColor = 'transparent';
-        btnMiQR.style.background = 'white';
-        btnMiQR.style.boxShadow = '0 4px 0 #e2e8f0';
-        btnMiQR.style.transform = 'none';
-    } else {
-        btnEscanear.style.borderColor = 'transparent';
-        btnEscanear.style.background = 'white';
-        btnEscanear.style.boxShadow = '0 4px 0 #e2e8f0';
-        btnEscanear.style.transform = 'none';
-        
-        btnMiQR.style.borderColor = '#8b5cf6';
-        btnMiQR.style.background = '#f3f0ff';
-        btnMiQR.style.boxShadow = '0 6px 0 #8b5cf6';
-        btnMiQR.style.transform = 'translateX(5px)';
-    }
-}
-
-function amigosNavegar(direccion) {
-    if (direccion === 'abajo') {
-        amigosBotonSeleccionado = (amigosBotonSeleccionado + 1) % 2;
-    } else if (direccion === 'arriba') {
-        amigosBotonSeleccionado = (amigosBotonSeleccionado - 1 + 2) % 2;
-    }
-    updateAmigosUI();
-    return true;
-}
-
-function amigosOk() {
-    if (amigosBotonSeleccionado === 0) {
-        // Escanear QR
-        alert('📷 Aquí se abriría la cámara para escanear QR\n\n(En una versión completa, esto abriría la cámara como en Dame un Toque)');
-    } else {
-        // Mi QR
-        mostrarMiQR();
-    }
-    return true;
-}
-
-function mostrarMiQR() {
-    const nombre = user?.nombre || 'Usuario';
-    const id = user?.id || '----';
-    
-    // Crear modal
-    const modal = document.createElement('div');
-    modal.id = 'modal-miqr';
-    modal.style.cssText = `
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: #f8fafc;
-        z-index: 200;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        padding: 20px;
-        box-sizing: border-box;
-    `;
-    
-    const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(id + '|' + nombre)}`;
-    
-    modal.innerHTML = `
-        <div style="font-size: 20px; font-weight: 900; margin-bottom: 20px; color: #2d3748;">MI CÓDIGO QR</div>
-        <div style="background: white; padding: 20px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); margin-bottom: 20px;">
-            <img src="${qrUrl}" style="width: 180px; height: 180px; display: block;">
-        </div>
-        <div style="text-align: center; margin-bottom: 10px;">
-            <div style="font-size: 18px; font-weight: 800; color: #2d3748;">${nombre}</div>
-            <div style="font-size: 12px; color: #64748b; font-family: monospace;">ID: ${id}</div>
-        </div>
-        <div style="font-size: 11px; color: #94a3b8; text-align: center; margin-bottom: 30px;">Muéstralo a tus amigos</div>
-        <button onclick="cerrarModalMiQR()" style="padding: 12px 30px; background: #8b5cf6; color: white; border: none; border-radius: 12px; font-size: 16px; font-weight: 800; cursor: pointer; box-shadow: 0 4px 0 #5b21b6;">◄ Volver</button>
-    `;
-    
-    document.querySelector('.screen').appendChild(modal);
-}
-
-function cerrarModalMiQR() {
-    const modal = document.getElementById('modal-miqr');
-    if (modal) modal.remove();
-}
-
-// ==========================================
-// ACCIONES PRINCIPALES
-// ==========================================
-
+// Handlers de navegación (EXTENSIBLES)
 function onUp() {
     console.log('UP en', currentPage);
     
@@ -366,8 +202,8 @@ function onUp() {
         updateHome();
         soundNav();
     }
-    else if (currentPage === 'amigos') {
-        amigosNavegar('arriba');
+    // Hook para módulos externos
+    else if (typeof amigosOnUp === 'function' && amigosOnUp()) {
         soundNav();
     }
 }
@@ -397,29 +233,24 @@ function onDown() {
         updateHome();
         soundNav();
     }
-    else if (currentPage === 'amigos') {
-        amigosNavegar('abajo');
+    // Hook para módulos externos
+    else if (typeof amigosOnDown === 'function' && amigosOnDown()) {
         soundNav();
     }
 }
 
 function onOk() {
     console.log('OK en', currentPage);
-    
     initAudio();
     
     if (currentPage === 'splash') {
-        if (isFirstTime) {
-            showPage('consent');
-        } else {
-            showPage('home');
-        }
+        showPage(isFirstTime ? 'consent' : 'home');
         soundSelect();
     }
     else if (currentPage === 'consent') {
         if (consentSelected === 0) {
             const checkbox = document.getElementById('consent-check');
-            if (checkbox && checkbox.checked) {
+            if (checkbox?.checked) {
                 showPage('setup-name');
                 soundSuccess();
             } else {
@@ -467,10 +298,7 @@ function onOk() {
     }
     else if (currentPage === 'menu') {
         const opciones = ['amigos', 'tokes', 'todex', 'qr', 'combates', 'carcasa'];
-        console.log('Seleccionado:', opciones[selectedIndex]);
-        
         if (selectedIndex === 0) {
-            // Ir a Amigos
             showPage('amigos');
             soundSelect();
         } else {
@@ -478,9 +306,15 @@ function onOk() {
             alert('Próximamente: ' + opciones[selectedIndex]);
         }
     }
-    else if (currentPage === 'amigos') {
-        amigosOk();
+    // Hook para módulos externos
+    else if (typeof amigosOnOk === 'function' && amigosOnOk()) {
         soundSelect();
+    }
+    else if (currentPage === 'escanear') {
+        if (typeof cerrarEscanear === 'function') {
+            cerrarEscanear();
+            soundBack();
+        }
     }
 }
 
@@ -488,33 +322,19 @@ function onBack() {
     console.log('BACK en', currentPage);
     soundBack();
     
-    if (currentPage === 'setup-name') {
-        showPage('consent');
-    }
-    else if (currentPage === 'setup-avatar') {
-        showPage('setup-name');
-    }
-    else if (currentPage === 'menu') {
-        showPage('home');
-    }
-    else if (currentPage === 'home') {
-        // No volver a splash
+    if (currentPage === 'setup-name') showPage('consent');
+    else if (currentPage === 'setup-avatar') showPage('setup-name');
+    else if (currentPage === 'menu') showPage('home');
+    // Hook para módulos externos (prioridad)
+    else if (typeof amigosOnBack === 'function' && amigosOnBack()) {
+        // Ya manejado en amigos.js
     }
     else if (currentPage === 'amigos') {
-        // Cerrar modal si está abierto
-        const modal = document.getElementById('modal-miqr');
-        if (modal) {
-            modal.remove();
-        } else {
-            showPage('menu');
-        }
+        showPage('menu');
     }
 }
 
-// ==========================================
-// EVENTOS
-// ==========================================
-
+// Eventos
 function pressButton(btnId) {
     const btn = document.getElementById(btnId);
     if (!btn) return;
@@ -523,84 +343,42 @@ function pressButton(btnId) {
 }
 
 function initEvents() {
-    console.log('Inicializando eventos...');
-    
-    // Botones hardware
     buttons.up = document.getElementById('btn-up');
     buttons.down = document.getElementById('btn-down');
     buttons.back = document.getElementById('btn-back');
     buttons.ok = document.getElementById('btn-ok');
     
-    if (buttons.up) {
-        buttons.up.addEventListener('click', () => {
-            pressButton('btn-up');
-            onUp();
-        });
-    }
+    if (buttons.up) buttons.up.addEventListener('click', () => { pressButton('btn-up'); onUp(); });
+    if (buttons.down) buttons.down.addEventListener('click', () => { pressButton('btn-down'); onDown(); });
+    if (buttons.back) buttons.back.addEventListener('click', () => { pressButton('btn-back'); onBack(); });
+    if (buttons.ok) buttons.ok.addEventListener('click', () => { pressButton('btn-ok'); onOk(); });
     
-    if (buttons.down) {
-        buttons.down.addEventListener('click', () => {
-            pressButton('btn-down');
-            onDown();
-        });
-    }
-    
-    if (buttons.back) {
-        buttons.back.addEventListener('click', () => {
-            pressButton('btn-back');
-            onBack();
-        });
-    }
-    
-    if (buttons.ok) {
-        buttons.ok.addEventListener('click', () => {
-            pressButton('btn-ok');
-            onOk();
-        });
-    }
-    
-    // Teclado
     document.addEventListener('keydown', (e) => {
-        switch(e.key) {
-            case 'ArrowUp': onUp(); break;
-            case 'ArrowDown': onDown(); break;
-            case 'ArrowLeft': onBack(); break;
-            case 'Enter': onOk(); break;
-        }
+        if (e.key === 'ArrowUp') onUp();
+        else if (e.key === 'ArrowDown') onDown();
+        else if (e.key === 'ArrowLeft') onBack();
+        else if (e.key === 'Enter') onOk();
     });
     
-    // Input nombre
     const nameInput = document.getElementById('input-name');
     if (nameInput) {
         nameInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') onOk();
         });
     }
-    
-    console.log('Eventos listos');
 }
-
-// ==========================================
-// RELOJ
-// ==========================================
 
 function updateClock() {
     const clock = document.getElementById('clock');
     if (!clock) return;
     const now = new Date();
-    const h = String(now.getHours()).padStart(2, '0');
-    const m = String(now.getMinutes()).padStart(2, '0');
-    clock.textContent = h + ':' + m;
+    clock.textContent = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
 }
 
-// ==========================================
-// INICIO
-// ==========================================
-
+// Inicialización
 function init() {
-    console.log('🎮 Iniciando Tokeji...');
+    console.log('🎮 Iniciando Tokeji Core...');
     
-    // Cachear páginas
     pages = {
         splash: document.getElementById('page-splash'),
         consent: document.getElementById('page-consent'),
@@ -608,34 +386,25 @@ function init() {
         'setup-avatar': document.getElementById('page-setup-avatar'),
         home: document.getElementById('page-home'),
         menu: document.getElementById('page-menu'),
-        amigos: document.getElementById('page-amigos') // <-- NUEVA PÁGINA
+        amigos: document.getElementById('page-amigos')
     };
     
-    console.log('Páginas registradas:', Object.keys(pages));
-    
-    // Verificar usuario
     const saved = loadUser();
     if (saved) {
         user = saved;
         isFirstTime = false;
-        console.log('Usuario:', user.nombre);
     } else {
         isFirstTime = true;
-        console.log('Primera vez');
     }
     
-    // Inicializar
     initEvents();
     updateClock();
     setInterval(updateClock, 60000);
-    
-    // Mostrar splash
     showPage('splash');
     
-    console.log('✅ Listo');
+    console.log('✅ Core listo, esperando módulos...');
 }
 
-// Arrancar cuando DOM listo
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
 } else {
