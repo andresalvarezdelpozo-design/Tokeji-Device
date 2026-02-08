@@ -900,7 +900,7 @@
               <div class="home-status" id="home-status">🟢 Disponible</div>
               <div class="tokes-badge" id="tokes-badge">🎯 30/30</div>
             </div>
-            <div class="home-hint">▼ Menú</div>
+            <div class="home-hint">▼ Pulsa OK para Menú</div>
           </div>
 
           <!-- MENU GRID 3x2 -->
@@ -1075,7 +1075,7 @@
 <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
 <script>
 // ========================================
-// TOKEJI v5 - TOKES FUNCIONALES 2 NIVELES
+// TOKEJI v5.1 - NAVEGACIÓN CORREGIDA
 // ========================================
 
 const BACK = "https://tokeji-device.onrender.com";
@@ -1138,7 +1138,7 @@ const TOKES_TYPES = [
   { id: 5, emoji: '🚨', name: 'Urgente', desc: '¡Ayuda!', color: '#3182CE' }
 ];
 
-const EMOJIS_LIST = ['😊','❤️','👍','🔥','💯','🤥','👾','💕','🚀','🎯','🦾','🙌','👏','💋','🐻','🐝','🌈','☀️','🌙','⭐','🌸','📸','🚗','🌷','🍀','🍕','👅','🍟','🌮','🍰','🎂','🍫','☕','🥤','🏀','⚽','🎾','🏆','🎮','🎲','🎸','🎺','🎨','📚','💡','🔧','😱','📱','💻','🛸','🥷','😇','🧟‍♂️','👽','🎩','🧙','🧚','🧜','💃🏻','🦋','🦅','🦈','🐅','🐘','🦒','🦏','🌍','📦','🏴‍☠️','✨','🚨','👑','🦄','🦁','🧌','🦉','🐣','🐉','🐲','🦕','🦖','🌋','🗿','🪄','⚡','💀','👻','🤢','🤡','🎪','🍾','🎆','🎇','🫶','🏃‍♂️','🧟‍♀️','🤖','🧊','😈','🔫','💅','🎐','🎀','🎁','🎰','✈️','🥵','🥶','⌚️','⚓️','🛁','🪒','🪤','💣','🏍️','🍒','🌪️','👙','🧩','🍪','🏎️','🎓','🧸','✂️','🕳️','❤️‍🔥','🥳','⚰️','🎈','🎉','👩🏻‍❤️‍👨','🦊','💦','🚪','🎎','⚠️','🛌','🤮','🫡','💎','🛹','💸','💵','💊','💶','🎟️','⚜️','💳','💿','📀'];
+const EMOJIS_LIST = ['😊','❤️','👍','🔥','💯','🤥','👾','💕','🚀','🎯','🦾','🙌','👏','💋','🐻','🐝','🌈','☀️','🌙','⭐','🌸','📸','🚗','🌷','🍀','🍕','👅','🍟','🌮','🍰','🎂','🍫','☕','🥤','🏀','⚽','🎾','🏆','🎮','🎲','🎸','🎺','🎨','📚','💡','🔧','😱','📱','💻','🛸','🥷','😇','🧟‍♂️','👽','🎩','🧙','🧚','🧜','💃🏻','🦋','🦅','🦈','🐅','🐘','🦒','🦏','🌍','📦','🏴‍☠️','✨','🚨','👑','🦄','🦁','🧌','🦉','🐣','🐉','🐲','🦕','🦖','🌋','🗿','🪄','⚡','💀','👻','🤢','🤡','🎪','🍾','🎆','🎇','🫶','🏃‍♂️','🧟‍♀️','🤖','🧊','😈','🔫','💅','🎐','🎀','🎁','🎰','✈️','🥵','🥶','⌚️','⚓️','🛁','🪒','🪤','💣','🏍️','🍒','🌪️','👙','🧩','🍪','🏎️','🎓','🧸','✂️','🕳️','❤️‍🔥','🥳','⚰️','🎈','🎉','👩🏻‍❤️‍👨','🦊','💦','🚪','🎎','⚠️','🛌','🤮','🫡','💎','🛹', '💸','💵','💊','💶','🎟️','⚜️','💳','💿','📀'];
 
 // APP
 const app = {
@@ -1206,7 +1206,7 @@ const app = {
     console.log('Inicializado. ID:', this.miID, 'Tokes:', this.state.toquesRestantes);
   },
 
-  // AUDIO PARA IPHONE - Inicialización en primera interacción
+  // AUDIO PARA IPHONE
   initAudio() {
     if (this.state.audioInitialized) return;
     
@@ -1284,7 +1284,7 @@ const app = {
   },
 
   showPage(page, save = true) {
-    console.log('Navegando a:', page);
+    console.log('Navegando a:', page, 'desde:', this.state.currentPage);
     
     if (save && this.state.currentPage !== page) {
       this.state.history.push(this.state.currentPage);
@@ -1363,7 +1363,6 @@ const app = {
     
     if (this.state.history.length > 0) {
       const prev = this.state.history.pop();
-      // No guardar en history al volver
       document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
       const pageEl = document.getElementById('page-' + prev);
       if (pageEl) pageEl.classList.add('active');
@@ -1398,7 +1397,7 @@ const app = {
   },
 
   // ========================================
-  // HANDLERS BOTONES
+  // HANDLERS BOTONES - CORREGIDOS
   // ========================================
   
   handleBack() {
@@ -1412,6 +1411,8 @@ const app = {
     this.playSound('select');
     
     const { currentPage, focus, inSelector } = this.state;
+    
+    console.log('OK presionado en página:', currentPage);
     
     if (inSelector) {
       this.selectFromSelector();
@@ -1440,9 +1441,16 @@ const app = {
         this.generarQR();
         this.showPage('home');
         break;
+      case 'home':
+        // CORREGIDO: Siempre ir al menú desde home
+        console.log('De HOME a MENU');
+        this.showPage('menu');
+        break;
       case 'menu':
         const items = ['tokes', 'contacts', 'qr', 'todox', 'combates', 'settings'];
-        this.showPage(items[focus.index]);
+        const selectedItem = items[focus.index];
+        console.log('Seleccionado menú:', selectedItem, 'índice:', focus.index);
+        this.showPage(selectedItem);
         break;
       case 'tokes':
         // Seleccionar categoría y pasar a variantes
@@ -2087,7 +2095,7 @@ const app = {
   },
 
   // ========================================
-  // QR Y CÁMARA - CON HTTPS CHECK
+  // QR Y CÁMARA
   // ========================================
   
   generarQR() {
@@ -2100,10 +2108,9 @@ const app = {
   },
 
   async scanQR() {
-    // Verificar HTTPS (requerido para cámara en iOS/Android)
+    // Verificar HTTPS
     if (location.protocol !== 'https:' && location.hostname !== 'localhost') {
       this.showMsg('⚠️ HTTPS requerido para cámara');
-      // Fallback: input manual
       setTimeout(() => {
         const codigo = prompt('Pega el código del amigo (formato: ID|Nombre):');
         if (codigo) this.procesarQR(codigo);
@@ -2143,7 +2150,6 @@ const app = {
       
       video.srcObject = stream;
       
-      // Esperar que video esté listo
       await new Promise((resolve, reject) => {
         video.onloadedmetadata = () => {
           video.play().then(resolve).catch(reject);
@@ -2164,7 +2170,6 @@ const app = {
         }
         
         frames++;
-        // Escanear cada 5 frames para rendimiento
         if (frames % 5 === 0) {
           try {
             canvas.width = video.videoWidth || 640;
@@ -2205,7 +2210,6 @@ const app = {
       
       this.showMsg('❌ ' + msg);
       
-      // Fallback manual
       setTimeout(() => {
         const codigo = prompt('Pega el código del amigo (formato: ID|Nombre):');
         if (codigo) this.procesarQR(codigo);
@@ -2223,7 +2227,6 @@ const app = {
         localStorage.setItem('cts', JSON.stringify(this.contactos));
         this.showMsg(`✅ ${nombre} agregado`);
         
-        // Si estamos en enviar, recargar lista
         if (this.state.currentPage === 'enviar') {
           this.renderEnviarList();
         } else if (this.state.currentPage === 'contacts') {
@@ -2239,7 +2242,7 @@ const app = {
   },
 
   // ========================================
-  // TOQUES - ENVÍO FUNCIONAL COMPLETO
+  // TOQUES - ENVÍO FUNCIONAL
   // ========================================
   
   async enviarToque(paraId, paraNombre) {
@@ -2291,14 +2294,11 @@ const app = {
       console.log('Respuesta servidor:', response.status, data);
       
       if (response.ok && data.ok) {
-        // ÉXITO: Actualizar contador
         this.state.toquesRestantes = data.toques_restantes !== undefined ? data.toques_restantes : this.state.toquesRestantes - 1;
         localStorage.setItem('toquesRestantes', this.state.toquesRestantes);
         
-        // Actualizar badge en home
         this.updateHome();
         
-        // Desbloquear emoji cada 5 tokes enviados
         this.todex.total = (this.todex.total || 0) + 1;
         if (this.todex.total % 5 === 0) {
           const disponibles = [];
@@ -2317,13 +2317,11 @@ const app = {
         this.showMsg(`✅ ${variante.emoji} enviado a ${paraNombre}`);
         this.playSound('select');
         
-        // Reset selección y volver a home
         this.state.selectedCategoria = null;
         this.state.selectedVariante = null;
         
         setTimeout(() => this.showPage('home'), 2000);
       } else {
-        // Error del servidor
         const errorMsg = data.error || 'Error del servidor';
         this.showMsg('❌ ' + errorMsg);
         this.playSound('error');
@@ -2335,10 +2333,6 @@ const app = {
     }
   },
 
-  // ========================================
-  // COMBATES (MVP)
-  // ========================================
-  
   jugarVSIA() {
     if (this.todex.captured.length < 3) {
       this.showMsg('Necesitas 3 emojis en ToDox');
@@ -2373,7 +2367,6 @@ const app = {
       .then(r => r.ok ? r.json() : null)
       .then(data => {
         if (data && data.ok && data.toques && data.toques.length > 0) {
-          // Mostrar solo el primero
           this.mostrarRespuestaToque(data.toques[0]);
         }
       })
@@ -2400,10 +2393,10 @@ const app = {
     const modal = document.getElementById('response-modal');
     if (!modal) return;
     
-    if (idx === 4 || idx === 5) { // Ignorar (índice 4 o 5 según layout)
+    if (idx === 4 || idx === 5) {
       modal.classList.remove('active');
       this.state.pendingToque = null;
-    } else { // Responder con emoji
+    } else {
       const respuestas = ['💕','😂','🙏','🔥'];
       const respuesta = respuestas[idx] || respuestas[0];
       
