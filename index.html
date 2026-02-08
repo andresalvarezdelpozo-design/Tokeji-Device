@@ -39,7 +39,7 @@
       height: 600px;
       background: linear-gradient(145deg, #FFB8D0 0%, var(--device-color) 50%, var(--device-dark) 100%);
       border-radius: 40px;
-      padding: 25px 15px 20px 15px;
+      padding: 25px 15px 15px 15px;
       box-shadow: 
         0 25px 50px rgba(0,0,0,0.3),
         inset 0 5px 15px rgba(255,255,255,0.4),
@@ -50,14 +50,17 @@
       border: 3px solid rgba(255,255,255,0.2);
     }
 
-    /* TORNILLOS */
+    /* TORNILLOS METÁLICOS */
     .screw {
       position: absolute;
-      width: 12px;
-      height: 12px;
-      background: linear-gradient(145deg, #C0C0C0, #808080);
+      width: 14px;
+      height: 14px;
+      background: linear-gradient(145deg, #E8E8E8, #A0A0A0);
       border-radius: 50%;
-      box-shadow: inset 0 2px 3px rgba(255,255,255,0.5), 0 2px 4px rgba(0,0,0,0.3);
+      box-shadow: 
+        inset 0 2px 3px rgba(255,255,255,0.8), 
+        inset 0 -2px 3px rgba(0,0,0,0.3),
+        0 2px 4px rgba(0,0,0,0.4);
       z-index: 10;
     }
 
@@ -69,14 +72,14 @@
       transform: translate(-50%, -50%) rotate(45deg);
       width: 8px;
       height: 2px;
-      background: #555;
-      box-shadow: 0 0 0 1px #555;
+      background: #666;
+      box-shadow: 0 0 0 1px #666;
     }
 
     .screw-tl { top: 12px; left: 15px; }
     .screw-tr { top: 12px; right: 15px; }
-    .screw-bl { bottom: 115px; left: 15px; }
-    .screw-br { bottom: 115px; right: 15px; }
+    .screw-bl { bottom: 110px; left: 15px; }
+    .screw-br { bottom: 110px; right: 15px; }
 
     .device-logo {
       position: absolute;
@@ -105,20 +108,20 @@
       pointer-events: none;
     }
 
-    /* PANTALLA */
+    /* PANTALLA - MÁS GRANDE */
     .screen-container {
       width: 100%;
       flex: 1;
       display: flex;
       flex-direction: column;
       align-items: center;
-      margin-top: 10px;
-      margin-bottom: 10px;
+      margin-top: 8px;
+      margin-bottom: 8px;
     }
 
     .screen {
-      width: 295px;
-      height: 340px;
+      width: 300px;
+      height: 380px;
       background: var(--screen-bg);
       border-radius: 20px;
       position: relative;
@@ -177,7 +180,7 @@
 
     .splash-logo {
       font-family: 'Fredoka One', cursive;
-      font-size: 36px;
+      font-size: 42px;
       color: white;
       text-shadow: 0 4px 0 var(--device-dark), 0 6px 10px rgba(0,0,0,0.2);
       animation: pulse-logo 2s ease-in-out infinite;
@@ -190,9 +193,9 @@
 
     .splash-hint {
       position: absolute;
-      bottom: 25px;
-      font-size: 10px;
-      color: rgba(255,255,255,0.8);
+      bottom: 30px;
+      font-size: 11px;
+      color: rgba(255,255,255,0.9);
       animation: blink 1.5s infinite;
     }
 
@@ -204,19 +207,19 @@
     /* TITULOS */
     .setup-title {
       font-family: 'Fredoka One', cursive;
-      font-size: 15px;
+      font-size: 16px;
       color: #2D3748;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
       text-align: center;
       flex-shrink: 0;
     }
 
     .setup-input {
       width: 85%;
-      padding: 10px;
+      padding: 12px;
       border: 3px solid #FFD93D;
       border-radius: 12px;
-      font-size: 16px;
+      font-size: 18px;
       text-align: center;
       text-transform: uppercase;
       font-weight: 800;
@@ -232,11 +235,11 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 6px;
+      gap: 8px;
     }
 
     .home-avatar {
-      font-size: 55px;
+      font-size: 60px;
       filter: drop-shadow(0 4px 8px rgba(0,0,0,0.15));
       animation: float 3s ease-in-out infinite;
     }
@@ -248,13 +251,13 @@
 
     .home-name {
       font-family: 'Fredoka One', cursive;
-      font-size: 18px;
+      font-size: 20px;
       color: #2D3748;
     }
 
     .home-status {
-      font-size: 10px;
-      padding: 4px 12px;
+      font-size: 11px;
+      padding: 5px 14px;
       border-radius: 15px;
       font-weight: 800;
       color: white;
@@ -265,9 +268,9 @@
     .tokes-badge {
       background: linear-gradient(145deg, #ECC94B, #D69E2E);
       color: #744210;
-      padding: 5px 14px;
+      padding: 6px 16px;
       border-radius: 15px;
-      font-size: 12px;
+      font-size: 13px;
       font-weight: 800;
       margin-top: 5px;
       box-shadow: 0 3px 0 #B7791F;
@@ -275,24 +278,23 @@
 
     .home-hint {
       margin-top: auto;
-      font-size: 9px;
+      font-size: 10px;
       color: #A0AEC0;
       background: rgba(255,255,255,0.9);
-      padding: 4px 10px;
+      padding: 5px 12px;
       border-radius: 10px;
-      margin-bottom: 5px;
+      margin-bottom: 8px;
     }
 
-    /* MENU GRID CORREGIDO - 3 COLUMNAS */
+    /* MENU GRID 3x2 - CORREGIDO */
     .menu-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 8px;
+      gap: 10px;
       width: 100%;
       padding: 0 5px;
-      overflow-y: auto;
       flex: 1;
-      align-content: start;
+      align-content: center;
     }
 
     .menu-item {
@@ -304,15 +306,15 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 3px;
-      font-size: 9px;
+      gap: 4px;
+      font-size: 10px;
       font-weight: 800;
       color: #4A5568;
       transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
       cursor: pointer;
       box-shadow: 0 3px 0 #CBD5E0, 0 4px 6px rgba(0,0,0,0.05);
-      min-height: 75px;
-      max-height: 85px;
+      min-height: 95px;
+      max-height: 95px;
     }
 
     .menu-item:active {
@@ -323,38 +325,38 @@
     .menu-item.focused {
       border-color: var(--device-color);
       background: linear-gradient(145deg, #FFF5F7, #FED7E2);
-      transform: scale(1.08);
+      transform: scale(1.05);
       box-shadow: 0 0 0 3px rgba(255,107,157,0.3), 0 3px 0 #F687B3;
       z-index: 10;
     }
 
     .menu-item .icon {
-      font-size: 24px;
+      font-size: 28px;
       transition: transform 0.2s;
     }
 
     .menu-item.focused .icon {
-      transform: scale(1.15) rotate(-5deg);
+      transform: scale(1.1) rotate(-5deg);
     }
 
-    /* LISTAS CON SCROLL CORREGIDO */
+    /* LISTAS CON SCROLL */
     .list-container {
       width: 100%;
       flex: 1;
       overflow-y: auto;
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 8px;
       padding: 0 5px 5px 5px;
       -webkit-overflow-scrolling: touch;
     }
 
-    .list-item, .toke-item {
+    .list-item, .toke-item, .variante-item {
       background: white;
       border: 2px solid #E2E8F0;
-      border-radius: 12px;
-      padding: 10px;
-      font-size: 12px;
+      border-radius: 14px;
+      padding: 12px;
+      font-size: 13px;
       font-weight: 700;
       display: flex;
       align-items: center;
@@ -362,17 +364,18 @@
       transition: all 0.2s;
       box-shadow: 0 2px 0 #E2E8F0;
       flex-shrink: 0;
-      min-height: 50px;
+      min-height: 55px;
+      cursor: pointer;
     }
 
-    .list-item.focused, .toke-item.focused {
+    .list-item.focused, .toke-item.focused, .variante-item.focused {
       border-color: var(--device-color);
       background: #FFF5F7;
       transform: translateX(4px);
       box-shadow: 0 3px 0 #F687B3;
     }
 
-    /* TOKES CON COLORES */
+    /* TOKES CON COLORES ESPECÍFICOS */
     .toke-item.t1 { border-color: #FF0066; background: linear-gradient(145deg, #FFF0F3, #FFF5F7); }
     .toke-item.t1.focused { box-shadow: 0 3px 0 #CC0052; }
     .toke-item.t2 { border-color: #FF5400; background: linear-gradient(145deg, #FFF4F0, #FFF8F5); }
@@ -384,15 +387,25 @@
     .toke-item.t5 { border-color: #3182CE; background: linear-gradient(145deg, #EBF8FF, #F0F9FF); }
     .toke-item.t5.focused { box-shadow: 0 3px 0 #2C5282; }
 
+    /* VARIANTES DE TOQUES */
+    .variante-item {
+      border-left: 4px solid;
+    }
+    .variante-item.v1 { border-left-color: #FF0066; }
+    .variante-item.v2 { border-left-color: #FF5400; }
+    .variante-item.v3 { border-left-color: #38A169; }
+    .variante-item.v4 { border-left-color: #D69E2E; }
+    .variante-item.v5 { border-left-color: #3182CE; }
+
     .scan-btn {
       background: linear-gradient(145deg, #9F7AEA, #805AD5);
       color: white;
       border: none;
-      border-radius: 12px;
-      padding: 12px;
-      font-size: 12px;
+      border-radius: 14px;
+      padding: 14px;
+      font-size: 13px;
       font-weight: 800;
-      margin-bottom: 8px;
+      margin-bottom: 10px;
       box-shadow: 0 3px 0 #6B46C1;
       transition: all 0.2s;
       flex-shrink: 0;
@@ -416,15 +429,15 @@
 
     #qr-mio {
       background: white;
-      padding: 12px;
+      padding: 15px;
       border-radius: 16px;
       box-shadow: 0 8px 25px rgba(0,0,0,0.1);
       border: 3px solid #FFD93D;
     }
 
     #qr-mio img {
-      width: 130px;
-      height: 130px;
+      width: 140px;
+      height: 140px;
       display: block;
     }
 
@@ -432,7 +445,7 @@
     .todex-grid {
       display: grid;
       grid-template-columns: repeat(5, 1fr);
-      gap: 4px;
+      gap: 5px;
       width: 100%;
       flex: 1;
       overflow-y: auto;
@@ -443,11 +456,11 @@
       aspect-ratio: 1;
       background: #EDF2F7;
       border: 2px solid transparent;
-      border-radius: 8px;
+      border-radius: 10px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 14px;
+      font-size: 16px;
       transition: all 0.2s;
     }
 
@@ -469,7 +482,7 @@
       flex: 1;
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 12px;
       justify-content: center;
       width: 100%;
       padding: 10px;
@@ -479,7 +492,7 @@
       background: linear-gradient(145deg, #9F7AEA, #805AD5);
       border: 2px solid transparent;
       border-radius: 16px;
-      padding: 15px;
+      padding: 20px;
       color: white;
       text-align: center;
       font-weight: 800;
@@ -490,7 +503,7 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      max-height: 110px;
+      max-height: 120px;
       cursor: pointer;
     }
 
@@ -509,13 +522,13 @@
       box-shadow: 0 0 0 3px rgba(255,217,61,0.4), 0 4px 0 #C05621;
     }
 
-    /* SETTINGS CON SCROLL */
+    /* SETTINGS */
     .settings-list {
       width: 100%;
       flex: 1;
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 8px;
       padding: 0 5px 5px 5px;
       overflow-y: auto;
       -webkit-overflow-scrolling: touch;
@@ -524,17 +537,17 @@
     .setting-item {
       background: white;
       border: 2px solid #E2E8F0;
-      border-radius: 12px;
-      padding: 11px;
+      border-radius: 14px;
+      padding: 12px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      font-size: 12px;
+      font-size: 13px;
       font-weight: 700;
       transition: all 0.2s;
       box-shadow: 0 2px 0 #E2E8F0;
       flex-shrink: 0;
-      min-height: 48px;
+      min-height: 52px;
     }
 
     .setting-item.focused {
@@ -544,10 +557,10 @@
     }
 
     .toggle-switch {
-      width: 40px;
-      height: 22px;
+      width: 44px;
+      height: 24px;
       background: #CBD5E0;
-      border-radius: 11px;
+      border-radius: 12px;
       position: relative;
       transition: all 0.3s;
     }
@@ -559,8 +572,8 @@
     .toggle-switch::after {
       content: '';
       position: absolute;
-      width: 18px;
-      height: 18px;
+      width: 20px;
+      height: 20px;
       background: white;
       border-radius: 50%;
       top: 2px;
@@ -570,7 +583,7 @@
     }
 
     .toggle-switch.active::after {
-      left: 20px;
+      left: 22px;
     }
 
     /* MODALES */
@@ -596,27 +609,27 @@
     .selector-title {
       color: white;
       font-family: 'Fredoka One', cursive;
-      font-size: 16px;
-      margin-bottom: 15px;
+      font-size: 18px;
+      margin-bottom: 20px;
     }
 
     .selector-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
+      gap: 12px;
       width: 100%;
-      max-width: 260px;
+      max-width: 280px;
     }
 
     .selector-item {
       aspect-ratio: 1;
       border: 3px solid transparent;
-      border-radius: 12px;
+      border-radius: 14px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      font-size: 10px;
+      font-size: 11px;
       font-weight: 700;
       transition: all 0.2s;
       cursor: pointer;
@@ -651,25 +664,25 @@
     .response-title {
       color: white;
       font-family: 'Fredoka One', cursive;
-      font-size: 16px;
-      margin-bottom: 20px;
+      font-size: 18px;
+      margin-bottom: 25px;
       text-align: center;
     }
 
     .response-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
+      gap: 15px;
       width: 100%;
-      max-width: 180px;
+      max-width: 200px;
     }
 
     .response-btn {
       background: rgba(255,255,255,0.95);
       border: 3px solid transparent;
       border-radius: 16px;
-      padding: 12px;
-      font-size: 28px;
+      padding: 15px;
+      font-size: 32px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -685,22 +698,22 @@
     }
 
     .response-btn .label {
-      font-size: 9px;
+      font-size: 10px;
       font-weight: 800;
       color: #2D3748;
-      margin-top: 4px;
+      margin-top: 5px;
     }
 
     .response-actions {
       display: flex;
-      gap: 15px;
-      margin-top: 20px;
+      gap: 20px;
+      margin-top: 25px;
     }
 
     .response-action {
-      padding: 10px 18px;
-      border-radius: 20px;
-      font-size: 11px;
+      padding: 12px 24px;
+      border-radius: 25px;
+      font-size: 12px;
       font-weight: 800;
       border: 2px solid rgba(255,255,255,0.3);
       color: white;
@@ -716,12 +729,12 @@
 
     /* BOTONES FÍSICOS - SUBIDOS */
     .controls {
-      margin-top: 5px;
+      margin-top: 3px;
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 8px;
-      padding-bottom: 5px;
+      padding-bottom: 3px;
     }
 
     .controls-row {
@@ -747,21 +760,21 @@
     }
 
     .btn-back {
-      width: 48px;
-      height: 36px;
+      width: 50px;
+      height: 38px;
       background: linear-gradient(145deg, #63B3ED, #4299E1);
-      border-radius: 18px;
+      border-radius: 19px;
       color: white;
-      font-size: 10px;
+      font-size: 11px;
     }
 
     .btn-ok {
-      width: 60px;
-      height: 44px;
+      width: 65px;
+      height: 48px;
       background: linear-gradient(145deg, #68D391, #48BB78);
-      border-radius: 22px;
+      border-radius: 24px;
       color: white;
-      font-size: 14px;
+      font-size: 16px;
       box-shadow: 0 5px 0 #38A169, 0 8px 15px rgba(72,187,120,0.4);
     }
 
@@ -771,18 +784,18 @@
 
     .dpad {
       display: grid;
-      grid-template-columns: repeat(3, 36px);
-      grid-template-rows: repeat(3, 36px);
+      grid-template-columns: repeat(3, 38px);
+      grid-template-rows: repeat(3, 38px);
       gap: 3px;
     }
 
     .dpad-btn {
-      width: 36px;
-      height: 36px;
+      width: 38px;
+      height: 38px;
       background: linear-gradient(145deg, #F6E05E, #D69E2E);
       border-radius: 10px;
       color: #744210;
-      font-size: 14px;
+      font-size: 16px;
       border: none;
       cursor: pointer;
       box-shadow: 0 3px 0 #B7791F, 0 4px 8px rgba(0,0,0,0.1);
@@ -796,8 +809,8 @@
     .dpad-empty { visibility: hidden; }
 
     .hint-text {
-      color: rgba(255,255,255,0.8);
-      font-size: 9px;
+      color: rgba(255,255,255,0.9);
+      font-size: 10px;
       font-weight: 700;
     }
 
@@ -809,8 +822,8 @@
       right: 0;
       background: linear-gradient(145deg, var(--device-color), var(--device-dark));
       color: white;
-      padding: 8px;
-      font-size: 11px;
+      padding: 10px;
+      font-size: 12px;
       font-weight: 800;
       text-align: center;
       transform: translateY(100%);
@@ -824,9 +837,27 @@
     }
 
     /* SCROLLBAR */
-    ::-webkit-scrollbar { width: 3px; }
+    ::-webkit-scrollbar { width: 4px; }
     ::-webkit-scrollbar-thumb { background: #F687B3; border-radius: 2px; }
     ::-webkit-scrollbar-track { background: transparent; }
+
+    /* INFO DE ENVÍO */
+    .envio-info {
+      background: linear-gradient(145deg, #FFF5F7, #FED7E2);
+      border: 2px solid var(--device-color);
+      border-radius: 12px;
+      padding: 10px;
+      margin-bottom: 10px;
+      font-size: 11px;
+      text-align: center;
+      color: #2D3748;
+      font-weight: 700;
+    }
+
+    .envio-info strong {
+      color: var(--device-color);
+      font-size: 13px;
+    }
   </style>
 </head>
 <body>
@@ -858,7 +889,7 @@
           <div class="page" id="page-setup">
             <div class="setup-title">¿Cómo te llamas?</div>
             <input type="text" id="miNombre" class="setup-input" maxlength="8" placeholder="TU NOMBRE" autocomplete="off">
-            <div style="font-size: 9px; color: #A0AEC0; margin-top: 10px;">Pulsa OK para continuar</div>
+            <div style="font-size: 10px; color: #A0AEC0; margin-top: 12px;">Pulsa OK para continuar</div>
           </div>
 
           <!-- HOME -->
@@ -903,10 +934,25 @@
             </div>
           </div>
 
-          <!-- TOKES -->
+          <!-- TOKES - NIVEL 1: CATEGORÍAS -->
           <div class="page" id="page-tokes">
-            <div class="setup-title">Enviar Toque</div>
+            <div class="setup-title">Elige Categoría</div>
             <div class="list-container" id="tokes-list"></div>
+          </div>
+
+          <!-- TOKES - NIVEL 2: VARIANTES -->
+          <div class="page" id="page-variantes">
+            <div class="setup-title" id="variantes-title">Variante</div>
+            <div class="list-container" id="variantes-list"></div>
+          </div>
+
+          <!-- CONTACTOS PARA ENVIAR -->
+          <div class="page" id="page-enviar">
+            <div class="setup-title">Enviar a...</div>
+            <div class="envio-info" id="envio-info">
+              Enviando: <strong id="toke-seleccionado">-</strong>
+            </div>
+            <div class="list-container" id="enviar-list"></div>
           </div>
 
           <!-- CONTACTS -->
@@ -921,7 +967,7 @@
             <div class="setup-title">Mi Código QR</div>
             <div class="qr-container">
               <div id="qr-mio"></div>
-              <div style="font-size: 10px; color: #718096; margin-top: 8px; text-align: center;">
+              <div style="font-size: 11px; color: #718096; margin-top: 10px; text-align: center;">
                 Escanea para agregar
               </div>
             </div>
@@ -938,14 +984,14 @@
             <div class="setup-title">⚔️ Arena</div>
             <div class="combate-container">
               <div class="combate-card focused" data-index="0">
-                <div style="font-size: 28px; margin-bottom: 4px;">🤖</div>
-                <div style="font-size: 13px;">VS IA</div>
-                <div style="font-size: 9px; opacity: 0.9; margin-top: 2px;">Práctica</div>
+                <div style="font-size: 32px; margin-bottom: 5px;">🤖</div>
+                <div style="font-size: 14px;">VS IA</div>
+                <div style="font-size: 10px; opacity: 0.9; margin-top: 3px;">Práctica</div>
               </div>
               <div class="combate-card vs-amigo" data-index="1">
-                <div style="font-size: 28px; margin-bottom: 4px;">⚔️</div>
-                <div style="font-size: 13px;">VS Amigo</div>
-                <div style="font-size: 9px; opacity: 0.9; margin-top: 2px;">Retar</div>
+                <div style="font-size: 32px; margin-bottom: 5px;">⚔️</div>
+                <div style="font-size: 14px;">VS Amigo</div>
+                <div style="font-size: 10px; opacity: 0.9; margin-top: 3px;">Retar</div>
               </div>
             </div>
           </div>
@@ -964,11 +1010,11 @@
               </div>
               <div class="setting-item" data-index="2">
                 <span>🎨 Color</span>
-                <div id="color-preview" style="width: 22px; height: 22px; background: #FF6B9D; border-radius: 50%; border: 2px solid white; box-shadow: 0 2px 5px rgba(0,0,0,0.2);"></div>
+                <div id="color-preview" style="width: 24px; height: 24px; background: #FF6B9D; border-radius: 50%; border: 2px solid white; box-shadow: 0 2px 5px rgba(0,0,0,0.2);"></div>
               </div>
               <div class="setting-item" data-index="3">
                 <span>🟢 Estado</span>
-                <span id="status-text" style="font-size: 10px; color: #48BB78; font-weight: 800;">Disponible</span>
+                <span id="status-text" style="font-size: 11px; color: #48BB78; font-weight: 800;">Disponible</span>
               </div>
               <div class="setting-item" data-index="4" style="color: #E53E3E;">
                 <span>🗑️ Reiniciar</span>
@@ -1029,12 +1075,45 @@
 <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
 <script>
 // ========================================
-// TOKEJI v4 - FUNCIONAL
+// TOKEJI v5 - TOKES FUNCIONALES 2 NIVELES
 // ========================================
 
-const BACK = "https://dame-un-toque-1.onrender.com";
+const BACK = "https://tokeji-device.onrender.com";
 
-// DATOS
+// CONTEXTOS DE TOQUES - 5 CATEGORÍAS x 4 VARIANTES
+const CONTEXTOS_TOKES = {
+  1: [ 
+    { emoji: "💪", nombre: "GYM", texto: "que estás a 🔥 en el GYM" },
+    { emoji: "🧥", nombre: "OUTFIT", texto: "que tu OUTFIT es 🔥" },
+    { emoji: "😎", nombre: "ACTITUD", texto: "que como la LIAS 🔥" },
+    { emoji: "🎮", nombre: "JUGADA", texto: "que tu JUGADA fue 🔥" }
+  ],
+  2: [
+    { emoji: "🔍", nombre: "INTERES", texto: "que A ALGUIEN le gustas 💕" },
+    { emoji: "💭", nombre: "MY SECRET", texto: "que tiene un CRUSH secreto 💕" },
+    { emoji: "🎯", nombre: "MY CRUSH", texto: "que ERES su crush 💕" },
+    { emoji: "😏", nombre: "INDIRECTA", texto: "que te lanza una INDIRECTA 💕" }
+  ],
+  3: [
+    { emoji: "📚", nombre: "EXAMEN", texto: "te apoya 💪 para el EXAMEN" },
+    { emoji: "🏥", nombre: "MEJORATE", texto: "te manda 💪 para que TE MEJORES" },
+    { emoji: "💔", nombre: "RUPTURA", texto: "te da 💪 tras la RUPTURA" },
+    { emoji: "🎯", nombre: "META", texto: "te anima 💪 a cumplir TU META" }
+  ],
+  4: [
+    { emoji: "⚽", nombre: "FUTBOL", texto: "que quiere jugar al ⚽" },
+    { emoji: "🍔", nombre: "COMIDA", texto: "que te invita a 🍔" },
+    { emoji: "🛍️", nombre: "COMPRAS", texto: "que quiere ir de 🛍️" },
+    { emoji: "📅", nombre: "QUEDAR", texto: "que quiere quedar 📅" }
+  ],
+  5: [
+    { emoji: "💊", nombre: "DRAMA", texto: "¡URGENTE: DRAMA 🚨!" },
+    { emoji: "🎫", nombre: "PLAN", texto: "¡PLAN de último momento 🚨!" },
+    { emoji: "💸", nombre: "MONEY", texto: "¡Necesito DINERO 🚨!" },
+    { emoji: "🆘", nombre: "AYUDA", texto: "¡Necesita AYUDA 🚨!" }
+  ]
+};
+
 const COLORES = [
   { hex: '#FF6B9D', name: 'Rosa', shadow: '#FF4785', gradient: ['#FFB8D0', '#FF6B9D', '#FF4785'] },
   { hex: '#4299E1', name: 'Azul', shadow: '#2B6CB0', gradient: ['#90CDF4', '#4299E1', '#2B6CB0'] },
@@ -1069,7 +1148,8 @@ const app = {
     focus: { type: 'menu', index: 0 },
     history: [],
     toquesRestantes: 30,
-    selectedToke: null,
+    selectedCategoria: null,
+    selectedVariante: null,
     settings: {
       sonido: true,
       vibracion: true,
@@ -1090,7 +1170,7 @@ const app = {
   init() {
     console.log('=== TOKEJI INICIANDO ===');
     
-    // Generar ID
+    // Generar ID único
     this.miID = localStorage.getItem("miid");
     if (!this.miID) {
       this.miID = Math.random().toString(36).substring(2, 12);
@@ -1110,7 +1190,7 @@ const app = {
       console.error('Error cargando datos:', e);
     }
     
-    // Reset diario
+    // Reset diario de tokes
     const hoy = new Date().toDateString();
     if (localStorage.getItem('lastReset') !== hoy) {
       this.state.toquesRestantes = 30;
@@ -1123,25 +1203,28 @@ const app = {
     setInterval(() => this.updateClock(), 60000);
     setInterval(() => this.checkIncoming(), 10000);
     
-    console.log('Inicializado. ID:', this.miID);
+    console.log('Inicializado. ID:', this.miID, 'Tokes:', this.state.toquesRestantes);
   },
 
-  // AUDIO PARA IPHONE
+  // AUDIO PARA IPHONE - Inicialización en primera interacción
   initAudio() {
     if (this.state.audioInitialized) return;
     
-    // Crear contexto de audio en respuesta a interacción del usuario
-    this.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    this.state.audioInitialized = true;
-    
-    // Desbloquear audio en iOS
-    if (this.audioCtx.state === 'suspended') {
-      this.audioCtx.resume();
+    try {
+      this.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      this.state.audioInitialized = true;
+      
+      if (this.audioCtx.state === 'suspended') {
+        this.audioCtx.resume();
+      }
+      console.log('Audio inicializado');
+    } catch(e) {
+      console.error('Error audio:', e);
     }
   },
 
   playSound(type) {
-    if (!this.state.settings.sonido || !this.state.audioInitialized) return;
+    if (!this.state.settings.sonido || !this.state.audioInitialized || !this.audioCtx) return;
     
     try {
       const osc = this.audioCtx.createOscillator();
@@ -1152,28 +1235,34 @@ const app = {
       const now = this.audioCtx.currentTime;
       
       if (type === 'move') {
-        osc.frequency.setValueAtTime(500, now);
-        osc.frequency.exponentialRampToValueAtTime(300, now + 0.05);
+        osc.frequency.setValueAtTime(400, now);
+        osc.frequency.exponentialRampToValueAtTime(600, now + 0.05);
         gain.gain.setValueAtTime(0.1, now);
         gain.gain.exponentialRampToValueAtTime(0.01, now + 0.05);
         osc.start(now);
         osc.stop(now + 0.05);
       } else if (type === 'select') {
-        osc.frequency.setValueAtTime(800, now);
-        osc.frequency.exponentialRampToValueAtTime(1200, now + 0.1);
+        osc.frequency.setValueAtTime(600, now);
+        osc.frequency.exponentialRampToValueAtTime(1000, now + 0.1);
         gain.gain.setValueAtTime(0.15, now);
         gain.gain.exponentialRampToValueAtTime(0.01, now + 0.1);
         osc.start(now);
         osc.stop(now + 0.1);
       } else if (type === 'back') {
-        osc.frequency.setValueAtTime(400, now);
+        osc.frequency.setValueAtTime(300, now);
         gain.gain.setValueAtTime(0.1, now);
         gain.gain.exponentialRampToValueAtTime(0.01, now + 0.08);
         osc.start(now);
         osc.stop(now + 0.08);
+      } else if (type === 'error') {
+        osc.frequency.setValueAtTime(200, now);
+        gain.gain.setValueAtTime(0.2, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.15);
+        osc.start(now);
+        osc.stop(now + 0.15);
       }
     } catch(e) {
-      console.error('Error audio:', e);
+      console.error('Error sonido:', e);
     }
   },
 
@@ -1208,7 +1297,7 @@ const app = {
     this.state.currentPage = page;
     this.state.inSelector = false;
     
-    // Inicializar página
+    // Inicializar página específica
     switch(page) {
       case 'menu':
         this.state.focus = { type: 'menu', index: this.state.menuIndex };
@@ -1218,6 +1307,16 @@ const app = {
         this.renderTokes();
         this.state.focus = { type: 'tokes', index: 0 };
         this.updateTokesFocus();
+        break;
+      case 'variantes':
+        this.renderVariantes();
+        this.state.focus = { type: 'variantes', index: 0 };
+        this.updateVariantesFocus();
+        break;
+      case 'enviar':
+        this.renderEnviarList();
+        this.state.focus = { type: 'enviar', index: 0 };
+        this.updateEnviarFocus();
         break;
       case 'contacts':
         this.renderContacts();
@@ -1263,7 +1362,36 @@ const app = {
     }
     
     if (this.state.history.length > 0) {
-      this.showPage(this.state.history.pop(), false);
+      const prev = this.state.history.pop();
+      // No guardar en history al volver
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      const pageEl = document.getElementById('page-' + prev);
+      if (pageEl) pageEl.classList.add('active');
+      this.state.currentPage = prev;
+      
+      // Restaurar focus según página
+      switch(prev) {
+        case 'menu': 
+          this.state.focus = { type: 'menu', index: this.state.menuIndex };
+          this.updateMenuFocus();
+          break;
+        case 'tokes':
+          this.state.focus = { type: 'tokes', index: this.state.selectedCategoria ? this.state.selectedCategoria - 1 : 0 };
+          this.updateTokesFocus();
+          break;
+        case 'variantes':
+          this.state.focus = { type: 'variantes', index: 0 };
+          this.updateVariantesFocus();
+          break;
+        case 'enviar':
+          this.state.focus = { type: 'enviar', index: 0 };
+          this.updateEnviarFocus();
+          break;
+        case 'contacts':
+          this.state.focus = { type: 'contacts', index: 0 };
+          this.updateContactsFocus();
+          break;
+      }
     } else if (this.state.currentPage !== 'home') {
       this.showPage('home', false);
     }
@@ -1274,7 +1402,7 @@ const app = {
   // ========================================
   
   handleBack() {
-    this.initAudio(); // Inicializar audio en primera interacción
+    this.initAudio();
     this.playSound('back');
     this.goBack();
   },
@@ -1305,32 +1433,42 @@ const app = {
         const nom = document.getElementById('miNombre').value.trim();
         if (!nom) {
           this.showMsg('Escribe tu nombre');
+          this.playSound('error');
           return;
         }
         localStorage.setItem('miNombre', nom);
         this.generarQR();
         this.showPage('home');
         break;
-      case 'home':
-        this.showPage('menu');
-        break;
       case 'menu':
         const items = ['tokes', 'contacts', 'qr', 'todox', 'combates', 'settings'];
         this.showPage(items[focus.index]);
         break;
       case 'tokes':
-        this.state.selectedToke = TOKES_TYPES[focus.index];
-        this.showPage('contacts');
-        this.showMsg(`Enviar: ${this.state.selectedToke.name}`);
+        // Seleccionar categoría y pasar a variantes
+        this.state.selectedCategoria = TOKES_TYPES[focus.index].id;
+        this.showPage('variantes');
+        break;
+      case 'variantes':
+        // Seleccionar variante específica y pasar a enviar
+        const variantes = CONTEXTOS_TOKES[this.state.selectedCategoria];
+        this.state.selectedVariante = variantes[focus.index];
+        this.showPage('enviar');
+        break;
+      case 'enviar':
+        // Enviar al amigo seleccionado
+        const amigosList = Object.entries(this.contactos);
+        if (focus.index === 0) {
+          // Escanear nuevo amigo
+          this.scanQR();
+        } else if (amigosList[focus.index - 1]) {
+          const [id, nombre] = amigosList[focus.index - 1];
+          this.enviarToque(id, nombre);
+        }
         break;
       case 'contacts':
         if (focus.index === 0) {
           this.scanQR();
-        } else {
-          const amigos = Object.entries(this.contactos);
-          if (amigos[focus.index - 1]) {
-            this.enviarToque(amigos[focus.index - 1][0], amigos[focus.index - 1][1]);
-          }
         }
         break;
       case 'todox':
@@ -1371,7 +1509,6 @@ const app = {
     
     switch(type) {
       case 'menu':
-        // En grid 3x2, arriba es restar 3
         if (index >= 3) {
           this.state.focus.index -= 3;
           this.state.menuIndex = this.state.focus.index;
@@ -1383,6 +1520,20 @@ const app = {
           this.state.focus.index--;
           this.updateTokesFocus();
           this.scrollToFocused('tokes-list');
+        }
+        break;
+      case 'variantes':
+        if (index > 0) {
+          this.state.focus.index--;
+          this.updateVariantesFocus();
+          this.scrollToFocused('variantes-list');
+        }
+        break;
+      case 'enviar':
+        if (index > 0) {
+          this.state.focus.index--;
+          this.updateEnviarFocus();
+          this.scrollToFocused('enviar-list');
         }
         break;
       case 'contacts':
@@ -1444,6 +1595,22 @@ const app = {
           this.state.focus.index++;
           this.updateTokesFocus();
           this.scrollToFocused('tokes-list');
+        }
+        break;
+      case 'variantes':
+        const variantes = CONTEXTOS_TOKES[this.state.selectedCategoria] || [];
+        if (index < variantes.length - 1) {
+          this.state.focus.index++;
+          this.updateVariantesFocus();
+          this.scrollToFocused('variantes-list');
+        }
+        break;
+      case 'enviar':
+        const maxAmigos = Object.keys(this.contactos).length;
+        if (index < maxAmigos) {
+          this.state.focus.index++;
+          this.updateEnviarFocus();
+          this.scrollToFocused('enviar-list');
         }
         break;
       case 'contacts':
@@ -1576,6 +1743,19 @@ const app = {
     });
   },
 
+  updateVariantesFocus() {
+    document.querySelectorAll('#variantes-list .variante-item').forEach((el, i) => {
+      el.classList.toggle('focused', i === this.state.focus.index);
+    });
+  },
+
+  updateEnviarFocus() {
+    const items = document.querySelectorAll('#enviar-list .list-item');
+    items.forEach((el, i) => {
+      el.classList.toggle('focused', i === this.state.focus.index);
+    });
+  },
+
   updateContactsFocus() {
     const scanBtn = document.getElementById('scan-btn');
     const items = document.querySelectorAll('#contacts-list .list-item');
@@ -1631,13 +1811,76 @@ const app = {
     
     container.innerHTML = TOKES_TYPES.map((t, i) => `
       <div class="toke-item t${t.id} ${i === 0 ? 'focused' : ''}" data-index="${i}">
-        <span style="font-size: 22px;">${t.emoji}</span>
+        <span style="font-size: 26px;">${t.emoji}</span>
         <div style="flex: 1;">
-          <div style="font-weight: 800; color: ${t.color}; font-size: 13px;">${t.name}</div>
-          <div style="font-size: 10px; color: #718096;">${t.desc}</div>
+          <div style="font-weight: 800; color: ${t.color}; font-size: 14px;">${t.name}</div>
+          <div style="font-size: 11px; color: #718096;">${t.desc}</div>
+        </div>
+        <span style="font-size: 10px; background: #EDF2F7; padding: 2px 6px; border-radius: 10px; color: #4A5568;">4</span>
+      </div>
+    `).join('');
+  },
+
+  renderVariantes() {
+    const container = document.getElementById('variantes-list');
+    const title = document.getElementById('variantes-title');
+    if (!container || !title) return;
+    
+    const categoria = TOKES_TYPES.find(t => t.id === this.state.selectedCategoria);
+    const variantes = CONTEXTOS_TOKES[this.state.selectedCategoria] || [];
+    
+    title.textContent = `${categoria?.emoji || '💌'} ${categoria?.name || 'Toque'}`;
+    
+    container.innerHTML = variantes.map((v, i) => `
+      <div class="variante-item v${this.state.selectedCategoria} ${i === 0 ? 'focused' : ''}" data-index="${i}">
+        <span style="font-size: 26px;">${v.emoji}</span>
+        <div style="flex: 1;">
+          <div style="font-weight: 800; color: #2D3748; font-size: 14px;">${v.nombre}</div>
+          <div style="font-size: 10px; color: #718096; line-height: 1.2;">${v.texto}</div>
         </div>
       </div>
     `).join('');
+  },
+
+  renderEnviarList() {
+    const container = document.getElementById('enviar-list');
+    const info = document.getElementById('toke-seleccionado');
+    if (!container || !info) return;
+    
+    // Mostrar toke seleccionado
+    const categoria = TOKES_TYPES.find(t => t.id === this.state.selectedCategoria);
+    const variante = this.state.selectedVariante;
+    if (categoria && variante) {
+      info.innerHTML = `${categoria.emoji} ${variante.nombre} <span style="font-size: 10px; color: #666;">(${variante.texto})</span>`;
+    }
+    
+    const amigos = Object.entries(this.contactos);
+    
+    let html = `
+      <div class="list-item focused" data-index="0">
+        <span style="font-size: 24px;">📷</span>
+        <div style="flex: 1;">
+          <div style="font-weight: 800; color: #805AD5;">Escanear QR</div>
+          <div style="font-size: 10px; color: #A0AEC0;">Nuevo amigo</div>
+        </div>
+      </div>
+    `;
+    
+    if (amigos.length === 0) {
+      html += `<div style="text-align: center; color: #A0AEC0; padding: 20px; font-size: 12px;">No tienes amigos aún.<br>¡Escanea un QR!</div>`;
+    } else {
+      html += amigos.map(([id, nom], i) => `
+        <div class="list-item" data-index="${i + 1}">
+          <span style="font-size: 24px;">👤</span>
+          <div style="flex: 1;">
+            <div style="font-weight: 800; color: #2D3748;">${nom}</div>
+            <div style="font-size: 9px; color: #A0AEC0;">${id.substring(0, 8)}...</div>
+          </div>
+        </div>
+      `).join('');
+    }
+    
+    container.innerHTML = html;
   },
 
   renderContacts() {
@@ -1647,14 +1890,14 @@ const app = {
     const lista = Object.entries(this.contactos);
     
     if (lista.length === 0) {
-      container.innerHTML = '<div style="text-align: center; color: #A0AEC0; padding: 20px; font-size: 11px;">No tienes amigos.<br>¡Escanea un QR!</div>';
+      container.innerHTML = '<div style="text-align: center; color: #A0AEC0; padding: 30px; font-size: 12px;">No tienes amigos.<br>¡Escanea un QR!</div>';
     } else {
       container.innerHTML = lista.map(([id, nom], i) => `
         <div class="list-item" data-index="${i}">
-          <span style="font-size: 20px;">👤</span>
+          <span style="font-size: 24px;">👤</span>
           <div style="flex: 1;">
             <div style="font-weight: 800; color: #2D3748;">${nom}</div>
-            <div style="font-size: 9px; color: #A0AEC0;">${id}</div>
+            <div style="font-size: 9px; color: #A0AEC0;">${id.substring(0, 8)}...</div>
           </div>
         </div>
       `).join('');
@@ -1766,8 +2009,8 @@ const app = {
     grid.innerHTML = COLORES.map((c, i) => `
       <div class="selector-item ${i === this.state.selectorIndex ? 'focused' : ''}" 
            style="background: ${c.hex};" data-index="${i}">
-        <div style="width: 28px; height: 28px; border-radius: 50%; background: ${c.hex}; border: 3px solid white; box-shadow: 0 2px 8px rgba(0,0,0,0.3);"></div>
-        <span style="margin-top: 4px; font-size: 9px;">${c.name}</span>
+        <div style="width: 30px; height: 30px; border-radius: 50%; background: ${c.hex}; border: 3px solid white; box-shadow: 0 2px 8px rgba(0,0,0,0.3);"></div>
+        <span style="margin-top: 5px; font-size: 10px;">${c.name}</span>
       </div>
     `).join('');
     
@@ -1787,8 +2030,8 @@ const app = {
     grid.innerHTML = ESTADOS.map((s, i) => `
       <div class="selector-item ${i === this.state.selectorIndex ? 'focused' : ''}" 
            style="background: ${s.color};" data-index="${i}">
-        <div style="font-size: 28px;">${s.emoji}</div>
-        <span style="margin-top: 4px; font-size: 9px;">${s.label}</span>
+        <div style="font-size: 30px;">${s.emoji}</div>
+        <span style="margin-top: 5px; font-size: 10px;">${s.label}</span>
       </div>
     `).join('');
     
@@ -1844,7 +2087,7 @@ const app = {
   },
 
   // ========================================
-  // QR Y CÁMARA
+  // QR Y CÁMARA - CON HTTPS CHECK
   // ========================================
   
   generarQR() {
@@ -1852,17 +2095,19 @@ const app = {
     const texto = `${this.miID}|${nom}`;
     const qrDiv = document.getElementById('qr-mio');
     if (qrDiv) {
-      qrDiv.innerHTML = `<img src="https://api.qrserver.com/v1/create-qr-code/?size=280x280&data=${encodeURIComponent(texto)}" alt="QR" style="width: 130px; height: 130px;"/>`;
+      qrDiv.innerHTML = `<img src="https://api.qrserver.com/v1/create-qr-code/?size=280x280&data=${encodeURIComponent(texto)}" alt="QR" style="width: 140px; height: 140px;"/>`;
     }
   },
 
   async scanQR() {
-    // Verificar HTTPS (requerido para cámara)
+    // Verificar HTTPS (requerido para cámara en iOS/Android)
     if (location.protocol !== 'https:' && location.hostname !== 'localhost') {
-      this.showMsg('⚠️ HTTPS requerido');
+      this.showMsg('⚠️ HTTPS requerido para cámara');
       // Fallback: input manual
-      const codigo = prompt('Pega el código del amigo (formato: ID|Nombre):');
-      if (codigo) this.procesarQR(codigo);
+      setTimeout(() => {
+        const codigo = prompt('Pega el código del amigo (formato: ID|Nombre):');
+        if (codigo) this.procesarQR(codigo);
+      }, 500);
       return;
     }
     
@@ -1872,12 +2117,12 @@ const app = {
     modal.style.zIndex = '200';
     modal.innerHTML = `
       <div class="selector-title">📷 Escaneando...</div>
-      <div style="background: white; padding: 12px; border-radius: 16px; position: relative;">
-        <video id="scan-video" style="width: 240px; height: 240px; object-fit: cover; border-radius: 12px; display: block; background: #000;" autoplay playsinline muted></video>
-        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 200px; height: 200px; border: 2px solid #48BB78; border-radius: 12px; pointer-events: none;"></div>
+      <div style="background: white; padding: 15px; border-radius: 16px; position: relative;">
+        <video id="scan-video" style="width: 260px; height: 260px; object-fit: cover; border-radius: 12px; display: block; background: #000;" autoplay playsinline muted></video>
+        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 220px; height: 220px; border: 3px solid #48BB78; border-radius: 12px; pointer-events: none;"></div>
       </div>
-      <div style="text-align: center; margin-top: 8px; color: white; font-size: 11px;">Enfoca el código QR</div>
-      <button onclick="this.closest('.selector-modal').remove()" style="margin-top: 12px; padding: 10px 24px; background: #F56565; color: white; border: none; border-radius: 20px; font-weight: 800; font-family: 'Nunito'; cursor: pointer; font-size: 12px;">Cancelar</button>
+      <div style="text-align: center; margin-top: 10px; color: white; font-size: 12px;">Enfoca el código QR</div>
+      <button onclick="this.closest('.selector-modal').remove()" style="margin-top: 15px; padding: 12px 30px; background: #F56565; color: white; border: none; border-radius: 25px; font-weight: 800; font-family: 'Nunito'; cursor: pointer; font-size: 13px;">Cancelar</button>
     `;
     document.body.appendChild(modal);
     
@@ -1910,6 +2155,7 @@ const app = {
       const ctx = canvas.getContext('2d', { willReadFrequently: true });
       
       let scanning = true;
+      let frames = 0;
       
       const scan = () => {
         if (!scanning || !document.getElementById('scan-video')) {
@@ -1917,25 +2163,29 @@ const app = {
           return;
         }
         
-        try {
-          canvas.width = video.videoWidth || 640;
-          canvas.height = video.videoHeight || 640;
-          ctx.drawImage(video, 0, 0);
-          
-          const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-          const code = jsQR(imageData.data, canvas.width, canvas.height, {
-            inversionAttempts: "dontInvert"
-          });
-          
-          if (code && code.data) {
-            scanning = false;
-            if (stream) stream.getTracks().forEach(t => t.stop());
-            modal.remove();
-            this.procesarQR(code.data);
-            return;
+        frames++;
+        // Escanear cada 5 frames para rendimiento
+        if (frames % 5 === 0) {
+          try {
+            canvas.width = video.videoWidth || 640;
+            canvas.height = video.videoHeight || 640;
+            ctx.drawImage(video, 0, 0);
+            
+            const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            const code = jsQR(imageData.data, canvas.width, canvas.height, {
+              inversionAttempts: "dontInvert"
+            });
+            
+            if (code && code.data) {
+              scanning = false;
+              if (stream) stream.getTracks().forEach(t => t.stop());
+              modal.remove();
+              this.procesarQR(code.data);
+              return;
+            }
+          } catch(e) {
+            console.error('Scan error:', e);
           }
-        } catch(e) {
-          console.error('Scan error:', e);
         }
         
         requestAnimationFrame(scan);
@@ -1949,7 +2199,7 @@ const app = {
       modal.remove();
       
       let msg = 'Error cámara';
-      if (err.name === 'NotAllowedError') msg = 'Permiso denegado. Habilita cámara en ajustes.';
+      if (err.name === 'NotAllowedError') msg = 'Permiso denegado';
       else if (err.name === 'NotFoundError') msg = 'Cámara no encontrada';
       else if (err.name === 'NotReadableError') msg = 'Cámara en uso';
       
@@ -1972,9 +2222,16 @@ const app = {
         this.contactos[id] = nombre;
         localStorage.setItem('cts', JSON.stringify(this.contactos));
         this.showMsg(`✅ ${nombre} agregado`);
-        if (this.state.currentPage === 'contacts') {
+        
+        // Si estamos en enviar, recargar lista
+        if (this.state.currentPage === 'enviar') {
+          this.renderEnviarList();
+        } else if (this.state.currentPage === 'contacts') {
           this.renderContacts();
         }
+        return;
+      } else if (id === this.miID) {
+        this.showMsg('❌ No puedes agregarte a ti mismo');
         return;
       }
     }
@@ -1982,23 +2239,28 @@ const app = {
   },
 
   // ========================================
-  // TOQUES - FUNCIONALIDAD PRINCIPAL
+  // TOQUES - ENVÍO FUNCIONAL COMPLETO
   // ========================================
   
   async enviarToque(paraId, paraNombre) {
     console.log('Enviando toque a:', paraId, paraNombre);
     
-    if (!this.state.selectedToke) {
+    if (!this.state.selectedVariante || !this.state.selectedCategoria) {
       this.showMsg('Error: No hay toque seleccionado');
+      this.playSound('error');
       return;
     }
     
     if (this.state.toquesRestantes <= 0) {
       this.showMsg('❌ No te quedan tokes hoy');
+      this.playSound('error');
       return;
     }
     
-    this.showMsg('Enviando...');
+    this.showMsg('Enviando... ⏳');
+    
+    const categoria = TOKES_TYPES.find(t => t.id === this.state.selectedCategoria);
+    const variante = this.state.selectedVariante;
     
     try {
       const response = await fetch(`${BACK}/toque`, {
@@ -2010,26 +2272,33 @@ const app = {
         body: JSON.stringify({
           de: this.miID,
           para: paraId,
-          tipo: this.state.selectedToke.id,
-          emoji: this.state.selectedToke.emoji,
-          nombre: this.state.selectedToke.name,
-          mensaje: this.state.selectedToke.desc
+          tipo: this.state.selectedCategoria,
+          emoji: variante.emoji,
+          nombre: variante.nombre,
+          mensaje: variante.texto,
+          categoria_emoji: categoria?.emoji || '💌'
         })
       });
       
       let data;
+      const responseText = await response.text();
       try {
-        data = await response.json();
+        data = JSON.parse(responseText);
       } catch(e) {
-        data = { ok: response.ok };
+        data = { ok: response.ok, text: responseText };
       }
       
-      if (response.ok || data.ok) {
-        // Actualizar contador
-        this.state.toquesRestantes = data.toques_restantes || this.state.toquesRestantes - 1;
+      console.log('Respuesta servidor:', response.status, data);
+      
+      if (response.ok && data.ok) {
+        // ÉXITO: Actualizar contador
+        this.state.toquesRestantes = data.toques_restantes !== undefined ? data.toques_restantes : this.state.toquesRestantes - 1;
         localStorage.setItem('toquesRestantes', this.state.toquesRestantes);
         
-        // Desbloquear emoji cada 5 tokes
+        // Actualizar badge en home
+        this.updateHome();
+        
+        // Desbloquear emoji cada 5 tokes enviados
         this.todex.total = (this.todex.total || 0) + 1;
         if (this.todex.total % 5 === 0) {
           const disponibles = [];
@@ -2040,32 +2309,40 @@ const app = {
             const nuevo = disponibles[Math.floor(Math.random() * disponibles.length)];
             this.todex.captured.push(nuevo);
             localStorage.setItem('todex', JSON.stringify(this.todex));
-            setTimeout(() => this.showMsg(`🎉 ¡Emoji #${nuevo} desbloqueado!`), 500);
+            setTimeout(() => this.showMsg(`🎉 ¡Emoji #${nuevo} desbloqueado!`), 1000);
           }
         }
         localStorage.setItem('todex', JSON.stringify(this.todex));
         
-        this.showMsg(`✅ ${this.state.selectedToke.emoji} enviado a ${paraNombre}`);
-        this.state.selectedToke = null;
+        this.showMsg(`✅ ${variante.emoji} enviado a ${paraNombre}`);
+        this.playSound('select');
+        
+        // Reset selección y volver a home
+        this.state.selectedCategoria = null;
+        this.state.selectedVariante = null;
         
         setTimeout(() => this.showPage('home'), 2000);
       } else {
-        this.showMsg('❌ Error del servidor: ' + (data.error || 'Unknown'));
+        // Error del servidor
+        const errorMsg = data.error || 'Error del servidor';
+        this.showMsg('❌ ' + errorMsg);
+        this.playSound('error');
       }
     } catch(e) {
       console.error('Error enviando toque:', e);
-      this.showMsg('❌ Error de red. ¿Backend activo?');
-      
-      // Modo offline: guardar para enviar luego
-      this.showMsg('💾 Guardado para enviar luego');
-      this.state.selectedToke = null;
-      setTimeout(() => this.showPage('home'), 1500);
+      this.showMsg('❌ Error de red. Verifica conexión.');
+      this.playSound('error');
     }
   },
 
+  // ========================================
+  // COMBATES (MVP)
+  // ========================================
+  
   jugarVSIA() {
     if (this.todex.captured.length < 3) {
       this.showMsg('Necesitas 3 emojis en ToDox');
+      this.playSound('error');
       return;
     }
     this.showMsg('🤖 VS IA - Próximamente');
@@ -2074,6 +2351,7 @@ const app = {
   jugarVSAmigo() {
     if (Object.keys(this.contactos).length === 0) {
       this.showMsg('Agrega amigos primero');
+      this.playSound('error');
       return;
     }
     this.showMsg('⚔️ VS Amigo - Próximamente');
@@ -2085,7 +2363,7 @@ const app = {
   },
 
   // ========================================
-  // RESPUESTAS A TOQUES
+  // RESPUESTAS A TOQUES ENTRANTES
   // ========================================
   
   checkIncoming() {
@@ -2108,7 +2386,8 @@ const app = {
     if (!modal || !title) return;
     
     const nombre = this.contactos[toque.de] || 'Alguien';
-    title.textContent = `${toque.emoji || '💌'} Toque de ${nombre}`;
+    const emoji = toque.categoria_emoji || toque.emoji || '💌';
+    title.innerHTML = `${emoji} Toque de <strong>${nombre}</strong><br><span style="font-size: 14px; opacity: 0.9;">${toque.mensaje || ''}</span>`;
     modal.classList.add('active');
     
     this.state.focus = { type: 'response', index: 0 };
@@ -2121,10 +2400,10 @@ const app = {
     const modal = document.getElementById('response-modal');
     if (!modal) return;
     
-    if (idx === 4) { // Ignorar
+    if (idx === 4 || idx === 5) { // Ignorar (índice 4 o 5 según layout)
       modal.classList.remove('active');
       this.state.pendingToque = null;
-    } else { // Responder
+    } else { // Responder con emoji
       const respuestas = ['💕','😂','🙏','🔥'];
       const respuesta = respuestas[idx] || respuestas[0];
       
@@ -2155,19 +2434,19 @@ const app = {
     if (!bar) return;
     bar.textContent = text;
     bar.classList.add('show');
-    setTimeout(() => bar.classList.remove('show'), 2800);
+    setTimeout(() => bar.classList.remove('show'), 3000);
   },
 
   vibrar() {
     if (this.state.settings.vibracion && navigator.vibrate) {
-      navigator.vibrate(12);
+      navigator.vibrate(15);
     }
   }
 };
 
 // INICIAR
 window.addEventListener('load', () => {
-  console.log('Window loaded');
+  console.log('Window loaded - Tokeji iniciando');
   app.init();
 });
 </script>
