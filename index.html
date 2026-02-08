@@ -1,991 +1,1149 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Tokeji</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Nunito', sans-serif;
-            user-select: none;
-            -webkit-tap-highlight-color: transparent;
-            touch-action: manipulation;
-        }
-
-        :root {
-            --device-color: #8b5cf6;
-            --device-color-light: #a78bfa;
-            --device-color-dark: #7c3aed;
-            --screen-bg: #f8fafc;
-            --text-color: #2d3748;
-        }
-
-        body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-
-        .device {
-            width: 360px;
-            height: 640px;
-            background: linear-gradient(145deg, #c4b5fd 0%, #a78bfa 50%, #8b5cf6 100%);
-            border-radius: 60px 60px 50px 50px;
-            padding: 30px 25px 25px 25px;
-            box-shadow: 
-                0 30px 60px rgba(0,0,0,0.4),
-                inset 0 5px 15px rgba(255,255,255,0.4),
-                inset 0 -5px 15px rgba(0,0,0,0.2);
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
-
-        .device::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 20%;
-            right: 20%;
-            height: 40%;
-            background: linear-gradient(180deg, 
-                rgba(255,255,255,0.4) 0%, 
-                rgba(255,255,255,0.1) 50%,
-                transparent 100%);
-            border-radius: 50% 50% 0 0;
-            pointer-events: none;
-        }
-
-        .device-logo {
-            position: absolute;
-            top: 12px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 14px;
-            font-weight: 900;
-            color: rgba(255,255,255,0.8);
-            letter-spacing: 3px;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
-            z-index: 10;
-        }
-
-        .screw {
-            position: absolute;
-            width: 12px;
-            height: 12px;
-            background: linear-gradient(145deg, #e5e7eb, #9ca3af);
-            border-radius: 50%;
-            box-shadow: inset 0 2px 3px rgba(255,255,255,0.5), 0 2px 4px rgba(0,0,0,0.3);
-            z-index: 10;
-        }
-
-        .screw::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) rotate(45deg);
-            width: 8px;
-            height: 2px;
-            background: #6b7280;
-            box-shadow: 0 0 0 1px #6b7280;
-        }
-
-        .screw-tl { top: 15px; left: 20px; }
-        .screw-tr { top: 15px; right: 20px; }
-        .screw-bl { bottom: 140px; left: 20px; }
-        .screw-br { bottom: 140px; right: 20px; }
-
-        .screen {
-            width: 310px;
-            height: 380px;
-            background: var(--screen-bg);
-            border-radius: 25px;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 
-                inset 0 3px 10px rgba(0,0,0,0.15),
-                0 2px 5px rgba(255,255,255,0.5);
-            border: 8px solid #374151;
-            flex-shrink: 0;
-        }
-
-        .screen::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            border-radius: 18px;
-            box-shadow: inset 0 0 20px rgba(0,0,0,0.1);
-            pointer-events: none;
-            z-index: 5;
-        }
-
-        .status-bar {
-            position: absolute;
-            top: 8px;
-            left: 12px;
-            right: 12px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 11px;
-            font-weight: 700;
-            color: #64748b;
-            z-index: 10;
-        }
-
-        .signal-icon {
-            display: flex;
-            align-items: flex-end;
-            gap: 2px;
-            height: 12px;
-        }
-
-        .signal-bar {
-            width: 3px;
-            background: #64748b;
-            border-radius: 1px;
-        }
-
-        .signal-bar:nth-child(1) { height: 4px; }
-        .signal-bar:nth-child(2) { height: 6px; }
-        .signal-bar:nth-child(3) { height: 8px; }
-        .signal-bar:nth-child(4) { height: 12px; opacity: 0.3; }
-
-        .battery-icon {
-            display: flex;
-            align-items: center;
-            gap: 3px;
-        }
-
-        .battery-body {
-            width: 22px;
-            height: 10px;
-            border: 1.5px solid #64748b;
-            border-radius: 2px;
-            position: relative;
-            display: flex;
-            align-items: center;
-            padding: 1px;
-        }
-
-        .battery-body::after {
-            content: '';
-            position: absolute;
-            right: -3px;
-            width: 2px;
-            height: 6px;
-            background: #64748b;
-            border-radius: 0 1px 1px 0;
-        }
-
-        .battery-fill {
-            height: 100%;
-            width: 70%;
-            background: #64748b;
-            border-radius: 1px;
-        }
-
-        /* PÁGINAS */
-        .page {
-            display: none;
-            width: 100%;
-            height: 100%;
-            flex-direction: column;
-            padding: 25px 12px 12px 12px;
-            position: relative;
-            overflow: hidden;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .page.active {
-            display: flex;
-            opacity: 1;
-        }
-
-        /* SPLASH */
-        .splash-page {
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            background: linear-gradient(145deg, #8b5cf6, #a78bfa);
-            padding: 0;
-        }
-
-        .splash-logo {
-            font-size: 42px;
-            font-weight: 900;
-            color: white;
-            letter-spacing: 4px;
-            text-shadow: 0 4px 8px rgba(0,0,0,0.3);
-            animation: pulse 2s ease-in-out infinite;
-        }
-
-        .splash-sub {
-            font-size: 12px;
-            color: rgba(255,255,255,0.8);
-            margin-top: 10px;
-            letter-spacing: 2px;
-        }
-
-        .splash-hint {
-            position: absolute;
-            bottom: 60px;
-            font-size: 11px;
-            color: rgba(255,255,255,0.7);
-            animation: blink 1.5s infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.05); opacity: 0.9; }
-        }
-
-        @keyframes blink {
-            0%, 100% { opacity: 0.4; }
-            50% { opacity: 1; }
-        }
-
-        /* CONSENT */
-        .consent-page {
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 20px;
-        }
-
-        .consent-title {
-            font-size: 20px;
-            font-weight: 900;
-            color: var(--text-color);
-            margin-bottom: 15px;
-        }
-
-        .consent-text {
-            font-size: 12px;
-            color: #64748b;
-            line-height: 1.5;
-            margin-bottom: 20px;
-        }
-
-        .consent-checkbox {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 20px;
-            cursor: pointer;
-        }
-
-        .consent-checkbox input {
-            width: 20px;
-            height: 20px;
-            accent-color: #8b5cf6;
-        }
-
-        .consent-checkbox label {
-            font-size: 13px;
-            color: var(--text-color);
-            font-weight: 700;
-        }
-
-        .consent-buttons {
-            display: flex;
-            gap: 15px;
-        }
-
-        .btn-yes, .btn-no {
-            padding: 12px 30px;
-            border: none;
-            border-radius: 20px;
-            font-size: 16px;
-            font-weight: 800;
-            cursor: pointer;
-            transition: all 0.2s;
-            box-shadow: 0 4px 0 rgba(0,0,0,0.2);
-        }
-
-        .btn-yes {
-            background: linear-gradient(145deg, #48bb78, #38a169);
-            color: white;
-        }
-
-        .btn-no {
-            background: linear-gradient(145deg, #f56565, #e53e3e);
-            color: white;
-        }
-
-        .btn-yes.selected, .btn-no.selected {
-            transform: scale(1.1);
-            box-shadow: 0 6px 0 rgba(0,0,0,0.3);
-        }
-
-        /* SETUP */
-        .setup-page {
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding-top: 30px;
-        }
-
-        .setup-title {
-            font-size: 18px;
-            font-weight: 900;
-            color: var(--text-color);
-            margin-bottom: 15px;
-        }
-
-        .setup-input {
-            width: 90%;
-            max-width: 250px;
-            padding: 12px;
-            border: 3px solid #e2e8f0;
-            border-radius: 15px;
-            font-size: 20px;
-            text-align: center;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            outline: none;
-            font-weight: 700;
-            background: white;
-            margin: 10px 0;
-        }
-
-        .setup-input:focus {
-            border-color: #a78bfa;
-        }
-
-        .setup-hint {
-            font-size: 11px;
-            color: #94a3b8;
-            margin-top: 10px;
-            font-weight: 600;
-        }
-
-        .animals-grid {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            margin: 15px 0;
-            max-height: 200px;
-            overflow-y: auto;
-            width: 100%;
-            max-width: 280px;
-            padding-right: 5px;
-        }
-
-        .animals-grid::-webkit-scrollbar {
-            width: 6px;
-        }
-
-        .animals-grid::-webkit-scrollbar-thumb {
-            background: #a78bfa;
-            border-radius: 3px;
-        }
-
-        .animal-option {
-            width: 100%;
-            height: 50px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 28px;
-            cursor: pointer;
-            background: white;
-            border: 3px solid transparent;
-            box-shadow: 0 3px 8px rgba(0,0,0,0.1);
-            transition: all 0.2s;
-        }
-
-        .animal-option.selected {
-            border-color: #8b5cf6;
-            transform: scale(1.02);
-            box-shadow: 0 5px 15px rgba(139, 92, 246, 0.4);
-            background: #f3f0ff;
-        }
-
-        .btn-primary {
-            background: linear-gradient(145deg, #8b5cf6, #7c3aed);
-            color: white;
-            border: none;
-            padding: 12px 30px;
-            border-radius: 25px;
-            font-size: 16px;
-            font-weight: 800;
-            cursor: pointer;
-            margin-top: 15px;
-            box-shadow: 0 6px 0 #5b21b6, 0 8px 15px rgba(0,0,0,0.2);
-            transition: all 0.1s;
-        }
-
-        .btn-primary:active {
-            transform: translateY(4px);
-            box-shadow: 0 2px 0 #5b21b6, 0 4px 8px rgba(0,0,0,0.2);
-        }
-
-        /* HOME */
-        .home-page {
-            align-items: center;
-            justify-content: flex-start;
-            padding-top: 30px;
-        }
-
-        .home-avatar-container {
-            position: relative;
-            margin-bottom: 8px;
-        }
-
-        .home-animal {
-            font-size: 80px;
-            filter: drop-shadow(0 8px 15px rgba(0,0,0,0.15));
-            animation: breathe 3s ease-in-out infinite;
-            position: relative;
-            z-index: 2;
-        }
-
-        @keyframes breathe {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05) translateY(-5px); }
-        }
-
-        .avatar-shadow {
-            position: absolute;
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 60px;
-            height: 15px;
-            background: rgba(0,0,0,0.1);
-            border-radius: 50%;
-            animation: shadow 3s ease-in-out infinite;
-        }
-
-        @keyframes shadow {
-            0%, 100% { transform: translateX(-50%) scale(1); }
-            50% { transform: translateX(-50%) scale(0.8); }
-        }
-
-        .home-name {
-            font-size: 24px;
-            font-weight: 900;
-            color: var(--text-color);
-            margin-bottom: 5px;
-            text-shadow: 0 2px 0 rgba(0,0,0,0.1);
-            letter-spacing: 1px;
-        }
-
-        .home-status {
-            background: linear-gradient(145deg, #48bb78, #38a169);
-            color: white;
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 800;
-            margin-bottom: 15px;
-            box-shadow: 0 4px 0 #276749, 0 6px 10px rgba(0,0,0,0.1);
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            cursor: pointer;
-        }
-
-        .tokes-counter {
-            background: linear-gradient(145deg, #8b5cf6, #7c3aed);
-            color: white;
-            padding: 8px 20px;
-            border-radius: 20px;
-            font-size: 14px;
-            font-weight: 800;
-            margin-top: 10px;
-            box-shadow: 0 4px 0 #5b21b6;
-        }
-
-        /* MENÚ */
-        .menu-page {
-            padding-top: 20px;
-        }
-
-        .menu-title {
-            text-align: center;
-            font-size: 18px;
-            font-weight: 900;
-            color: var(--text-color);
-            margin-bottom: 15px;
-        }
-
-        .menu-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            grid-template-rows: repeat(3, 1fr);
-            gap: 10px;
-            flex: 1;
-            max-height: 320px;
-        }
-
-        .menu-btn {
-            border-radius: 15px;
-            padding: 10px 5px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 4px 0 rgba(0,0,0,0.1), 0 6px 12px rgba(0,0,0,0.1);
-            transition: all 0.2s;
-            border: 3px solid transparent;
-            cursor: pointer;
-            background: white;
-        }
-
-        .menu-btn.selected {
-            transform: scale(1.05) translateY(-2px);
-            box-shadow: 0 6px 0 #8b5cf6, 0 10px 20px rgba(139,92,246,0.3);
-            border-color: #8b5cf6;
-            background: #f3f0ff;
-        }
-
-        .menu-btn-icon {
-            font-size: 28px;
-            margin-bottom: 2px;
-        }
-
-        .menu-btn-label {
-            color: var(--text-color);
-            font-size: 11px;
-            font-weight: 800;
-            text-transform: uppercase;
-        }
-
-        /* AMIGOS - ESTILOS ESPECÍFICOS */
-        .amigos-page {
-            padding: 0 !important;
-        }
-
-        .amigos-header {
-            text-align: center;
-            padding-top: 35px;
-            margin-bottom: 15px;
-            flex-shrink: 0;
-        }
-
-        .amigos-title {
-            font-size: 20px;
-            font-weight: 900;
-            color: var(--text-color);
-            margin-bottom: 5px;
-        }
-
-        .amigos-count {
-            font-size: 13px;
-            color: #8b5cf6;
-            font-weight: 700;
-        }
-
-        .amigos-lista {
-            flex: 1;
-            overflow-y: auto;
-            padding: 0 15px;
-            margin-bottom: 15px;
-        }
-
-        .amigos-lista::-webkit-scrollbar {
-            width: 6px;
-        }
-
-        .amigos-lista::-webkit-scrollbar-thumb {
-            background: #a78bfa;
-            border-radius: 3px;
-        }
-
-        .amigo-card {
-            background: white;
-            border-radius: 15px;
-            padding: 15px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 10px;
-            border: 3px solid transparent;
-            box-shadow: 0 4px 0 #e2e8f0;
-            transition: all 0.2s;
-        }
-
-        .amigo-card.selected {
-            border-color: #8b5cf6;
-            background: #f3f0ff;
-            box-shadow: 0 6px 0 #8b5cf6;
-            transform: translateX(5px);
-        }
-
-        .amigo-avatar {
-            width: 45px;
-            height: 45px;
-            background: linear-gradient(145deg, #8b5cf6, #7c3aed);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            flex-shrink: 0;
-        }
-
-        .amigo-info {
-            flex: 1;
-            min-width: 0;
-        }
-
-        .amigo-nombre {
-            font-size: 16px;
-            font-weight: 800;
-            color: var(--text-color);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .amigo-id {
-            font-size: 11px;
-            color: #94a3b8;
-            font-family: monospace;
-        }
-
-        .amigos-vacio {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100%;
-            opacity: 0.7;
-            text-align: center;
-            padding: 20px;
-        }
-
-        .vacio-icono {
-            font-size: 60px;
-            margin-bottom: 15px;
-        }
-
-        .vacio-texto {
-            font-size: 18px;
-            font-weight: 800;
-            color: var(--text-color);
-            margin-bottom: 5px;
-        }
-
-        .vacio-hint {
-            font-size: 13px;
-            color: #64748b;
-        }
-
-        .amigos-botones {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            padding: 0 15px 15px;
-            flex-shrink: 0;
-        }
-
-        .amigo-btn {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            background: white;
-            border: 3px solid transparent;
-            border-radius: 15px;
-            padding: 15px;
-            cursor: pointer;
-            box-shadow: 0 4px 0 #e2e8f0;
-            transition: all 0.2s;
-            text-align: left;
-            width: 100%;
-            border: none;
-        }
-
-        .amigo-btn.selected {
-            border: 3px solid #8b5cf6;
-            background: #f3f0ff;
-            box-shadow: 0 6px 0 #8b5cf6;
-            transform: translateX(5px);
-        }
-
-        .btn-icon {
-            font-size: 28px;
-        }
-
-        .btn-text {
-            font-size: 16px;
-            font-weight: 800;
-            color: var(--text-color);
-        }
-
-        /* ESCANEAR */
-        .escanear-page {
-            background: black !important;
-            padding: 0 !important;
-        }
-
-        /* BOTONES HARDWARE */
-        .hardware-buttons {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            grid-template-rows: 1fr 1fr;
-            gap: 10px;
-            margin-top: 15px;
-            position: relative;
-            z-index: 10;
-            padding: 0 20px;
-            height: 140px;
-        }
-
-        .hw-btn-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .hw-btn-container.back { grid-row: 1 / 3; grid-column: 1; }
-        .hw-btn-container.up { grid-row: 1; grid-column: 3; }
-        .hw-btn-container.down { grid-row: 2; grid-column: 3; }
-        .hw-btn-container.ok { grid-row: 1 / 3; grid-column: 2; }
-
-        .hw-btn {
-            border: none;
-            font-weight: 900;
-            cursor: pointer;
-            box-shadow: 0 6px 0 rgba(0,0,0,0.2), 0 10px 20px rgba(0,0,0,0.2);
-            transition: all 0.1s;
-            outline: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .hw-btn.pressed {
-            transform: translateY(6px);
-            box-shadow: 0 0 0 rgba(0,0,0,0.2), 0 5px 10px rgba(0,0,0,0.2);
-        }
-
-        .btn-back {
-            width: 70px;
-            height: 100px;
-            border-radius: 20px;
-            background: linear-gradient(145deg, #f3f0ff, #e9d5ff);
-            color: #7c3aed;
-            font-size: 28px;
-        }
-
-        .btn-nav-small {
-            width: 60px;
-            height: 50px;
-            border-radius: 15px;
-            background: linear-gradient(145deg, #f3f0ff, #e9d5ff);
-            color: #7c3aed;
-            font-size: 24px;
-        }
-
-        .btn-ok {
-            width: 90px;
-            height: 100px;
-            border-radius: 50%;
-            background: linear-gradient(145deg, #f472b6, #ec4899);
-            color: white;
-            font-size: 28px;
-            box-shadow: 0 6px 0 #be185d, 0 10px 20px rgba(0,0,0,0.2);
-        }
-
-        .btn-ok:active, .btn-ok.pressed {
-            box-shadow: 0 0 0 #be185d, 0 5px 10px rgba(0,0,0,0.2);
-        }
-
-        .hw-label {
-            margin-top: 5px;
-            color: rgba(255,255,255,0.9);
-            font-size: 10px;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
-        }
-
-        /* Responsive */
-        @media (max-width: 400px) {
-            body { padding: 0; }
-            .device {
-                width: 100vw;
-                height: 100vh;
-                border-radius: 0;
-                padding: 20px 15px 15px 15px;
-            }
-            .screen {
-                width: calc(100vw - 30px);
-                height: calc(100vh - 180px);
-            }
-        }
-    </style>
+  <meta charset="utf-8"/>
+  <title>Tokeji</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no"/>
+  <meta name="theme-color" content="#8b5cf6"/>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Nunito', sans-serif;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+    }
+
+    :root {
+      --device-color: #8b5cf6;
+      --device-light: #a78bfa;
+      --device-dark: #7c3aed;
+      --screen-bg: #f8fafc;
+      --text-color: #2d3748;
+    }
+
+    body {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    /* DEVICE SHELL - KIMOJI STYLE */
+    .device {
+      width: 360px;
+      height: 640px;
+      background: linear-gradient(145deg, #c4b5fd 0%, #a78bfa 50%, #8b5cf6 100%);
+      border-radius: 60px 60px 50px 50px;
+      padding: 30px 25px 25px 25px;
+      box-shadow: 
+        0 30px 60px rgba(0,0,0,0.4),
+        inset 0 5px 15px rgba(255,255,255,0.4),
+        inset 0 -5px 15px rgba(0,0,0,0.2);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .device::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 20%;
+      right: 20%;
+      height: 40%;
+      background: linear-gradient(180deg, 
+        rgba(255,255,255,0.4) 0%, 
+        rgba(255,255,255,0.1) 50%,
+        transparent 100%);
+      border-radius: 50% 50% 0 0;
+      pointer-events: none;
+    }
+
+    .device-logo {
+      position: absolute;
+      top: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 14px;
+      font-weight: 900;
+      color: rgba(255,255,255,0.8);
+      letter-spacing: 3px;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+      z-index: 10;
+    }
+
+    .screw {
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      background: linear-gradient(145deg, #e5e7eb, #9ca3af);
+      border-radius: 50%;
+      box-shadow: inset 0 2px 3px rgba(255,255,255,0.5), 0 2px 4px rgba(0,0,0,0.3);
+      z-index: 10;
+    }
+
+    .screw::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) rotate(45deg);
+      width: 8px;
+      height: 2px;
+      background: #6b7280;
+      box-shadow: 0 0 0 1px #6b7280;
+    }
+
+    .screw-tl { top: 15px; left: 20px; }
+    .screw-tr { top: 15px; right: 20px; }
+    .screw-bl { bottom: 100px; left: 20px; }
+    .screw-br { bottom: 100px; right: 20px; }
+
+    /* SCREEN */
+    .screen {
+      width: 310px;
+      height: 480px;
+      background: var(--screen-bg);
+      border-radius: 25px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 
+        inset 0 3px 10px rgba(0,0,0,0.15),
+        0 2px 5px rgba(255,255,255,0.5);
+      border: 8px solid #374151;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .status-bar {
+      position: absolute;
+      top: 8px;
+      left: 12px;
+      right: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      font-weight: 700;
+      color: #64748b;
+      z-index: 10;
+    }
+
+    /* CONTENT AREA */
+    .content {
+      flex: 1;
+      overflow-y: auto;
+      padding: 35px 15px 15px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .content::-webkit-scrollbar { width: 6px; }
+    .content::-webkit-scrollbar-thumb { background: #a78bfa; border-radius: 3px; }
+
+    /* PAGES */
+    .page { display: none; width: 100%; }
+    .page.active { display: flex; flex-direction: column; }
+
+    /* SPLASH */
+    #page-splash {
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      background: linear-gradient(145deg, #8b5cf6, #a78bfa);
+      height: 100%;
+      padding: 0;
+    }
+
+    .splash-logo {
+      font-size: 42px;
+      font-weight: 900;
+      color: white;
+      letter-spacing: 4px;
+      text-shadow: 0 4px 8px rgba(0,0,0,0.3);
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    .splash-sub {
+      font-size: 12px;
+      color: rgba(255,255,255,0.8);
+      margin-top: 10px;
+      letter-spacing: 2px;
+    }
+
+    .splash-hint {
+      position: absolute;
+      bottom: 60px;
+      font-size: 11px;
+      color: rgba(255,255,255,0.7);
+      animation: blink 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.05); opacity: 0.9; }
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 0.4; }
+      50% { opacity: 1; }
+    }
+
+    /* SETUP */
+    .setup-title {
+      font-size: 20px;
+      font-weight: 900;
+      color: var(--text-color);
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .setup-input {
+      width: 90%;
+      max-width: 250px;
+      padding: 15px;
+      border: 3px solid #e2e8f0;
+      border-radius: 15px;
+      font-size: 20px;
+      text-align: center;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      outline: none;
+      font-weight: 700;
+      background: white;
+      margin: 10px 0;
+    }
+
+    .setup-input:focus { border-color: #a78bfa; }
+
+    .btn-primary {
+      background: linear-gradient(145deg, #8b5cf6, #7c3aed);
+      color: white;
+      border: none;
+      padding: 15px 40px;
+      border-radius: 25px;
+      font-size: 18px;
+      font-weight: 800;
+      cursor: pointer;
+      margin-top: 20px;
+      box-shadow: 0 6px 0 #5b21b6, 0 8px 15px rgba(0,0,0,0.2);
+      transition: all 0.1s;
+    }
+
+    .btn-primary:active {
+      transform: translateY(4px);
+      box-shadow: 0 2px 0 #5b21b6, 0 4px 8px rgba(0,0,0,0.2);
+    }
+
+    /* HOME */
+    .home-header {
+      text-align: center;
+      margin-bottom: 15px;
+    }
+
+    .home-avatar {
+      font-size: 80px;
+      filter: drop-shadow(0 8px 15px rgba(0,0,0,0.15));
+      animation: breathe 3s ease-in-out infinite;
+    }
+
+    @keyframes breathe {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05) translateY(-5px); }
+    }
+
+    .home-name {
+      font-size: 24px;
+      font-weight: 900;
+      color: var(--text-color);
+      margin-top: 10px;
+    }
+
+    .home-status {
+      display: inline-block;
+      background: linear-gradient(145deg, #48bb78, #38a169);
+      color: white;
+      padding: 5px 15px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 800;
+      margin-top: 5px;
+      box-shadow: 0 4px 0 #276749;
+    }
+
+    .tokes-counter {
+      background: linear-gradient(145deg, #8b5cf6, #7c3aed);
+      color: white;
+      padding: 8px 20px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 800;
+      margin: 15px 0;
+      box-shadow: 0 4px 0 #5b21b6;
+    }
+
+    /* TOKES BUTTONS */
+    .tokes-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      width: 100%;
+      margin-top: 10px;
+    }
+
+    .toke-btn {
+      position: relative;
+      width: 100%;
+      border: none;
+      color: #fff;
+      font-size: 1.1rem;
+      padding: 12px;
+      border-radius: 16px;
+      box-shadow: 0 4px 0 rgba(0,0,0,0.2), 0 6px 12px rgba(0,0,0,0.1);
+      cursor: pointer;
+      transition: all 0.1s;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .toke-btn:active {
+      transform: translateY(4px);
+      box-shadow: 0 0 0 rgba(0,0,0,0.2);
+    }
+
+    .toke-btn .emoji {
+      font-size: 1.8rem;
+    }
+
+    .t1 { background: linear-gradient(135deg, #ff0066, #ff3388); }
+    .t2 { background: linear-gradient(135deg, #ff5400, #ff7722); }
+    .t3 { background: linear-gradient(135deg, #ffb800, #ffcc33); color: #333; }
+    .t4 { background: linear-gradient(135deg, #00c598, #00ddaa); }
+    .t5 { background: linear-gradient(135deg, #0081ff, #33a5ff); }
+
+    /* CONTACTS */
+    .contacts-list {
+      width: 100%;
+      margin-top: 10px;
+    }
+
+    .contacto {
+      display: flex;
+      align-items: center;
+      background: white;
+      margin: 8px 0;
+      padding: 12px;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+      box-shadow: 0 2px 0 #e2e8f0;
+      border: 2px solid transparent;
+    }
+
+    .contacto.seleccionado {
+      border-color: #8b5cf6;
+      background: #f3f0ff;
+      box-shadow: 0 4px 0 #8b5cf6;
+      transform: translateX(5px);
+    }
+
+    .contacto span { 
+      flex: 1; 
+      font-weight: 700;
+      color: var(--text-color);
+      font-size: 14px;
+    }
+
+    .contacto small {
+      opacity: 0.6;
+      font-weight: 600;
+    }
+
+    .contacto button {
+      margin: 0 0 0 8px;
+      padding: 6px 10px;
+      font-size: 14px;
+      width: auto;
+      border-radius: 8px;
+      border: none;
+      color: white;
+      cursor: pointer;
+    }
+
+    /* BOTTOM NAV */
+    .bottom-nav {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      background: rgba(255,255,255,0.15);
+      backdrop-filter: blur(10px);
+      padding: 10px 5px;
+      margin-top: auto;
+    }
+
+    .nav-btn {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 11px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      cursor: pointer;
+      padding: 5px;
+      opacity: 0.8;
+      transition: all 0.2s;
+    }
+
+    .nav-btn.active {
+      opacity: 1;
+      transform: scale(1.1);
+    }
+
+    .nav-btn .icon {
+      font-size: 24px;
+    }
+
+    /* MODALS */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.9);
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .modal-content {
+      background: white;
+      border-radius: 20px;
+      padding: 20px;
+      max-width: 90%;
+      max-height: 90%;
+      overflow-y: auto;
+      color: var(--text-color);
+    }
+
+    /* QR */
+    #qr {
+      width: 200px;
+      height: 200px;
+      margin: 20px auto;
+      background: white;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px;
+    }
+
+    #qr img { width: 180px; }
+
+    /* TODEX GRID */
+    .todex-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 8px;
+      width: 100%;
+      margin-top: 10px;
+    }
+
+    .emoji-card {
+      aspect-ratio: 1;
+      background: #e2e8f0;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .emoji-card.captured {
+      background: linear-gradient(135deg, #00c598, #00ddaa);
+    }
+
+    /* MSG */
+    #msg {
+      margin-top: 10px;
+      font-size: 14px;
+      min-height: 40px;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 12px;
+      padding: 10px;
+      text-align: center;
+      width: 100%;
+    }
+
+    /* SCANNER */
+    #scanner video {
+      width: 100%;
+      max-width: 400px;
+      border: 3px solid #00ff00;
+      border-radius: 20px;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 400px) {
+      body { padding: 0; }
+      .device {
+        width: 100vw;
+        height: 100vh;
+        border-radius: 0;
+        padding: 20px 15px 15px;
+      }
+      .screen {
+        width: calc(100vw - 30px);
+        height: calc(100vh - 120px);
+      }
+    }
+  </style>
 </head>
 <body>
-    <div class="device" id="device">
-        <div class="device-logo">TOKEJI</div>
-        <div class="screw screw-tl"></div>
-        <div class="screw screw-tr"></div>
-        <div class="screw screw-bl"></div>
-        <div class="screw screw-br"></div>
-        
-        <div class="screen">
-            <div class="status-bar">
-                <div class="signal-icon">
-                    <div class="signal-bar"></div>
-                    <div class="signal-bar"></div>
-                    <div class="signal-bar"></div>
-                    <div class="signal-bar"></div>
-                </div>
-                <div id="clock">12:00</div>
-                <div class="battery-icon">
-                    <div class="battery-body">
-                        <div class="battery-fill"></div>
-                    </div>
-                </div>
-            </div>
+  <div class="device">
+    <div class="device-logo">TOKEJI</div>
+    <div class="screw screw-tl"></div>
+    <div class="screw screw-tr"></div>
+    <div class="screw screw-bl"></div>
+    <div class="screw screw-br"></div>
+    
+    <div class="screen">
+      <div class="status-bar">
+        <span>TOKEJI</span>
+        <span id="clock">12:00</span>
+      </div>
 
-            <!-- SPLASH -->
-            <div class="page splash-page active" id="page-splash">
-                <div class="splash-logo">TOKEJI</div>
-                <div class="splash-sub">DEVICE</div>
-                <div class="splash-hint">Pulsa OK</div>
-            </div>
-
-            <!-- CONSENT -->
-            <div class="page consent-page" id="page-consent">
-                <div class="consent-title">📋 Bienvenido</div>
-                <div class="consent-text">
-                    Tokeji es una app de mensajería segura.<br><br>
-                    Debes tener 13 años o más, o contar con permiso parental para usar esta aplicación.
-                </div>
-                <div class="consent-checkbox">
-                    <input type="checkbox" id="consent-check">
-                    <label for="consent-check">Tengo 13+ años / Permiso parental</label>
-                </div>
-                <div class="consent-buttons">
-                    <button class="btn-yes selected" id="btn-yes">SÍ</button>
-                    <button class="btn-no" id="btn-no">NO</button>
-                </div>
-            </div>
-
-            <!-- SETUP NOMBRE -->
-            <div class="page setup-page" id="page-setup-name">
-                <div class="setup-title">¿CÓMO TE LLAMAS?</div>
-                <input type="text" class="setup-input" id="input-name" maxlength="10" placeholder="TU NOMBRE" autocomplete="off">
-                <div class="setup-hint">Máx 10 letras | OK para continuar</div>
-            </div>
-
-            <!-- SETUP AVATAR -->
-            <div class="page setup-page" id="page-setup-avatar">
-                <div class="setup-title">ELIGE TU AVATAR</div>
-                <div class="animals-grid" id="animals-grid"></div>
-                <div class="setup-hint">▲▼ para cambiar | OK para seleccionar</div>
-            </div>
-
-            <!-- HOME -->
-            <div class="page home-page" id="page-home">
-                <div class="home-avatar-container">
-                    <div class="home-animal" id="home-animal">🐱</div>
-                    <div class="avatar-shadow"></div>
-                </div>
-                <div class="home-name" id="home-name">USUARIO</div>
-                <div class="home-status" id="home-status">🟢 Disponible</div>
-                <div class="tokes-counter" id="tokes-counter">🎯 30/30</div>
-            </div>
-
-            <!-- MENÚ -->
-            <div class="page menu-page" id="page-menu">
-                <div class="menu-title">MENÚ</div>
-                <div class="menu-grid">
-                    <div class="menu-btn selected" data-index="0">
-                        <span class="menu-btn-icon">👥</span>
-                        <span class="menu-btn-label">Amigos</span>
-                    </div>
-                    <div class="menu-btn" data-index="1">
-                        <span class="menu-btn-icon">💌</span>
-                        <span class="menu-btn-label">Tokes</span>
-                    </div>
-                    <div class="menu-btn" data-index="2">
-                        <span class="menu-btn-icon">📖</span>
-                        <span class="menu-btn-label">TODEX</span>
-                    </div>
-                    <div class="menu-btn" data-index="3">
-                        <span class="menu-btn-icon">📱</span>
-                        <span class="menu-btn-label">QR</span>
-                    </div>
-                    <div class="menu-btn" data-index="4">
-                        <span class="menu-btn-icon">⚔️</span>
-                        <span class="menu-btn-label">Combates</span>
-                    </div>
-                    <div class="menu-btn" data-index="5">
-                        <span class="menu-btn-icon">🎨</span>
-                        <span class="menu-btn-label">Carcasa</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- AMIGOS -->
-            <div class="page amigos-page" id="page-amigos">
-                <div class="amigos-header">
-                    <div class="amigos-title">MIS AMIGOS</div>
-                    <div class="amigos-count" id="amigos-contador">0 amigos</div>
-                </div>
-                
-                <div class="amigos-lista" id="amigos-lista">
-                    <!-- Se llena con JavaScript -->
-                </div>
-                
-                <div class="amigos-botones">
-                    <button class="amigo-btn selected" id="amigo-btn-escanear">
-                        <span class="btn-icon">📷</span>
-                        <span class="btn-text">Escanear QR</span>
-                    </button>
-                    <button class="amigo-btn" id="amigo-btn-miqr">
-                        <span class="btn-icon">📱</span>
-                        <span class="btn-text">Mi Código</span>
-                    </button>
-                </div>
-            </div>
+      <div class="content">
+        <!-- SPLASH -->
+        <div class="page active" id="page-splash">
+          <div class="splash-logo">TOKEJI</div>
+          <div class="splash-sub">DEVICE</div>
+          <div class="splash-hint">Toca para empezar</div>
         </div>
 
-        <div class="hardware-buttons">
-            <div class="hw-btn-container back">
-                <button class="hw-btn btn-back" id="btn-back">◄</button>
-                <div class="hw-label">Atrás</div>
-            </div>
-            <div class="hw-btn-container ok">
-                <button class="hw-btn btn-ok" id="btn-ok">OK</button>
-                <div class="hw-label">OK</div>
-            </div>
-            <div class="hw-btn-container up">
-                <button class="hw-btn btn-nav-small" id="btn-up">▲</button>
-                <div class="hw-label">Arriba</div>
-            </div>
-            <div class="hw-btn-container down">
-                <button class="hw-btn btn-nav-small" id="btn-down">▼</button>
-                <div class="hw-label">Abajo</div>
-            </div>
+        <!-- SETUP -->
+        <div class="page" id="page-setup">
+          <div class="setup-title">¿CÓMO TE LLAMAS?</div>
+          <input type="text" id="miNombre" class="setup-input" maxlength="10" placeholder="TU NOMBRE" autocomplete="off">
+          <button class="btn-primary" onclick="generarQR()">CREAR MI QR</button>
+          <div id="qr" style="display:none;"></div>
+          <button class="btn-primary" id="btnAcceder" style="display:none;" onclick="mostrarApp()">ACCEDER</button>
         </div>
+
+        <!-- HOME -->
+        <div class="page" id="page-home">
+          <div class="home-header">
+            <div class="home-avatar" id="home-avatar">🐱</div>
+            <div class="home-name" id="home-name">Usuario</div>
+            <div class="home-status" id="home-status">🟢 Disponible</div>
+            <div class="tokes-counter" id="tokes-counter">🎯 30/30</div>
+          </div>
+          
+          <div class="tokes-grid">
+            <button class="toke-btn t1" onclick="toque(1)"><span class="emoji">🔥</span>On Fire</button>
+            <button class="toke-btn t2" onclick="toque(2)"><span class="emoji">💕</span>Crush</button>
+            <button class="toke-btn t3" onclick="toque(3)"><span class="emoji">💪</span>Ánimo</button>
+            <button class="toke-btn t4" onclick="toque(4)"><span class="emoji">📅</span>Planes</button>
+            <button class="toke-btn t5" onclick="toque(5)"><span class="emoji">🚨</span>Urgente</button>
+          </div>
+          
+          <div id="msg"></div>
+        </div>
+
+        <!-- CONTACTS -->
+        <div class="page" id="page-contacts">
+          <div class="setup-title">TUS AMIGOS</div>
+          <div class="contacts-list" id="listaContactos"></div>
+          <button class="btn-primary" onclick="scanQR()" style="margin-top:15px;">📷 ESCANEAR QR</button>
+        </div>
+
+        <!-- QR -->
+        <div class="page" id="page-qr">
+          <div class="setup-title">TU CÓDIGO QR</div>
+          <div id="qr-mio"></div>
+          <p style="text-align:center;color:#64748b;font-size:12px;">Muéstralo a tus amigos</p>
+        </div>
+
+        <!-- TODEX -->
+        <div class="page" id="page-todox">
+          <div class="setup-title">TODEX <span id="todex-count">0/150</span></div>
+          <div class="todex-grid" id="todex-grid"></div>
+        </div>
+
+        <!-- COMBATES -->
+        <div class="page" id="page-combates">
+          <div class="setup-title">⚔️ COMBATES</div>
+          <button class="btn-primary" onclick="jugarContraAmigoSimple()" style="margin:10px;">🤖 VS IA</button>
+          <button class="btn-primary" onclick="mostrarListaParaRetar()" style="margin:10px;background:linear-gradient(135deg,#9400D3,#ff5400);">⚔️ VS AMIGO</button>
+        </div>
+
+        <!-- AJUSTES -->
+        <div class="page" id="page-ajustes">
+          <div class="setup-title">⚙️ AJUSTES</div>
+          <button class="btn-primary" onclick="cambiarColor()" style="margin:10px;">🎨 Color dispositivo</button>
+          <button class="btn-primary" onclick="toggleSonido()" style="margin:10px;background:#64748b;">🔊 Sonido</button>
+          <button class="btn-primary" onclick="reiniciar()" style="margin:10px;background:#ff4444;">🗑️ Reiniciar todo</button>
+        </div>
+      </div>
+
+      <!-- BOTTOM NAV -->
+      <div class="bottom-nav">
+        <button class="nav-btn active" onclick="showPage('home')">
+          <span class="icon">💌</span>
+          <span>Tokes</span>
+        </button>
+        <button class="nav-btn" onclick="showPage('contacts')">
+          <span class="icon">👥</span>
+          <span>Amigos</span>
+        </button>
+        <button class="nav-btn" onclick="showPage('qr')">
+          <span class="icon">📱</span>
+          <span>Mi QR</span>
+        </button>
+        <button class="nav-btn" onclick="showPage('todox')">
+          <span class="icon">📖</span>
+          <span>ToDox</span>
+        </button>
+        <button class="nav-btn" onclick="showPage('combates')">
+          <span class="icon">⚔️</span>
+          <span>Luchar</span>
+        </button>
+      </div>
     </div>
+  </div>
 
-    <script src="js/core.js"></script>
-    <script src="js/amigos.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
+<script>
+// ========================================
+// TOKEJI - DAME UN TOQUE CON ESTÉTICA KIMOJI
+// ========================================
+
+const BACK = "https://dame-un-toque-1.onrender.com ";
+let miID = localStorage.getItem("miid");
+if (!miID) {
+  miID = crypto.randomUUID().slice(0, 10);
+  localStorage.setItem("miid", miID);
+}
+
+let contactos = {};
+try {
+  contactos = JSON.parse(localStorage.getItem("cts") || "{}");
+} catch(e) { contactos = {}; }
+
+let usuarioSeleccionado = null;
+let toquesRestantes = parseInt(localStorage.getItem("toquesRestantes") || "30");
+let todex = { captured: [], total_toques_enviados: 0, emojis_stats: {} };
+try {
+  todex = JSON.parse(localStorage.getItem("todex") || '{"captured": [], "total_toques_enviados": 0, "emojis_stats": {}}');
+} catch(e) { todex = { captured: [], total_toques_enviados: 0, emojis_stats: {} }; }
+
+const toquesMostrados = new Set();
+
+// EMOJIS DATABASE (150)
+const EMOJIS_DATABASE = [
+{ id: 1, emoji: "😊", name: "Sonrisa Radiante", rarity: "comun" },
+{ id: 2, emoji: "❤️", name: "Corazón Rojo", rarity: "comun" },
+{ id: 3, emoji: "👍", name: "Like Épico", rarity: "comun" },
+{ id: 4, emoji: "🔥", name: "Fuego Intenso", rarity: "raro" },
+{ id: 5, emoji: "💯", name: "Cien de Cien", rarity: "epico" },
+{ id: 6, emoji: "🤥", name: "Mentiroso", rarity: "comun" },
+{ id: 7, emoji: "👾", name: "Pixel Juego", rarity: "raro" },
+{ id: 8, emoji: "💕", name: "Corazones Gemelos", rarity: "comun" },
+{ id: 9, emoji: "🚀", name: "Cohete Veloz", rarity: "raro" },
+{ id: 10, emoji: "🎯", name: "Dardo Perfecto", rarity: "comun" },
+{ id: 11, emoji: "🦾", name: "Brazo Mecánico", rarity: "comun" },
+{ id: 12, emoji: "🙌", name: "Manos al Aire", rarity: "comun" },
+{ id: 13, emoji: "👏", name: "Aplauso Fuerte", rarity: "comun" },
+{ id: 14, emoji: "💋", name: "Beso", rarity: "comun" },
+{ id: 15, emoji: "🐻", name: "Oso Pardo", rarity: "comun" },
+{ id: 16, emoji: "🐝", name: "Abeja", rarity: "comun" },
+{ id: 17, emoji: "🌈", name: "Arcoíris Mágico", rarity: "raro" },
+{ id: 18, emoji: "☀️", name: "Sol Radiante", rarity: "comun" },
+{ id: 19, emoji: "🌙", name: "Luna Creciente", rarity: "raro" },
+{ id: 20, emoji: "⭐", name: "Estrella Fugaz", rarity: "comun" },
+{ id: 21, emoji: "🌸", name: "Flor de Cerezo", rarity: "raro" },
+{ id: 22, emoji: "📸", name: "Cámara Flash", rarity: "comun" },
+{ id: 23, emoji: "🚗", name: "Coche Rojo", rarity: "comun" },
+{ id: 24, emoji: "🌷", name: "Tulipán Real", rarity: "raro" },
+{ id: 25, emoji: "🍀", name: "Trébol de la Suerte", rarity: "epico" },
+{ id: 26, emoji: "🍕", name: "Pizza Caliente", rarity: "comun" },
+{ id: 27, emoji: "👅", name: "Lengua", rarity: "comun" },
+{ id: 28, emoji: "🍟", name: "Papas Deluxe", rarity: "comun" },
+{ id: 29, emoji: "🌮", name: "Taco Dorado", rarity: "raro" },
+{ id: 30, emoji: "🍰", name: "Pastel de Cumple", rarity: "comun" },
+{ id: 31, emoji: "🎂", name: "Torta Mágica", rarity: "raro" },
+{ id: 32, emoji: "🍫", name: "Chocolate Negro", rarity: "comun" },
+{ id: 33, emoji: "☕", name: "Café Energía", rarity: "comun" },
+{ id: 34, emoji: "🥤", name: "Batido Guay", rarity: "comun" },
+{ id: 35, emoji: "🏀", name: "Balón de Oro", rarity: "raro" },
+{ id: 36, emoji: "⚽", name: "Gol de Leyenda", rarity: "comun" },
+{ id: 37, emoji: "🎾", name: "Ace Perfecto", rarity: "comun" },
+{ id: 38, emoji: "🏆", name: "Copa Suprema", rarity: "epico" },
+{ id: 39, emoji: "🎮", name: "Game Over", rarity: "comun" },
+{ id: 40, emoji: "🎲", name: "Dado Suerte", rarity: "raro" },
+{ id: 41, emoji: "🎸", name: "Guitarra Rock", rarity: "raro" },
+{ id: 42, emoji: "🎺", name: "Trompeta Jazz", rarity: "comun" },
+{ id: 43, emoji: "🎨", name: "Pincel Arte", rarity: "comun" },
+{ id: 44, emoji: "📚", name: "Libro Sabio", rarity: "comun" },
+{ id: 45, emoji: "💡", name: "Bombilla Idea", rarity: "epico" },
+{ id: 46, emoji: "🔧", name: "Llave Maestra", rarity: "comun" },
+{ id: 47, emoji: "😱", name: "Cara de Terror", rarity: "raro" },
+{ id: 48, emoji: "📱", name: "Móvil Último", rarity: "comun" },
+{ id: 49, emoji: "💻", name: "Laptop Gaming", rarity: "raro" },
+{ id: 50, emoji: "🛸", name: "Ovni", rarity: "epico" },
+{ id: 51, emoji: "🥷", name: "Ninja", rarity: "raro" },
+{ id: 52, emoji: "😇", name: "Angelito", rarity: "comun" },
+{ id: 53, emoji: "🧟‍♂️", name: "Zombie Chico", rarity: "raro" },
+{ id: 54, emoji: "👽", name: "Alien", rarity: "epico" },
+{ id: 55, emoji: "🎩", name: "Sombrero Mágico", rarity: "raro" },
+{ id: 56, emoji: "🧙", name: "Mago Anciano", rarity: "epico" },
+{ id: 57, emoji: "🧚", name: "Hada Alas de Luz", rarity: "raro" },
+{ id: 58, emoji: "🧜", name: "Sirena del Mar", rarity: "epico" },
+{ id: 59, emoji: "💃🏻", name: "Bailarina", rarity: "mitico" },
+{ id: 60, emoji: "🦋", name: "Mariposa Éter", rarity: "raro" },
+{ id: 61, emoji: "🦅", name: "Águila Celestial", rarity: "epico" },
+{ id: 62, emoji: "🦈", name: "Tiburón Noche", rarity: "raro" },
+{ id: 63, emoji: "🐅", name: "Tigre Diamante", rarity: "epico" },
+{ id: 64, emoji: "🐘", name: "Elefante Estrella", rarity: "comun" },
+{ id: 65, emoji: "🦒", name: "Jirafa Arcoíris", rarity: "raro" },
+{ id: 66, emoji: "🦏", name: "Rinoceronte Piedra", rarity: "comun" },
+{ id: 67, emoji: "🌍", name: "Tierra Mágica", rarity: "epico" },
+{ id: 68, emoji: "📦", name: "Caja Misteriosa", rarity: "raro" },
+{ id: 69, emoji: "🏴‍☠️", name: "Bandera Pirata", rarity: "comun" },
+{ id: 70, emoji: "✨", name: "Brillo Mágico", rarity: "comun" },
+{ id: 71, emoji: "🚨", name: "Alarma Roja", rarity: "comun" },
+{ id: 72, emoji: "👑", name: "Trono Real", rarity: "mitico" },
+{ id: 73, emoji: "🦄", name: "Unicornio Carmesi", rarity: "epico" },
+{ id: 74, emoji: "🦁", name: "León Solar", rarity: "raro" },
+{ id: 75, emoji: "🧌", name: "Trol", rarity: "mitico" },
+{ id: 76, emoji: "🦉", name: "Búho Nocturno", rarity: "comun" },
+{ id: 77, emoji: "🐣", name: "Pollito", rarity: "epico" },
+{ id: 78, emoji: "🐉", name: "Dragón de Hielo", rarity: "mitico" },
+{ id: 79, emoji: "🐲", name: "Dragón Joven", rarity: "epico" },
+{ id: 80, emoji: "🦕", name: "Dinosaurio Planta", rarity: "raro" },
+{ id: 81, emoji: "🦖", name: "T-Rex", rarity: "mitico" },
+{ id: 82, emoji: "🌋", name: "Volcán Activo", rarity: "epico" },
+{ id: 83, emoji: "🗿", name: "Cabeza Moai", rarity: "comun" },
+{ id: 84, emoji: "🪄", name: "Varita Mágica", rarity: "raro" },
+{ id: 85, emoji: "⚡", name: "Rayo Veloz", rarity: "comun" },
+{ id: 86, emoji: "💀", name: "Calacas Doradas", rarity: "legendario" },
+{ id: 87, emoji: "👻", name: "Fantasma Joker", rarity: "epico" },
+{ id: 88, emoji: "🤢", name: "Enfermo", rarity: "raro" },
+{ id: 89, emoji: "🤡", name: "Payaso", rarity: "epico" },
+{ id: 90, emoji: "🎪", name: "Circo", rarity: "comun" },
+{ id: 91, emoji: "🍾", name: "Champán", rarity: "raro" },
+{ id: 92, emoji: "🎆", name: "Fuegos Artificio", rarity: "comun" },
+{ id: 93, emoji: "🎇", name: "Chispa Divina", rarity: "epico" },
+{ id: 94, emoji: "🫶", name: "Manos Corazón", rarity: "comun" },
+{ id: 95, emoji: "🏃‍♂️", name: "Chico Futing", rarity: "comun" },
+{ id: 96, emoji: "🧟‍♀️", name: "Zombie Chica", rarity: "raro" },
+{ id: 97, emoji: "🤖", name: "Robot", rarity: "comun" },
+{ id: 98, emoji: "🧊", name: "Cubito Hielo", rarity: "comun" },
+{ id: 99, emoji: "😈", name: "Demonio", rarity: "comun" },
+{ id: 100, emoji: "🔫", name: "Pistola Agua", rarity: "epico" },
+{ id: 101, emoji: "💅", name: "Manicura", rarity: "comun" },
+{ id: 102, emoji: "🎐", name: "Campanilla Viento", rarity: "comun" },
+{ id: 103, emoji: "🎀", name: "Lazo Mágico", rarity: "raro" },
+{ id: 104, emoji: "🎁", name: "Caja Sorpresa", rarity: "comun" },
+{ id: 105, emoji: "🎰", name: "Tragaperras", rarity: "raro" },
+{ id: 106, emoji: "✈️", name: "Avión", rarity: "comun" },
+{ id: 107, emoji: "🥵", name: "Tengo Calor", rarity: "comun" },
+{ id: 108, emoji: "🥶", name: "Congelado", rarity: "comun" },
+{ id: 109, emoji: "⌚️", name: "Reloj Muñeca", rarity: "comun" },
+{ id: 110, emoji: "⚓️", name: "Ancla", rarity: "raro" },
+{ id: 111, emoji: "🛁", name: "Bañera", rarity: "comun" },
+{ id: 112, emoji: "🪒", name: "Máquina Afeitar", rarity: "raro" },
+{ id: 113, emoji: "🪤", name: "Trampa", rarity: "epico" },
+{ id: 114, emoji: "💣", name: "Bomba", rarity: "raro" },
+{ id: 115, emoji: "🏍️", name: "Moto Veloz", rarity: "comun" },
+{ id: 116, emoji: "🍒", name: "Cerezas", rarity: "comun" },
+{ id: 117, emoji: "🌪️", name: "Tornado", rarity: "comun" },
+{ id: 118, emoji: "👙", name: "Bikini", rarity: "epico" },
+{ id: 119, emoji: "🧩", name: "Pieza Puzzle", rarity: "raro" },
+{ id: 120, emoji: "🍪", name: "Cookie Choco", rarity: "comun" },
+{ id: 121, emoji: "🏎️", name: "F1", rarity: "epico" },
+{ id: 122, emoji: "🎓", name: "Graduado", rarity: "raro" },
+{ id: 123, emoji: "🧸", name: "Oso Peluche", rarity: "mitico" },
+{ id: 124, emoji: "✂️", name: "Tijeras Cortar", rarity: "epico" },
+{ id: 125, emoji: "🕳️", name: "Agujero Profundo", rarity: "raro" },
+{ id: 126, emoji: "❤️‍🔥", name: "Corazón Llamas", rarity: "mitico" },
+{ id: 127, emoji: "🥳", name: "Fiestero", rarity: "epico" },
+{ id: 128, emoji: "⚰️", name: "Ataúd", rarity: "raro" },
+{ id: 129, emoji: "🎈", name: "Globo Metalizado", rarity: "comun" },
+{ id: 130, emoji: "🎉", name: "Celebración Total", rarity: "comun" },
+{ id: 131, emoji: "👩🏻‍❤️‍👨", name: "Nuevos Novios", rarity: "epico" },
+{ id: 132, emoji: "🦊", name: "Cara Zorro", rarity: "comun" },
+{ id: 133, emoji: "💦", name: "Gotas", rarity: "comun" },
+{ id: 134, emoji: "🚪", name: "Puerta", rarity: "comun" },
+{ id: 135, emoji: "🎎", name: "Muñeca Emperatriz", rarity: "epico" },
+{ id: 136, emoji: "⚠️", name: "Señal Peligro", rarity: "raro" },
+{ id: 137, emoji: "🛌", name: "Dormido", rarity: "comun" },
+{ id: 138, emoji: "🤮", name: "Vomitando", rarity: "epico" },
+{ id: 139, emoji: "🫡", name: "A la Orden", rarity: "raro" },
+{ id: 140, emoji: "💎", name: "Diamante Negro", rarity: "mitico" },
+{ id: 141, emoji: "🛹", name: "Skate", rarity: "epico" },
+{ id: 142, emoji: "💸", name: "Dinero Volando", rarity: "raro" },
+{ id: 143, emoji: "💵", name: "Billete Dorado", rarity: "comun" },
+{ id: 144, emoji: "💊", name: "Pastilla", rarity: "comun" },
+{ id: 145, emoji: "💶", name: "Euro Brillante", rarity: "comun" },
+{ id: 146, emoji: "🎟️", name: "Entrada Evento", rarity: "comun" },
+{ id: 147, emoji: "⚜️", name: "Flor de Lis", rarity: "raro" },
+{ id: 148, emoji: "💳", name: "Tarjeta Platino", rarity: "epico" },
+{ id: 149, emoji: "💿", name: "Disco Brillante", rarity: "legendario" },
+{ id: 150, emoji: "📀", name: "Disco Maestro", rarity: "legendario" }
+];
+
+const TODEX_DATA = {};
+EMOJIS_DATABASE.forEach(emoji => {
+  TODEX_DATA[emoji.id] = { ...emoji, unlockAt: emoji.id * 5 };
+});
+
+const CONTEXTOS_TOKES = {
+  1: [ 
+    { emoji: "💪", nombre: "GYM", texto: "que estás a 🔥 en el GYM" },
+    { emoji: "🧥", nombre: "OUTFIT", texto: "que tu OUTFIT es 🔥" },
+    { emoji: "😎", nombre: "ACTITUD", texto: "que como la LIAS 🔥" },
+    { emoji: "🎮", nombre: "JUGADA", texto: "que tu JUGADA fue 🔥" }
+  ],
+  2: [
+    { emoji: "🔍", nombre: "INTERES", texto: "que A ALGUIEN le gustas 💕" },
+    { emoji: "💭", nombre: "MY SECRET", texto: "que tiene un CRUSH secreto 💕" },
+    { emoji: "🎯", nombre: "MY CRUSH", texto: "que ERES su crush 💕" },
+    { emoji: "😏", nombre: "INDIRECTA", texto: "que te lanza una INDIRECTA 💕" }
+  ],
+  3: [
+    { emoji: "📚", nombre: "EXAMEN", texto: "te apoya 💪 para el EXAMEN" },
+    { emoji: "🏥", nombre: "MEJORATE", texto: "te manda 💪 para que TE MEJORES" },
+    { emoji: "💔", nombre: "RUPTURA", texto: "te da 💪 tras la RUPTURA" },
+    { emoji: "🎯", nombre: "META", texto: "te anima 💪 a cumplir TU META" }
+  ],
+  4: [
+    { emoji: "⚽", nombre: "FUTBOL", texto: "que quiere jugar al ⚽" },
+    { emoji: "🍔", nombre: "COMIDA", texto: "que te invita a 🍔" },
+    { emoji: "🛍️", nombre: "COMPRAS", texto: "que quiere ir de 🛍️" },
+    { emoji: "📅", nombre: "QUEDAR", texto: "que quiere quedar 📅" }
+  ],
+  5: [
+    { emoji: "💊", nombre: "DRAMA", texto: "¡URGENTE: DRAMA 🚨!" },
+    { emoji: "🎫", nombre: "PLAN", texto: "¡PLAN de último momento 🚨!" },
+    { emoji: "💸", nombre: "MONEY", texto: "¡Necesito DINERO 🚨!" },
+    { emoji: "🆘", nombre: "AYUDA", texto: "¡Necesita AYUDA 🚨!" }
+  ]
+};
+
+// NAVEGACIÓN
+function showPage(pageName) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + pageName).classList.add('active');
+  
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  event.target.closest('.nav-btn')?.classList.add('active');
+  
+  if (pageName === 'contacts') mostrarContactos();
+  if (pageName === 'qr') mostrarMiQR();
+  if (pageName === 'todox') mostrarTodox();
+}
+
+// SPLASH
+document.getElementById('page-splash').addEventListener('click', () => {
+  const nombre = localStorage.getItem('miNombre');
+  if (nombre) {
+    mostrarApp();
+  } else {
+    showPage('setup');
+  }
+});
+
+// SETUP
+function generarQR() {
+  const nom = document.getElementById('miNombre').value.trim();
+  if (!nom) { alert("Escribe tu nombre"); return; }
+  
+  localStorage.setItem('miNombre', nom);
+  document.getElementById('home-name').textContent = nom;
+  
+  const texto = `${miID}|${nom}`;
+  document.getElementById('qr').innerHTML = `<img src="https://api.qrserver.com/v1/create-qr-code/?size=400x400&data=${encodeURIComponent(texto)}" alt="QR"/>`;
+  document.getElementById('qr').style.display = 'block';
+  document.getElementById('btnAcceder').style.display = 'block';
+}
+
+function mostrarApp() {
+  document.getElementById('page-splash').style.display = 'none';
+  document.getElementById('page-setup').style.display = 'none';
+  showPage('home');
+  actualizarContador();
+  setInterval(verificarToquesRecibidos, 8000);
+}
+
+// TOKES
+async function toque(num) {
+  if (!usuarioSeleccionado) {
+    showPage('contacts');
+    document.getElementById('msg').textContent = 'Selecciona un amigo primero';
+    return;
+  }
+  
+  if (toquesRestantes <= 0) {
+    alert("Has agotado tus 30 tokes de hoy");
+    return;
+  }
+  
+  const ctx = await elegirContexto(num);
+  if (!ctx) return;
+  
+  try {
+    const r = await fetch(`${BACK}/toque`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ de: miID, para: usuarioSeleccionado, num, contexto: ctx })
+    });
+    
+    const data = await r.json();
+    if (data.ok) {
+      toquesRestantes = data.toques_restantes;
+      localStorage.setItem('toquesRestantes', toquesRestantes);
+      actualizarContador();
+      verificarDesbloqueos();
+      document.getElementById('msg').textContent = `✅ Toque enviado a ${contactos[usuarioSeleccionado]}`;
+      usuarioSeleccionado = null;
+      document.querySelectorAll('.contacto').forEach(c => c.classList.remove('seleccionado'));
+    }
+  } catch(e) {
+    document.getElementById('msg').textContent = 'Error al enviar';
+  }
+}
+
+function elegirContexto(num) {
+  return new Promise((resolve) => {
+    const opciones = CONTEXTOS_TOKES[num];
+    const modal = document.createElement('div');
+    modal.className = 'modal-overlay';
+    modal.innerHTML = `
+      <div class="modal-content">
+        <h3>¿Qué tipo?</h3>
+        ${opciones.map((op, i) => `<button onclick="this.closest('.modal-overlay').remove(); window.resolveCtx(${i+1})" style="display:block;width:100%;margin:5px 0;padding:10px;">${op.emoji} ${op.nombre}</button>`).join('')}
+        <button onclick="this.closest('.modal-overlay').remove(); window.resolveCtx(null)" style="background:#ff4444;">Cancelar</button>
+      </div>
+    `;
+    document.body.appendChild(modal);
+    window.resolveCtx = resolve;
+  });
+}
+
+// CONTACTOS
+function mostrarContactos() {
+  const div = document.getElementById('listaContactos');
+  div.innerHTML = '';
+  
+  if (Object.keys(contactos).length === 0) {
+    div.innerHTML = '<p style="text-align:center;color:#64748b;">No tienes amigos.<br>Escanea un QR para añadir.</p>';
+    return;
+  }
+  
+  Object.entries(contactos).forEach(([id, nom]) => {
+    const c = document.createElement('div');
+    c.className = 'contacto';
+    c.innerHTML = `<span>${nom} <small>(${id})</small></span>`;
+    c.onclick = () => {
+      document.querySelectorAll('.contacto').forEach(x => x.classList.remove('seleccionado'));
+      c.classList.add('seleccionado');
+      usuarioSeleccionado = id;
+      showPage('home');
+      document.getElementById('msg').textContent = `Para: ${nom}`;
+    };
+    div.appendChild(c);
+  });
+}
+
+function scanQR() {
+  const modal = document.createElement('div');
+  modal.className = 'modal-overlay';
+  modal.id = 'scanner';
+  modal.innerHTML = '<div style="text-align:center;"><video id="video" style="width:100%;max-width:400px;border:3px solid #00ff00;border-radius:20px;"></video><br><button onclick="this.closest(\'.modal-overlay\').remove()" style="margin-top:20px;padding:10px 20px;background:#ff4444;color:white;border:none;border-radius:10px;">Cerrar</button></div>';
+  document.body.appendChild(modal);
+  
+  navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } })
+    .then(stream => {
+      const video = document.getElementById('video');
+      video.srcObject = stream;
+      video.play();
+      
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+      
+      function scan() {
+        if (!document.getElementById('video')) return;
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        ctx.drawImage(video, 0, 0);
+        const code = jsQR(ctx.getImageData(0,0,canvas.width,canvas.height).data, canvas.width, canvas.height);
+        if (code) {
+          stream.getTracks().forEach(t => t.stop());
+          modal.remove();
+          procesarQR(code.data);
+        } else {
+          requestAnimationFrame(scan);
+        }
+      }
+      scan();
+    });
+}
+
+function procesarQR(data) {
+  const [id, nombre] = data.split('|');
+  contactos[id] = nombre;
+  localStorage.setItem('cts', JSON.stringify(contactos));
+  mostrarContactos();
+  document.getElementById('msg').textContent = `✅ ${nombre} añadido`;
+}
+
+// QR PROPIO
+function mostrarMiQR() {
+  const nom = localStorage.getItem('miNombre') || 'Usuario';
+  const texto = `${miID}|${nom}`;
+  document.getElementById('qr-mio').innerHTML = `<img src="https://api.qrserver.com/v1/create-qr-code/?size=400x400&data=${encodeURIComponent(texto)}" style="width:180px;height:180px;"/>`;
+}
+
+// TODEX
+function mostrarTodox() {
+  const grid = document.getElementById('todex-grid');
+  grid.innerHTML = '';
+  document.getElementById('todex-count').textContent = `${todex.captured.length}/150`;
+  
+  for (let i = 1; i <= 150; i++) {
+    const card = document.createElement('div');
+    card.className = 'emoji-card' + (todex.captured.includes(i) ? ' captured' : '');
+    card.textContent = todex.captured.includes(i) ? EMOJIS_DATABASE[i-1].emoji : '?';
+    card.onclick = () => {
+      if (todex.captured.includes(i)) mostrarFicha(i);
+    };
+    grid.appendChild(card);
+  }
+}
+
+function mostrarFicha(id) {
+  const emoji = EMOJIS_DATABASE[id-1];
+  const modal = document.createElement('div');
+  modal.className = 'modal-overlay';
+  modal.innerHTML = `
+    <div class="modal-content" style="text-align:center;">
+      <div style="font-size:4rem;">${emoji.emoji}</div>
+      <h3>${emoji.name}</h3>
+      <p>#${id} | ${emoji.rarity.toUpperCase()}</p>
+      <button onclick="this.closest('.modal-overlay').remove()" style="padding:10px 20px;background:#8b5cf6;color:white;border:none;border-radius:10px;margin-top:10px;">Cerrar</button>
+    </div>
+  `;
+  document.body.appendChild(modal);
+}
+
+function verificarDesbloqueos() {
+  if (todex.total_toques_enviados % 5 !== 0) return;
+  const disponibles = EMOJIS_DATABASE.map(e => e.id).filter(id => !todex.captured.includes(id));
+  if (disponibles.length === 0) return;
+  
+  const nuevo = disponibles[Math.floor(Math.random() * disponibles.length)];
+  todex.captured.push(nuevo);
+  localStorage.setItem('todex', JSON.stringify(todex));
+  
+  const emoji = EMOJIS_DATABASE[nuevo-1];
+  document.getElementById('msg').innerHTML = `🎉 ¡Nuevo: ${emoji.emoji} ${emoji.name}!`;
+}
+
+// COMBATES (simplificados)
+function jugarContraAmigoSimple() {
+  if (todex.captured.length < 2) {
+    alert('Necesitas 2 emojis mínimo');
+    return;
+  }
+  alert('Modo VS IA - Funcionalidad completa en desarrollo');
+}
+
+function mostrarListaParaRetar() {
+  if (Object.keys(contactos).length === 0) {
+    alert('Añade amigos primero');
+    return;
+  }
+  showPage('contacts');
+  document.getElementById('msg').textContent = 'Selecciona amigo para retar';
+}
+
+// UTILIDADES
+function actualizarContador() {
+  document.getElementById('tokes-counter').textContent = `🎯 ${toquesRestantes}/30`;
+}
+
+function verificarToquesRecibidos() {
+  fetch(`${BACK}/toques-pendientes?userId=${miID}`)
+    .then(r => r.json())
+    .then(data => {
+      if (data.ok && data.toques.length > 0) {
+        data.toques.forEach(t => mostrarToque(t));
+      }
+    });
+}
+
+function mostrarToque(toque) {
+  const modal = document.createElement('div');
+  modal.className = 'modal-overlay';
+  const nombre = contactos[toque.de] || 'Alguien';
+  modal.innerHTML = `
+    <div class="modal-content" style="text-align:center;background:linear-gradient(135deg,#ff0066,#ff3388);color:white;">
+      <div style="font-size:3rem;">🎉</div>
+      <h3>¡Toque de ${nombre}!</h3>
+      <button onclick="this.closest('.modal-overlay').remove()" style="padding:10px 20px;background:white;color:#ff0066;border:none;border-radius:10px;margin-top:10px;">OK</button>
+    </div>
+  `;
+  document.body.appendChild(modal);
+}
+
+function cambiarColor() {
+  const colores = ['#8b5cf6', '#ff0066', '#00c598', '#0081ff', '#ffb800'];
+  const actual = getComputedStyle(document.documentElement).getPropertyValue('--device-color').trim();
+  const siguiente = colores[(colores.indexOf(actual) + 1) % colores.length];
+  document.documentElement.style.setProperty('--device-color', siguiente);
+}
+
+function toggleSonido() {
+  alert('Sonido: ' + (localStorage.getItem('sonido') === 'off' ? 'ON' : 'OFF'));
+}
+
+function reiniciar() {
+  if (confirm('¿Borrar TODO?')) {
+    localStorage.clear();
+    location.reload();
+  }
+}
+
+// RELOJ
+setInterval(() => {
+  const now = new Date();
+  document.getElementById('clock').textContent = 
+    String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0');
+}, 60000);
+</script>
 </body>
 </html>
