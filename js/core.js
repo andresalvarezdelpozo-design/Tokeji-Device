@@ -1,5 +1,5 @@
 // ==========================================
-// TOKEJI - CORE (Navegación base, setup, audio)
+// TOKEJI - CORE
 // ==========================================
 
 const ANIMALES_INICIALES = [
@@ -18,7 +18,6 @@ const ESTADOS = [
     { id: "no_molestar", emoji: "🔴", color: "#fc8181" }
 ];
 
-// Estado global
 let currentPage = 'splash';
 let selectedIndex = 0;
 let consentSelected = 0;
@@ -27,8 +26,6 @@ let tempUser = {};
 let user = null;
 let pages = {};
 let buttons = {};
-
-// Audio
 let audioCtx = null;
 
 function initAudio() {
@@ -74,7 +71,6 @@ function vibrate(pattern) {
     }
 }
 
-// LocalStorage
 function saveUser(data) {
     localStorage.setItem('tokeji_user', JSON.stringify(data));
 }
@@ -88,27 +84,22 @@ function loadUser() {
     }
 }
 
-// Navegación de páginas
 function showPage(pageName) {
     console.log('Mostrando página:', pageName);
     
+    // Ocultar todas
     Object.values(pages).forEach(page => {
         if (page) {
             page.classList.remove('active');
-            page.style.display = 'none';
-            page.style.opacity = '0';
         }
     });
     
+    // Mostrar la que toca
     const target = pages[pageName];
     if (target) {
-        target.style.display = 'flex';
-        void target.offsetWidth;
         target.classList.add('active');
-        target.style.opacity = '1';
         currentPage = pageName;
         
-        // Hooks para páginas específicas
         if (pageName === 'menu') {
             selectedIndex = 0;
             updateMenu();
@@ -119,12 +110,11 @@ function showPage(pageName) {
             consentSelected = 0;
             updateConsent();
         } else if (pageName === 'amigos' && typeof initAmigos === 'function') {
-            initAmigos(); // Llamada al módulo externo
+            initAmigos();
         }
     }
 }
 
-// Renderizado básico
 function renderAnimals() {
     const grid = document.getElementById('animals-grid');
     if (!grid) return;
@@ -176,10 +166,7 @@ function updateHome() {
     if (counterEl) counterEl.textContent = `🎯 ${user.tokes_hoy}/30`;
 }
 
-// Handlers de navegación (EXTENSIBLES)
 function onUp() {
-    console.log('UP en', currentPage);
-    
     if (currentPage === 'consent') {
         consentSelected = 0;
         updateConsent();
@@ -202,15 +189,12 @@ function onUp() {
         updateHome();
         soundNav();
     }
-    // Hook para módulos externos
-    else if (typeof amigosOnUp === 'function' && amigosOnUp()) {
-        soundNav();
+    else if (currentPage === 'amigos' && typeof amigosOnUp === 'function') {
+        if (amigosOnUp()) soundNav();
     }
 }
 
 function onDown() {
-    console.log('DOWN en', currentPage);
-    
     if (currentPage === 'consent') {
         consentSelected = 1;
         updateConsent();
@@ -233,14 +217,12 @@ function onDown() {
         updateHome();
         soundNav();
     }
-    // Hook para módulos externos
-    else if (typeof amigosOnDown === 'function' && amigosOnDown()) {
-        soundNav();
+    else if (currentPage === 'amigos' && typeof amigosOnDown === 'function') {
+        if (amigosOnDown()) soundNav();
     }
 }
 
 function onOk() {
-    console.log('OK en', currentPage);
     initAudio();
     
     if (currentPage === 'splash') {
@@ -297,18 +279,17 @@ function onOk() {
         soundSelect();
     }
     else if (currentPage === 'menu') {
-        const opciones = ['amigos', 'tokes', 'todex', 'qr', 'combates', 'carcasa'];
         if (selectedIndex === 0) {
             showPage('amigos');
             soundSelect();
         } else {
+            const opciones = ['amigos', 'tokes', 'todex', 'qr', 'combates', 'carcasa'];
             soundSelect();
             alert('Próximamente: ' + opciones[selectedIndex]);
         }
     }
-    // Hook para módulos externos
-    else if (typeof amigosOnOk === 'function' && amigosOnOk()) {
-        soundSelect();
+    else if (currentPage === 'amigos' && typeof amigosOnOk === 'function') {
+        if (amigosOnOk()) soundSelect();
     }
     else if (currentPage === 'escanear') {
         if (typeof cerrarEscanear === 'function') {
@@ -319,22 +300,23 @@ function onOk() {
 }
 
 function onBack() {
-    console.log('BACK en', currentPage);
     soundBack();
     
     if (currentPage === 'setup-name') showPage('consent');
     else if (currentPage === 'setup-avatar') showPage('setup-name');
     else if (currentPage === 'menu') showPage('home');
-    // Hook para módulos externos (prioridad)
-    else if (typeof amigosOnBack === 'function' && amigosOnBack()) {
-        // Ya manejado en amigos.js
-    }
     else if (currentPage === 'amigos') {
-        showPage('menu');
+        if (typeof amigosOnBack === 'function' && amigosOnBack()) {
+            // Manejado por amigos.js
+        } else {
+            showPage('menu');
+        }
+    }
+    else if (currentPage === 'escanear') {
+        if (typeof cerrarEscanear === 'function') cerrarEscanear();
     }
 }
 
-// Eventos
 function pressButton(btnId) {
     const btn = document.getElementById(btnId);
     if (!btn) return;
@@ -375,9 +357,8 @@ function updateClock() {
     clock.textContent = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
 }
 
-// Inicialización
 function init() {
-    console.log('🎮 Iniciando Tokeji Core...');
+    console.log('🎮 Iniciando Tokeji...');
     
     pages = {
         splash: document.getElementById('page-splash'),
@@ -402,7 +383,7 @@ function init() {
     setInterval(updateClock, 60000);
     showPage('splash');
     
-    console.log('✅ Core listo, esperando módulos...');
+    console.log('✅ Core listo');
 }
 
 if (document.readyState === 'loading') {
