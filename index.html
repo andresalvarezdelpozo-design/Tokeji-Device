@@ -619,6 +619,7 @@
       justify-content: center;
       font-size: 16px;
       transition: all 0.1s ease;
+      cursor: pointer;
     }
 
     .emoji-card.captured {
@@ -1138,14 +1139,13 @@
       font-size: 13px;
     }
 
-    /* ANIMACIÓN DE ENVÍO MEJORADA */
+    /* ANIMACIÓN DE ENVÍO MEJORADA CON COLOR DEL TOKE */
     .envio-animacion {
       position: absolute;
       top: 0;
       left: 0;
       right: 0;
       bottom: 0;
-      background: linear-gradient(145deg, rgba(255,107,157,0.98), rgba(255,71,133,0.98));
       display: none;
       flex-direction: column;
       align-items: center;
@@ -1163,25 +1163,45 @@
       to { opacity: 1; }
     }
 
-    .envio-avatar {
-      font-size: 80px;
-      animation: enviarAnim 1.5s ease-in-out;
-      filter: drop-shadow(0 10px 20px rgba(0,0,0,0.3));
+    .envio-avatar-container {
+      position: relative;
+      width: 120px;
+      height: 120px;
+      margin-bottom: 20px;
     }
 
-    @keyframes enviarAnim {
-      0% { transform: scale(0.5) rotate(-20deg); opacity: 0; }
-      30% { transform: scale(1.2) rotate(10deg); opacity: 1; }
-      50% { transform: scale(1) rotate(0deg); }
-      70% { transform: scale(1.1) translateY(-20px); }
-      100% { transform: scale(0) translateY(-100px); opacity: 0; }
+    .envio-avatar-mio {
+      font-size: 60px;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
+      animation: avatarPulse 1s ease-in-out infinite;
+    }
+
+    .envio-emoji-toke {
+      font-size: 50px;
+      position: absolute;
+      top: 0;
+      right: 0;
+      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
+      animation: emojiBounce 0.6s ease infinite;
+    }
+
+    @keyframes avatarPulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+
+    @keyframes emojiBounce {
+      0%, 100% { transform: translateY(0) rotate(-10deg); }
+      50% { transform: translateY(-10px) rotate(10deg); }
     }
 
     .envio-texto {
       color: white;
       font-family: 'Fredoka One', cursive;
       font-size: 24px;
-      margin-top: 20px;
       text-shadow: 0 4px 8px rgba(0,0,0,0.3);
       animation: textoPop 0.5s ease 0.3s both;
     }
@@ -1196,14 +1216,19 @@
       font-size: 16px;
       margin-top: 10px;
       font-weight: 700;
+      animation: fadeInUp 0.5s ease 0.5s both;
     }
 
     .envio-check {
       font-size: 60px;
-      color: #48BB78;
       margin-top: 20px;
       animation: checkPop 0.5s ease 1s both;
       text-shadow: 0 4px 8px rgba(0,0,0,0.3);
+      display: none;
+    }
+
+    .envio-check.show {
+      display: block;
     }
 
     @keyframes checkPop {
@@ -1212,19 +1237,23 @@
       100% { transform: scale(1) rotate(0deg); }
     }
 
-    /* ANIMACIÓN DE RECEPCIÓN MEJORADA */
+    @keyframes fadeInUp {
+      from { transform: translateY(20px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    /* RECEPCIÓN DE TOQUE MEJORADA CON 4 BOTONES */
     .toque-recibido-modal {
       position: absolute;
       top: 0;
       left: 0;
       right: 0;
       bottom: 0;
-      background: linear-gradient(145deg, rgba(0,197,152,0.98), rgba(0,221,170,0.98));
       display: none;
       flex-direction: column;
       align-items: center;
       justify-content: flex-start;
-      padding: 30px 20px 20px 20px;
+      padding: 25px 15px 15px 15px;
       z-index: 150;
       text-align: center;
       color: white;
@@ -1240,11 +1269,11 @@
       display: flex;
     }
 
-    .toque-recibido-modal .emoji-big {
-      font-size: 100px;
-      margin-bottom: 15px;
+    .toque-recibido-modal .avatar-amigo-big {
+      font-size: 70px;
+      margin-bottom: 5px;
       animation: bounceIn 0.8s ease;
-      filter: drop-shadow(0 10px 20px rgba(0,0,0,0.2));
+      filter: drop-shadow(0 8px 16px rgba(0,0,0,0.3));
     }
 
     @keyframes bounceIn {
@@ -1254,50 +1283,61 @@
       100% { transform: scale(1) rotate(0deg); }
     }
 
-    .toque-recibido-modal .nombre {
+    .toque-recibido-modal .nombre-amigo {
       font-family: 'Fredoka One', cursive;
-      font-size: 28px;
-      margin-bottom: 8px;
+      font-size: 26px;
+      margin-bottom: 5px;
       text-shadow: 0 4px 8px rgba(0,0,0,0.2);
       animation: fadeInUp 0.5s ease 0.3s both;
     }
 
-    .toque-recibido-modal .mensaje {
-      font-size: 16px;
-      margin-bottom: 20px;
+    .toque-recibido-modal .emoji-toke-big {
+      font-size: 90px;
+      margin: 10px 0;
+      animation: pulseEmoji 1s ease-in-out infinite;
+      filter: drop-shadow(0 10px 20px rgba(0,0,0,0.3));
+    }
+
+    @keyframes pulseEmoji {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.15); }
+    }
+
+    .toque-recibido-modal .mensaje-contexto {
+      font-size: 14px;
+      margin-bottom: 15px;
       padding: 0 10px;
       font-weight: 600;
       animation: fadeInUp 0.5s ease 0.5s both;
       line-height: 1.4;
+      background: rgba(255,255,255,0.2);
+      border-radius: 12px;
+      padding: 10px 15px;
     }
 
-    @keyframes fadeInUp {
-      from { transform: translateY(20px); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
-    }
-
-    /* OPCIONES DE RESPUESTA */
+    /* 4 BOTONES DE RESPUESTA */
     .respuestas-container {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
+      gap: 10px;
       width: 100%;
       max-width: 280px;
-      margin-top: 10px;
+      margin-top: auto;
+      margin-bottom: 10px;
     }
 
     .respuesta-option {
       background: rgba(255,255,255,0.95);
       border: 3px solid transparent;
       border-radius: 16px;
-      padding: 15px 10px;
+      padding: 12px 8px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 5px;
+      gap: 4px;
       cursor: pointer;
       transition: all 0.2s ease;
-      box-shadow: 0 4px 0 rgba(0,0,0,0.1);
+      box-shadow: 0 4px 0 rgba(0,0,0,0.2);
       animation: fadeInUp 0.5s ease both;
     }
 
@@ -1308,12 +1348,12 @@
 
     .respuesta-option.focused {
       border-color: #FFD93D;
-      transform: scale(1.08) translateY(-5px);
-      box-shadow: 0 8px 0 rgba(0,0,0,0.2), 0 0 20px rgba(255,217,61,0.5);
+      transform: scale(1.05) translateY(-3px);
+      box-shadow: 0 6px 0 rgba(0,0,0,0.2), 0 0 20px rgba(255,217,61,0.6);
     }
 
     .respuesta-option .emoji-resp {
-      font-size: 36px;
+      font-size: 32px;
       transition: transform 0.2s;
     }
 
@@ -1322,14 +1362,67 @@
     }
 
     .respuesta-option .texto-resp {
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 800;
       color: #2D3748;
     }
 
-    .toque-recibido-modal .btn-cerrar {
+    /* MODAL DE RESPUESTA RECIBIDA (AZUL CLARO) */
+    .respuesta-recibida-modal {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(145deg, #63B3ED 0%, #4299E1 100%);
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 30px 20px;
+      z-index: 160;
+      text-align: center;
+      color: white;
+      animation: fadeIn 0.4s ease;
+    }
+
+    .respuesta-recibida-modal.active {
+      display: flex;
+    }
+
+    .respuesta-recibida-modal .avatar-resp {
+      font-size: 60px;
+      margin-bottom: 10px;
+      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));
+      animation: bounceIn 0.6s ease;
+    }
+
+    .respuesta-recibida-modal .nombre-resp {
+      font-family: 'Fredoka One', cursive;
+      font-size: 22px;
+      margin-bottom: 10px;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+
+    .respuesta-recibida-modal .texto-respuesta {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 15px;
+      background: rgba(255,255,255,0.2);
+      padding: 10px 20px;
+      border-radius: 20px;
+    }
+
+    .respuesta-recibida-modal .emoji-mediano {
+      font-size: 50px;
+      margin: 10px 0;
+      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));
+      animation: pulseEmoji 1.5s ease-in-out infinite;
+    }
+
+    .respuesta-recibida-modal .btn-ok-resp {
       background: white;
-      color: #00c598;
+      color: #4299E1;
       border: none;
       padding: 15px 40px;
       border-radius: 30px;
@@ -1338,13 +1431,129 @@
       cursor: pointer;
       box-shadow: 0 4px 0 rgba(0,0,0,0.2);
       margin-top: 20px;
-      animation: fadeInUp 0.5s ease 1s both;
       transition: all 0.2s ease;
     }
 
-    .toque-recibido-modal .btn-cerrar:active {
+    .respuesta-recibida-modal .btn-ok-resp:active {
       transform: translateY(4px);
       box-shadow: 0 0 0 rgba(0,0,0,0.2);
+    }
+
+    /* FICHA TÉCNICA TODEX */
+    .ficha-tecnica-modal {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.85);
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      z-index: 200;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .ficha-tecnica-modal.active {
+      display: flex;
+    }
+
+    .ficha-container {
+      background: white;
+      border-radius: 24px;
+      padding: 30px 25px;
+      width: 100%;
+      max-width: 280px;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+      border: 4px solid;
+      animation: popIn 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    }
+
+    @keyframes popIn {
+      0% { transform: scale(0.8); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    .ficha-container.comun { border-color: #A0AEC0; background: linear-gradient(145deg, #ffffff 0%, #E2E8F0 100%); }
+    .ficha-container.raro { border-color: #4299E1; background: linear-gradient(145deg, #ffffff 0%, #BEE3F8 100%); }
+    .ficha-container.epico { border-color: #9F7AEA; background: linear-gradient(145deg, #ffffff 0%, #E9D8FD 100%); }
+    .ficha-container.mitico { border-color: #ECC94B; background: linear-gradient(145deg, #ffffff 0%, #FEFCBF 100%); }
+    .ficha-container.legendario { border-color: #F56565; background: linear-gradient(145deg, #ffffff 0%, #FED7D7 100%); }
+
+    .ficha-emoji {
+      font-size: 80px;
+      margin-bottom: 10px;
+      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));
+      animation: floatEmoji 3s ease-in-out infinite;
+    }
+
+    @keyframes floatEmoji {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .ficha-numero {
+      font-family: 'Fredoka One', cursive;
+      font-size: 28px;
+      color: #2D3748;
+      margin-bottom: 5px;
+    }
+
+    .ficha-rareza {
+      font-size: 14px;
+      font-weight: 800;
+      padding: 6px 16px;
+      border-radius: 20px;
+      display: inline-block;
+      margin-bottom: 20px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .ficha-rareza.comun { background: #A0AEC0; color: white; }
+    .ficha-rareza.raro { background: #4299E1; color: white; }
+    .ficha-rareza.epico { background: #9F7AEA; color: white; }
+    .ficha-rareza.mitico { background: #ECC94B; color: #744210; }
+    .ficha-rareza.legendario { background: #F56565; color: white; }
+
+    .ficha-stats {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .ficha-stat {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(255,255,255,0.8);
+      padding: 10px 15px;
+      border-radius: 12px;
+      font-size: 14px;
+    }
+
+    .ficha-stat-label {
+      font-weight: 700;
+      color: #4A5568;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .ficha-stat-value {
+      font-family: 'Fredoka One', cursive;
+      font-size: 18px;
+      color: #2D3748;
+    }
+
+    .ficha-hint {
+      font-size: 11px;
+      color: #718096;
+      margin-top: 10px;
     }
 
     /* NOTIFICACIÓN DE NUEVO EMOJI */
@@ -1360,7 +1569,7 @@
       box-shadow: 0 20px 60px rgba(0,0,0,0.4);
       z-index: 300;
       display: none;
-      animation: popIn 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      animation: popInNotif 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
       border: 4px solid white;
       min-width: 200px;
     }
@@ -1369,7 +1578,7 @@
       display: block;
     }
 
-    @keyframes popIn {
+    @keyframes popInNotif {
       0% { transform: translate(-50%, -50%) scale(0) rotate(-10deg); }
       70% { transform: translate(-50%, -50%) scale(1.1) rotate(5deg); }
       100% { transform: translate(-50%, -50%) scale(1) rotate(0deg); }
@@ -1387,11 +1596,6 @@
       margin: 10px 0;
       animation: floatEmoji 2s ease-in-out infinite;
       filter: drop-shadow(0 5px 15px rgba(0,0,0,0.2));
-    }
-
-    @keyframes floatEmoji {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-10px); }
     }
 
     .nuevo-emoji-numero {
@@ -1441,6 +1645,25 @@
       max-height: 100px;
       overflow-y: auto;
       display: none;
+    }
+
+    /* INDICADOR DE COLA */
+    .cola-indicator {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: rgba(0,0,0,0.6);
+      color: white;
+      padding: 6px 12px;
+      border-radius: 15px;
+      font-size: 11px;
+      font-weight: 800;
+      z-index: 160;
+      display: none;
+    }
+
+    .cola-indicator.active {
+      display: block;
     }
   </style>
 </head>
@@ -1627,62 +1850,84 @@
             <div class="selector-grid" id="status-grid"></div>
           </div>
 
-          <div class="response-modal" id="response-modal">
-            <div class="response-title" id="response-title">¡Toque!</div>
-            <div class="response-grid">
-              <div class="response-btn focused" data-index="0">💕<span class="label">Love</span></div>
-              <div class="response-btn" data-index="1">😂<span class="label">LOL</span></div>
-              <div class="response-btn" data-index="2">🙏<span class="label">Gracias</span></div>
-              <div class="response-btn" data-index="3">🔥<span class="label">Fuego</span></div>
-            </div>
-            <div class="response-actions">
-              <div class="response-action" data-action="ignore">◄ Ignorar</div>
-              <div class="response-action focused" data-action="send">OK</div>
-            </div>
-          </div>
-
-          <!-- ANIMACIÓN DE ENVÍO -->
+          <!-- ANIMACIÓN DE ENVÍO CON COLOR DEL TOKE -->
           <div class="envio-animacion" id="envio-animacion">
-            <div class="envio-avatar" id="envio-avatar-anim">🐱</div>
+            <div class="envio-avatar-container">
+              <div class="envio-avatar-mio" id="envio-avatar-anim">🐱</div>
+              <div class="envio-emoji-toke" id="envio-emoji-anim">🔥</div>
+            </div>
             <div class="envio-texto">¡Toque Enviado!</div>
             <div class="envio-destino" id="envio-destino-anim">A: Amigo</div>
-            <div class="envio-check">✅</div>
+            <div class="envio-check" id="envio-check">✅</div>
           </div>
 
-          <!-- RECEPCIÓN DE TOQUE MEJORADA CON RESPUESTAS -->
+          <!-- RECEPCIÓN DE TOQUE MEJORADA CON 4 BOTONES -->
           <div class="toque-recibido-modal" id="toque-recibido-modal">
-            <div class="emoji-big" id="toque-emoji">🎉</div>
-            <div class="nombre" id="toque-nombre">Alguien</div>
-            <div class="mensaje" id="toque-mensaje">Te envió un toque</div>
+            <div class="cola-indicator" id="cola-indicator">Toque 1 de 3</div>
+            <div class="avatar-amigo-big" id="toque-avatar-amigo">👤</div>
+            <div class="nombre-amigo" id="toque-nombre">Alguien</div>
+            <div class="emoji-toke-big" id="toque-emoji">🎉</div>
+            <div class="mensaje-contexto" id="toque-mensaje">Te envió un toque</div>
             
             <div class="respuestas-container" id="respuestas-container">
-              <div class="respuesta-option focused" data-index="0" data-emoji="❤️">
+              <div class="respuesta-option focused" data-index="0" data-emoji="👍" data-texto="OK">
+                <span class="emoji-resp">👍</span>
+                <span class="texto-resp">OK</span>
+              </div>
+              <div class="respuesta-option" data-index="1" data-emoji="❤️" data-texto="Gracias">
                 <span class="emoji-resp">❤️</span>
-                <span class="texto-resp">Me gusta</span>
-              </div>
-              <div class="respuesta-option" data-index="1" data-emoji="😂">
-                <span class="emoji-resp">😂</span>
-                <span class="texto-resp">Jaja</span>
-              </div>
-              <div class="respuesta-option" data-index="2" data-emoji="🔥">
-                <span class="emoji-resp">🔥</span>
-                <span class="texto-resp">¡Quema!</span>
-              </div>
-              <div class="respuesta-option" data-index="3" data-emoji="🙏">
-                <span class="emoji-resp">🙏</span>
                 <span class="texto-resp">Gracias</span>
               </div>
+              <div class="respuesta-option" data-index="2" data-emoji="😊" data-texto="Igualmente">
+                <span class="emoji-resp">😊</span>
+                <span class="texto-resp">Igualmente</span>
+              </div>
+              <div class="respuesta-option" data-index="3" data-emoji="🤔" data-texto="Ahora no">
+                <span class="emoji-resp">🤔</span>
+                <span class="texto-resp">Ahora no</span>
+              </div>
             </div>
-            
-            <button class="btn-cerrar" onclick="app.cerrarToqueRecibido()">Responder</button>
+          </div>
+
+          <!-- MODAL DE RESPUESTA RECIBIDA (AZUL) -->
+          <div class="respuesta-recibida-modal" id="respuesta-recibida-modal">
+            <div class="avatar-resp" id="resp-avatar">👤</div>
+            <div class="nombre-resp" id="resp-nombre">Amigo</div>
+            <div class="texto-respuesta" id="resp-texto">Respondió: OK</div>
+            <div class="emoji-mediano" id="resp-emoji">👍</div>
+            <button class="btn-ok-resp" onclick="app.cerrarRespuestaRecibida()">OK</button>
+          </div>
+
+          <!-- FICHA TÉCNICA TODEX -->
+          <div class="ficha-tecnica-modal" id="ficha-tecnica-modal" onclick="app.cerrarFichaTecnica()">
+            <div class="ficha-container" id="ficha-container">
+              <div class="ficha-emoji" id="ficha-emoji">🎉</div>
+              <div class="ficha-numero" id="ficha-numero">#47</div>
+              <div class="ficha-rareza" id="ficha-rareza">ÉPICO</div>
+              <div class="ficha-stats">
+                <div class="ficha-stat">
+                  <span class="ficha-stat-label">✨ Aura</span>
+                  <span class="ficha-stat-value" id="ficha-aura">25</span>
+                </div>
+                <div class="ficha-stat">
+                  <span class="ficha-stat-label">🌟 Vibra</span>
+                  <span class="ficha-stat-value" id="ficha-vibra">30</span>
+                </div>
+                <div class="ficha-stat">
+                  <span class="ficha-stat-label">🍀 Suerte</span>
+                  <span class="ficha-stat-value" id="ficha-suerte">5</span>
+                </div>
+              </div>
+              <div class="ficha-hint">Toca para cerrar</div>
+            </div>
           </div>
 
           <!-- NOTIFICACIÓN NUEVO EMOJI -->
           <div class="nuevo-emoji-notificacion" id="nuevo-emoji-notif">
             <div class="nuevo-emoji-titulo">🎉 ¡Nuevo Emoji!</div>
             <div class="nuevo-emoji-display" id="nuevo-emoji-icon">🎉</div>
-            <div class="nuevo-emoji-numero" id="nuevo-emoji-num">#1</div>
-            <div class="nuevo-emoji-stats" id="nuevo-emoji-stats">Aura: 10 | Vibra: 15</div>
+            <div class="nuevo-emoji-numero" id="nuevo-emoji-num">#1 ÉPICO</div>
+            <div class="nuevo-emoji-stats" id="nuevo-emoji-stats">✨25 | 🌟30 | 🍀5</div>
             <button class="nuevo-emoji-btn" onclick="app.cerrarNuevoEmoji()">¡Genial!</button>
           </div>
 
@@ -1721,7 +1966,7 @@
 <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
 <script>
 // ========================================
-// TOKEJI v12 - CON ANIMACIONES Y RESPUESTAS
+// TOKEJI v13 - CON ANIMACIONES COMPLETAS
 // ========================================
 
 const BACK = "https://tokeji-device.onrender.com";
@@ -1776,14 +2021,72 @@ const ESTADOS = [
 ];
 
 const TOKES_TYPES = [
-  { id: 1, emoji: '🔥', name: 'On Fire', desc: '¡Estás imparable!', color: '#E53E3E' },
-  { id: 2, emoji: '💕', name: 'Crush', desc: 'Pienso en ti', color: '#D53F8C' },
-  { id: 3, emoji: '💪', name: 'Ánimo', desc: '¡Tú puedes!', color: '#38A169' },
-  { id: 4, emoji: '📅', name: 'Planes', desc: '¿Quedamos?', color: '#D69E2E' },
-  { id: 5, emoji: '🚨', name: 'Urgente', desc: '¡Ayuda!', color: '#3182CE' }
+  { id: 1, emoji: '🔥', name: 'On Fire', desc: '¡Estás imparable!', color: '#E53E3E', bgGradient: ['#FED7D7', '#E53E3E'] },
+  { id: 2, emoji: '💕', name: 'Crush', desc: 'Pienso en ti', color: '#D53F8C', bgGradient: ['#FED7E2', '#D53F8C'] },
+  { id: 3, emoji: '💪', name: 'Ánimo', desc: '¡Tú puedes!', color: '#38A169', bgGradient: ['#C6F6D5', '#38A169'] },
+  { id: 4, emoji: '📅', name: 'Planes', desc: '¿Quedamos?', color: '#D69E2E', bgGradient: ['#FEFCBF', '#D69E2E'] },
+  { id: 5, emoji: '🚨', name: 'Urgente', desc: '¡Ayuda!', color: '#3182CE', bgGradient: ['#BEE3F8', '#3182CE'] }
 ];
 
-const EMOJIS_LIST = ['😊','❤️','👍','🔥','💯','🤥','👾','💕','🚀','🎯','🦾','🙌','👏','💋','🐻','🐝','🌈','☀️','🌙','⭐','🌸','📸','🚗','🌷','🍀','🍕','👅','🍟','🌮','🍰','🎂','🍫','☕','🥤','🏀','⚽','🎾','🏆','🎮','🎲','🎸','🎺','🎨','📚','💡','🔧','😱','📱','💻','🛸','🥷','😇','🧟‍♂️','👽','🎩','🧙','🧚','🧜','💃🏻','🦋','🦅','🦈','🐅','🐘','🦒','🦏','🌍','📦','🏴‍☠️','✨','🚨','👑','🦄','🦁','🧌','🦉','🐣','🐉','🐲','🦕','🦖','🌋','🗿','🪄','⚡','💀','👻','🤢','🤡','🎪','🍾','🎆','🎇','🫶','🏃‍♂️','🧟‍♀️','🤖','🧊','😈','🔫','💅','🎐','🎀','🎁','🎰','✈️','🥵','🥶','⌚️','⚓️','🛁','🪒','🪤','💣','🏍️','🍒','🌪️','👙','🧩','🍪','🏎️','🎓','🧸','✂️','🕳️','❤️‍🔥','🥳','⚰️','🎈','🎉','👩🏻‍❤️‍👨','🦊','💦','🚪','🎎','⚠️','🛌','🤮','🫡','💎','🛹','💸','💵','💊','💶','🎟️','⚜️','💳','💿','📀'];
+// Lista fija de 150 emojis con sus stats deterministas
+const EMOJIS_LIST = [
+  // 1-50: COMÚN (Aura: 5-15, Vibra: 5-15, Suerte: 1-3)
+  {emoji: '😊', aura: 8, vibra: 10, suerte: 2}, {emoji: '❤️', aura: 12, vibra: 8, suerte: 3}, {emoji: '👍', aura: 6, vibra: 12, suerte: 1}, 
+  {emoji: '🔥', aura: 15, vibra: 15, suerte: 2}, {emoji: '💯', aura: 10, vibra: 10, suerte: 3}, {emoji: '🤥', aura: 5, vibra: 8, suerte: 2},
+  {emoji: '👾', aura: 8, vibra: 6, suerte: 1}, {emoji: '💕', aura: 14, vibra: 12, suerte: 3}, {emoji: '🚀', aura: 12, vibra: 14, suerte: 2},
+  {emoji: '🎯', aura: 10, vibra: 10, suerte: 2}, {emoji: '🦾', aura: 8, vibra: 8, suerte: 1}, {emoji: '🙌', aura: 11, vibra: 9, suerte: 2},
+  {emoji: '👏', aura: 9, vibra: 11, suerte: 2}, {emoji: '💋', aura: 13, vibra: 7, suerte: 3}, {emoji: '🐻', aura: 7, vibra: 13, suerte: 1},
+  {emoji: '🐝', aura: 6, vibra: 14, suerte: 2}, {emoji: '🌈', aura: 14, vibra: 6, suerte: 3}, {emoji: '☀️', aura: 15, vibra: 5, suerte: 2},
+  {emoji: '🌙', aura: 5, vibra: 15, suerte: 1}, {emoji: '⭐', aura: 12, vibra: 8, suerte: 2}, {emoji: '🌸', aura: 11, vibra: 9, suerte: 3},
+  {emoji: '📸', aura: 8, vibra: 10, suerte: 2}, {emoji: '🚗', aura: 9, vibra: 7, suerte: 1}, {emoji: '🌷', aura: 13, vibra: 5, suerte: 2},
+  {emoji: '🍀', aura: 5, vibra: 5, suerte: 3}, {emoji: '🍕', aura: 10, vibra: 12, suerte: 2}, {emoji: '👅', aura: 7, vibra: 11, suerte: 1},
+  {emoji: '🍟', aura: 8, vibra: 8, suerte: 2}, {emoji: '🌮', aura: 9, vibra: 9, suerte: 2}, {emoji: '🍰', aura: 12, vibra: 6, suerte: 3},
+  {emoji: '🎂', aura: 11, vibra: 7, suerte: 2}, {emoji: '🍫', aura: 10, vibra: 8, suerte: 2}, {emoji: '☕', aura: 6, vibra: 10, suerte: 1},
+  {emoji: '🥤', aura: 7, vibra: 9, suerte: 2}, {emoji: '🏀', aura: 13, vibra: 11, suerte: 2}, {emoji: '⚽', aura: 12, vibra: 12, suerte: 2},
+  {emoji: '🎾', aura: 9, vibra: 13, suerte: 1}, {emoji: '🏆', aura: 14, vibra: 10, suerte: 3}, {emoji: '🎮', aura: 8, vibra: 14, suerte: 2},
+  {emoji: '🎲', aura: 6, vibra: 12, suerte: 3}, {emoji: '🎸', aura: 11, vibra: 7, suerte: 2}, {emoji: '🎺', aura: 7, vibra: 11, suerte: 1},
+  {emoji: '🎨', aura: 10, vibra: 10, suerte: 2}, {emoji: '📚', aura: 5, vibra: 15, suerte: 1}, {emoji: '💡', aura: 13, vibra: 9, suerte: 2},
+  {emoji: '🔧', aura: 6, vibra: 8, suerte: 1}, {emoji: '😱', aura: 9, vibra: 13, suerte: 2}, {emoji: '📱', aura: 12, vibra: 6, suerte: 2},
+  {emoji: '💻', aura: 8, vibra: 12, suerte: 1}, {emoji: '🛸', aura: 11, vibra: 5, suerte: 3},
+  // 51-90: RARO (Aura: 15-25, Vibra: 15-25, Suerte: 3-5)
+  {emoji: '🥷', aura: 18, vibra: 22, suerte: 4}, {emoji: '😇', aura: 22, vibra: 18, suerte: 5}, {emoji: '🧟‍♂️', aura: 16, vibra: 24, suerte: 3},
+  {emoji: '👽', aura: 24, vibra: 16, suerte: 4}, {emoji: '🎩', aura: 20, vibra: 20, suerte: 4}, {emoji: '🧙', aura: 19, vibra: 21, suerte: 5},
+  {emoji: '🧚', aura: 23, vibra: 17, suerte: 4}, {emoji: '🧜', aura: 17, vibra: 23, suerte: 3}, {emoji: '💃🏻', aura: 25, vibra: 15, suerte: 5},
+  {emoji: '🦋', aura: 21, vibra: 19, suerte: 4}, {emoji: '🦅', aura: 18, vibra: 22, suerte: 4}, {emoji: '🦈', aura: 22, vibra: 18, suerte: 3},
+  {emoji: '🐅', aura: 24, vibra: 16, suerte: 5}, {emoji: '🐘', aura: 15, vibra: 25, suerte: 4}, {emoji: '🦒', aura: 20, vibra: 20, suerte: 3},
+  {emoji: '🦏', aura: 16, vibra: 24, suerte: 4}, {emoji: '🌍', aura: 23, vibra: 17, suerte: 5}, {emoji: '📦', aura: 17, vibra: 23, suerte: 3},
+  {emoji: '🏴‍☠️', aura: 19, vibra: 21, suerte: 4}, {emoji: '✨', aura: 25, vibra: 15, suerte: 5}, {emoji: '🚨', aura: 18, vibra: 18, suerte: 4},
+  {emoji: '👑', aura: 22, vibra: 22, suerte: 5}, {emoji: '🦄', aura: 21, vibra: 19, suerte: 4}, {emoji: '🦁', aura: 24, vibra: 16, suerte: 5},
+  {emoji: '🧌', aura: 15, vibra: 24, suerte: 3}, {emoji: '🦉', aura: 20, vibra: 20, suerte: 4}, {emoji: '🐣', aura: 17, vibra: 23, suerte: 3},
+  {emoji: '🐉', aura: 23, vibra: 17, suerte: 5}, {emoji: '🐲', aura: 19, vibra: 21, suerte: 4}, {emoji: '🦕', aura: 16, vibra: 22, suerte: 3},
+  {emoji: '🦖', aura: 22, vibra: 16, suerte: 5}, {emoji: '🌋', aura: 18, vibra: 24, suerte: 4}, {emoji: '🗿', aura: 21, vibra: 19, suerte: 3},
+  {emoji: '🪄', aura: 25, vibra: 15, suerte: 5}, {emoji: '⚡', aura: 24, vibra: 18, suerte: 4}, {emoji: '💀', aura: 17, vibra: 21, suerte: 3},
+  {emoji: '👻', aura: 20, vibra: 20, suerte: 4}, {emoji: '🤢', aura: 15, vibra: 25, suerte: 3}, {emoji: '🤡', aura: 19, vibra: 17, suerte: 4},
+  // 91-120: ÉPICO (Aura: 25-35, Vibra: 25-35, Suerte: 5-7)
+  {emoji: '🎪', aura: 28, vibra: 32, suerte: 6}, {emoji: '🍾', aura: 32, vibra: 28, suerte: 7}, {emoji: '🎆', aura: 30, vibra: 30, suerte: 6},
+  {emoji: '🎇', aura: 26, vibra: 34, suerte: 5}, {emoji: '🫶', aura: 34, vibra: 26, suerte: 7}, {emoji: '🏃‍♂️', aura: 28, vibra: 28, suerte: 6},
+  {emoji: '🧟‍♀️', aura: 25, vibra: 35, suerte: 5}, {emoji: '🤖', aura: 35, vibra: 25, suerte: 7}, {emoji: '🧊', aura: 27, vibra: 33, suerte: 6},
+  {emoji: '😈', aura: 33, vibra: 27, suerte: 7}, {emoji: '🔫', aura: 29, vibra: 31, suerte: 6}, {emoji: '💅', aura: 31, vibra: 29, suerte: 6},
+  {emoji: '🎐', aura: 26, vibra: 32, suerte: 5}, {emoji: '🎀', aura: 32, vibra: 26, suerte: 7}, {emoji: '🎁', aura: 30, vibra: 28, suerte: 6},
+  {emoji: '🎰', aura: 28, vibra: 30, suerte: 6}, {emoji: '✈️', aura: 34, vibra: 26, suerte: 7}, {emoji: '🥵', aura: 25, vibra: 35, suerte: 5},
+  {emoji: '🥶', aura: 35, vibra: 25, suerte: 7}, {emoji: '⌚️', aura: 27, vibra: 29, suerte: 6}, {emoji: '⚓️', aura: 29, vibra: 27, suerte: 6},
+  {emoji: '🛁', aura: 31, vibra: 31, suerte: 6}, {emoji: '🪒', aura: 26, vibra: 34, suerte: 5}, {emoji: '🪤', aura: 32, vibra: 28, suerte: 7},
+  {emoji: '💣', aura: 28, vibra: 32, suerte: 6}, {emoji: '🏍️', aura: 30, vibra: 26, suerte: 6}, {emoji: '🍒', aura: 34, vibra: 30, suerte: 7},
+  {emoji: '🌪️', aura: 25, vibra: 35, suerte: 5}, {emoji: '👙', aura: 33, vibra: 27, suerte: 7}, {emoji: '🧩', aura: 29, vibra: 29, suerte: 6},
+  // 121-140: MÍTICO (Aura: 35-50, Vibra: 35-50, Suerte: 7-10)
+  {emoji: '🍪', aura: 38, vibra: 42, suerte: 8}, {emoji: '🏎️', aura: 45, vibra: 35, suerte: 9}, {emoji: '🎓', aura: 42, vibra: 38, suerte: 8},
+  {emoji: '🧸', aura: 36, vibra: 48, suerte: 7}, {emoji: '✂️', aura: 48, vibra: 36, suerte: 9}, {emoji: '🕳️', aura: 40, vibra: 40, suerte: 8},
+  {emoji: '❤️‍🔥', aura: 50, vibra: 35, suerte: 10}, {emoji: '🥳', aura: 38, vibra: 46, suerte: 8}, {emoji: '⚰️', aura: 35, vibra: 50, suerte: 7},
+  {emoji: '🎈', aura: 46, vibra: 38, suerte: 9}, {emoji: '🎉', aura: 44, vibra: 40, suerte: 8}, {emoji: '👩🏻‍❤️‍👨', aura: 48, vibra: 42, suerte: 10},
+  {emoji: '🦊', aura: 40, vibra: 44, suerte: 8}, {emoji: '💦', aura: 42, vibra: 36, suerte: 9}, {emoji: '🚪', aura: 36, vibra: 48, suerte: 7},
+  {emoji: '🎎', aura: 50, vibra: 40, suerte: 10}, {emoji: '⚠️', aura: 38, vibra: 46, suerte: 8}, {emoji: '🛌', aura: 44, vibra: 38, suerte: 9},
+  {emoji: '🤮', aura: 35, vibra: 45, suerte: 7}, {emoji: '🫡', aura: 48, vibra: 36, suerte: 10},
+  // 141-150: LEGENDARIO (Aura: 50-70, Vibra: 50-70, Suerte: 10-15)
+  {emoji: '💎', aura: 70, vibra: 50, suerte: 15}, {emoji: '🛹', aura: 55, vibra: 65, suerte: 12}, {emoji: '💸', aura: 65, vibra: 55, suerte: 13},
+  {emoji: '💵', aura: 60, vibra: 60, suerte: 12}, {emoji: '💊', aura: 52, vibra: 68, suerte: 11}, {emoji: '💶', aura: 68, vibra: 52, suerte: 14},
+  {emoji: '🎟️', aura: 58, vibra: 62, suerte: 12}, {emoji: '⚜️', aura: 62, vibra: 58, suerte: 13}, {emoji: '💳', aura: 66, vibra: 54, suerte: 14},
+  {emoji: '💿', aura: 54, vibra: 66, suerte: 11}
+];
 
 const AVATARES = ['🐱', '🐶', '🦊', '🐼', '🐨', '🐯', '🦁', '🐷', '🐸', '🐙', '🦄', '🐲'];
 
@@ -1811,12 +2114,14 @@ const app = {
     confirmIndex: 0,
     toquesMostrados: new Set(),
     debugMode: false,
-    respuestaToqueIndex: 0, // Índice de respuesta seleccionada
-    lastToqueSender: null // Guardar quién envió el último toque
+    respuestaToqueIndex: 0,
+    lastToqueSender: null,
+    colaToques: [],
+    mostrandoToque: false
   },
   
   contactos: {},
-  todex: { captured: [], total_toques_enviados: 0, emojis_stats: {} },
+  todex: { captured: [], total_toques_enviados: 0 },
   miID: '',
 
   debug(msg) {
@@ -1832,7 +2137,7 @@ const app = {
   },
 
   init() {
-    this.debug('=== TOKEJI v12 INICIANDO ===');
+    this.debug('=== TOKEJI v13 INICIANDO ===');
     this.debug('Backend: ' + BACK);
     
     this.miID = localStorage.getItem("miid");
@@ -1844,8 +2149,7 @@ const app = {
     
     try {
       this.contactos = JSON.parse(localStorage.getItem("cts")) || {};
-      this.todex = JSON.parse(localStorage.getItem("todex")) || { captured: [], total_toques_enviados: 0, emojis_stats: {} };
-      if (!this.todex.emojis_stats) this.todex.emojis_stats = {};
+      this.todex = JSON.parse(localStorage.getItem("todex")) || { captured: [], total_toques_enviados: 0 };
       this.state.settings.sonido = localStorage.getItem('sonido') !== 'off';
       this.state.settings.vibracion = localStorage.getItem('vibracion') !== 'off';
       this.state.settings.color = parseInt(localStorage.getItem('colorIndex')) || 0;
@@ -1915,13 +2219,28 @@ const app = {
         osc.start(now);
         osc.stop(now + 0.05);
       } else if (type === 'success') {
-        // Sonido de éxito más alegre
         osc.frequency.setValueAtTime(600, now);
         osc.frequency.exponentialRampToValueAtTime(1200, now + 0.1);
         gain.gain.setValueAtTime(0.1, now);
         gain.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
         osc.start(now);
         osc.stop(now + 0.3);
+      } else if (type === 'response') {
+        // Sonido más suave para respuestas
+        osc.frequency.setValueAtTime(500, now);
+        gain.gain.setValueAtTime(0.05, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.15);
+        osc.start(now);
+        osc.stop(now + 0.15);
+      } else if (type === 'unlock') {
+        // Sonido especial de celebración
+        osc.frequency.setValueAtTime(400, now);
+        osc.frequency.exponentialRampToValueAtTime(800, now + 0.1);
+        osc.frequency.exponentialRampToValueAtTime(1200, now + 0.2);
+        gain.gain.setValueAtTime(0.15, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.5);
+        osc.start(now);
+        osc.stop(now + 0.5);
       }
     } catch(e) {
       this.debug('Error sonido: ' + e.message);
@@ -2081,6 +2400,13 @@ const app = {
   },
 
   goBack() {
+    // Cerrar ficha técnica si está abierta
+    const ficha = document.getElementById('ficha-tecnica-modal');
+    if (ficha && ficha.classList.contains('active')) {
+      this.cerrarFichaTecnica();
+      return;
+    }
+
     const confirmModal = document.getElementById('confirm-reiniciar');
     if (confirmModal && confirmModal.classList.contains('active')) {
       confirmModal.classList.remove('active');
@@ -2101,6 +2427,12 @@ const app = {
 
     const toqueModal = document.getElementById('toque-recibido-modal');
     if (toqueModal && toqueModal.classList.contains('active')) {
+      return; // No cerrar con back, solo con OK
+    }
+
+    const respRecibida = document.getElementById('respuesta-recibida-modal');
+    if (respRecibida && respRecibida.classList.contains('active')) {
+      this.cerrarRespuestaRecibida();
       return;
     }
 
@@ -2154,6 +2486,13 @@ const app = {
     
     const { currentPage, focus, inSelector } = this.state;
     
+    // Si ficha técnica está abierta, cerrarla
+    const ficha = document.getElementById('ficha-tecnica-modal');
+    if (ficha && ficha.classList.contains('active')) {
+      this.cerrarFichaTecnica();
+      return;
+    }
+
     const confirmModal = document.getElementById('confirm-reiniciar');
     if (confirmModal && confirmModal.classList.contains('active')) {
       if (this.state.confirmIndex === 0) {
@@ -2179,6 +2518,13 @@ const app = {
     const toqueModal = document.getElementById('toque-recibido-modal');
     if (toqueModal && toqueModal.classList.contains('active')) {
       this.enviarRespuestaToque();
+      return;
+    }
+
+    // Si estamos en respuesta recibida, cerrar
+    const respRecibida = document.getElementById('respuesta-recibida-modal');
+    if (respRecibida && respRecibida.classList.contains('active')) {
+      this.cerrarRespuestaRecibida();
       return;
     }
 
@@ -2252,7 +2598,7 @@ const app = {
       case 'todox':
         const id = focus.index + 1;
         if (this.todex.captured.includes(id)) {
-          this.showEmojiDetail(id);
+          this.mostrarFichaTecnica(id);
         }
         break;
       case 'combates':
@@ -2269,6 +2615,10 @@ const app = {
     this.initAudio();
     this.playSound('move');
     
+    // Si ficha técnica está abierta, ignorar navegación
+    const ficha = document.getElementById('ficha-tecnica-modal');
+    if (ficha && ficha.classList.contains('active')) return;
+
     const confirmModal = document.getElementById('confirm-reiniciar');
     if (confirmModal && confirmModal.classList.contains('active')) return;
     
@@ -2368,6 +2718,10 @@ const app = {
     this.initAudio();
     this.playSound('move');
     
+    // Si ficha técnica está abierta, ignorar navegación
+    const ficha = document.getElementById('ficha-tecnica-modal');
+    if (ficha && ficha.classList.contains('active')) return;
+
     const confirmModal = document.getElementById('confirm-reiniciar');
     if (confirmModal && confirmModal.classList.contains('active')) return;
     
@@ -2480,6 +2834,10 @@ const app = {
     this.initAudio();
     this.playSound('move');
     
+    // Si ficha técnica está abierta, ignorar navegación
+    const ficha = document.getElementById('ficha-tecnica-modal');
+    if (ficha && ficha.classList.contains('active')) return;
+
     const confirmModal = document.getElementById('confirm-reiniciar');
     if (confirmModal && confirmModal.classList.contains('active')) {
       this.state.confirmIndex = 0;
@@ -2553,6 +2911,10 @@ const app = {
     this.initAudio();
     this.playSound('move');
     
+    // Si ficha técnica está abierta, ignorar navegación
+    const ficha = document.getElementById('ficha-tecnica-modal');
+    if (ficha && ficha.classList.contains('active')) return;
+
     const confirmModal = document.getElementById('confirm-reiniciar');
     if (confirmModal && confirmModal.classList.contains('active')) {
       this.state.confirmIndex = 1;
@@ -2701,7 +3063,6 @@ const app = {
     });
   },
 
-  // NUEVO: Actualizar focus en respuestas de toque
   updateRespuestasFocus() {
     document.querySelectorAll('.respuesta-option').forEach((el, i) => {
       el.classList.toggle('focused', i === this.state.respuestaToqueIndex);
@@ -2832,10 +3193,9 @@ const app = {
     
     count.textContent = `${this.todex.captured.length}/150`;
     
-    grid.innerHTML = Array(150).fill(0).map((_, i) => {
+    grid.innerHTML = EMOJIS_LIST.map((data, i) => {
       const captured = this.todex.captured.includes(i+1);
-      const emoji = captured ? (EMOJIS_LIST[i] || '✨') : '•';
-      return `<div class="emoji-card ${captured ? 'captured' : ''} ${i === 0 ? 'focused' : ''}" data-index="${i}">${emoji}</div>`;
+      return `<div class="emoji-card ${captured ? 'captured' : ''} ${i === 0 ? 'focused' : ''}" data-index="${i}" onclick="app.toggleFichaTecnica(${i+1})">${captured ? data.emoji : '•'}</div>`;
     }).join('');
   },
 
@@ -3169,7 +3529,7 @@ const app = {
   },
 
   // ========================================
-  // ENVÍO DE TOQUES CON ANIMACIÓN
+  // ENVÍO DE TOQUES CON ANIMACIÓN Y COLOR
   // ========================================
   
   async enviarToque(paraId, paraNombre) {
@@ -3186,8 +3546,10 @@ const app = {
       return;
     }
     
-    // Mostrar animación de envío PRIMERO
-    this.mostrarAnimacionEnvio(paraNombre);
+    const categoria = TOKES_TYPES.find(t => t.id === this.state.selectedCategoria);
+    
+    // Mostrar animación de envío PRIMERO con color del toke
+    this.mostrarAnimacionEnvio(paraNombre, categoria);
     
     // Esperar a que termine la animación antes de enviar
     await new Promise(r => setTimeout(r, 1500));
@@ -3266,46 +3628,39 @@ const app = {
     }
   },
 
-  // NUEVO: Mostrar animación de envío
-  mostrarAnimacionEnvio(nombreDestino) {
+  mostrarAnimacionEnvio(nombreDestino, categoria) {
     const anim = document.getElementById('envio-animacion');
     const avatar = document.getElementById('envio-avatar-anim');
+    const emojiToke = document.getElementById('envio-emoji-anim');
     const destino = document.getElementById('envio-destino-anim');
+    const check = document.getElementById('envio-check');
     
     if (avatar) avatar.textContent = this.state.settings.avatar;
+    if (emojiToke) emojiToke.textContent = categoria.emoji;
     if (destino) destino.textContent = `A: ${nombreDestino}`;
+    if (check) check.classList.remove('show');
     
-    if (anim) {
+    // Aplicar color de fondo según el toke
+    if (anim && categoria) {
+      anim.style.background = `linear-gradient(145deg, ${categoria.bgGradient[0]} 0%, ${categoria.color} 100%)`;
       anim.classList.add('active');
-      // Reiniciar animación
-      const avatarEl = anim.querySelector('.envio-avatar');
-      avatarEl.style.animation = 'none';
-      avatarEl.offsetHeight; // Trigger reflow
-      avatarEl.style.animation = 'enviarAnim 1.5s ease-in-out';
     }
   },
 
-  // NUEVO: Mostrar confirmación (check)
   mostrarConfirmacionEnvio() {
-    const check = document.querySelector('.envio-check');
+    const check = document.getElementById('envio-check');
     if (check) {
-      check.style.display = 'block';
-      check.style.animation = 'none';
-      check.offsetHeight;
-      check.style.animation = 'checkPop 0.5s ease both';
+      check.classList.add('show');
     }
   },
 
-  // NUEVO: Ocultar animación
   ocultarAnimacionEnvio() {
     const anim = document.getElementById('envio-animacion');
-    const check = document.querySelector('.envio-check');
     if (anim) anim.classList.remove('active');
-    if (check) check.style.display = 'none';
   },
 
   // ========================================
-  // SISTEMA DE DESBLOQUEO CORREGIDO
+  // SISTEMA DE DESBLOQUEO CON STATS FIJAS
   // ========================================
   
   verificarDesbloqueos() {
@@ -3321,44 +3676,18 @@ const app = {
     if (disponibles.length > 0) {
       const nuevo = disponibles[Math.floor(Math.random() * disponibles.length)];
       this.todex.captured.push(nuevo);
-      this.todex.captured.sort((a, b) => a - b); // Mantener orden
-      
-      // Generar stats aleatorios
-      const rangos = {
-        comun: { aura: [5, 15], vibra: [5, 15], suerte: [1, 3] },
-        raro: { aura: [15, 25], vibra: [15, 25], suerte: [3, 5] },
-        epico: { aura: [25, 35], vibra: [25, 35], suerte: [5, 7] },
-        mitico: { aura: [35, 50], vibra: [35, 50], suerte: [7, 10] },
-        legendario: { aura: [50, 70], vibra: [50, 70], suerte: [10, 15] }
-      };
-      
-      const randomBetween = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
-      
-      // Determinar rareza basada en ID
-      let rarity = 'comun';
-      if (nuevo > 140) rarity = 'legendario';
-      else if (nuevo > 120) rarity = 'mitico';
-      else if (nuevo > 90) rarity = 'epico';
-      else if (nuevo > 50) rarity = 'raro';
-      
-      const rango = rangos[rarity];
-      this.todex.emojis_stats[nuevo] = {
-        aura: randomBetween(rango.aura[0], rango.aura[1]),
-        vibra: randomBetween(rango.vibra[0], rango.vibra[1]),
-        suerte: randomBetween(rango.suerte[0], rango.suerte[1])
-      };
+      this.todex.captured.sort((a, b) => a - b);
       
       localStorage.setItem('todex', JSON.stringify(this.todex));
       
       this.debug('¡Nuevo emoji desbloqueado!: #' + nuevo);
       
       // Mostrar notificación
-      this.mostrarNotificacionNuevoEmoji(nuevo, rarity);
+      this.mostrarNotificacionNuevoEmoji(nuevo);
       
       // Actualizar ToDox si estamos en esa página
       if (this.state.currentPage === 'todox') {
         this.renderTodex();
-        // Destacar el nuevo emoji
         setTimeout(() => {
           const cards = document.querySelectorAll('.emoji-card');
           if (cards[nuevo - 1]) {
@@ -3370,39 +3699,98 @@ const app = {
     }
   },
 
-  // NUEVO: Mostrar notificación de nuevo emoji
-  mostrarNotificacionNuevoEmoji(numero, rareza) {
+  getRareza(numero) {
+    if (numero > 140) return 'legendario';
+    if (numero > 120) return 'mitico';
+    if (numero > 90) return 'epico';
+    if (numero > 50) return 'raro';
+    return 'comun';
+  },
+
+  mostrarNotificacionNuevoEmoji(numero) {
     const notif = document.getElementById('nuevo-emoji-notif');
     const icon = document.getElementById('nuevo-emoji-icon');
     const num = document.getElementById('nuevo-emoji-num');
     const stats = document.getElementById('nuevo-emoji-stats');
     
-    const emoji = EMOJIS_LIST[numero - 1] || '✨';
-    const stats_data = this.todex.emojis_stats[numero];
+    const emoji = EMOJIS_LIST[numero - 1];
+    const rareza = this.getRareza(numero);
     
-    if (icon) icon.textContent = emoji;
+    if (icon) icon.textContent = emoji.emoji;
     if (num) num.textContent = `#${numero} ${rareza.toUpperCase()}`;
-    if (stats && stats_data) {
-      stats.textContent = `✨ Aura: ${stats_data.aura} | 🌟 Vibra: ${stats_data.vibra} | 🍀 Suerte: ${stats_data.suerte}`;
+    if (stats) {
+      stats.textContent = `✨${emoji.aura} | 🌟${emoji.vibra} | 🍀${emoji.suerte}`;
     }
     
     if (notif) {
       notif.classList.add('active');
-      if (this.state.settings.sonido) this.playSound('success');
+      this.playSound('unlock');
       if (this.state.settings.vibracion && navigator.vibrate) {
         navigator.vibrate([100, 50, 100, 50, 200]);
       }
     }
   },
 
-  // NUEVO: Cerrar notificación de nuevo emoji
   cerrarNuevoEmoji() {
     const notif = document.getElementById('nuevo-emoji-notif');
     if (notif) notif.classList.remove('active');
   },
 
   // ========================================
-  // RECEPCIÓN DE TOQUES CON RESPUESTAS
+  // FICHA TÉCNICA TODEX
+  // ========================================
+  
+  toggleFichaTecnica(id) {
+    const modal = document.getElementById('ficha-tecnica-modal');
+    if (modal.classList.contains('active')) {
+      this.cerrarFichaTecnica();
+    } else {
+      this.mostrarFichaTecnica(id);
+    }
+  },
+
+  mostrarFichaTecnica(id) {
+    if (!this.todex.captured.includes(id)) return;
+    
+    const modal = document.getElementById('ficha-tecnica-modal');
+    const container = document.getElementById('ficha-container');
+    const emojiEl = document.getElementById('ficha-emoji');
+    const numEl = document.getElementById('ficha-numero');
+    const rarezaEl = document.getElementById('ficha-rareza');
+    const auraEl = document.getElementById('ficha-aura');
+    const vibraEl = document.getElementById('ficha-vibra');
+    const suerteEl = document.getElementById('ficha-suerte');
+    
+    const data = EMOJIS_LIST[id - 1];
+    const rareza = this.getRareza(id);
+    
+    if (emojiEl) emojiEl.textContent = data.emoji;
+    if (numEl) numEl.textContent = `#${id}`;
+    if (rarezaEl) {
+      rarezaEl.textContent = rareza.toUpperCase();
+      rarezaEl.className = `ficha-rareza ${rareza}`;
+    }
+    if (auraEl) auraEl.textContent = data.aura;
+    if (vibraEl) vibraEl.textContent = data.vibra;
+    if (suerteEl) suerteEl.textContent = data.suerte;
+    
+    if (container) {
+      container.className = `ficha-container ${rareza}`;
+    }
+    
+    if (modal) {
+      modal.classList.add('active');
+      this.playSound('select');
+    }
+  },
+
+  cerrarFichaTecnica() {
+    const modal = document.getElementById('ficha-tecnica-modal');
+    if (modal) modal.classList.remove('active');
+  },
+
+  // ========================================
+  // RECEPCIÓN DE TOQUES CON COLA Y RESPUESTAS
   // ========================================
   
   async checkIncoming() {
@@ -3411,8 +3799,7 @@ const app = {
         this.state.currentPage === 'consent') return;
     
     // No hacer polling si ya hay un toque mostrándose
-    const toqueModal = document.getElementById('toque-recibido-modal');
-    if (toqueModal && toqueModal.classList.contains('active')) return;
+    if (this.state.mostrandoToque) return;
     
     try {
       const url = `${BACK}/toques-pendientes?userId=${this.miID}`;
@@ -3433,10 +3820,22 @@ const app = {
       if (data && data.ok && data.toques && data.toques.length > 0) {
         this.debug(data.toques.length + ' toque(s) recibido(s)');
         
-        data.toques.forEach((toque, i) => {
-          setTimeout(() => this.mostrarToqueRecibido(toque), i * 1500);
+        // Agregar a la cola
+        data.toques.forEach(toque => {
+          const idUnico = `${Date.now()}-${toque.de}-${toque.num}`;
+          if (!this.state.tokesMostrados.has(idUnico)) {
+            this.state.colaToques.push({...toque, idUnico});
+            this.state.tokesMostrados.add(idUnico);
+          }
         });
+        
+        // Procesar cola
+        this.procesarColaToques();
       }
+      
+      // También verificar respuestas pendientes
+      this.checkRespuestasPendientes();
+      
     } catch(e) {
       if (this.state.debugMode) {
         this.debug('Error checkIncoming: ' + e.message);
@@ -3444,70 +3843,118 @@ const app = {
     }
   },
 
-  mostrarToqueRecibido(toque) {
-    const hoy = new Date().toDateString();
-    const idUnico = `${hoy}-${toque.de}-${toque.num}-${toque.hora || Date.now()}`;
-    
-    if (this.state.toquesMostrados.has(idUnico)) {
-      this.debug('Toque ya mostrado: ' + idUnico);
-      return;
-    }
-    this.state.toquesMostrados.add(idUnico);
-    
-    if (this.state.toquesMostrados.size > 500) {
-      this.state.toquesMostrados.clear();
-    }
-    
-    const nombre = this.contactos[toque.de] || 'Alguien';
-    const categoria = TOKES_TYPES.find(t => t.id === toque.num) || TOKES_TYPES[0];
-    
-    // Guardar quién envió el toque para la respuesta
-    this.state.lastToqueSender = toque.de;
-    this.state.respuestaToqueIndex = 0; // Reset selección
-    
-    let mensajeTexto = `¡${nombre} te dio un Toque!`;
-    if (toque.contexto && CONTEXTOS_TOKES[toque.num]) {
-      const ctx = CONTEXTOS_TOKES[toque.num][parseInt(toque.contexto) - 1];
-      if (ctx) mensajeTexto = `¡${nombre} dice ${ctx.texto}!`;
-    }
-    
-    const modal = document.getElementById('toque-recibido-modal');
-    const emojiEl = document.getElementById('toque-emoji');
-    const nombreEl = document.getElementById('toque-nombre');
-    const mensajeEl = document.getElementById('toque-mensaje');
-    
-    if (modal && emojiEl && nombreEl && mensajeEl) {
-      emojiEl.textContent = categoria.emoji;
-      nombreEl.textContent = nombre;
-      mensajeEl.textContent = mensajeTexto;
+  async checkRespuestasPendientes() {
+    try {
+      const response = await fetch(`${BACK}/respuestas-pendientes?userId=${this.miID}`, {
+        method: 'GET',
+        headers: { 
+          'Cache-Control': 'no-cache',
+          'Accept': 'application/json'
+        },
+        mode: 'cors'
+      });
       
-      // Reset y mostrar opciones de respuesta
-      this.updateRespuestasFocus();
+      if (!response.ok) return;
       
-      modal.classList.add('active');
+      const data = await response.json();
       
-      if (this.state.settings.sonido) this.playSound('success');
-      if (this.state.settings.vibracion && navigator.vibrate) {
-        navigator.vibrate([200, 100, 200]);
+      if (data && data.ok && data.respuestas && data.respuestas.length > 0) {
+        data.respuestas.forEach((resp, i) => {
+          setTimeout(() => this.mostrarRespuestaRecibida(resp), i * 2000);
+        });
       }
+    } catch(e) {
+      // Silenciar errores de respuestas
     }
   },
 
-  // NUEVO: Enviar respuesta al toque recibido
+  async procesarColaToques() {
+    if (this.state.mostrandoToque || this.state.colaToques.length === 0) return;
+    
+    this.state.mostrandoToque = true;
+    const toque = this.state.colaToques.shift();
+    
+    await this.mostrarToqueRecibido(toque);
+    
+    // Esperar a que cierre el modal para continuar
+    const checkCerrado = setInterval(() => {
+      const modal = document.getElementById('toque-recibido-modal');
+      if (!modal.classList.contains('active')) {
+        clearInterval(checkCerrado);
+        this.state.mostrandoToque = false;
+        // Procesar siguiente si hay
+        if (this.state.colaToques.length > 0) {
+          setTimeout(() => this.procesarColaToques(), 500);
+        }
+      }
+    }, 500);
+  },
+
+  mostrarToqueRecibido(toque) {
+    return new Promise((resolve) => {
+      const nombre = this.contactos[toque.de] || 'Alguien';
+      const categoria = TOKES_TYPES.find(t => t.id === toque.num) || TOKES_TYPES[0];
+      
+      this.state.lastToqueSender = toque.de;
+      this.state.respuestaToqueIndex = 0;
+      
+      let mensajeTexto = `¡${nombre} te envió un Toque!`;
+      if (toque.contexto && CONTEXTOS_TOKES[toque.num]) {
+        const ctx = CONTEXTOS_TOKES[toque.num][parseInt(toque.contexto) - 1];
+        if (ctx) mensajeTexto = ctx.texto;
+      }
+      
+      const modal = document.getElementById('toque-recibido-modal');
+      const avatarEl = document.getElementById('toque-avatar-amigo');
+      const emojiEl = document.getElementById('toque-emoji');
+      const nombreEl = document.getElementById('toque-nombre');
+      const mensajeEl = document.getElementById('toque-mensaje');
+      const colaInd = document.getElementById('cola-indicator');
+      
+      // Actualizar indicador de cola
+      if (colaInd) {
+        if (this.state.colaToques.length > 0) {
+          colaInd.textContent = `Toque 1 de ${this.state.colaToques.length + 1}`;
+          coloInd.classList.add('active');
+        } else {
+          colaInd.classList.remove('active');
+        }
+      }
+      
+      if (avatarEl) avatarEl.textContent = '👤'; // Podría ser avatar del amigo si lo tuviéramos
+      if (emojiEl) emojiEl.textContent = categoria.emoji;
+      if (nombreEl) nombreEl.textContent = nombre;
+      if (mensajeEl) mensajeEl.textContent = mensajeTexto;
+      
+      // Aplicar color de fondo
+      if (modal) {
+        modal.style.background = `linear-gradient(145deg, ${categoria.bgGradient[0]} 0%, ${categoria.color} 100%)`;
+        modal.classList.add('active');
+      }
+      
+      this.updateRespuestasFocus();
+      
+      this.playSound('success');
+      if (this.state.settings.vibracion && navigator.vibrate) {
+        navigator.vibrate([200, 100, 200]);
+      }
+      
+      resolve();
+    });
+  },
+
   async enviarRespuestaToque() {
     const opciones = document.querySelectorAll('.respuesta-option');
     const seleccionada = opciones[this.state.respuestaToqueIndex];
     if (!seleccionada) return;
     
     const emoji = seleccionada.dataset.emoji;
-    const texto = seleccionada.querySelector('.texto-resp').textContent;
+    const texto = seleccionada.dataset.texto;
     
     this.debug('Enviando respuesta: ' + emoji + ' a ' + this.state.lastToqueSender);
     
-    // Cerrar modal primero
     this.cerrarToqueRecibido();
     
-    // Enviar respuesta al servidor
     if (this.state.lastToqueSender) {
       try {
         await fetch(`${BACK}/respuesta`, {
@@ -3516,7 +3963,7 @@ const app = {
           body: JSON.stringify({
             de: this.miID,
             para: this.state.lastToqueSender,
-            respuesta: emoji,
+            emoji: emoji,
             texto: texto
           })
         });
@@ -3532,7 +3979,38 @@ const app = {
   cerrarToqueRecibido() {
     const modal = document.getElementById('toque-recibido-modal');
     if (modal) modal.classList.remove('active');
-    this.state.lastToqueSender = null;
+  },
+
+  // ========================================
+  // RECEPCIÓN DE RESPUESTAS (AZUL)
+  // ========================================
+  
+  mostrarRespuestaRecibida(respuesta) {
+    const modal = document.getElementById('respuesta-recibida-modal');
+    const avatarEl = document.getElementById('resp-avatar');
+    const nombreEl = document.getElementById('resp-nombre');
+    const textoEl = document.getElementById('resp-texto');
+    const emojiEl = document.getElementById('resp-emoji');
+    
+    const nombre = this.contactos[respuesta.de] || 'Alguien';
+    
+    if (avatarEl) avatarEl.textContent = '👤';
+    if (nombreEl) nombreEl.textContent = nombre;
+    if (textoEl) textoEl.textContent = `Respondió: ${respuesta.texto}`;
+    if (emojiEl) emojiEl.textContent = respuesta.emoji;
+    
+    if (modal) {
+      modal.classList.add('active');
+      this.playSound('response');
+      if (this.state.settings.vibracion && navigator.vibrate) {
+        navigator.vibrate([100, 50, 100]);
+      }
+    }
+  },
+
+  cerrarRespuestaRecibida() {
+    const modal = document.getElementById('respuesta-recibida-modal');
+    if (modal) modal.classList.remove('active');
   },
 
   jugarVSIA() {
@@ -3549,16 +4027,6 @@ const app = {
       return;
     }
     this.showMsg('⚔️ VS Amigo - Próximamente');
-  },
-
-  showEmojiDetail(id) {
-    const emoji = EMOJIS_LIST[id-1] || '✨';
-    const stats = this.todex.emojis_stats[id];
-    if (stats) {
-      this.showMsg(`${emoji} #${id} ✨${stats.aura} 🌟${stats.vibra} 🍀${stats.suerte}`);
-    } else {
-      this.showMsg(`${emoji} #${id} capturado`);
-    }
   },
 
   handleResponseOK() {
@@ -3607,7 +4075,7 @@ const app = {
 };
 
 window.addEventListener('load', () => {
-  console.log('Tokeji v12 iniciando...');
+  console.log('Tokeji v13 iniciando...');
   app.init();
 });
 </script>
