@@ -33,7 +33,7 @@
       font-family: 'Nunito', sans-serif;
     }
 
-    /* DISPOSITIVO REALISTA CON TORNILLOS */
+    /* DISPOSITIVO */
     .device {
       width: 340px;
       height: 600px;
@@ -50,7 +50,7 @@
       border: 3px solid rgba(255,255,255,0.2);
     }
 
-    /* TORNILLOS METÁLICOS */
+    /* TORNILLOS */
     .screw {
       position: absolute;
       width: 14px;
@@ -108,7 +108,7 @@
       pointer-events: none;
     }
 
-    /* PANTALLA - MÁS GRANDE */
+    /* PANTALLA */
     .screen-container {
       width: 100%;
       flex: 1;
@@ -286,10 +286,11 @@
       margin-bottom: 8px;
     }
 
-    /* MENU GRID 3x2 - CORREGIDO */
+    /* MENU GRID 2x3 - CORREGIDO */
     .menu-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(2, 1fr);
+      grid-template-rows: repeat(3, 1fr);
       gap: 10px;
       width: 100%;
       padding: 0 5px;
@@ -307,14 +308,14 @@
       align-items: center;
       justify-content: center;
       gap: 4px;
-      font-size: 10px;
+      font-size: 11px;
       font-weight: 800;
       color: #4A5568;
       transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
       cursor: pointer;
       box-shadow: 0 3px 0 #CBD5E0, 0 4px 6px rgba(0,0,0,0.05);
-      min-height: 95px;
-      max-height: 95px;
+      min-height: 100px;
+      max-height: 100px;
     }
 
     .menu-item:active {
@@ -331,7 +332,7 @@
     }
 
     .menu-item .icon {
-      font-size: 28px;
+      font-size: 32px;
       transition: transform 0.2s;
     }
 
@@ -375,7 +376,7 @@
       box-shadow: 0 3px 0 #F687B3;
     }
 
-    /* TOKES CON COLORES ESPECÍFICOS */
+    /* TOKES CON COLORES */
     .toke-item.t1 { border-color: #FF0066; background: linear-gradient(145deg, #FFF0F3, #FFF5F7); }
     .toke-item.t1.focused { box-shadow: 0 3px 0 #CC0052; }
     .toke-item.t2 { border-color: #FF5400; background: linear-gradient(145deg, #FFF4F0, #FFF8F5); }
@@ -387,7 +388,7 @@
     .toke-item.t5 { border-color: #3182CE; background: linear-gradient(145deg, #EBF8FF, #F0F9FF); }
     .toke-item.t5.focused { box-shadow: 0 3px 0 #2C5282; }
 
-    /* VARIANTES DE TOQUES */
+    /* VARIANTES */
     .variante-item {
       border-left: 4px solid;
     }
@@ -586,6 +587,24 @@
       left: 22px;
     }
 
+    /* BOTÓN ELIMINAR AMIGO */
+    .btn-eliminar {
+      background: linear-gradient(145deg, #FC8181, #F56565);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 6px 12px;
+      font-size: 10px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 2px 0 #C53030;
+    }
+
+    .btn-eliminar:active {
+      transform: translateY(2px);
+      box-shadow: 0 0 0 #C53030;
+    }
+
     /* MODALES */
     .selector-modal {
       position: absolute;
@@ -611,14 +630,15 @@
       font-family: 'Fredoka One', cursive;
       font-size: 18px;
       margin-bottom: 20px;
+      text-align: center;
     }
 
     .selector-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
       width: 100%;
-      max-width: 280px;
+      max-width: 260px;
     }
 
     .selector-item {
@@ -629,11 +649,12 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      font-size: 11px;
+      font-size: 12px;
       font-weight: 700;
       transition: all 0.2s;
       cursor: pointer;
       color: white;
+      padding: 10px;
     }
 
     .selector-item.focused {
@@ -727,7 +748,95 @@
       border-color: white;
     }
 
-    /* BOTONES FÍSICOS - SUBIDOS */
+    /* MODAL CONFIRMACIÓN REINICIAR */
+    .confirm-modal {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.85);
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 30px;
+      z-index: 200;
+    }
+
+    .confirm-modal.active {
+      display: flex;
+    }
+
+    .confirm-box {
+      background: white;
+      border-radius: 20px;
+      padding: 25px;
+      width: 100%;
+      max-width: 260px;
+      text-align: center;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+    }
+
+    .confirm-title {
+      font-family: 'Fredoka One', cursive;
+      font-size: 18px;
+      color: #E53E3E;
+      margin-bottom: 15px;
+    }
+
+    .confirm-text {
+      font-size: 13px;
+      color: #4A5568;
+      margin-bottom: 20px;
+      line-height: 1.4;
+    }
+
+    .confirm-buttons {
+      display: flex;
+      gap: 10px;
+    }
+
+    .confirm-btn {
+      flex: 1;
+      padding: 12px;
+      border: none;
+      border-radius: 12px;
+      font-family: 'Nunito', sans-serif;
+      font-size: 13px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .confirm-btn.no {
+      background: #E2E8F0;
+      color: #4A5568;
+      box-shadow: 0 3px 0 #CBD5E0;
+    }
+
+    .confirm-btn.no:active {
+      transform: translateY(3px);
+      box-shadow: 0 0 0 #CBD5E0;
+    }
+
+    .confirm-btn.si {
+      background: linear-gradient(145deg, #FC8181, #F56565);
+      color: white;
+      box-shadow: 0 3px 0 #C53030;
+    }
+
+    .confirm-btn.si:active {
+      transform: translateY(3px);
+      box-shadow: 0 0 0 #C53030;
+    }
+
+    .confirm-btn.focused {
+      transform: scale(1.05);
+      box-shadow: 0 0 0 3px rgba(255,107,157,0.3);
+    }
+
+    /* BOTONES FÍSICOS */
     .controls {
       margin-top: 3px;
       display: flex;
@@ -903,7 +1012,7 @@
             <div class="home-hint">▼ Pulsa OK para Menú</div>
           </div>
 
-          <!-- MENU GRID 3x2 -->
+          <!-- MENU GRID 2x3 -->
           <div class="page" id="page-menu">
             <div class="setup-title">Menú</div>
             <div class="menu-grid" id="menu-grid">
@@ -934,19 +1043,19 @@
             </div>
           </div>
 
-          <!-- TOKES - NIVEL 1: CATEGORÍAS -->
+          <!-- TOKES - NIVEL 1 -->
           <div class="page" id="page-tokes">
             <div class="setup-title">Elige Categoría</div>
             <div class="list-container" id="tokes-list"></div>
           </div>
 
-          <!-- TOKES - NIVEL 2: VARIANTES -->
+          <!-- TOKES - NIVEL 2 -->
           <div class="page" id="page-variantes">
             <div class="setup-title" id="variantes-title">Variante</div>
             <div class="list-container" id="variantes-list"></div>
           </div>
 
-          <!-- CONTACTOS PARA ENVIAR -->
+          <!-- ENVÍAR -->
           <div class="page" id="page-enviar">
             <div class="setup-title">Enviar a...</div>
             <div class="envio-info" id="envio-info">
@@ -955,7 +1064,7 @@
             <div class="list-container" id="enviar-list"></div>
           </div>
 
-          <!-- CONTACTS -->
+          <!-- CONTACTS CON ELIMINAR -->
           <div class="page" id="page-contacts">
             <div class="setup-title">Amigos</div>
             <button class="scan-btn focused" id="scan-btn">📷 Escanear QR</button>
@@ -1048,6 +1157,18 @@
               <div class="response-action focused" data-action="send">OK</div>
             </div>
           </div>
+
+          <!-- MODAL CONFIRMACIÓN REINICIAR -->
+          <div class="confirm-modal" id="confirm-reiniciar">
+            <div class="confirm-box">
+              <div class="confirm-title">🗑️ ¿Reiniciar?</div>
+              <div class="confirm-text">Se borrarán todos tus datos incluyendo amigos, tokes y progreso. ¿Estás seguro?</div>
+              <div class="confirm-buttons">
+                <button class="confirm-btn no focused" onclick="app.cancelarReinicio()">No</button>
+                <button class="confirm-btn si" onclick="app.confirmarReinicio()">Sí, borrar</button>
+              </div>
+            </div>
+          </div>
         </div>
 
         <div class="msg-bar" id="msg-bar"></div>
@@ -1075,12 +1196,11 @@
 <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
 <script>
 // ========================================
-// TOKEJI v5.1 - NAVEGACIÓN CORREGIDA
+// TOKEJI v5.2 - CORRECCIONES COMPLETAS
 // ========================================
 
 const BACK = "https://tokeji-device.onrender.com";
 
-// CONTEXTOS DE TOQUES - 5 CATEGORÍAS x 4 VARIANTES
 const CONTEXTOS_TOKES = {
   1: [ 
     { emoji: "💪", nombre: "GYM", texto: "que estás a 🔥 en el GYM" },
@@ -1138,9 +1258,8 @@ const TOKES_TYPES = [
   { id: 5, emoji: '🚨', name: 'Urgente', desc: '¡Ayuda!', color: '#3182CE' }
 ];
 
-const EMOJIS_LIST = ['😊','❤️','👍','🔥','💯','🤥','👾','💕','🚀','🎯','🦾','🙌','👏','💋','🐻','🐝','🌈','☀️','🌙','⭐','🌸','📸','🚗','🌷','🍀','🍕','👅','🍟','🌮','🍰','🎂','🍫','☕','🥤','🏀','⚽','🎾','🏆','🎮','🎲','🎸','🎺','🎨','📚','💡','🔧','😱','📱','💻','🛸','🥷','😇','🧟‍♂️','👽','🎩','🧙','🧚','🧜','💃🏻','🦋','🦅','🦈','🐅','🐘','🦒','🦏','🌍','📦','🏴‍☠️','✨','🚨','👑','🦄','🦁','🧌','🦉','🐣','🐉','🐲','🦕','🦖','🌋','🗿','🪄','⚡','💀','👻','🤢','🤡','🎪','🍾','🎆','🎇','🫶','🏃‍♂️','🧟‍♀️','🤖','🧊','😈','🔫','💅','🎐','🎀','🎁','🎰','✈️','🥵','🥶','⌚️','⚓️','🛁','🪒','🪤','💣','🏍️','🍒','🌪️','👙','🧩','🍪','🏎️','🎓','🧸','✂️','🕳️','❤️‍🔥','🥳','⚰️','🎈','🎉','👩🏻‍❤️‍👨','🦊','💦','🚪','🎎','⚠️','🛌','🤮','🫡','💎','🛹', '💸','💵','💊','💶','🎟️','⚜️','💳','💿','📀'];
+const EMOJIS_LIST = ['😊','❤️','👍','🔥','💯','🤥','👾','💕','🚀','🎯','🦾','🙌','👏','💋','🐻','🐝','🌈','☀️','🌙','⭐','🌸','📸','🚗','🌷','🍀','🍕','👅','🍟','🌮','🍰','🎂','🍫','☕','🥤','🏀','⚽','🎾','🏆','🎮','🎲','🎸','🎺','🎨','📚','💡','🔧','😱','📱','💻', '...'];
 
-// APP
 const app = {
   state: {
     currentPage: 'splash',
@@ -1160,7 +1279,8 @@ const app = {
     selectorType: null,
     selectorIndex: 0,
     pendingToque: null,
-    audioInitialized: false
+    audioInitialized: false,
+    confirmIndex: 0
   },
   
   contactos: {},
@@ -1170,14 +1290,12 @@ const app = {
   init() {
     console.log('=== TOKEJI INICIANDO ===');
     
-    // Generar ID único
     this.miID = localStorage.getItem("miid");
     if (!this.miID) {
       this.miID = Math.random().toString(36).substring(2, 12);
       localStorage.setItem("miid", this.miID);
     }
     
-    // Cargar datos
     try {
       this.contactos = JSON.parse(localStorage.getItem("cts")) || {};
       this.todex = JSON.parse(localStorage.getItem("todex")) || { captured: [], total: 0 };
@@ -1190,7 +1308,6 @@ const app = {
       console.error('Error cargando datos:', e);
     }
     
-    // Reset diario de tokes
     const hoy = new Date().toDateString();
     if (localStorage.getItem('lastReset') !== hoy) {
       this.state.toquesRestantes = 30;
@@ -1203,21 +1320,17 @@ const app = {
     setInterval(() => this.updateClock(), 60000);
     setInterval(() => this.checkIncoming(), 10000);
     
-    console.log('Inicializado. ID:', this.miID, 'Tokes:', this.state.toquesRestantes);
+    console.log('Inicializado. ID:', this.miID);
   },
 
-  // AUDIO PARA IPHONE
   initAudio() {
     if (this.state.audioInitialized) return;
-    
     try {
       this.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
       this.state.audioInitialized = true;
-      
       if (this.audioCtx.state === 'suspended') {
         this.audioCtx.resume();
       }
-      console.log('Audio inicializado');
     } catch(e) {
       console.error('Error audio:', e);
     }
@@ -1225,13 +1338,11 @@ const app = {
 
   playSound(type) {
     if (!this.state.settings.sonido || !this.state.audioInitialized || !this.audioCtx) return;
-    
     try {
       const osc = this.audioCtx.createOscillator();
       const gain = this.audioCtx.createGain();
       osc.connect(gain);
       gain.connect(this.audioCtx.destination);
-      
       const now = this.audioCtx.currentTime;
       
       if (type === 'move') {
@@ -1284,7 +1395,7 @@ const app = {
   },
 
   showPage(page, save = true) {
-    console.log('Navegando a:', page, 'desde:', this.state.currentPage);
+    console.log('Navegando a:', page);
     
     if (save && this.state.currentPage !== page) {
       this.state.history.push(this.state.currentPage);
@@ -1297,7 +1408,6 @@ const app = {
     this.state.currentPage = page;
     this.state.inSelector = false;
     
-    // Inicializar página específica
     switch(page) {
       case 'menu':
         this.state.focus = { type: 'menu', index: this.state.menuIndex };
@@ -1349,6 +1459,13 @@ const app = {
   },
 
   goBack() {
+    // Cerrar modales primero
+    const confirmModal = document.getElementById('confirm-reiniciar');
+    if (confirmModal && confirmModal.classList.contains('active')) {
+      confirmModal.classList.remove('active');
+      return;
+    }
+    
     if (this.state.inSelector) {
       document.querySelectorAll('.selector-modal').forEach(m => m.classList.remove('active'));
       this.state.inSelector = false;
@@ -1368,7 +1485,6 @@ const app = {
       if (pageEl) pageEl.classList.add('active');
       this.state.currentPage = prev;
       
-      // Restaurar focus según página
       switch(prev) {
         case 'menu': 
           this.state.focus = { type: 'menu', index: this.state.menuIndex };
@@ -1397,7 +1513,7 @@ const app = {
   },
 
   // ========================================
-  // HANDLERS BOTONES - CORREGIDOS
+  // HANDLERS BOTONES
   // ========================================
   
   handleBack() {
@@ -1412,7 +1528,16 @@ const app = {
     
     const { currentPage, focus, inSelector } = this.state;
     
-    console.log('OK presionado en página:', currentPage);
+    // Verificar si estamos en modal de confirmación
+    const confirmModal = document.getElementById('confirm-reiniciar');
+    if (confirmModal && confirmModal.classList.contains('active')) {
+      if (this.state.confirmIndex === 0) {
+        this.cancelarReinicio();
+      } else {
+        this.confirmarReinicio();
+      }
+      return;
+    }
     
     if (inSelector) {
       this.selectFromSelector();
@@ -1442,32 +1567,24 @@ const app = {
         this.showPage('home');
         break;
       case 'home':
-        // CORREGIDO: Siempre ir al menú desde home
-        console.log('De HOME a MENU');
         this.showPage('menu');
         break;
       case 'menu':
         const items = ['tokes', 'contacts', 'qr', 'todox', 'combates', 'settings'];
-        const selectedItem = items[focus.index];
-        console.log('Seleccionado menú:', selectedItem, 'índice:', focus.index);
-        this.showPage(selectedItem);
+        this.showPage(items[focus.index]);
         break;
       case 'tokes':
-        // Seleccionar categoría y pasar a variantes
         this.state.selectedCategoria = TOKES_TYPES[focus.index].id;
         this.showPage('variantes');
         break;
       case 'variantes':
-        // Seleccionar variante específica y pasar a enviar
         const variantes = CONTEXTOS_TOKES[this.state.selectedCategoria];
         this.state.selectedVariante = variantes[focus.index];
         this.showPage('enviar');
         break;
       case 'enviar':
-        // Enviar al amigo seleccionado
         const amigosList = Object.entries(this.contactos);
         if (focus.index === 0) {
-          // Escanear nuevo amigo
           this.scanQR();
         } else if (amigosList[focus.index - 1]) {
           const [id, nombre] = amigosList[focus.index - 1];
@@ -1477,6 +1594,8 @@ const app = {
       case 'contacts':
         if (focus.index === 0) {
           this.scanQR();
+        } else {
+          // No hacer nada en amigos, solo navegar
         }
         break;
       case 'todox':
@@ -1499,6 +1618,12 @@ const app = {
     this.initAudio();
     this.playSound('move');
     
+    // Verificar modal de confirmación primero
+    const confirmModal = document.getElementById('confirm-reiniciar');
+    if (confirmModal && confirmModal.classList.contains('active')) {
+      return; // No navegar en modal de confirmación con up/down
+    }
+    
     if (this.state.inSelector) {
       this.navigateSelector('up');
       return;
@@ -1517,8 +1642,9 @@ const app = {
     
     switch(type) {
       case 'menu':
-        if (index >= 3) {
-          this.state.focus.index -= 3;
+        // En grid 2x3, arriba es restar 2
+        if (index >= 2) {
+          this.state.focus.index -= 2;
           this.state.menuIndex = this.state.focus.index;
           this.updateMenuFocus();
         }
@@ -1573,6 +1699,11 @@ const app = {
     this.initAudio();
     this.playSound('move');
     
+    const confirmModal = document.getElementById('confirm-reiniciar');
+    if (confirmModal && confirmModal.classList.contains('active')) {
+      return;
+    }
+    
     if (this.state.inSelector) {
       this.navigateSelector('down');
       return;
@@ -1592,8 +1723,10 @@ const app = {
     
     switch(type) {
       case 'menu':
-        if (index < 3) {
-          this.state.focus.index += 3;
+        // En grid 2x3, abajo es sumar 2 (máximo 5)
+        if (index < 4) {
+          this.state.focus.index += 2;
+          if (this.state.focus.index > 5) this.state.focus.index = 5;
           this.state.menuIndex = this.state.focus.index;
           this.updateMenuFocus();
         }
@@ -1657,6 +1790,13 @@ const app = {
     this.initAudio();
     this.playSound('move');
     
+    const confirmModal = document.getElementById('confirm-reiniciar');
+    if (confirmModal && confirmModal.classList.contains('active')) {
+      this.state.confirmIndex = 0;
+      this.updateConfirmFocus();
+      return;
+    }
+    
     if (this.state.inSelector) {
       this.navigateSelector('left');
       return;
@@ -1678,7 +1818,8 @@ const app = {
     
     switch(type) {
       case 'menu':
-        if (index % 3 !== 0) {
+        // En grid 2x3, izquierda es restar 1 si es impar (1,3,5)
+        if (index % 2 !== 0) {
           this.state.focus.index--;
           this.state.menuIndex = this.state.focus.index;
           this.updateMenuFocus();
@@ -1697,6 +1838,13 @@ const app = {
   handleRight() {
     this.initAudio();
     this.playSound('move');
+    
+    const confirmModal = document.getElementById('confirm-reiniciar');
+    if (confirmModal && confirmModal.classList.contains('active')) {
+      this.state.confirmIndex = 1;
+      this.updateConfirmFocus();
+      return;
+    }
     
     if (this.state.inSelector) {
       this.navigateSelector('right');
@@ -1719,7 +1867,8 @@ const app = {
     
     switch(type) {
       case 'menu':
-        if (index % 3 !== 2 && index < 5) {
+        // En grid 2x3, derecha es sumar 1 si es par (0,2,4) y no es el último
+        if (index % 2 === 0 && index < 5) {
           this.state.focus.index++;
           this.state.menuIndex = this.state.focus.index;
           this.updateMenuFocus();
@@ -1733,6 +1882,22 @@ const app = {
         break;
     }
     this.vibrar();
+  },
+
+  updateConfirmFocus() {
+    document.querySelectorAll('.confirm-btn').forEach((btn, i) => {
+      btn.classList.toggle('focused', i === this.state.confirmIndex);
+    });
+  },
+
+  cancelarReinicio() {
+    document.getElementById('confirm-reiniciar').classList.remove('active');
+    this.showMsg('Cancelado');
+  },
+
+  confirmarReinicio() {
+    localStorage.clear();
+    location.reload();
   },
 
   // ========================================
@@ -1855,7 +2020,6 @@ const app = {
     const info = document.getElementById('toke-seleccionado');
     if (!container || !info) return;
     
-    // Mostrar toke seleccionado
     const categoria = TOKES_TYPES.find(t => t.id === this.state.selectedCategoria);
     const variante = this.state.selectedVariante;
     if (categoria && variante) {
@@ -1884,11 +2048,22 @@ const app = {
             <div style="font-weight: 800; color: #2D3748;">${nom}</div>
             <div style="font-size: 9px; color: #A0AEC0;">${id.substring(0, 8)}...</div>
           </div>
+          <button class="btn-eliminar" onclick="event.stopPropagation(); app.eliminarAmigo('${id}')">✕</button>
         </div>
       `).join('');
     }
     
     container.innerHTML = html;
+  },
+
+  eliminarAmigo(id) {
+    if (confirm('¿Eliminar amigo?')) {
+      delete this.contactos[id];
+      localStorage.setItem('cts', JSON.stringify(this.contactos));
+      this.renderEnviarList();
+      this.renderContacts();
+      this.showMsg('Amigo eliminado');
+    }
   },
 
   renderContacts() {
@@ -1907,6 +2082,7 @@ const app = {
             <div style="font-weight: 800; color: #2D3748;">${nom}</div>
             <div style="font-size: 9px; color: #A0AEC0;">${id.substring(0, 8)}...</div>
           </div>
+          <button class="btn-eliminar" onclick="event.stopPropagation(); app.eliminarAmigo('${id}')">✕</button>
         </div>
       `).join('');
     }
@@ -1997,12 +2173,15 @@ const app = {
         this.showStatusSelector();
         break;
       case 4:
-        if (confirm('¿Borrar TODO?')) {
-          localStorage.clear();
-          location.reload();
-        }
+        this.mostrarConfirmReinicio();
         break;
     }
+  },
+
+  mostrarConfirmReinicio() {
+    this.state.confirmIndex = 0;
+    document.getElementById('confirm-reiniciar').classList.add('active');
+    this.updateConfirmFocus();
   },
 
   showColorSelector() {
@@ -2059,8 +2238,9 @@ const app = {
       else if (dir === 'down' && this.state.selectorIndex < 3) this.state.selectorIndex += 3;
       else if (dir === 'up' && this.state.selectorIndex >= 3) this.state.selectorIndex -= 3;
     } else {
+      // Estados: 2 columnas
       const cols = 2;
-      if (dir === 'right' && this.state.selectorIndex % cols === 0) this.state.selectorIndex++;
+      if (dir === 'right' && this.state.selectorIndex % cols === 0 && this.state.selectorIndex < 3) this.state.selectorIndex++;
       else if (dir === 'left' && this.state.selectorIndex % cols === 1) this.state.selectorIndex--;
       else if (dir === 'down' && this.state.selectorIndex < 2) this.state.selectorIndex += 2;
       else if (dir === 'up' && this.state.selectorIndex >= 2) this.state.selectorIndex -= 2;
@@ -2095,7 +2275,7 @@ const app = {
   },
 
   // ========================================
-  // QR Y CÁMARA
+  // QR Y CÁMARA - CORREGIDO PARA MACBOOK
   // ========================================
   
   generarQR() {
@@ -2108,17 +2288,15 @@ const app = {
   },
 
   async scanQR() {
-    // Verificar HTTPS
+    // Para MacBook: usar input manual primero, cámara como fallback
     if (location.protocol !== 'https:' && location.hostname !== 'localhost') {
-      this.showMsg('⚠️ HTTPS requerido para cámara');
-      setTimeout(() => {
-        const codigo = prompt('Pega el código del amigo (formato: ID|Nombre):');
-        if (codigo) this.procesarQR(codigo);
-      }, 500);
+      this.showMsg('⚠️ HTTPS requerido');
+      setTimeout(() => this.inputManualQR(), 500);
       return;
     }
     
-    // Crear modal escáner
+    // Intentar cámara pero con timeout y fallback
+    let stream = null;
     const modal = document.createElement('div');
     modal.className = 'selector-modal active';
     modal.style.zIndex = '200';
@@ -2129,21 +2307,42 @@ const app = {
         <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 220px; height: 220px; border: 3px solid #48BB78; border-radius: 12px; pointer-events: none;"></div>
       </div>
       <div style="text-align: center; margin-top: 10px; color: white; font-size: 12px;">Enfoca el código QR</div>
-      <button onclick="this.closest('.selector-modal').remove()" style="margin-top: 15px; padding: 12px 30px; background: #F56565; color: white; border: none; border-radius: 25px; font-weight: 800; font-family: 'Nunito'; cursor: pointer; font-size: 13px;">Cancelar</button>
+      <button id="btn-cancel-scan" style="margin-top: 10px; padding: 10px 20px; background: #F56565; color: white; border: none; border-radius: 20px; font-weight: 800; font-family: 'Nunito'; cursor: pointer; font-size: 12px;">Cancelar</button>
+      <button id="btn-manual-scan" style="margin-top: 8px; padding: 8px 16px; background: #4299E1; color: white; border: none; border-radius: 20px; font-weight: 700; font-family: 'Nunito'; cursor: pointer; font-size: 11px;">Introducir manual</button>
     `;
     document.body.appendChild(modal);
     
-    let stream = null;
+    document.getElementById('btn-cancel-scan').onclick = () => {
+      if (stream) stream.getTracks().forEach(t => t.stop());
+      modal.remove();
+    };
+    
+    document.getElementById('btn-manual-scan').onclick = () => {
+      if (stream) stream.getTracks().forEach(t => t.stop());
+      modal.remove();
+      this.inputManualQR();
+    };
     
     try {
-      stream = await navigator.mediaDevices.getUserMedia({ 
-        video: { 
-          facingMode: "environment",
-          width: { ideal: 640 },
-          height: { ideal: 640 }
-        },
-        audio: false
-      });
+      // Intentar cámara trasera primero, luego frontal, luego cualquiera
+      try {
+        stream = await navigator.mediaDevices.getUserMedia({ 
+          video: { facingMode: "environment" },
+          audio: false
+        });
+      } catch(e) {
+        try {
+          stream = await navigator.mediaDevices.getUserMedia({ 
+            video: { facingMode: "user" },
+            audio: false
+          });
+        } catch(e2) {
+          stream = await navigator.mediaDevices.getUserMedia({ 
+            video: true,
+            audio: false
+          });
+        }
+      }
       
       const video = document.getElementById('scan-video');
       if (!video) throw new Error('No video element');
@@ -2154,7 +2353,7 @@ const app = {
         video.onloadedmetadata = () => {
           video.play().then(resolve).catch(reject);
         };
-        setTimeout(() => reject(new Error('Timeout')), 5000);
+        setTimeout(() => reject(new Error('Timeout')), 8000);
       });
       
       const canvas = document.createElement('canvas');
@@ -2201,28 +2400,41 @@ const app = {
     } catch(err) {
       console.error('Camera error:', err);
       if (stream) stream.getTracks().forEach(t => t.stop());
-      modal.remove();
-      
-      let msg = 'Error cámara';
-      if (err.name === 'NotAllowedError') msg = 'Permiso denegado';
-      else if (err.name === 'NotFoundError') msg = 'Cámara no encontrada';
-      else if (err.name === 'NotReadableError') msg = 'Cámara en uso';
-      
-      this.showMsg('❌ ' + msg);
-      
-      setTimeout(() => {
-        const codigo = prompt('Pega el código del amigo (formato: ID|Nombre):');
-        if (codigo) this.procesarQR(codigo);
-      }, 1000);
+      // No remover modal, dejar que el usuario pulse manual o cancelar
+      this.showMsg('❌ Cámara no disponible. Usa manual.');
+    }
+  },
+
+  inputManualQR() {
+    const codigo = prompt('Pega el código del amigo (formato: ID|Nombre):');
+    if (codigo && codigo.trim()) {
+      this.procesarQR(codigo.trim());
     }
   },
 
   procesarQR(data) {
     console.log('Procesando QR:', data);
-    const parts = data.split('|');
+    
+    // Limpiar datos comunes de QR mal escaneados
+    let cleanData = data.trim();
+    
+    // Si el QR contiene una URL, extraer el parámetro data
+    if (cleanData.includes('?data=')) {
+      const urlParams = new URLSearchParams(cleanData.split('?')[1]);
+      const dataParam = urlParams.get('data');
+      if (dataParam) cleanData = decodeURIComponent(dataParam);
+    }
+    
+    const parts = cleanData.split('|');
     if (parts.length >= 2) {
       const [id, nombre] = parts;
       if (id && nombre && id !== this.miID) {
+        // Validar que el ID sea alfanumérico
+        if (!/^[a-zA-Z0-9]+$/.test(id)) {
+          this.showMsg('❌ Código QR inválido');
+          return;
+        }
+        
         this.contactos[id] = nombre;
         localStorage.setItem('cts', JSON.stringify(this.contactos));
         this.showMsg(`✅ ${nombre} agregado`);
@@ -2238,11 +2450,11 @@ const app = {
         return;
       }
     }
-    this.showMsg('❌ QR inválido');
+    this.showMsg('❌ QR inválido. Formato: ID|Nombre');
   },
 
   // ========================================
-  // TOQUES - ENVÍO FUNCIONAL
+  // TOQUES - ENVÍO CON DEBUG
   // ========================================
   
   async enviarToque(paraId, paraNombre) {
@@ -2265,6 +2477,18 @@ const app = {
     const categoria = TOKES_TYPES.find(t => t.id === this.state.selectedCategoria);
     const variante = this.state.selectedVariante;
     
+    const payload = {
+      de: this.miID,
+      para: paraId,
+      tipo: this.state.selectedCategoria,
+      emoji: variante.emoji,
+      nombre: variante.nombre,
+      mensaje: variante.texto,
+      categoria_emoji: categoria?.emoji || '💌'
+    };
+    
+    console.log('Payload:', payload);
+    
     try {
       const response = await fetch(`${BACK}/toque`, {
         method: 'POST',
@@ -2272,26 +2496,20 @@ const app = {
           'Content-Type': 'application/json',
           'Accept': 'application/json'
         },
-        body: JSON.stringify({
-          de: this.miID,
-          para: paraId,
-          tipo: this.state.selectedCategoria,
-          emoji: variante.emoji,
-          nombre: variante.nombre,
-          mensaje: variante.texto,
-          categoria_emoji: categoria?.emoji || '💌'
-        })
+        body: JSON.stringify(payload)
       });
+      
+      console.log('Response status:', response.status);
       
       let data;
       const responseText = await response.text();
+      console.log('Response text:', responseText);
+      
       try {
         data = JSON.parse(responseText);
       } catch(e) {
         data = { ok: response.ok, text: responseText };
       }
-      
-      console.log('Respuesta servidor:', response.status, data);
       
       if (response.ok && data.ok) {
         this.state.toquesRestantes = data.toques_restantes !== undefined ? data.toques_restantes : this.state.toquesRestantes - 1;
@@ -2322,9 +2540,10 @@ const app = {
         
         setTimeout(() => this.showPage('home'), 2000);
       } else {
-        const errorMsg = data.error || 'Error del servidor';
+        const errorMsg = data.error || data.message || 'Error del servidor';
         this.showMsg('❌ ' + errorMsg);
         this.playSound('error');
+        console.error('Error servidor:', data);
       }
     } catch(e) {
       console.error('Error enviando toque:', e);
