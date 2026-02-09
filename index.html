@@ -46,7 +46,7 @@
       height: 100%;
     }
 
-    /* DISPOSITIVO - Optimizado para Safari */
+    /* DISPOSITIVO - Sin bordes blancos en pantalla */
     .device {
       width: 360px;
       height: 640px;
@@ -114,7 +114,7 @@
       pointer-events: none;
     }
 
-    /* PANTALLA */
+    /* PANTALLA - Sin bordes blancos */
     .screen-container {
       width: 100%;
       flex: 1;
@@ -172,14 +172,21 @@
     }
     .page.active { display: flex; }
 
-    /* SPLASH */
+    /* SPLASH - Pantalla completa sin bordes */
     #page-splash {
       justify-content: center;
       align-items: center;
       text-align: center;
       background: linear-gradient(145deg, var(--device-color), #FFB8D0);
       height: 100%;
+      width: 100%;
       padding: 0;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      border-radius: 21px; /* 25px - 4px del borde */
     }
 
     .splash-logo {
@@ -209,22 +216,31 @@
       50% { opacity: 1; }
     }
 
-    /* TITULOS */
+    /* SETUP - Centrado correcto */
+    #page-setup {
+      justify-content: center;
+      align-items: center;
+      background: var(--screen-bg);
+      height: 100%;
+      width: 100%;
+      padding: 20px;
+    }
+
     .setup-title {
       font-family: 'Fredoka One', cursive;
-      font-size: 18px;
+      font-size: 22px;
       color: #2D3748;
-      margin-bottom: 15px;
+      margin-bottom: 30px;
       text-align: center;
-      flex-shrink: 0;
     }
 
     .setup-input {
-      width: 90%;
-      padding: 14px;
+      width: 100%;
+      max-width: 280px;
+      padding: 16px;
       border: 3px solid #FFD93D;
-      border-radius: 14px;
-      font-size: 20px;
+      border-radius: 16px;
+      font-size: 24px;
       text-align: center;
       text-transform: uppercase;
       font-weight: 800;
@@ -232,6 +248,113 @@
       outline: none;
       font-family: 'Nunito', sans-serif;
       -webkit-appearance: none;
+      margin-bottom: 20px;
+    }
+
+    .setup-hint {
+      font-size: 13px;
+      color: #A0AEC0;
+      margin-top: 10px;
+    }
+
+    /* AVATAR SELECTOR */
+    #page-avatar {
+      justify-content: center;
+      align-items: center;
+      background: var(--screen-bg);
+      height: 100%;
+      width: 100%;
+      padding: 20px;
+    }
+
+    .avatar-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 15px;
+      width: 100%;
+      max-width: 280px;
+      margin-top: 20px;
+    }
+
+    .avatar-item {
+      aspect-ratio: 1;
+      background: white;
+      border: 3px solid #E2E8F0;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      cursor: pointer;
+      transition: all 0.1s ease;
+      box-shadow: 0 3px 0 #CBD5E0;
+    }
+
+    .avatar-item:active {
+      transform: translateY(3px);
+      box-shadow: 0 0 0 #CBD5E0;
+    }
+
+    .avatar-item.focused {
+      border-color: var(--device-color);
+      background: #FFF5F7;
+      transform: scale(1.1);
+      box-shadow: 0 0 0 3px rgba(255,107,157,0.3);
+    }
+
+    /* CONSENTIMIENTO */
+    #page-consent {
+      justify-content: center;
+      align-items: center;
+      background: var(--screen-bg);
+      height: 100%;
+      width: 100%;
+      padding: 25px;
+      text-align: center;
+    }
+
+    .consent-text {
+      font-size: 14px;
+      color: #4A5568;
+      line-height: 1.6;
+      margin-bottom: 25px;
+    }
+
+    .consent-buttons {
+      display: flex;
+      gap: 15px;
+      width: 100%;
+      max-width: 280px;
+    }
+
+    .consent-btn {
+      flex: 1;
+      padding: 16px;
+      border: none;
+      border-radius: 16px;
+      font-family: 'Nunito', sans-serif;
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: all 0.1s ease;
+      box-shadow: 0 3px 0 rgba(0,0,0,0.2);
+    }
+
+    .consent-btn.no {
+      background: #E2E8F0;
+      color: #4A5568;
+      box-shadow: 0 3px 0 #CBD5E0;
+    }
+
+    .consent-btn.si {
+      background: #48BB78;
+      color: white;
+      box-shadow: 0 3px 0 #38A169;
+    }
+
+    .consent-btn.focused {
+      transform: scale(1.05);
+      box-shadow: 0 0 0 3px rgba(255,107,157,0.3);
     }
 
     /* HOME */
@@ -316,7 +439,7 @@
       font-size: 13px;
       font-weight: 800;
       color: #4A5568;
-      transition: transform 0.1s ease, border-color 0.1s ease;
+      transition: all 0.1s ease;
       cursor: pointer;
       box-shadow: 0 3px 0 #CBD5E0;
       min-height: 0;
@@ -622,7 +745,7 @@
       box-shadow: 0 0 0 #C53030;
     }
 
-    /* MODALES */
+    /* SELECTOR COLOR - CORREGIDO */
     .selector-modal {
       position: absolute;
       top: 0;
@@ -633,9 +756,10 @@
       display: none;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
-      padding: 25px;
+      justify-content: flex-start;
+      padding: 40px 25px 25px 25px;
       z-index: 100;
+      overflow-y: auto;
     }
 
     .selector-modal.active {
@@ -646,40 +770,41 @@
       color: white;
       font-family: 'Fredoka One', cursive;
       font-size: 20px;
-      margin-bottom: 25px;
+      margin-bottom: 30px;
       text-align: center;
+      flex-shrink: 0;
     }
 
     .selector-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 15px;
+      gap: 20px;
       width: 100%;
-      max-width: 280px;
-      padding: 10px;
+      max-width: 300px;
+      padding-bottom: 20px;
     }
 
     .selector-item {
       aspect-ratio: 1;
-      border: 3px solid transparent;
-      border-radius: 16px;
+      border: 4px solid transparent;
+      border-radius: 20px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      font-size: 13px;
+      font-size: 14px;
       font-weight: 700;
       transition: all 0.1s ease;
       cursor: pointer;
       color: white;
-      padding: 12px;
-      min-height: 100px;
+      padding: 15px;
+      min-height: 120px;
     }
 
     .selector-item.focused {
       border-color: white;
       transform: scale(1.05);
-      box-shadow: 0 0 15px rgba(255,255,255,0.5);
+      box-shadow: 0 0 20px rgba(255,255,255,0.5);
     }
 
     .response-modal {
@@ -1018,11 +1143,59 @@
             <div class="splash-hint">Pulsa OK ✨</div>
           </div>
 
-          <!-- SETUP -->
+          <!-- CONSENTIMIENTO -->
+          <div class="page" id="page-consent">
+            <div class="setup-title">📋 Bienvenido</div>
+            <div class="consent-text">
+              Tokeji es una experiencia social donde compartes mensajes con amigos mediante códigos QR.<br><br>
+              • Necesitamos acceso a la cámara para escanear códigos<br>
+              • Tus datos se guardan solo en tu dispositivo<br>
+              • Puedes borrar tus datos cuando quieras<br><br>
+              ¿Aceptas continuar?
+            </div>
+            <div class="consent-buttons">
+              <button class="consent-btn no focused" onclick="app.handleConsent(false)">No</button>
+              <button class="consent-btn si" onclick="app.handleConsent(true)">Sí</button>
+            </div>
+          </div>
+
+          <!-- SETUP NOMBRE -->
           <div class="page" id="page-setup">
             <div class="setup-title">¿Cómo te llamas?</div>
             <input type="text" id="miNombre" class="setup-input" maxlength="8" placeholder="TU NOMBRE" autocomplete="off" autocapitalize="characters">
-            <div style="font-size: 11px; color: #A0AEC0; margin-top: 15px;">Pulsa OK para continuar</div>
+            <div class="setup-hint">Pulsa OK para continuar</div>
+          </div>
+
+          <!-- AVATAR -->
+          <div class="page" id="page-avatar">
+            <div class="setup-title">Elige tu avatar</div>
+            <div class="avatar-grid" id="avatar-grid">
+              <div class="avatar-item focused" data-avatar="🐱">🐱</div>
+              <div class="avatar-item" data-avatar="🐶">🐶</div>
+              <div class="avatar-item" data-avatar="🦊">🦊</div>
+              <div class="avatar-item" data-avatar="🐼">🐼</div>
+              <div class="avatar-item" data-avatar="🐨">🐨</div>
+              <div class="avatar-item" data-avatar="🐯">🐯</div>
+              <div class="avatar-item" data-avatar="🦁">🦁</div>
+              <div class="avatar-item" data-avatar="🐷">🐷</div>
+              <div class="avatar-item" data-avatar="🐸">🐸</div>
+              <div class="avatar-item" data-avatar="🐙">🐙</div>
+              <div class="avatar-item" data-avatar="🦄">🦄</div>
+              <div class="avatar-item" data-avatar="🐲">🐲</div>
+            </div>
+          </div>
+
+          <!-- COLOR -->
+          <div class="page" id="page-color">
+            <div class="setup-title">Elige tu color</div>
+            <div class="avatar-grid" id="color-setup-grid" style="grid-template-columns: repeat(2, 1fr);">
+              <div class="avatar-item focused" style="background: #FF6B9D;" data-color="0"></div>
+              <div class="avatar-item" style="background: #4299E1;" data-color="1"></div>
+              <div class="avatar-item" style="background: #48BB78;" data-color="2"></div>
+              <div class="avatar-item" style="background: #ECC94B;" data-color="3"></div>
+              <div class="avatar-item" style="background: #9F7AEA;" data-color="4"></div>
+              <div class="avatar-item" style="background: #1A202C;" data-color="5"></div>
+            </div>
           </div>
 
           <!-- HOME -->
@@ -1036,7 +1209,7 @@
             <div class="home-hint">▼ Pulsa OK para Menú</div>
           </div>
 
-          <!-- MENU GRID 2x3 -->
+          <!-- MENU -->
           <div class="page" id="page-menu">
             <div class="setup-title">Menú</div>
             <div class="menu-grid" id="menu-grid">
@@ -1220,11 +1393,11 @@
 <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
 <script>
 // ========================================
-// TOKEJI v7 - CORREGIDO Y OPTIMIZADO
+// TOKEJI v8 - CON FLUJO COMPLETO
 // ========================================
 
-// CORRECCIÓN CRÍTICA: URL sin espacios
-const BACK = "https://tokeji-device.onrender.com";
+// IMPORTANTE: Cambia esto a tu URL real del backend
+const BACK = "https://dame-un-toque-1.onrender.com";
 
 const CONTEXTOS_TOKES = {
   1: [ 
@@ -1285,6 +1458,8 @@ const TOKES_TYPES = [
 
 const EMOJIS_LIST = ['😊','❤️','👍','🔥','💯','🤥','👾','💕','🚀','🎯','🦾','🙌','👏','💋','🐻','🐝','🌈','☀️','🌙','⭐','🌸','📸','🚗','🌷','🍀','🍕','👅','🍟','🌮','🍰','🎂','🍫','☕','🥤','🏀','⚽','🎾','🏆','🎮','🎲','🎸','🎺','🎨','📚','💡','🔧','😱','📱','💻','🛸','🥷','😇','🧟‍♂️','👽','🎩','🧙','🧚','🧜','💃🏻','🦋','🦅','🦈','🐅','🐘','🦒','🦏','🌍','📦','🏴‍☠️','✨','🚨','👑','🦄','🦁','🧌','🦉','🐣','🐉','🐲','🦕','🦖','🌋','🗿','🪄','⚡','💀','👻','🤢','🤡','🎪','🍾','🎆','🎇','🫶','🏃‍♂️','🧟‍♀️','🤖','🧊','😈','🔫','💅','🎐','🎀','🎁','🎰','✈️','🥵','🥶','⌚️','⚓️','🛁','🪒','🪤','💣','🏍️','🍒','🌪️','👙','🧩','🍪','🏎️','🎓','🧸','✂️','🕳️','❤️‍🔥','🥳','⚰️','🎈','🎉','👩🏻‍❤️‍👨','🦊','💦','🚪','🎎','⚠️','🛌','🤮','🫡','💎','🛹','💸','💵','💊','💶','🎟️','⚜️','💳','💿','📀'];
 
+const AVATARES = ['🐱', '🐶', '🦊', '🐼', '🐨', '🐯', '🦁', '🐷', '🐸', '🐙', '🦄', '🐲'];
+
 const app = {
   state: {
     currentPage: 'splash',
@@ -1298,14 +1473,16 @@ const app = {
       sonido: true,
       vibracion: true,
       color: 0,
-      status: 'disponible'
+      status: 'disponible',
+      avatar: '🐱'
     },
     inSelector: false,
     selectorType: null,
     selectorIndex: 0,
     pendingToque: null,
     audioInitialized: false,
-    confirmIndex: 0
+    confirmIndex: 0,
+    setupStep: 0 // 0: consent, 1: nombre, 2: avatar, 3: color
   },
   
   contactos: {},
@@ -1328,6 +1505,7 @@ const app = {
       this.state.settings.vibracion = localStorage.getItem('vibracion') !== 'off';
       this.state.settings.color = parseInt(localStorage.getItem('colorIndex')) || 0;
       this.state.settings.status = localStorage.getItem('status') || 'disponible';
+      this.state.settings.avatar = localStorage.getItem('avatar') || '🐱';
       this.state.toquesRestantes = parseInt(localStorage.getItem("toquesRestantes")) || 30;
     } catch(e) {
       console.error('Error cargando datos:', e);
@@ -1344,6 +1522,18 @@ const app = {
     this.updateClock();
     setInterval(() => this.updateClock(), 60000);
     setInterval(() => this.checkIncoming(), 10000);
+    
+    // Verificar si es primera vez
+    const hasConsent = localStorage.getItem('consent');
+    const hasNombre = localStorage.getItem('miNombre');
+    
+    if (!hasConsent) {
+      this.showPage('consent', false);
+    } else if (!hasNombre) {
+      this.showPage('setup', false);
+    } else {
+      this.showPage('splash', false);
+    }
     
     console.log('Inicializado. ID:', this.miID);
     console.log('Backend:', BACK);
@@ -1425,6 +1615,26 @@ const app = {
     this.state.inSelector = false;
     
     switch(page) {
+      case 'consent':
+        this.state.focus = { type: 'consent', index: 0 };
+        this.updateConsentFocus();
+        break;
+      case 'setup':
+        this.state.focus = { type: 'setup', index: 0 };
+        setTimeout(() => {
+          const input = document.getElementById('miNombre');
+          if (input) input.focus();
+        }, 100);
+        break;
+      case 'avatar':
+        this.state.focus = { type: 'avatar', index: 0 };
+        this.renderAvatarGrid();
+        this.updateAvatarFocus();
+        break;
+      case 'color':
+        this.state.focus = { type: 'color', index: 0 };
+        this.updateColorSetupFocus();
+        break;
       case 'menu':
         this.state.focus = { type: 'menu', index: this.state.menuIndex };
         this.updateMenuFocus();
@@ -1474,6 +1684,47 @@ const app = {
     this.vibrar();
   },
 
+  // Manejar consentimiento
+  handleConsent(accepted) {
+    if (accepted) {
+      localStorage.setItem('consent', 'true');
+      this.showPage('setup', false);
+    } else {
+      this.showMsg('Debes aceptar para continuar');
+    }
+  },
+
+  updateConsentFocus() {
+    document.querySelectorAll('.consent-btn').forEach((btn, i) => {
+      btn.classList.toggle('focused', i === this.state.focus.index);
+    });
+  },
+
+  // Avatar
+  renderAvatarGrid() {
+    const grid = document.getElementById('avatar-grid');
+    if (!grid) return;
+    
+    grid.innerHTML = AVATARES.map((av, i) => `
+      <div class="avatar-item ${i === 0 ? 'focused' : ''}" data-avatar="${av}" data-index="${i}">
+        ${av}
+      </div>
+    `).join('');
+  },
+
+  updateAvatarFocus() {
+    document.querySelectorAll('#avatar-grid .avatar-item').forEach((el, i) => {
+      el.classList.toggle('focused', i === this.state.focus.index);
+    });
+  },
+
+  // Color setup
+  updateColorSetupFocus() {
+    document.querySelectorAll('#color-setup-grid .avatar-item').forEach((el, i) => {
+      el.classList.toggle('focused', i === this.state.focus.index);
+    });
+  },
+
   goBack() {
     const confirmModal = document.getElementById('confirm-reiniciar');
     if (confirmModal && confirmModal.classList.contains('active')) {
@@ -1490,6 +1741,11 @@ const app = {
     const respModal = document.getElementById('response-modal');
     if (respModal && respModal.classList.contains('active')) {
       respModal.classList.remove('active');
+      return;
+    }
+
+    // No permitir volver atrás en el setup inicial
+    if (['consent', 'setup', 'avatar', 'color'].includes(this.state.currentPage)) {
       return;
     }
     
@@ -1561,6 +1817,9 @@ const app = {
     }
 
     switch(currentPage) {
+      case 'consent':
+        this.handleConsent(focus.index === 1);
+        break;
       case 'splash':
         const nombre = localStorage.getItem('miNombre');
         this.showPage(nombre ? 'home' : 'setup');
@@ -1572,8 +1831,20 @@ const app = {
           return;
         }
         localStorage.setItem('miNombre', nom);
+        this.showPage('avatar', false);
+        break;
+      case 'avatar':
+        const avatarSel = AVATARES[focus.index];
+        this.state.settings.avatar = avatarSel;
+        localStorage.setItem('avatar', avatarSel);
+        this.showPage('color', false);
+        break;
+      case 'color':
+        this.state.settings.color = focus.index;
+        localStorage.setItem('colorIndex', focus.index);
+        this.applyColor();
         this.generarQR();
-        this.showPage('home');
+        this.showPage('home', false);
         break;
       case 'home':
         this.showPage('menu');
@@ -1645,6 +1916,21 @@ const app = {
     const { type, index } = this.state.focus;
     
     switch(type) {
+      case 'consent':
+        // No hay arriba en consent
+        break;
+      case 'avatar':
+        if (index >= 4) {
+          this.state.focus.index -= 4;
+          this.updateAvatarFocus();
+        }
+        break;
+      case 'color':
+        if (index >= 2) {
+          this.state.focus.index -= 2;
+          this.updateColorSetupFocus();
+        }
+        break;
       case 'menu':
         if (index >= 2) {
           this.state.focus.index -= 2;
@@ -1723,6 +2009,23 @@ const app = {
     const { type, index } = this.state.focus;
     
     switch(type) {
+      case 'consent':
+        // No hay abajo en consent
+        break;
+      case 'avatar':
+        if (index < 8) {
+          this.state.focus.index += 4;
+          if (this.state.focus.index > 11) this.state.focus.index = 11;
+          this.updateAvatarFocus();
+        }
+        break;
+      case 'color':
+        if (index < 4) {
+          this.state.focus.index += 2;
+          if (this.state.focus.index > 5) this.state.focus.index = 5;
+          this.updateColorSetupFocus();
+        }
+        break;
       case 'menu':
         if (index < 4) {
           this.state.focus.index += 2;
@@ -1817,6 +2120,22 @@ const app = {
     const { type, index } = this.state.focus;
     
     switch(type) {
+      case 'consent':
+        this.state.focus.index = 0;
+        this.updateConsentFocus();
+        break;
+      case 'avatar':
+        if (index % 4 > 0) {
+          this.state.focus.index--;
+          this.updateAvatarFocus();
+        }
+        break;
+      case 'color':
+        if (index % 2 > 0) {
+          this.state.focus.index--;
+          this.updateColorSetupFocus();
+        }
+        break;
       case 'menu':
         if (index % 2 !== 0) {
           this.state.focus.index--;
@@ -1864,6 +2183,22 @@ const app = {
     const { type, index } = this.state.focus;
     
     switch(type) {
+      case 'consent':
+        this.state.focus.index = 1;
+        this.updateConsentFocus();
+        break;
+      case 'avatar':
+        if (index % 4 < 3 && index < 11) {
+          this.state.focus.index++;
+          this.updateAvatarFocus();
+        }
+        break;
+      case 'color':
+        if (index % 2 === 0 && index < 5) {
+          this.state.focus.index++;
+          this.updateColorSetupFocus();
+        }
+        break;
       case 'menu':
         if (index % 2 === 0 && index < 5) {
           this.state.focus.index++;
@@ -2095,9 +2430,11 @@ const app = {
     const nameEl = document.getElementById('home-name');
     const badgeEl = document.getElementById('tokes-badge');
     const statusEl = document.getElementById('home-status');
+    const avatarEl = document.getElementById('home-avatar');
     
     if (nameEl) nameEl.textContent = nom;
     if (badgeEl) badgeEl.textContent = `🎯 ${this.state.toquesRestantes}/30`;
+    if (avatarEl) avatarEl.textContent = this.state.settings.avatar;
     
     const st = ESTADOS.find(e => e.id === this.state.settings.status) || ESTADOS[0];
     if (statusEl) {
@@ -2170,8 +2507,8 @@ const app = {
     grid.innerHTML = COLORES.map((c, i) => `
       <div class="selector-item ${i === this.state.selectorIndex ? 'focused' : ''}" 
            style="background: ${c.hex};" data-index="${i}">
-        <div style="width: 35px; height: 35px; border-radius: 50%; background: ${c.hex}; border: 3px solid white; box-shadow: 0 2px 8px rgba(0,0,0,0.3);"></div>
-        <span style="margin-top: 6px; font-size: 11px;">${c.name}</span>
+        <div style="width: 40px; height: 40px; border-radius: 50%; background: ${c.hex}; border: 3px solid white; box-shadow: 0 3px 10px rgba(0,0,0,0.3);"></div>
+        <span style="margin-top: 8px; font-size: 12px;">${c.name}</span>
       </div>
     `).join('');
     
@@ -2191,8 +2528,8 @@ const app = {
     grid.innerHTML = ESTADOS.map((s, i) => `
       <div class="selector-item ${i === this.state.selectorIndex ? 'focused' : ''}" 
            style="background: ${s.color};" data-index="${i}">
-        <div style="font-size: 35px;">${s.emoji}</div>
-        <span style="margin-top: 6px; font-size: 11px;">${s.label}</span>
+        <div style="font-size: 40px;">${s.emoji}</div>
+        <span style="margin-top: 8px; font-size: 12px;">${s.label}</span>
       </div>
     `).join('');
     
@@ -2418,7 +2755,7 @@ const app = {
   },
 
   // ========================================
-  // TOQUES - CORREGIDO URL
+  // TOQUES - CORREGIDO
   // ========================================
   
   async enviarToque(paraId, paraNombre) {
@@ -2535,7 +2872,7 @@ const app = {
   },
 
   checkIncoming() {
-    if (this.state.currentPage === 'splash' || this.state.currentPage === 'setup') return;
+    if (this.state.currentPage === 'splash' || this.state.currentPage === 'setup' || this.state.currentPage === 'consent') return;
     
     fetch(`${BACK}/toques-pendientes?userId=${this.miID}`)
       .then(r => r.ok ? r.json() : null)
@@ -2608,7 +2945,7 @@ const app = {
 };
 
 window.addEventListener('load', () => {
-  console.log('Tokeji v7 iniciando...');
+  console.log('Tokeji v8 iniciando...');
   app.init();
 });
 </script>
