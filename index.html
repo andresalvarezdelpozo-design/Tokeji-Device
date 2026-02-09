@@ -3,8 +3,10 @@
 <head>
   <meta charset="utf-8"/>
   <title>Tokeji ✨</title>
-  <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"/>
   <meta name="theme-color" content="#FF6B9D"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap');
     
@@ -14,12 +16,19 @@
       box-sizing: border-box;
       user-select: none;
       -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+      -webkit-touch-callout: none;
     }
 
     :root {
       --device-color: #FF6B9D;
       --device-dark: #FF4785;
       --screen-bg: #FFF5F7;
+    }
+
+    html, body {
+      touch-action: pan-x pan-y;
+      -webkit-text-size-adjust: 100%;
     }
 
     body {
@@ -31,23 +40,27 @@
       justify-content: center;
       padding: 10px;
       font-family: 'Nunito', sans-serif;
+      overflow: hidden;
+      position: fixed;
+      width: 100%;
+      height: 100%;
     }
 
-    /* DISPOSITIVO */
+    /* DISPOSITIVO - Optimizado para Safari */
     .device {
       width: 360px;
       height: 640px;
       background: linear-gradient(145deg, #FFB8D0 0%, var(--device-color) 50%, var(--device-dark) 100%);
       border-radius: 45px;
       padding: 30px 18px 18px 18px;
-      box-shadow: 
-        0 25px 50px rgba(0,0,0,0.3),
-        inset 0 5px 15px rgba(255,255,255,0.4),
-        inset 0 -5px 15px rgba(0,0,0,0.1);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.3);
       position: relative;
       display: flex;
       flex-direction: column;
       border: 3px solid rgba(255,255,255,0.2);
+      transform: translateZ(0);
+      -webkit-transform: translateZ(0);
+      will-change: transform;
     }
 
     .screw {
@@ -56,10 +69,7 @@
       height: 14px;
       background: linear-gradient(145deg, #E8E8E8, #A0A0A0);
       border-radius: 50%;
-      box-shadow: 
-        inset 0 2px 3px rgba(255,255,255,0.8), 
-        inset 0 -2px 3px rgba(0,0,0,0.3),
-        0 2px 4px rgba(0,0,0,0.4);
+      box-shadow: inset 0 1px 2px rgba(255,255,255,0.8), 0 2px 4px rgba(0,0,0,0.3);
       z-index: 10;
     }
 
@@ -99,15 +109,12 @@
       left: 20%;
       right: 20%;
       height: 25%;
-      background: linear-gradient(180deg, 
-        rgba(255,255,255,0.4) 0%, 
-        rgba(255,255,255,0.1) 50%,
-        transparent 100%);
+      background: linear-gradient(180deg, rgba(255,255,255,0.3) 0%, transparent 100%);
       border-radius: 50% 50% 0 0;
       pointer-events: none;
     }
 
-    /* PANTALLA MÁS GRANDE */
+    /* PANTALLA */
     .screen-container {
       width: 100%;
       flex: 1;
@@ -125,9 +132,7 @@
       border-radius: 25px;
       position: relative;
       overflow: hidden;
-      box-shadow: 
-        inset 0 4px 15px rgba(0,0,0,0.1),
-        0 2px 5px rgba(255,255,255,0.5);
+      box-shadow: inset 0 2px 10px rgba(0,0,0,0.1);
       border: 4px solid #2D3748;
       display: flex;
       flex-direction: column;
@@ -183,11 +188,12 @@
       color: white;
       text-shadow: 0 4px 0 var(--device-dark), 0 6px 10px rgba(0,0,0,0.2);
       animation: pulse-logo 2s ease-in-out infinite;
+      transform: translateZ(0);
     }
 
     @keyframes pulse-logo {
-      0%, 100% { transform: scale(1); opacity: 1; }
-      50% { transform: scale(1.05); opacity: 0.9; }
+      0%, 100% { transform: scale(1) translateZ(0); opacity: 1; }
+      50% { transform: scale(1.05) translateZ(0); opacity: 0.9; }
     }
 
     .splash-hint {
@@ -225,6 +231,7 @@
       background: white;
       outline: none;
       font-family: 'Nunito', sans-serif;
+      -webkit-appearance: none;
     }
 
     /* HOME */
@@ -241,11 +248,12 @@
       font-size: 70px;
       filter: drop-shadow(0 4px 8px rgba(0,0,0,0.15));
       animation: float 3s ease-in-out infinite;
+      transform: translateZ(0);
     }
 
     @keyframes float {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-8px); }
+      0%, 100% { transform: translateY(0) translateZ(0); }
+      50% { transform: translateY(-8px) translateZ(0); }
     }
 
     .home-name {
@@ -260,19 +268,19 @@
       border-radius: 20px;
       font-weight: 800;
       color: white;
-      background: linear-gradient(145deg, #48BB78, #38A169);
-      box-shadow: 0 3px 0 #2F855A;
+      background: #48BB78;
+      box-shadow: 0 2px 0 #2F855A;
     }
 
     .tokes-badge {
-      background: linear-gradient(145deg, #ECC94B, #D69E2E);
+      background: #ECC94B;
       color: #744210;
       padding: 8px 20px;
       border-radius: 20px;
       font-size: 14px;
       font-weight: 800;
       margin-top: 8px;
-      box-shadow: 0 3px 0 #B7791F;
+      box-shadow: 0 2px 0 #B7791F;
     }
 
     .home-hint {
@@ -285,7 +293,7 @@
       margin-bottom: 10px;
     }
 
-    /* MENU GRID 2x3 - LLENANDO PANTALLA */
+    /* MENU GRID 2x3 */
     .menu-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -297,7 +305,7 @@
     }
 
     .menu-item {
-      background: linear-gradient(145deg, #ffffff, #F7FAFC);
+      background: #ffffff;
       border: 3px solid #E2E8F0;
       border-radius: 20px;
       display: flex;
@@ -308,22 +316,23 @@
       font-size: 13px;
       font-weight: 800;
       color: #4A5568;
-      transition: transform 0.15s ease, box-shadow 0.15s ease;
+      transition: transform 0.1s ease, border-color 0.1s ease;
       cursor: pointer;
-      box-shadow: 0 4px 0 #CBD5E0, 0 6px 10px rgba(0,0,0,0.08);
+      box-shadow: 0 3px 0 #CBD5E0;
       min-height: 0;
+      -webkit-tap-highlight-color: transparent;
     }
 
     .menu-item:active {
-      transform: translateY(4px) scale(0.98);
-      box-shadow: 0 0 0 #CBD5E0, 0 2px 4px rgba(0,0,0,0.05);
+      transform: translateY(3px) scale(0.98);
+      box-shadow: 0 0 0 #CBD5E0;
     }
 
     .menu-item.focused {
       border-color: var(--device-color);
-      background: linear-gradient(145deg, #FFF5F7, #FED7E2);
-      transform: scale(1.03);
-      box-shadow: 0 0 0 4px rgba(255,107,157,0.4), 0 4px 0 #F687B3;
+      background: #FFF5F7;
+      transform: scale(1.02);
+      box-shadow: 0 0 0 3px rgba(255,107,157,0.3);
       z-index: 10;
     }
 
@@ -333,7 +342,7 @@
     }
 
     .menu-item.focused .icon {
-      transform: scale(1.15) rotate(-5deg);
+      transform: scale(1.1);
     }
 
     /* LISTAS */
@@ -358,7 +367,7 @@
       display: flex;
       align-items: center;
       gap: 12px;
-      transition: all 0.15s ease;
+      transition: all 0.1s ease;
       box-shadow: 0 2px 0 #E2E8F0;
       flex-shrink: 0;
       min-height: 60px;
@@ -368,21 +377,21 @@
     .list-item.focused, .toke-item.focused, .variante-item.focused {
       border-color: var(--device-color);
       background: #FFF5F7;
-      transform: translateX(5px);
-      box-shadow: 0 3px 0 #F687B3;
+      transform: translateX(3px);
+      box-shadow: 0 2px 0 #F687B3;
     }
 
     /* TOKES COLORES */
-    .toke-item.t1 { border-color: #FF0066; background: linear-gradient(145deg, #FFF0F3, #FFF5F7); }
-    .toke-item.t1.focused { box-shadow: 0 3px 0 #CC0052; }
-    .toke-item.t2 { border-color: #FF5400; background: linear-gradient(145deg, #FFF4F0, #FFF8F5); }
-    .toke-item.t2.focused { box-shadow: 0 3px 0 #CC4400; }
-    .toke-item.t3 { border-color: #38A169; background: linear-gradient(145deg, #F0FFF4, #F5FFF8); }
-    .toke-item.t3.focused { box-shadow: 0 3px 0 #276749; }
-    .toke-item.t4 { border-color: #D69E2E; background: linear-gradient(145deg, #FFFBEB, #FFFFF5); }
-    .toke-item.t4.focused { box-shadow: 0 3px 0 #B7791F; }
-    .toke-item.t5 { border-color: #3182CE; background: linear-gradient(145deg, #EBF8FF, #F0F9FF); }
-    .toke-item.t5.focused { box-shadow: 0 3px 0 #2C5282; }
+    .toke-item.t1 { border-color: #FF0066; background: #FFF0F3; }
+    .toke-item.t1.focused { box-shadow: 0 2px 0 #CC0052; }
+    .toke-item.t2 { border-color: #FF5400; background: #FFF4F0; }
+    .toke-item.t2.focused { box-shadow: 0 2px 0 #CC4400; }
+    .toke-item.t3 { border-color: #38A169; background: #F0FFF4; }
+    .toke-item.t3.focused { box-shadow: 0 2px 0 #276749; }
+    .toke-item.t4 { border-color: #D69E2E; background: #FFFBEB; }
+    .toke-item.t4.focused { box-shadow: 0 2px 0 #B7791F; }
+    .toke-item.t5 { border-color: #3182CE; background: #EBF8FF; }
+    .toke-item.t5.focused { box-shadow: 0 2px 0 #2C5282; }
 
     .variante-item {
       border-left: 5px solid;
@@ -394,7 +403,7 @@
     .variante-item.v5 { border-left-color: #3182CE; }
 
     .scan-btn {
-      background: linear-gradient(145deg, #9F7AEA, #805AD5);
+      background: #805AD5;
       color: white;
       border: none;
       border-radius: 16px;
@@ -403,15 +412,21 @@
       font-weight: 800;
       margin-bottom: 12px;
       box-shadow: 0 3px 0 #6B46C1;
-      transition: all 0.15s ease;
+      transition: all 0.1s ease;
       flex-shrink: 0;
       width: 100%;
       cursor: pointer;
+      -webkit-appearance: none;
+    }
+
+    .scan-btn:active {
+      transform: translateY(3px);
+      box-shadow: 0 0 0 #6B46C1;
     }
 
     .scan-btn.focused {
-      transform: scale(1.02);
-      box-shadow: 0 0 0 3px rgba(159,122,234,0.4), 0 3px 0 #6B46C1;
+      transform: scale(1.01);
+      box-shadow: 0 0 0 3px rgba(159,122,234,0.3), 0 3px 0 #6B46C1;
     }
 
     /* QR */
@@ -427,7 +442,7 @@
       background: white;
       padding: 20px;
       border-radius: 20px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      box-shadow: 0 5px 20px rgba(0,0,0,0.1);
       border: 4px solid #FFD93D;
     }
 
@@ -457,19 +472,19 @@
       align-items: center;
       justify-content: center;
       font-size: 18px;
-      transition: all 0.15s ease;
+      transition: all 0.1s ease;
     }
 
     .emoji-card.captured {
-      background: linear-gradient(145deg, #48BB78, #38A169);
+      background: #48BB78;
       border-color: #276749;
       color: white;
     }
 
     .emoji-card.focused {
       border-color: var(--device-color);
-      transform: scale(1.2);
-      box-shadow: 0 0 10px rgba(255,107,157,0.5);
+      transform: scale(1.1);
+      box-shadow: 0 0 8px rgba(255,107,157,0.4);
       z-index: 10;
     }
 
@@ -485,15 +500,15 @@
     }
 
     .combate-card {
-      background: linear-gradient(145deg, #9F7AEA, #805AD5);
+      background: #805AD5;
       border: 3px solid transparent;
       border-radius: 20px;
       padding: 25px;
       color: white;
       text-align: center;
       font-weight: 800;
-      box-shadow: 0 4px 0 #6B46C1, 0 8px 15px rgba(159,122,234,0.3);
-      transition: all 0.15s ease;
+      box-shadow: 0 3px 0 #6B46C1;
+      transition: all 0.1s ease;
       flex: 1;
       display: flex;
       flex-direction: column;
@@ -503,15 +518,20 @@
       cursor: pointer;
     }
 
+    .combate-card:active {
+      transform: translateY(3px);
+      box-shadow: 0 0 0 #6B46C1;
+    }
+
     .combate-card.focused {
       border-color: #FFD93D;
-      transform: scale(1.03);
-      box-shadow: 0 0 0 4px rgba(255,217,61,0.4), 0 4px 0 #6B46C1;
+      transform: scale(1.02);
+      box-shadow: 0 0 0 3px rgba(255,217,61,0.3), 0 3px 0 #6B46C1;
     }
 
     .combate-card.vs-amigo {
-      background: linear-gradient(145deg, #ED8936, #DD6B20);
-      box-shadow: 0 4px 0 #C05621, 0 8px 15px rgba(237,137,54,0.3);
+      background: #DD6B20;
+      box-shadow: 0 3px 0 #C05621;
     }
 
     /* SETTINGS */
@@ -536,7 +556,7 @@
       justify-content: space-between;
       font-size: 14px;
       font-weight: 700;
-      transition: all 0.15s ease;
+      transition: all 0.1s ease;
       box-shadow: 0 2px 0 #E2E8F0;
       flex-shrink: 0;
       min-height: 56px;
@@ -578,9 +598,9 @@
       left: 24px;
     }
 
-    /* BOTÓN ELIMINAR - MÁS GRANDE Y VISIBLE */
+    /* BOTÓN ELIMINAR */
     .btn-eliminar {
-      background: linear-gradient(145deg, #FC8181, #F56565);
+      background: #F56565;
       color: white;
       border: none;
       border-radius: 10px;
@@ -588,16 +608,17 @@
       font-size: 12px;
       font-weight: 800;
       cursor: pointer;
-      box-shadow: 0 3px 0 #C53030;
+      box-shadow: 0 2px 0 #C53030;
       min-width: 36px;
       min-height: 36px;
       display: flex;
       align-items: center;
       justify-content: center;
+      -webkit-appearance: none;
     }
 
     .btn-eliminar:active {
-      transform: translateY(3px);
+      transform: translateY(2px);
       box-shadow: 0 0 0 #C53030;
     }
 
@@ -635,6 +656,7 @@
       gap: 15px;
       width: 100%;
       max-width: 280px;
+      padding: 10px;
     }
 
     .selector-item {
@@ -647,16 +669,17 @@
       justify-content: center;
       font-size: 13px;
       font-weight: 700;
-      transition: all 0.15s ease;
+      transition: all 0.1s ease;
       cursor: pointer;
       color: white;
       padding: 12px;
+      min-height: 100px;
     }
 
     .selector-item.focused {
       border-color: white;
-      transform: scale(1.08);
-      box-shadow: 0 0 20px rgba(255,255,255,0.6);
+      transform: scale(1.05);
+      box-shadow: 0 0 15px rgba(255,255,255,0.5);
     }
 
     .response-modal {
@@ -703,15 +726,15 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      transition: all 0.15s ease;
-      box-shadow: 0 4px 0 rgba(0,0,0,0.1);
+      transition: all 0.1s ease;
+      box-shadow: 0 3px 0 rgba(0,0,0,0.1);
       cursor: pointer;
     }
 
     .response-btn.focused {
       border-color: #FFD93D;
-      transform: scale(1.1);
-      box-shadow: 0 0 0 5px rgba(255,217,61,0.5), 0 4px 0 rgba(0,0,0,0.1);
+      transform: scale(1.08);
+      box-shadow: 0 0 0 4px rgba(255,217,61,0.4), 0 3px 0 rgba(0,0,0,0.1);
     }
 
     .response-btn .label {
@@ -736,6 +759,7 @@
       color: white;
       background: rgba(255,255,255,0.2);
       cursor: pointer;
+      transition: all 0.1s ease;
     }
 
     .response-action.focused {
@@ -771,7 +795,7 @@
       width: 100%;
       max-width: 280px;
       text-align: center;
-      box-shadow: 0 15px 50px rgba(0,0,0,0.3);
+      box-shadow: 0 10px 40px rgba(0,0,0,0.3);
     }
 
     .confirm-title {
@@ -802,34 +826,35 @@
       font-size: 14px;
       font-weight: 800;
       cursor: pointer;
-      transition: all 0.15s ease;
+      transition: all 0.1s ease;
+      -webkit-appearance: none;
     }
 
     .confirm-btn.no {
       background: #E2E8F0;
       color: #4A5568;
-      box-shadow: 0 4px 0 #CBD5E0;
+      box-shadow: 0 3px 0 #CBD5E0;
     }
 
     .confirm-btn.no:active {
-      transform: translateY(4px);
+      transform: translateY(3px);
       box-shadow: 0 0 0 #CBD5E0;
     }
 
     .confirm-btn.si {
-      background: linear-gradient(145deg, #FC8181, #F56565);
+      background: #F56565;
       color: white;
-      box-shadow: 0 4px 0 #C53030;
+      box-shadow: 0 3px 0 #C53030;
     }
 
     .confirm-btn.si:active {
-      transform: translateY(4px);
+      transform: translateY(3px);
       box-shadow: 0 0 0 #C53030;
     }
 
     .confirm-btn.focused {
-      transform: scale(1.05);
-      box-shadow: 0 0 0 4px rgba(255,107,157,0.3);
+      transform: scale(1.03);
+      box-shadow: 0 0 0 3px rgba(255,107,157,0.3);
     }
 
     /* BOTONES FÍSICOS */
@@ -852,22 +877,24 @@
       border: none;
       font-family: 'Fredoka One', cursive;
       cursor: pointer;
-      transition: all 0.1s ease;
+      transition: all 0.08s ease;
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 4px 0 rgba(0,0,0,0.2), 0 6px 10px rgba(0,0,0,0.1);
+      box-shadow: 0 3px 0 rgba(0,0,0,0.2);
+      -webkit-tap-highlight-color: transparent;
+      -webkit-appearance: none;
     }
 
     .btn-candy:active {
-      transform: translateY(4px);
-      box-shadow: 0 0 0 rgba(0,0,0,0.2), 0 2px 5px rgba(0,0,0,0.1);
+      transform: translateY(3px);
+      box-shadow: 0 0 0 rgba(0,0,0,0.2);
     }
 
     .btn-back {
       width: 55px;
       height: 42px;
-      background: linear-gradient(145deg, #63B3ED, #4299E1);
+      background: #4299E1;
       border-radius: 21px;
       color: white;
       font-size: 12px;
@@ -876,15 +903,15 @@
     .btn-ok {
       width: 70px;
       height: 52px;
-      background: linear-gradient(145deg, #68D391, #48BB78);
+      background: #48BB78;
       border-radius: 26px;
       color: white;
       font-size: 18px;
-      box-shadow: 0 5px 0 #38A169, 0 8px 15px rgba(72,187,120,0.4);
+      box-shadow: 0 4px 0 #38A169;
     }
 
     .btn-ok:active {
-      box-shadow: 0 0 0 #38A169, 0 4px 8px rgba(72,187,120,0.4);
+      box-shadow: 0 0 0 #38A169;
     }
 
     .dpad {
@@ -897,18 +924,20 @@
     .dpad-btn {
       width: 42px;
       height: 42px;
-      background: linear-gradient(145deg, #F6E05E, #D69E2E);
+      background: #D69E2E;
       border-radius: 12px;
       color: #744210;
       font-size: 18px;
       border: none;
       cursor: pointer;
-      box-shadow: 0 3px 0 #B7791F, 0 4px 8px rgba(0,0,0,0.1);
+      box-shadow: 0 2px 0 #B7791F;
+      -webkit-appearance: none;
+      transition: all 0.08s ease;
     }
 
     .dpad-btn:active {
-      transform: translateY(3px);
-      box-shadow: 0 0 0 #B7791F, 0 2px 5px rgba(0,0,0,0.1);
+      transform: translateY(2px);
+      box-shadow: 0 0 0 #B7791F;
     }
 
     .dpad-empty { visibility: hidden; }
@@ -925,7 +954,7 @@
       bottom: 0;
       left: 0;
       right: 0;
-      background: linear-gradient(145deg, var(--device-color), var(--device-dark));
+      background: var(--device-color);
       color: white;
       padding: 12px;
       font-size: 13px;
@@ -948,7 +977,7 @@
 
     /* INFO DE ENVÍO */
     .envio-info {
-      background: linear-gradient(145deg, #FFF5F7, #FED7E2);
+      background: #FFF5F7;
       border: 2px solid var(--device-color);
       border-radius: 14px;
       padding: 12px;
@@ -992,7 +1021,7 @@
           <!-- SETUP -->
           <div class="page" id="page-setup">
             <div class="setup-title">¿Cómo te llamas?</div>
-            <input type="text" id="miNombre" class="setup-input" maxlength="8" placeholder="TU NOMBRE" autocomplete="off">
+            <input type="text" id="miNombre" class="setup-input" maxlength="8" placeholder="TU NOMBRE" autocomplete="off" autocapitalize="characters">
             <div style="font-size: 11px; color: #A0AEC0; margin-top: 15px;">Pulsa OK para continuar</div>
           </div>
 
@@ -1007,7 +1036,7 @@
             <div class="home-hint">▼ Pulsa OK para Menú</div>
           </div>
 
-          <!-- MENU GRID 2x3 - LLENANDO PANTALLA -->
+          <!-- MENU GRID 2x3 -->
           <div class="page" id="page-menu">
             <div class="setup-title">Menú</div>
             <div class="menu-grid" id="menu-grid">
@@ -1191,9 +1220,10 @@
 <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
 <script>
 // ========================================
-// TOKEJI v6 - OPTIMIZADO Y CORREGIDO
+// TOKEJI v7 - CORREGIDO Y OPTIMIZADO
 // ========================================
 
+// CORRECCIÓN CRÍTICA: URL sin espacios
 const BACK = "https://tokeji-device.onrender.com";
 
 const CONTEXTOS_TOKES = {
@@ -1316,6 +1346,7 @@ const app = {
     setInterval(() => this.checkIncoming(), 10000);
     
     console.log('Inicializado. ID:', this.miID);
+    console.log('Backend:', BACK);
   },
 
   initAudio() {
@@ -1342,19 +1373,19 @@ const app = {
       
       if (type === 'move') {
         osc.frequency.setValueAtTime(500, now);
-        gain.gain.setValueAtTime(0.08, now);
+        gain.gain.setValueAtTime(0.05, now);
         gain.gain.exponentialRampToValueAtTime(0.01, now + 0.03);
         osc.start(now);
         osc.stop(now + 0.03);
       } else if (type === 'select') {
         osc.frequency.setValueAtTime(800, now);
-        gain.gain.setValueAtTime(0.12, now);
+        gain.gain.setValueAtTime(0.08, now);
         gain.gain.exponentialRampToValueAtTime(0.01, now + 0.08);
         osc.start(now);
         osc.stop(now + 0.08);
       } else if (type === 'back') {
         osc.frequency.setValueAtTime(350, now);
-        gain.gain.setValueAtTime(0.08, now);
+        gain.gain.setValueAtTime(0.05, now);
         gain.gain.exponentialRampToValueAtTime(0.01, now + 0.05);
         osc.start(now);
         osc.stop(now + 0.05);
@@ -1800,7 +1831,6 @@ const app = {
         }
         break;
     }
-    this.vibrar();
   },
 
   handleRight() {
@@ -1848,7 +1878,6 @@ const app = {
         }
         break;
     }
-    this.vibrar();
   },
 
   updateConfirmFocus() {
@@ -2073,8 +2102,7 @@ const app = {
     const st = ESTADOS.find(e => e.id === this.state.settings.status) || ESTADOS[0];
     if (statusEl) {
       statusEl.textContent = `${st.emoji} ${st.label}`;
-      statusEl.style.background = `linear-gradient(145deg, ${st.color}, ${this.darken(st.color, 20)})`;
-      statusEl.style.boxShadow = `0 3px 0 ${this.darken(st.color, 40)}`;
+      statusEl.style.background = st.color;
     }
   },
 
@@ -2095,15 +2123,6 @@ const app = {
       statusEl.textContent = st ? st.label : 'Disponible';
       statusEl.style.color = st ? st.color : '#48BB78';
     }
-  },
-
-  darken(color, percent) {
-    const num = parseInt(color.replace('#',''), 16);
-    const amt = Math.round(2.55 * percent);
-    const R = Math.max((num >> 16) - amt, 0);
-    const G = Math.max((num >> 8 & 0x00FF) - amt, 0);
-    const B = Math.max((num & 0x0000FF) - amt, 0);
-    return '#' + (0x1000000 + R*0x10000 + G*0x100 + B).toString(16).slice(1);
   },
 
   activateSetting(index) {
@@ -2399,14 +2418,13 @@ const app = {
   },
 
   // ========================================
-  // TOQUES - CON DEBUG COMPLETO
+  // TOQUES - CORREGIDO URL
   // ========================================
   
   async enviarToque(paraId, paraNombre) {
     console.log('=== ENVIANDO TOQUE ===');
     console.log('Para:', paraId, paraNombre);
-    console.log('Categoría:', this.state.selectedCategoria);
-    console.log('Variante:', this.state.selectedVariante);
+    console.log('URL Backend:', BACK);
     
     if (!this.state.selectedVariante || !this.state.selectedCategoria) {
       this.showMsg('Error: No hay toque seleccionado');
@@ -2433,8 +2451,7 @@ const app = {
       categoria_emoji: categoria?.emoji || '💌'
     };
     
-    console.log('Payload:', JSON.stringify(payload, null, 2));
-    console.log('URL:', `${BACK}/toque`);
+    console.log('Payload:', JSON.stringify(payload));
     
     try {
       const response = await fetch(`${BACK}/toque`, {
@@ -2447,17 +2464,14 @@ const app = {
       });
       
       console.log('Status:', response.status);
-      console.log('StatusText:', response.statusText);
       
       const responseText = await response.text();
-      console.log('Response raw:', responseText);
+      console.log('Response:', responseText);
       
       let data;
       try {
         data = JSON.parse(responseText);
-        console.log('Response JSON:', data);
       } catch(e) {
-        console.log('Response no es JSON:', responseText);
         data = { ok: response.ok, text: responseText };
       }
       
@@ -2489,7 +2503,7 @@ const app = {
         
         setTimeout(() => this.showPage('home'), 2000);
       } else {
-        const errorMsg = data.error || data.message || `Error ${response.status}: ${response.statusText}`;
+        const errorMsg = data.error || data.message || `Error ${response.status}`;
         this.showMsg('❌ ' + errorMsg);
         console.error('Error servidor:', data);
       }
@@ -2588,13 +2602,13 @@ const app = {
 
   vibrar() {
     if (this.state.settings.vibracion && navigator.vibrate) {
-      navigator.vibrate(10);
+      navigator.vibrate(8);
     }
   }
 };
 
 window.addEventListener('load', () => {
-  console.log('Tokeji v6 iniciando...');
+  console.log('Tokeji v7 iniciando...');
   app.init();
 });
 </script>
