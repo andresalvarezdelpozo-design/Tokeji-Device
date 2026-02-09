@@ -2,33 +2,18 @@
 <html lang="es">
 <head>
   <meta charset="utf-8"/>
-  <title>Tokeji ✨</title>
+  <title>Tokeji ✨ DEBUG</title>
   <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"/>
   <meta name="theme-color" content="#FF6B9D"/>
-  <meta name="apple-mobile-web-app-capable" content="yes"/>
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap');
     
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      user-select: none;
-      -webkit-tap-highlight-color: transparent;
-      touch-action: manipulation;
-      -webkit-touch-callout: none;
-    }
-
+    * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+    
     :root {
       --device-color: #FF6B9D;
       --device-dark: #FF4785;
       --screen-bg: #FFF5F7;
-    }
-
-    html, body {
-      touch-action: pan-x pan-y;
-      -webkit-text-size-adjust: 100%;
     }
 
     body {
@@ -57,9 +42,6 @@
       display: flex;
       flex-direction: column;
       border: 3px solid rgba(255,255,255,0.2);
-      transform: translateZ(0);
-      -webkit-transform: translateZ(0);
-      will-change: transform;
       margin: auto;
     }
 
@@ -72,57 +54,15 @@
       box-shadow: inset 0 1px 2px rgba(255,255,255,0.8), 0 2px 4px rgba(0,0,0,0.3);
       z-index: 10;
     }
-
-    .screw::after {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%) rotate(45deg);
-      width: 6px;
-      height: 2px;
-      background: #666;
-      box-shadow: 0 0 0 1px #666;
-    }
-
+    .screw::after { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(45deg); width: 6px; height: 2px; background: #666; box-shadow: 0 0 0 1px #666; }
     .screw-tl { top: 12px; left: 15px; }
     .screw-tr { top: 12px; right: 15px; }
     .screw-bl { bottom: 100px; left: 15px; }
     .screw-br { bottom: 100px; right: 15px; }
 
-    .device-logo {
-      position: absolute;
-      top: 8px;
-      left: 50%;
-      transform: translateX(-50%);
-      font-family: 'Fredoka One', cursive;
-      font-size: 11px;
-      color: rgba(255,255,255,0.9);
-      letter-spacing: 2px;
-      text-shadow: 0 2px 4px rgba(0,0,0,0.2);
-      z-index: 5;
-    }
+    .device-logo { position: absolute; top: 8px; left: 50%; transform: translateX(-50%); font-family: 'Fredoka One', cursive; font-size: 11px; color: rgba(255,255,255,0.9); letter-spacing: 2px; z-index: 5; }
 
-    .shine {
-      position: absolute;
-      top: 15px;
-      left: 20%;
-      right: 20%;
-      height: 25%;
-      background: linear-gradient(180deg, rgba(255,255,255,0.3) 0%, transparent 100%);
-      border-radius: 50% 50% 0 0;
-      pointer-events: none;
-    }
-
-    .screen-container {
-      width: 100%;
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      margin-top: 8px;
-      margin-bottom: 8px;
-    }
+    .screen-container { width: 100%; flex: 1; display: flex; flex-direction: column; align-items: center; margin-top: 8px; margin-bottom: 8px; }
 
     .screen {
       width: 100%;
@@ -137,398 +77,63 @@
       flex-direction: column;
     }
 
-    .status-bar {
-      position: absolute;
-      top: 8px;
-      left: 12px;
-      right: 12px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 10px;
-      font-weight: 800;
-      color: #718096;
-      z-index: 10;
-      font-family: 'Fredoka One', cursive;
-    }
+    .status-bar { position: absolute; top: 8px; left: 12px; right: 12px; display: flex; justify-content: space-between; align-items: center; font-size: 10px; font-weight: 800; color: #718096; z-index: 10; font-family: 'Fredoka One', cursive; }
 
-    .content {
-      flex: 1;
-      padding: 28px 12px 12px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      overflow: hidden;
-      position: relative;
-    }
+    .content { flex: 1; padding: 28px 12px 12px; display: flex; flex-direction: column; align-items: center; overflow: hidden; position: relative; }
 
-    .page { 
-      display: none; 
-      width: 100%; 
-      height: 100%;
-      flex-direction: column;
-    }
+    .page { display: none; width: 100%; height: 100%; flex-direction: column; }
     .page.active { display: flex; }
 
-    #page-splash {
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      background: linear-gradient(145deg, var(--device-color), #FFB8D0);
-      height: 100%;
-      width: 100%;
-      padding: 0;
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      border-radius: 18px;
-    }
+    #page-splash { justify-content: center; align-items: center; text-align: center; background: linear-gradient(145deg, var(--device-color), #FFB8D0); height: 100%; width: 100%; padding: 0; position: absolute; top: 0; left: 0; right: 0; bottom: 0; border-radius: 18px; }
+    .splash-logo { font-family: 'Fredoka One', cursive; font-size: 52px; color: white; text-shadow: 0 4px 0 var(--device-dark), 0 6px 10px rgba(0,0,0,0.2); animation: pulse-logo 2s ease-in-out infinite; margin-bottom: 20px; }
+    @keyframes pulse-logo { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.05); opacity: 0.9; } }
+    .splash-hint { position: absolute; bottom: 50px; font-size: 14px; color: rgba(255,255,255,0.9); animation: blink 1.5s infinite; font-weight: 700; }
+    @keyframes blink { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }
 
-    .splash-logo {
-      font-family: 'Fredoka One', cursive;
-      font-size: 52px;
-      color: white;
-      text-shadow: 0 4px 0 var(--device-dark), 0 6px 10px rgba(0,0,0,0.2);
-      animation: pulse-logo 2s ease-in-out infinite;
-      transform: translateZ(0);
-      margin-bottom: 20px;
-    }
+    #page-consent { justify-content: center; align-items: center; background: var(--screen-bg); height: 100%; width: 100%; padding: 20px; text-align: center; }
+    .consent-title { font-family: 'Fredoka One', cursive; font-size: 20px; color: #2D3748; margin-bottom: 15px; }
+    .consent-text { font-size: 12px; color: #4A5568; line-height: 1.5; margin-bottom: 20px; max-width: 260px; }
+    .consent-buttons { display: flex; gap: 12px; width: 100%; max-width: 220px; }
+    .consent-btn { flex: 1; padding: 12px; border: none; border-radius: 12px; font-family: 'Nunito', sans-serif; font-size: 14px; font-weight: 800; cursor: pointer; transition: all 0.1s ease; box-shadow: 0 3px 0 rgba(0,0,0,0.2); }
+    .consent-btn.no { background: #E2E8F0; color: #4A5568; box-shadow: 0 3px 0 #CBD5E0; }
+    .consent-btn.si { background: #48BB78; color: white; box-shadow: 0 3px 0 #38A169; }
+    .consent-btn.focused { transform: scale(1.05); box-shadow: 0 0 0 3px rgba(255,107,157,0.3); }
 
-    @keyframes pulse-logo {
-      0%, 100% { transform: scale(1) translateZ(0); opacity: 1; }
-      50% { transform: scale(1.05) translateZ(0); opacity: 0.9; }
-    }
+    #page-setup { justify-content: center; align-items: center; background: var(--screen-bg); height: 100%; width: 100%; padding: 20px; }
+    .setup-title { font-family: 'Fredoka One', cursive; font-size: 20px; color: #2D3748; margin-bottom: 25px; text-align: center; }
+    .setup-input { width: 100%; max-width: 260px; padding: 14px; border: 3px solid #FFD93D; border-radius: 14px; font-size: 22px; text-align: center; text-transform: uppercase; font-weight: 800; background: white; outline: none; font-family: 'Nunito', sans-serif; -webkit-appearance: none; margin-bottom: 15px; }
+    .setup-hint { font-size: 12px; color: #A0AEC0; }
 
-    .splash-hint {
-      position: absolute;
-      bottom: 50px;
-      font-size: 14px;
-      color: rgba(255,255,255,0.9);
-      animation: blink 1.5s infinite;
-      font-weight: 700;
-    }
+    #page-avatar { justify-content: flex-start; align-items: center; background: var(--screen-bg); height: 100%; width: 100%; padding: 30px 20px 20px 20px; }
+    .avatar-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; width: 100%; max-width: 280px; margin-top: 10px; }
+    .avatar-item { aspect-ratio: 1; background: white; border: 3px solid #E2E8F0; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 28px; cursor: pointer; transition: all 0.1s ease; box-shadow: 0 3px 0 #CBD5E0; }
+    .avatar-item:active { transform: translateY(3px); box-shadow: 0 0 0 #CBD5E0; }
+    .avatar-item.focused { border-color: var(--device-color); background: #FFF5F7; transform: scale(1.1); box-shadow: 0 0 0 3px rgba(255,107,157,0.3); }
 
-    @keyframes blink {
-      0%, 100% { opacity: 0.4; }
-      50% { opacity: 1; }
-    }
+    #page-color { justify-content: flex-start; align-items: center; background: var(--screen-bg); height: 100%; width: 100%; padding: 30px 20px 20px 20px; }
+    .color-setup-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; width: 100%; max-width: 200px; margin-top: 10px; }
+    .color-setup-item { aspect-ratio: 1; border: 4px solid white; border-radius: 16px; cursor: pointer; transition: all 0.1s ease; box-shadow: 0 4px 0 rgba(0,0,0,0.2); }
+    .color-setup-item:active { transform: translateY(4px); box-shadow: 0 0 0 rgba(0,0,0,0.2); }
+    .color-setup-item.focused { transform: scale(1.1); box-shadow: 0 0 0 4px rgba(255,255,255,0.8), 0 4px 0 rgba(0,0,0,0.2); }
 
-    #page-consent {
-      justify-content: center;
-      align-items: center;
-      background: var(--screen-bg);
-      height: 100%;
-      width: 100%;
-      padding: 20px;
-      text-align: center;
-    }
+    .home-main { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; }
+    .home-avatar { font-size: 60px; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.15)); animation: float 3s ease-in-out infinite; }
+    @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+    .home-name { font-family: 'Fredoka One', cursive; font-size: 22px; color: #2D3748; }
+    .home-status { font-size: 11px; padding: 5px 14px; border-radius: 20px; font-weight: 800; color: white; background: #48BB78; box-shadow: 0 2px 0 #2F855A; }
+    .tokes-badge { background: #ECC94B; color: #744210; padding: 6px 16px; border-radius: 20px; font-size: 13px; font-weight: 800; margin-top: 6px; box-shadow: 0 2px 0 #B7791F; }
 
-    .consent-title {
-      font-family: 'Fredoka One', cursive;
-      font-size: 20px;
-      color: #2D3748;
-      margin-bottom: 15px;
-    }
+    .menu-grid { display: grid; grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(3, 1fr); gap: 10px; width: 100%; height: 100%; padding: 0 5px; }
+    .menu-item { background: #ffffff; border: 3px solid #E2E8F0; border-radius: 16px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; font-size: 12px; font-weight: 800; color: #4A5568; transition: all 0.1s ease; cursor: pointer; box-shadow: 0 3px 0 #CBD5E0; min-height: 0; }
+    .menu-item:active { transform: translateY(3px) scale(0.98); box-shadow: 0 0 0 #CBD5E0; }
+    .menu-item.focused { border-color: var(--device-color); background: #FFF5F7; transform: scale(1.02); box-shadow: 0 0 0 3px rgba(255,107,157,0.3); z-index: 10; }
+    .menu-item .icon { font-size: 32px; transition: transform 0.2s; }
+    .menu-item.focused .icon { transform: scale(1.1); }
 
-    .consent-text {
-      font-size: 12px;
-      color: #4A5568;
-      line-height: 1.5;
-      margin-bottom: 20px;
-      max-width: 260px;
-    }
+    .list-container { width: 100%; flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; padding: 0 5px 5px 5px; -webkit-overflow-scrolling: touch; }
 
-    .consent-buttons {
-      display: flex;
-      gap: 12px;
-      width: 100%;
-      max-width: 220px;
-    }
-
-    .consent-btn {
-      flex: 1;
-      padding: 12px;
-      border: none;
-      border-radius: 12px;
-      font-family: 'Nunito', sans-serif;
-      font-size: 14px;
-      font-weight: 800;
-      cursor: pointer;
-      transition: all 0.1s ease;
-      box-shadow: 0 3px 0 rgba(0,0,0,0.2);
-    }
-
-    .consent-btn.no {
-      background: #E2E8F0;
-      color: #4A5568;
-      box-shadow: 0 3px 0 #CBD5E0;
-    }
-
-    .consent-btn.si {
-      background: #48BB78;
-      color: white;
-      box-shadow: 0 3px 0 #38A169;
-    }
-
-    .consent-btn.focused {
-      transform: scale(1.05);
-      box-shadow: 0 0 0 3px rgba(255,107,157,0.3);
-    }
-
-    #page-setup {
-      justify-content: center;
-      align-items: center;
-      background: var(--screen-bg);
-      height: 100%;
-      width: 100%;
-      padding: 20px;
-    }
-
-    .setup-title {
-      font-family: 'Fredoka One', cursive;
-      font-size: 20px;
-      color: #2D3748;
-      margin-bottom: 25px;
-      text-align: center;
-    }
-
-    .setup-input {
-      width: 100%;
-      max-width: 260px;
-      padding: 14px;
-      border: 3px solid #FFD93D;
-      border-radius: 14px;
-      font-size: 22px;
-      text-align: center;
-      text-transform: uppercase;
-      font-weight: 800;
-      background: white;
-      outline: none;
-      font-family: 'Nunito', sans-serif;
-      -webkit-appearance: none;
-      margin-bottom: 15px;
-    }
-
-    .setup-hint {
-      font-size: 12px;
-      color: #A0AEC0;
-    }
-
-    #page-avatar {
-      justify-content: flex-start;
-      align-items: center;
-      background: var(--screen-bg);
-      height: 100%;
-      width: 100%;
-      padding: 30px 20px 20px 20px;
-    }
-
-    .avatar-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 12px;
-      width: 100%;
-      max-width: 280px;
-      margin-top: 10px;
-    }
-
-    .avatar-item {
-      aspect-ratio: 1;
-      background: white;
-      border: 3px solid #E2E8F0;
-      border-radius: 14px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 28px;
-      cursor: pointer;
-      transition: all 0.1s ease;
-      box-shadow: 0 3px 0 #CBD5E0;
-    }
-
-    .avatar-item:active {
-      transform: translateY(3px);
-      box-shadow: 0 0 0 #CBD5E0;
-    }
-
-    .avatar-item.focused {
-      border-color: var(--device-color);
-      background: #FFF5F7;
-      transform: scale(1.1);
-      box-shadow: 0 0 0 3px rgba(255,107,157,0.3);
-    }
-
-    #page-color {
-      justify-content: flex-start;
-      align-items: center;
-      background: var(--screen-bg);
-      height: 100%;
-      width: 100%;
-      padding: 30px 20px 20px 20px;
-    }
-
-    .color-setup-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 15px;
-      width: 100%;
-      max-width: 200px;
-      margin-top: 10px;
-    }
-
-    .color-setup-item {
-      aspect-ratio: 1;
-      border: 4px solid white;
-      border-radius: 16px;
-      cursor: pointer;
-      transition: all 0.1s ease;
-      box-shadow: 0 4px 0 rgba(0,0,0,0.2);
-    }
-
-    .color-setup-item:active {
-      transform: translateY(4px);
-      box-shadow: 0 0 0 rgba(0,0,0,0.2);
-    }
-
-    .color-setup-item.focused {
-      transform: scale(1.1);
-      box-shadow: 0 0 0 4px rgba(255,255,255,0.8), 0 4px 0 rgba(0,0,0,0.2);
-    }
-
-    .home-main {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-    }
-
-    .home-avatar {
-      font-size: 60px;
-      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.15));
-      animation: float 3s ease-in-out infinite;
-      transform: translateZ(0);
-    }
-
-    @keyframes float {
-      0%, 100% { transform: translateY(0) translateZ(0); }
-      50% { transform: translateY(-8px) translateZ(0); }
-    }
-
-    .home-name {
-      font-family: 'Fredoka One', cursive;
-      font-size: 22px;
-      color: #2D3748;
-    }
-
-    .home-status {
-      font-size: 11px;
-      padding: 5px 14px;
-      border-radius: 20px;
-      font-weight: 800;
-      color: white;
-      background: #48BB78;
-      box-shadow: 0 2px 0 #2F855A;
-    }
-
-    .tokes-badge {
-      background: #ECC94B;
-      color: #744210;
-      padding: 6px 16px;
-      border-radius: 20px;
-      font-size: 13px;
-      font-weight: 800;
-      margin-top: 6px;
-      box-shadow: 0 2px 0 #B7791F;
-    }
-
-    .menu-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      grid-template-rows: repeat(3, 1fr);
-      gap: 10px;
-      width: 100%;
-      height: 100%;
-      padding: 0 5px;
-    }
-
-    .menu-item {
-      background: #ffffff;
-      border: 3px solid #E2E8F0;
-      border-radius: 16px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      font-size: 12px;
-      font-weight: 800;
-      color: #4A5568;
-      transition: all 0.1s ease;
-      cursor: pointer;
-      box-shadow: 0 3px 0 #CBD5E0;
-      min-height: 0;
-    }
-
-    .menu-item:active {
-      transform: translateY(3px) scale(0.98);
-      box-shadow: 0 0 0 #CBD5E0;
-    }
-
-    .menu-item.focused {
-      border-color: var(--device-color);
-      background: #FFF5F7;
-      transform: scale(1.02);
-      box-shadow: 0 0 0 3px rgba(255,107,157,0.3);
-      z-index: 10;
-    }
-
-    .menu-item .icon {
-      font-size: 32px;
-      transition: transform 0.2s;
-    }
-
-    .menu-item.focused .icon {
-      transform: scale(1.1);
-    }
-
-    .list-container {
-      width: 100%;
-      flex: 1;
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      padding: 0 5px 5px 5px;
-      -webkit-overflow-scrolling: touch;
-    }
-
-    .list-item, .toke-item, .variante-item {
-      background: white;
-      border: 2px solid #E2E8F0;
-      border-radius: 14px;
-      padding: 12px;
-      font-size: 13px;
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      transition: all 0.1s ease;
-      box-shadow: 0 2px 0 #E2E8F0;
-      flex-shrink: 0;
-      min-height: 54px;
-      cursor: pointer;
-    }
-
-    .list-item.focused, .toke-item.focused, .variante-item.focused {
-      border-color: var(--device-color);
-      background: #FFF5F7;
-      transform: translateX(3px);
-      box-shadow: 0 2px 0 #F687B3;
-    }
+    .list-item, .toke-item, .variante-item { background: white; border: 2px solid #E2E8F0; border-radius: 14px; padding: 12px; font-size: 13px; font-weight: 700; display: flex; align-items: center; gap: 10px; transition: all 0.1s ease; box-shadow: 0 2px 0 #E2E8F0; flex-shrink: 0; min-height: 54px; cursor: pointer; }
+    .list-item.focused, .toke-item.focused, .variante-item.focused { border-color: var(--device-color); background: #FFF5F7; transform: translateX(3px); box-shadow: 0 2px 0 #F687B3; }
 
     .toke-item.t1 { border-color: #FF0066; background: #FFF0F3; }
     .toke-item.t1.focused { box-shadow: 0 2px 0 #CC0052; }
@@ -541,650 +146,88 @@
     .toke-item.t5 { border-color: #3182CE; background: #EBF8FF; }
     .toke-item.t5.focused { box-shadow: 0 2px 0 #2C5282; }
 
-    .variante-item {
-      border-left: 4px solid;
-    }
+    .variante-item { border-left: 4px solid; }
     .variante-item.v1 { border-left-color: #FF0066; }
     .variante-item.v2 { border-left-color: #FF5400; }
     .variante-item.v3 { border-left-color: #38A169; }
     .variante-item.v4 { border-left-color: #D69E2E; }
     .variante-item.v5 { border-left-color: #3182CE; }
 
-    .scan-btn {
-      background: #805AD5;
-      color: white;
-      border: none;
-      border-radius: 14px;
-      padding: 14px;
-      font-size: 13px;
-      font-weight: 800;
-      margin-bottom: 10px;
-      box-shadow: 0 3px 0 #6B46C1;
-      transition: all 0.1s ease;
-      flex-shrink: 0;
-      width: 100%;
-      cursor: pointer;
-      -webkit-appearance: none;
-    }
+    .scan-btn { background: #805AD5; color: white; border: none; border-radius: 14px; padding: 14px; font-size: 13px; font-weight: 800; margin-bottom: 10px; box-shadow: 0 3px 0 #6B46C1; transition: all 0.1s ease; flex-shrink: 0; width: 100%; cursor: pointer; -webkit-appearance: none; }
+    .scan-btn:active { transform: translateY(3px); box-shadow: 0 0 0 #6B46C1; }
+    .scan-btn.focused { transform: scale(1.01); box-shadow: 0 0 0 3px rgba(159,122,234,0.3), 0 3px 0 #6B46C1; }
 
-    .scan-btn:active {
-      transform: translateY(3px);
-      box-shadow: 0 0 0 #6B46C1;
-    }
+    .qr-container { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+    #qr-mio { background: white; padding: 16px; border-radius: 16px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); border: 3px solid #FFD93D; }
+    #qr-mio img { width: 140px; height: 140px; display: block; }
 
-    .scan-btn.focused {
-      transform: scale(1.01);
-      box-shadow: 0 0 0 3px rgba(159,122,234,0.3), 0 3px 0 #6B46C1;
-    }
+    .todex-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px; width: 100%; flex: 1; overflow-y: auto; padding: 0 5px 5px 5px; }
+    .emoji-card { aspect-ratio: 1; background: #EDF2F7; border: 2px solid transparent; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 16px; transition: all 0.1s ease; }
+    .emoji-card.captured { background: #48BB78; border-color: #276749; color: white; }
+    .emoji-card.focused { border-color: var(--device-color); transform: scale(1.1); box-shadow: 0 0 8px rgba(255,107,157,0.4); z-index: 10; }
 
-    .qr-container {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-    }
+    .envio-info { background: #FFF5F7; border: 2px solid var(--device-color); border-radius: 12px; padding: 10px; margin-bottom: 10px; font-size: 11px; text-align: center; color: #2D3748; font-weight: 700; }
+    .envio-info strong { color: var(--device-color); font-size: 13px; }
 
-    #qr-mio {
-      background: white;
-      padding: 16px;
-      border-radius: 16px;
-      box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-      border: 3px solid #FFD93D;
-    }
+    .btn-eliminar { background: #F56565; color: white; border: none; border-radius: 8px; padding: 6px 12px; font-size: 11px; font-weight: 800; cursor: pointer; box-shadow: 0 2px 0 #C53030; min-width: 32px; min-height: 32px; display: flex; align-items: center; justify-content: center; -webkit-appearance: none; }
+    .btn-eliminar:active { transform: translateY(2px); box-shadow: 0 0 0 #C53030; }
 
-    #qr-mio img {
-      width: 140px;
-      height: 140px;
-      display: block;
-    }
+    .selector-modal { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.9); display: none; flex-direction: column; align-items: center; justify-content: flex-start; padding: 30px 20px 20px 20px; z-index: 100; overflow-y: auto; }
+    .selector-modal.active { display: flex; }
+    .selector-title { color: white; font-family: 'Fredoka One', cursive; font-size: 18px; margin-bottom: 20px; text-align: center; flex-shrink: 0; }
+    .selector-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; width: 100%; max-width: 240px; padding-bottom: 20px; }
+    .selector-item { aspect-ratio: 1; border: 3px solid transparent; border-radius: 14px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; transition: all 0.1s ease; cursor: pointer; color: white; padding: 10px; min-height: 90px; max-height: 100px; }
+    .selector-item.focused { border-color: white; transform: scale(1.05); box-shadow: 0 0 15px rgba(255,255,255,0.5); }
 
-    .todex-grid {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 5px;
-      width: 100%;
-      flex: 1;
-      overflow-y: auto;
-      padding: 0 5px 5px 5px;
-    }
+    .toque-recibido-modal { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(145deg, rgba(0,197,152,0.95), rgba(0,221,170,0.95)); display: none; flex-direction: column; align-items: center; justify-content: center; padding: 20px; z-index: 150; text-align: center; color: white; }
+    .toque-recibido-modal.active { display: flex; }
+    .toque-recibido-modal .emoji-big { font-size: 80px; margin-bottom: 20px; animation: bounce 0.6s infinite alternate; }
+    @keyframes bounce { from { transform: scale(1); } to { transform: scale(1.2); } }
+    .toque-recibido-modal .nombre { font-family: 'Fredoka One', cursive; font-size: 24px; margin-bottom: 10px; }
+    .toque-recibido-modal .mensaje { font-size: 16px; margin-bottom: 30px; padding: 0 20px; }
+    .toque-recibido-modal .btn-cerrar { background: white; color: #00c598; border: none; padding: 15px 40px; border-radius: 30px; font-size: 16px; font-weight: 800; cursor: pointer; box-shadow: 0 4px 0 rgba(0,0,0,0.2); }
 
-    .emoji-card {
-      aspect-ratio: 1;
-      background: #EDF2F7;
-      border: 2px solid transparent;
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 16px;
-      transition: all 0.1s ease;
-    }
+    .confirm-modal { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.85); display: none; flex-direction: column; align-items: center; justify-content: center; padding: 25px; z-index: 200; }
+    .confirm-modal.active { display: flex; }
+    .confirm-box { background: white; border-radius: 20px; padding: 25px; width: 100%; max-width: 260px; text-align: center; box-shadow: 0 10px 40px rgba(0,0,0,0.3); }
+    .confirm-title { font-family: 'Fredoka One', cursive; font-size: 20px; color: #E53E3E; margin-bottom: 12px; }
+    .confirm-text { font-size: 13px; color: #4A5568; margin-bottom: 20px; line-height: 1.5; }
+    .confirm-buttons { display: flex; gap: 10px; }
+    .confirm-btn { flex: 1; padding: 12px; border: none; border-radius: 12px; font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 800; cursor: pointer; transition: all 0.1s ease; -webkit-appearance: none; }
+    .confirm-btn.no { background: #E2E8F0; color: #4A5568; box-shadow: 0 3px 0 #CBD5E0; }
+    .confirm-btn.no:active { transform: translateY(3px); box-shadow: 0 0 0 #CBD5E0; }
+    .confirm-btn.si { background: #F56565; color: white; box-shadow: 0 3px 0 #C53030; }
+    .confirm-btn.si:active { transform: translateY(3px); box-shadow: 0 0 0 #C53030; }
+    .confirm-btn.focused { transform: scale(1.03); box-shadow: 0 0 0 3px rgba(255,107,157,0.3); }
 
-    .emoji-card.captured {
-      background: #48BB78;
-      border-color: #276749;
-      color: white;
-    }
+    .controls { margin-top: 3px; display: flex; flex-direction: column; align-items: center; gap: 8px; padding-bottom: 3px; }
+    .controls-row { display: flex; align-items: center; gap: 15px; }
 
-    .emoji-card.focused {
-      border-color: var(--device-color);
-      transform: scale(1.1);
-      box-shadow: 0 0 8px rgba(255,107,157,0.4);
-      z-index: 10;
-    }
+    .btn-candy { border: none; font-family: 'Fredoka One', cursive; cursor: pointer; transition: all 0.08s ease; display: flex; align-items: center; justify-content: center; box-shadow: 0 3px 0 rgba(0,0,0,0.2); -webkit-appearance: none; }
+    .btn-candy:active { transform: translateY(3px); box-shadow: 0 0 0 rgba(0,0,0,0.2); }
+    .btn-back { width: 50px; height: 38px; background: #4299E1; border-radius: 19px; color: white; font-size: 11px; }
+    .btn-ok { width: 65px; height: 48px; background: #48BB78; border-radius: 24px; color: white; font-size: 16px; box-shadow: 0 4px 0 #38A169; }
+    .btn-ok:active { box-shadow: 0 0 0 #38A169; }
 
-    .combate-container {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      justify-content: center;
-      width: 100%;
-      padding: 12px;
-    }
-
-    .combate-card {
-      background: #805AD5;
-      border: 3px solid transparent;
-      border-radius: 16px;
-      padding: 20px;
-      color: white;
-      text-align: center;
-      font-weight: 800;
-      box-shadow: 0 3px 0 #6B46C1;
-      transition: all 0.1s ease;
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      max-height: 120px;
-      cursor: pointer;
-    }
-
-    .combate-card:active {
-      transform: translateY(3px);
-      box-shadow: 0 0 0 #6B46C1;
-    }
-
-    .combate-card.focused {
-      border-color: #FFD93D;
-      transform: scale(1.02);
-      box-shadow: 0 0 0 3px rgba(255,217,61,0.3), 0 3px 0 #6B46C1;
-    }
-
-    .combate-card.vs-amigo {
-      background: #DD6B20;
-      box-shadow: 0 3px 0 #C05621;
-    }
-
-    .settings-list {
-      width: 100%;
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      padding: 0 5px 5px 5px;
-      overflow-y: auto;
-      -webkit-overflow-scrolling: touch;
-    }
-
-    .setting-item {
-      background: white;
-      border: 2px solid #E2E8F0;
-      border-radius: 14px;
-      padding: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      font-size: 13px;
-      font-weight: 700;
-      transition: all 0.1s ease;
-      box-shadow: 0 2px 0 #E2E8F0;
-      flex-shrink: 0;
-      min-height: 50px;
-    }
-
-    .setting-item.focused {
-      border-color: var(--device-color);
-      background: #FFF5F7;
-      transform: scale(1.01);
-    }
-
-    .toggle-switch {
-      width: 44px;
-      height: 24px;
-      background: #CBD5E0;
-      border-radius: 12px;
-      position: relative;
-      transition: all 0.3s;
-    }
-
-    .toggle-switch.active {
-      background: #48BB78;
-    }
-
-    .toggle-switch::after {
-      content: '';
-      position: absolute;
-      width: 20px;
-      height: 20px;
-      background: white;
-      border-radius: 50%;
-      top: 2px;
-      left: 2px;
-      transition: all 0.3s;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-    }
-
-    .toggle-switch.active::after {
-      left: 22px;
-    }
-
-    .btn-eliminar {
-      background: #F56565;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      padding: 6px 12px;
-      font-size: 11px;
-      font-weight: 800;
-      cursor: pointer;
-      box-shadow: 0 2px 0 #C53030;
-      min-width: 32px;
-      min-height: 32px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      -webkit-appearance: none;
-    }
-
-    .btn-eliminar:active {
-      transform: translateY(2px);
-      box-shadow: 0 0 0 #C53030;
-    }
-
-    .selector-modal {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(0,0,0,0.9);
-      display: none;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-start;
-      padding: 30px 20px 20px 20px;
-      z-index: 100;
-      overflow-y: auto;
-    }
-
-    .selector-modal.active {
-      display: flex;
-    }
-
-    .selector-title {
-      color: white;
-      font-family: 'Fredoka One', cursive;
-      font-size: 18px;
-      margin-bottom: 20px;
-      text-align: center;
-      flex-shrink: 0;
-    }
-
-    .selector-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 15px;
-      width: 100%;
-      max-width: 240px;
-      padding-bottom: 20px;
-    }
-
-    .selector-item {
-      aspect-ratio: 1;
-      border: 3px solid transparent;
-      border-radius: 14px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      font-size: 12px;
-      font-weight: 700;
-      transition: all 0.1s ease;
-      cursor: pointer;
-      color: white;
-      padding: 10px;
-      min-height: 90px;
-      max-height: 100px;
-    }
-
-    .selector-item.focused {
-      border-color: white;
-      transform: scale(1.05);
-      box-shadow: 0 0 15px rgba(255,255,255,0.5);
-    }
-
-    .response-modal {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: linear-gradient(145deg, rgba(255,107,157,0.95), rgba(255,71,133,0.95));
-      display: none;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      z-index: 100;
-    }
-
-    .response-modal.active {
-      display: flex;
-    }
-
-    .response-title {
-      color: white;
-      font-family: 'Fredoka One', cursive;
-      font-size: 18px;
-      margin-bottom: 25px;
-      text-align: center;
-    }
-
-    .response-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
-      width: 100%;
-      max-width: 200px;
-    }
-
-    .response-btn {
-      background: rgba(255,255,255,0.95);
-      border: 3px solid transparent;
-      border-radius: 16px;
-      padding: 15px;
-      font-size: 32px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      transition: all 0.1s ease;
-      box-shadow: 0 3px 0 rgba(0,0,0,0.1);
-      cursor: pointer;
-    }
-
-    .response-btn.focused {
-      border-color: #FFD93D;
-      transform: scale(1.08);
-      box-shadow: 0 0 0 4px rgba(255,217,61,0.4), 0 3px 0 rgba(0,0,0,0.1);
-    }
-
-    .response-btn .label {
-      font-size: 10px;
-      font-weight: 800;
-      color: #2D3748;
-      margin-top: 5px;
-    }
-
-    .response-actions {
-      display: flex;
-      gap: 15px;
-      margin-top: 25px;
-    }
-
-    .response-action {
-      padding: 12px 24px;
-      border-radius: 20px;
-      font-size: 12px;
-      font-weight: 800;
-      border: 2px solid rgba(255,255,255,0.3);
-      color: white;
-      background: rgba(255,255,255,0.2);
-      cursor: pointer;
-      transition: all 0.1s ease;
-    }
-
-    .response-action.focused {
-      background: white;
-      color: #FF6B9D;
-      border-color: white;
-    }
-
-    .confirm-modal {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(0,0,0,0.85);
-      display: none;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 25px;
-      z-index: 200;
-    }
-
-    .confirm-modal.active {
-      display: flex;
-    }
-
-    .confirm-box {
-      background: white;
-      border-radius: 20px;
-      padding: 25px;
-      width: 100%;
-      max-width: 260px;
-      text-align: center;
-      box-shadow: 0 10px 40px rgba(0,0,0,0.3);
-    }
-
-    .confirm-title {
-      font-family: 'Fredoka One', cursive;
-      font-size: 20px;
-      color: #E53E3E;
-      margin-bottom: 12px;
-    }
-
-    .confirm-text {
-      font-size: 13px;
-      color: #4A5568;
-      margin-bottom: 20px;
-      line-height: 1.5;
-    }
-
-    .confirm-buttons {
-      display: flex;
-      gap: 10px;
-    }
-
-    .confirm-btn {
-      flex: 1;
-      padding: 12px;
-      border: none;
-      border-radius: 12px;
-      font-family: 'Nunito', sans-serif;
-      font-size: 13px;
-      font-weight: 800;
-      cursor: pointer;
-      transition: all 0.1s ease;
-      -webkit-appearance: none;
-    }
-
-    .confirm-btn.no {
-      background: #E2E8F0;
-      color: #4A5568;
-      box-shadow: 0 3px 0 #CBD5E0;
-    }
-
-    .confirm-btn.no:active {
-      transform: translateY(3px);
-      box-shadow: 0 0 0 #CBD5E0;
-    }
-
-    .confirm-btn.si {
-      background: #F56565;
-      color: white;
-      box-shadow: 0 3px 0 #C53030;
-    }
-
-    .confirm-btn.si:active {
-      transform: translateY(3px);
-      box-shadow: 0 0 0 #C53030;
-    }
-
-    .confirm-btn.focused {
-      transform: scale(1.03);
-      box-shadow: 0 0 0 3px rgba(255,107,157,0.3);
-    }
-
-    .controls {
-      margin-top: 3px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 8px;
-      padding-bottom: 3px;
-    }
-
-    .controls-row {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-    }
-
-    .btn-candy {
-      border: none;
-      font-family: 'Fredoka One', cursive;
-      cursor: pointer;
-      transition: all 0.08s ease;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 3px 0 rgba(0,0,0,0.2);
-      -webkit-tap-highlight-color: transparent;
-      -webkit-appearance: none;
-    }
-
-    .btn-candy:active {
-      transform: translateY(3px);
-      box-shadow: 0 0 0 rgba(0,0,0,0.2);
-    }
-
-    .btn-back {
-      width: 50px;
-      height: 38px;
-      background: #4299E1;
-      border-radius: 19px;
-      color: white;
-      font-size: 11px;
-    }
-
-    .btn-ok {
-      width: 65px;
-      height: 48px;
-      background: #48BB78;
-      border-radius: 24px;
-      color: white;
-      font-size: 16px;
-      box-shadow: 0 4px 0 #38A169;
-    }
-
-    .btn-ok:active {
-      box-shadow: 0 0 0 #38A169;
-    }
-
-    .dpad {
-      display: grid;
-      grid-template-columns: repeat(3, 38px);
-      grid-template-rows: repeat(3, 38px);
-      gap: 3px;
-    }
-
-    .dpad-btn {
-      width: 38px;
-      height: 38px;
-      background: #D69E2E;
-      border-radius: 10px;
-      color: #744210;
-      font-size: 16px;
-      border: none;
-      cursor: pointer;
-      box-shadow: 0 2px 0 #B7791F;
-      -webkit-appearance: none;
-      transition: all 0.08s ease;
-    }
-
-    .dpad-btn:active {
-      transform: translateY(2px);
-      box-shadow: 0 0 0 #B7791F;
-    }
-
+    .dpad { display: grid; grid-template-columns: repeat(3, 38px); grid-template-rows: repeat(3, 38px); gap: 3px; }
+    .dpad-btn { width: 38px; height: 38px; background: #D69E2E; border-radius: 10px; color: #744210; font-size: 16px; border: none; cursor: pointer; box-shadow: 0 2px 0 #B7791F; -webkit-appearance: none; transition: all 0.08s ease; }
+    .dpad-btn:active { transform: translateY(2px); box-shadow: 0 0 0 #B7791F; }
     .dpad-empty { visibility: hidden; }
 
-    .msg-bar {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background: var(--device-color);
-      color: white;
-      padding: 10px;
-      font-size: 12px;
-      font-weight: 800;
-      text-align: center;
-      transform: translateY(100%);
-      transition: transform 0.3s ease;
-      font-family: 'Nunito', sans-serif;
-      z-index: 20;
-    }
+    .msg-bar { position: absolute; bottom: 0; left: 0; right: 0; background: var(--device-color); color: white; padding: 10px; font-size: 12px; font-weight: 800; text-align: center; transform: translateY(100%); transition: transform 0.3s ease; font-family: 'Nunito', sans-serif; z-index: 20; }
+    .msg-bar.show { transform: translateY(0); }
 
-    .msg-bar.show {
-      transform: translateY(0);
-    }
+    .debug-info { position: fixed; top: 5px; left: 5px; right: 5px; background: rgba(0,0,0,0.8); color: #0f0; padding: 10px; font-family: monospace; font-size: 10px; border-radius: 8px; z-index: 9999; max-height: 150px; overflow-y: auto; display: none; }
+    .debug-info.show { display: block; }
 
     ::-webkit-scrollbar { width: 3px; }
     ::-webkit-scrollbar-thumb { background: #F687B3; border-radius: 2px; }
     ::-webkit-scrollbar-track { background: transparent; }
-
-    .envio-info {
-      background: #FFF5F7;
-      border: 2px solid var(--device-color);
-      border-radius: 12px;
-      padding: 10px;
-      margin-bottom: 10px;
-      font-size: 11px;
-      text-align: center;
-      color: #2D3748;
-      font-weight: 700;
-    }
-
-    .envio-info strong {
-      color: var(--device-color);
-      font-size: 13px;
-    }
-
-    .toque-recibido-modal {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: linear-gradient(145deg, rgba(0,197,152,0.95), rgba(0,221,170,0.95));
-      display: none;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      z-index: 150;
-      text-align: center;
-      color: white;
-    }
-
-    .toque-recibido-modal.active {
-      display: flex;
-    }
-
-    .toque-recibido-modal .emoji-big {
-      font-size: 80px;
-      margin-bottom: 20px;
-      animation: bounce 0.6s infinite alternate;
-    }
-
-    @keyframes bounce {
-      from { transform: scale(1); }
-      to { transform: scale(1.2); }
-    }
-
-    .toque-recibido-modal .nombre {
-      font-family: 'Fredoka One', cursive;
-      font-size: 24px;
-      margin-bottom: 10px;
-    }
-
-    .toque-recibido-modal .mensaje {
-      font-size: 16px;
-      margin-bottom: 30px;
-      padding: 0 20px;
-    }
-
-    .toque-recibido-modal .btn-cerrar {
-      background: white;
-      color: #00c598;
-      border: none;
-      padding: 15px 40px;
-      border-radius: 30px;
-      font-size: 16px;
-      font-weight: 800;
-      cursor: pointer;
-      box-shadow: 0 4px 0 rgba(0,0,0,0.2);
-    }
   </style>
 </head>
 <body>
+  <div class="debug-info" id="debug-info"></div>
+
   <div class="device" id="device">
     <div class="screw screw-tl"></div>
     <div class="screw screw-tr"></div>
@@ -1192,12 +235,11 @@
     <div class="screw screw-br"></div>
     
     <div class="device-logo">✨ TOKEJI ✨</div>
-    <div class="shine"></div>
     
     <div class="screen-container">
       <div class="screen">
         <div class="status-bar">
-          <span>TOKEJI</span>
+          <span id="debug-btn" style="cursor:pointer;">🔧</span>
           <span id="clock">12:00</span>
         </div>
 
@@ -1210,10 +252,7 @@
           <div class="page" id="page-consent">
             <div class="consent-title">📋 Bienvenido</div>
             <div class="consent-text">
-              Tokeji es una experiencia social donde compartes mensajes con amigos mediante códigos QR.<br><br>
-              • Necesitamos acceso a la cámara para escanear códigos<br>
-              • Tus datos se guardan solo en tu dispositivo<br>
-              • Puedes borrar tus datos cuando quieras
+              Tokeji es una experiencia social donde compartes mensajes con amigos mediante códigos QR.
             </div>
             <div class="consent-buttons">
               <button class="consent-btn no focused" onclick="app.handleConsent(false)">No</button>
@@ -1249,30 +288,12 @@
           <div class="page" id="page-menu">
             <div class="setup-title">Menú</div>
             <div class="menu-grid" id="menu-grid">
-              <div class="menu-item focused" data-index="0">
-                <span class="icon">💌</span>
-                <span>Tokes</span>
-              </div>
-              <div class="menu-item" data-index="1">
-                <span class="icon">👥</span>
-                <span>Amigos</span>
-              </div>
-              <div class="menu-item" data-index="2">
-                <span class="icon">📱</span>
-                <span>Mi QR</span>
-              </div>
-              <div class="menu-item" data-index="3">
-                <span class="icon">📖</span>
-                <span>ToDox</span>
-              </div>
-              <div class="menu-item" data-index="4">
-                <span class="icon">⚔️</span>
-                <span>Combates</span>
-              </div>
-              <div class="menu-item" data-index="5">
-                <span class="icon">⚙️</span>
-                <span>Ajustes</span>
-              </div>
+              <div class="menu-item focused" data-index="0"><span class="icon">💌</span><span>Tokes</span></div>
+              <div class="menu-item" data-index="1"><span class="icon">👥</span><span>Amigos</span></div>
+              <div class="menu-item" data-index="2"><span class="icon">📱</span><span>Mi QR</span></div>
+              <div class="menu-item" data-index="3"><span class="icon">📖</span><span>ToDox</span></div>
+              <div class="menu-item" data-index="4"><span class="icon">⚙️</span><span>Ajustes</span></div>
+              <div class="menu-item" data-index="5"><span class="icon">🧪</span><span>Test</span></div>
             </div>
           </div>
 
@@ -1288,9 +309,7 @@
 
           <div class="page" id="page-enviar">
             <div class="setup-title">Enviar a...</div>
-            <div class="envio-info" id="envio-info">
-              Enviando: <strong id="toke-seleccionado">-</strong>
-            </div>
+            <div class="envio-info" id="envio-info">Enviando: <strong id="toke-seleccionado">-</strong></div>
             <div class="list-container" id="enviar-list"></div>
           </div>
 
@@ -1304,9 +323,7 @@
             <div class="setup-title">Mi Código QR</div>
             <div class="qr-container">
               <div id="qr-mio"></div>
-              <div style="font-size: 11px; color: #718096; margin-top: 10px; text-align: center;">
-                Escanea para agregar
-              </div>
+              <div style="font-size: 11px; color: #718096; margin-top: 10px;">Escanea para agregar</div>
             </div>
           </div>
 
@@ -1315,69 +332,35 @@
             <div class="todex-grid" id="todex-grid"></div>
           </div>
 
-          <div class="page" id="page-combates">
-            <div class="setup-title">⚔️ Arena</div>
-            <div class="combate-container">
-              <div class="combate-card focused" data-index="0">
-                <div style="font-size: 32px; margin-bottom: 6px;">🤖</div>
-                <div style="font-size: 14px;">VS IA</div>
-                <div style="font-size: 10px; opacity: 0.9; margin-top: 3px;">Práctica</div>
-              </div>
-              <div class="combate-card vs-amigo" data-index="1">
-                <div style="font-size: 32px; margin-bottom: 6px;">⚔️</div>
-                <div style="font-size: 14px;">VS Amigo</div>
-                <div style="font-size: 10px; opacity: 0.9; margin-top: 3px;">Retar</div>
-              </div>
-            </div>
-          </div>
-
           <div class="page" id="page-settings">
             <div class="setup-title">⚙️ Ajustes</div>
             <div class="settings-list" id="settings-list">
-              <div class="setting-item focused" data-index="0">
-                <span>🔊 Sonido</span>
-                <div class="toggle-switch active" id="toggle-sonido"></div>
+              <div class="setting-item focused" data-index="0"><span>🔊 Sonido</span><div class="toggle-switch active" id="toggle-sonido"></div></div>
+              <div class="setting-item" data-index="1"><span>📳 Vibración</span><div class="toggle-switch active" id="toggle-vibra"></div></div>
+              <div class="setting-item" data-index="2"><span>🎨 Color</span><div id="color-preview" style="width: 24px; height: 24px; background: #FF6B9D; border-radius: 50%; border: 2px solid white;"></div></div>
+              <div class="setting-item" data-index="3" style="color: #E53E3E;"><span>🗑️ Reiniciar</span></div>
+            </div>
+          </div>
+
+          <div class="page" id="page-test">
+            <div class="setup-title">🧪 Test Backend</div>
+            <div class="list-container" style="padding: 20px;">
+              <div style="background: white; border-radius: 12px; padding: 15px; margin-bottom: 10px; font-size: 12px;">
+                <div style="font-weight: bold; margin-bottom: 5px;">Backend URL:</div>
+                <div id="test-url" style="color: #666; word-break: break-all;"></div>
               </div>
-              <div class="setting-item" data-index="1">
-                <span>📳 Vibración</span>
-                <div class="toggle-switch active" id="toggle-vibra"></div>
+              <div style="background: white; border-radius: 12px; padding: 15px; margin-bottom: 10px; font-size: 12px;">
+                <div style="font-weight: bold; margin-bottom: 5px;">Mi ID:</div>
+                <div id="test-id" style="color: #666; word-break: break-all;"></div>
               </div>
-              <div class="setting-item" data-index="2">
-                <span>🎨 Color</span>
-                <div id="color-preview" style="width: 24px; height: 24px; background: #FF6B9D; border-radius: 50%; border: 2px solid white; box-shadow: 0 2px 5px rgba(0,0,0,0.2);"></div>
-              </div>
-              <div class="setting-item" data-index="3">
-                <span>🟢 Estado</span>
-                <span id="status-text" style="font-size: 11px; color: #48BB78; font-weight: 800;">Disponible</span>
-              </div>
-              <div class="setting-item" data-index="4" style="color: #E53E3E;">
-                <span>🗑️ Reiniciar</span>
-              </div>
+              <button onclick="app.testBackend()" style="width: 100%; padding: 15px; background: #48BB78; color: white; border: none; border-radius: 12px; font-weight: bold; margin-bottom: 10px;">🧪 Test Conexión</button>
+              <button onclick="app.testEnviarToque()" style="width: 100%; padding: 15px; background: #4299E1; color: white; border: none; border-radius: 12px; font-weight: bold;">📤 Test Enviar Toque</button>
             </div>
           </div>
 
           <div class="selector-modal" id="color-selector">
             <div class="selector-title">🎨 Elige color</div>
             <div class="selector-grid" id="color-grid"></div>
-          </div>
-
-          <div class="selector-modal" id="status-selector">
-            <div class="selector-title">🟢 Estado</div>
-            <div class="selector-grid" id="status-grid"></div>
-          </div>
-
-          <div class="response-modal" id="response-modal">
-            <div class="response-title" id="response-title">¡Toque!</div>
-            <div class="response-grid">
-              <div class="response-btn focused" data-index="0">💕<span class="label">Love</span></div>
-              <div class="response-btn" data-index="1">😂<span class="label">LOL</span></div>
-              <div class="response-btn" data-index="2">🙏<span class="label">Gracias</span></div>
-              <div class="response-btn" data-index="3">🔥<span class="label">Fuego</span></div>
-            </div>
-            <div class="response-actions">
-              <div class="response-action" data-action="ignore">◄ Ignorar</div>
-              <div class="response-action focused" data-action="send">OK</div>
-            </div>
           </div>
 
           <div class="toque-recibido-modal" id="toque-recibido-modal">
@@ -1390,7 +373,7 @@
           <div class="confirm-modal" id="confirm-reiniciar">
             <div class="confirm-box">
               <div class="confirm-title">🗑️ ¿Reiniciar?</div>
-              <div class="confirm-text">Se borrarán todos tus datos incluyendo amigos, tokes y progreso. ¿Estás seguro?</div>
+              <div class="confirm-text">Se borrarán todos tus datos. ¿Estás seguro?</div>
               <div class="confirm-buttons">
                 <button class="confirm-btn no focused" onclick="app.cancelarReinicio()">No</button>
                 <button class="confirm-btn si" onclick="app.confirmarReinicio()">Sí, borrar</button>
@@ -1422,9 +405,10 @@
 <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
 <script>
 // ========================================
-// TOKEJI v10 - CON SISTEMA DE TOQUES FUNCIONANDO
+// TOKEJI v11 - DEBUG VERSION
 // ========================================
 
+// ✅ URL DEL BACKEND - SIN ESPACIOS
 const BACK = "https://dame-un-toque-1.onrender.com";
 
 const CONTEXTOS_TOKES = {
@@ -1469,13 +453,6 @@ const COLORES = [
   { hex: '#1A202C', name: 'Negro', shadow: '#000000', gradient: ['#4A5568', '#2D3748', '#1A202C'] }
 ];
 
-const ESTADOS = [
-  { id: 'disponible', emoji: '🟢', label: 'Disponible', color: '#48BB78' },
-  { id: 'ocupado', emoji: '🔴', label: 'Ocupado', color: '#F56565' },
-  { id: 'ausente', emoji: '🟡', label: 'Ausente', color: '#ECC94B' },
-  { id: 'dormido', emoji: '💤', label: 'Dormido', color: '#9F7AEA' }
-];
-
 const TOKES_TYPES = [
   { id: 1, emoji: '🔥', name: 'On Fire', desc: '¡Estás imparable!', color: '#E53E3E' },
   { id: 2, emoji: '💕', name: 'Crush', desc: 'Pienso en ti', color: '#D53F8C' },
@@ -1497,18 +474,8 @@ const app = {
     toquesRestantes: 30,
     selectedCategoria: null,
     selectedVariante: null,
-    settings: {
-      sonido: true,
-      vibracion: true,
-      color: 0,
-      status: 'disponible',
-      avatar: '🐱'
-    },
+    settings: { sonido: true, vibracion: true, color: 0, avatar: '🐱' },
     inSelector: false,
-    selectorType: null,
-    selectorIndex: 0,
-    pendingToque: null,
-    audioInitialized: false,
     confirmIndex: 0,
     toquesMostrados: new Set()
   },
@@ -1516,9 +483,11 @@ const app = {
   contactos: {},
   todex: { captured: [], total_toques_enviados: 0, emojis_stats: {} },
   miID: '',
+  debugMode: false,
 
   init() {
-    console.log('=== TOKEJI v10 INICIANDO ===');
+    console.log('=== TOKEJI v11 DEBUG ===');
+    this.log('Iniciando...');
     
     this.miID = localStorage.getItem("miid");
     if (!this.miID) {
@@ -1529,15 +498,13 @@ const app = {
     try {
       this.contactos = JSON.parse(localStorage.getItem("cts")) || {};
       this.todex = JSON.parse(localStorage.getItem("todex")) || { captured: [], total_toques_enviados: 0, emojis_stats: {} };
-      if (!this.todex.emojis_stats) this.todex.emojis_stats = {};
       this.state.settings.sonido = localStorage.getItem('sonido') !== 'off';
       this.state.settings.vibracion = localStorage.getItem('vibracion') !== 'off';
       this.state.settings.color = parseInt(localStorage.getItem('colorIndex')) || 0;
-      this.state.settings.status = localStorage.getItem('status') || 'disponible';
       this.state.settings.avatar = localStorage.getItem('avatar') || '🐱';
       this.state.toquesRestantes = parseInt(localStorage.getItem("toquesRestantes")) || 30;
     } catch(e) {
-      console.error('Error cargando datos:', e);
+      this.log('Error cargando datos: ' + e.message);
     }
     
     const hoy = new Date().toDateString();
@@ -1552,60 +519,37 @@ const app = {
     this.updateClock();
     setInterval(() => this.updateClock(), 60000);
     
-    // Polling de toques cada 8 segundos
+    // Polling
     setTimeout(() => this.checkIncoming(), 2000);
     setInterval(() => this.checkIncoming(), 8000);
     
-    console.log('Inicializado. ID:', this.miID);
-    console.log('Backend:', BACK);
+    this.log('ID: ' + this.miID);
+    this.log('Backend: ' + BACK);
+    
+    // Debug toggle
+    document.getElementById('debug-btn').onclick = () => {
+      this.debugMode = !this.debugMode;
+      document.getElementById('debug-info').classList.toggle('show', this.debugMode);
+    };
     
     this.showPage('splash', false);
   },
 
-  initAudio() {
-    if (this.state.audioInitialized) return;
-    try {
-      this.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      this.state.audioInitialized = true;
-      if (this.audioCtx.state === 'suspended') {
-        this.audioCtx.resume();
-      }
-    } catch(e) {
-      console.error('Error audio:', e);
+  log(msg) {
+    console.log(msg);
+    const debugEl = document.getElementById('debug-info');
+    if (debugEl) {
+      debugEl.innerHTML += `<div>${new Date().toLocaleTimeString()}: ${msg}</div>`;
+      debugEl.scrollTop = debugEl.scrollHeight;
     }
   },
 
-  playSound(type) {
-    if (!this.state.settings.sonido || !this.state.audioInitialized || !this.audioCtx) return;
-    try {
-      const osc = this.audioCtx.createOscillator();
-      const gain = this.audioCtx.createGain();
-      osc.connect(gain);
-      gain.connect(this.audioCtx.destination);
-      const now = this.audioCtx.currentTime;
-      
-      if (type === 'move') {
-        osc.frequency.setValueAtTime(500, now);
-        gain.gain.setValueAtTime(0.05, now);
-        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.03);
-        osc.start(now);
-        osc.stop(now + 0.03);
-      } else if (type === 'select') {
-        osc.frequency.setValueAtTime(800, now);
-        gain.gain.setValueAtTime(0.08, now);
-        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.08);
-        osc.start(now);
-        osc.stop(now + 0.08);
-      } else if (type === 'back') {
-        osc.frequency.setValueAtTime(350, now);
-        gain.gain.setValueAtTime(0.05, now);
-        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.05);
-        osc.start(now);
-        osc.stop(now + 0.05);
-      }
-    } catch(e) {
-      console.error('Error sonido:', e);
-    }
+  applyColor() {
+    const c = COLORES[this.state.settings.color] || COLORES[0];
+    document.documentElement.style.setProperty('--device-color', c.hex);
+    document.documentElement.style.setProperty('--device-dark', c.shadow);
+    const device = document.getElementById('device');
+    if (device) device.style.background = `linear-gradient(145deg, ${c.gradient[0]} 0%, ${c.gradient[1]} 50%, ${c.gradient[2]} 100%)`;
   },
 
   updateClock() {
@@ -1614,21 +558,8 @@ const app = {
     if (el) el.textContent = String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0');
   },
 
-  applyColor() {
-    const c = COLORES[this.state.settings.color] || COLORES[0];
-    document.documentElement.style.setProperty('--device-color', c.hex);
-    document.documentElement.style.setProperty('--device-dark', c.shadow);
-    
-    const device = document.getElementById('device');
-    if (device) {
-      device.style.background = `linear-gradient(145deg, ${c.gradient[0]} 0%, ${c.gradient[1]} 50%, ${c.gradient[2]} 100%)`;
-    }
-  },
-
   showPage(page, save = true) {
-    if (save && this.state.currentPage !== page) {
-      this.state.history.push(this.state.currentPage);
-    }
+    if (save && this.state.currentPage !== page) this.state.history.push(this.state.currentPage);
     
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     const pageEl = document.getElementById('page-' + page);
@@ -1638,134 +569,180 @@ const app = {
     this.state.inSelector = false;
     
     switch(page) {
-      case 'splash':
-        this.state.focus = { type: 'splash', index: 0 };
-        break;
-      case 'consent':
-        this.state.focus = { type: 'consent', index: 0 };
-        this.updateConsentFocus();
-        break;
-      case 'setup':
-        this.state.focus = { type: 'setup', index: 0 };
-        setTimeout(() => {
-          const input = document.getElementById('miNombre');
-          if (input) input.focus();
-        }, 100);
-        break;
-      case 'avatar':
-        this.state.focus = { type: 'avatar', index: 0 };
-        this.renderAvatarGrid();
-        this.updateAvatarFocus();
-        break;
-      case 'color':
-        this.state.focus = { type: 'color', index: 0 };
-        this.renderColorSetupGrid();
-        this.updateColorSetupFocus();
-        break;
-      case 'menu':
-        this.state.focus = { type: 'menu', index: this.state.menuIndex };
-        this.updateMenuFocus();
-        break;
-      case 'tokes':
-        this.renderTokes();
-        this.state.focus = { type: 'tokes', index: 0 };
-        this.updateTokesFocus();
-        break;
-      case 'variantes':
-        this.renderVariantes();
-        this.state.focus = { type: 'variantes', index: 0 };
-        this.updateVariantesFocus();
-        break;
-      case 'enviar':
-        this.renderEnviarList();
-        this.state.focus = { type: 'enviar', index: 0 };
-        this.updateEnviarFocus();
-        break;
-      case 'contacts':
-        this.renderContacts();
-        this.state.focus = { type: 'contacts', index: 0 };
-        this.updateContactsFocus();
-        break;
-      case 'todox':
-        this.renderTodex();
-        this.state.focus = { type: 'grid', index: 0 };
-        this.updateGridFocus();
-        break;
-      case 'combates':
-        this.state.focus = { type: 'combates', index: 0 };
-        this.updateCombatesFocus();
-        break;
-      case 'settings':
-        this.updateSettingsUI();
-        this.state.focus = { type: 'settings', index: 0 };
-        this.updateSettingsFocus();
-        break;
-      case 'home':
-        this.updateHome();
-        break;
-      case 'qr':
-        this.generarQR();
-        break;
+      case 'splash': this.state.focus = { type: 'splash', index: 0 }; break;
+      case 'consent': this.state.focus = { type: 'consent', index: 0 }; this.updateConsentFocus(); break;
+      case 'setup': this.state.focus = { type: 'setup', index: 0 }; break;
+      case 'avatar': this.state.focus = { type: 'avatar', index: 0 }; this.renderAvatarGrid(); this.updateAvatarFocus(); break;
+      case 'color': this.state.focus = { type: 'color', index: 0 }; this.renderColorSetupGrid(); this.updateColorSetupFocus(); break;
+      case 'menu': this.state.focus = { type: 'menu', index: this.state.menuIndex }; this.updateMenuFocus(); break;
+      case 'tokes': this.renderTokes(); this.state.focus = { type: 'tokes', index: 0 }; this.updateTokesFocus(); break;
+      case 'variantes': this.renderVariantes(); this.state.focus = { type: 'variantes', index: 0 }; this.updateVariantesFocus(); break;
+      case 'enviar': this.renderEnviarList(); this.state.focus = { type: 'enviar', index: 0 }; this.updateEnviarFocus(); break;
+      case 'contacts': this.renderContacts(); this.state.focus = { type: 'contacts', index: 0 }; this.updateContactsFocus(); break;
+      case 'todox': this.renderTodex(); this.state.focus = { type: 'grid', index: 0 }; this.updateGridFocus(); break;
+      case 'settings': this.updateSettingsUI(); this.state.focus = { type: 'settings', index: 0 }; this.updateSettingsFocus(); break;
+      case 'test': this.state.focus = { type: 'test', index: 0 }; this.updateTestPage(); break;
+      case 'home': this.updateHome(); break;
+      case 'qr': this.generarQR(); break;
+    }
+  },
+
+  updateTestPage() {
+    document.getElementById('test-url').textContent = BACK;
+    document.getElementById('test-id').textContent = this.miID;
+  },
+
+  // ========================================
+  // TEST FUNCTIONS
+  // ========================================
+
+  async testBackend() {
+    this.log('Testing backend...');
+    this.showMsg('Testeando...');
+    
+    try {
+      // Test simple GET
+      const url = `${BACK}/toques-pendientes?userId=${this.miID}`;
+      this.log('GET ' + url);
+      
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: { 'Cache-Control': 'no-cache' }
+      });
+      
+      this.log('Status: ' + response.status);
+      
+      const text = await response.text();
+      this.log('Respuesta: ' + text.substring(0, 200));
+      
+      if (response.ok) {
+        this.showMsg('✅ Backend OK!');
+      } else {
+        this.showMsg('❌ Error ' + response.status);
+      }
+    } catch(e) {
+      this.log('ERROR: ' + e.message);
+      this.showMsg('❌ ' + e.message);
+      alert('Error de conexión:\n' + e.message + '\n\nPosibles causas:\n1. Backend caído\n2. CORS bloqueado\n3. Sin internet');
+    }
+  },
+
+  async testEnviarToque() {
+    this.log('Test enviar toque...');
+    
+    const amigos = Object.keys(this.contactos);
+    if (amigos.length === 0) {
+      alert('Primero agrega un amigo escaneando su QR');
+      return;
     }
     
-    this.vibrar();
+    const paraId = amigos[0];
+    const paraNombre = this.contactos[paraId];
+    
+    this.log('Enviando a: ' + paraNombre);
+    
+    const payload = {
+      de: this.miID,
+      para: paraId,
+      num: 1,
+      contexto: 1
+    };
+    
+    this.log('Payload: ' + JSON.stringify(payload));
+    
+    try {
+      this.showMsg('Enviando...');
+      
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 15000);
+      
+      const response = await fetch(`${BACK}/toque`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json;charset=UTF-8',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify(payload),
+        signal: controller.signal,
+        mode: 'cors',
+        credentials: 'omit'
+      });
+      
+      clearTimeout(timeoutId);
+      
+      this.log('Status: ' + response.status);
+      this.log('Headers: ' + JSON.stringify([...response.headers]));
+      
+      const responseText = await response.text();
+      this.log('Body: ' + responseText);
+      
+      let data;
+      try {
+        data = JSON.parse(responseText);
+      } catch(e) {
+        data = { raw: responseText };
+      }
+      
+      if (response.ok && data.ok) {
+        this.showMsg('✅ Test OK! Toque enviado');
+        alert('¡ÉXITO!\n\nEl toque se envió correctamente.\n\nRespuesta del servidor:\n' + JSON.stringify(data, null, 2));
+      } else {
+        this.showMsg('❌ Error ' + response.status);
+        alert('ERROR ' + response.status + '\n\n' + (data.error || data.raw || 'Error desconocido'));
+      }
+    } catch(e) {
+      this.log('ERROR FETCH: ' + e.name + ': ' + e.message);
+      this.showMsg('❌ ' + e.message);
+      
+      let errorMsg = 'Error: ' + e.message;
+      if (e.name === 'TypeError' && e.message.includes('fetch')) {
+        errorMsg += '\n\nEsto suele ser problema de CORS.\nEl backend debe permitir tu dominio.';
+      } else if (e.name === 'AbortError') {
+        errorMsg += '\n\nTimeout - El servidor no responde';
+      }
+      
+      alert(errorMsg);
+    }
   },
+
+  // ========================================
+  // NAVEGACIÓN
+  // ========================================
 
   handleConsent(accepted) {
     if (accepted) {
       localStorage.setItem('consent', 'true');
       this.showPage('setup', false);
     } else {
-      this.showMsg('Debes aceptar para continuar');
+      this.showMsg('Debes aceptar');
     }
   },
 
   updateConsentFocus() {
-    document.querySelectorAll('.consent-btn').forEach((btn, i) => {
-      btn.classList.toggle('focused', i === this.state.focus.index);
-    });
+    document.querySelectorAll('.consent-btn').forEach((btn, i) => btn.classList.toggle('focused', i === this.state.focus.index));
   },
 
   renderAvatarGrid() {
     const grid = document.getElementById('avatar-grid');
-    if (!grid) return;
-    
-    grid.innerHTML = AVATARES.map((av, i) => `
-      <div class="avatar-item ${i === 0 ? 'focused' : ''}" data-avatar="${av}" data-index="${i}">
-        ${av}
-      </div>
-    `).join('');
+    if (grid) grid.innerHTML = AVATARES.map((av, i) => `<div class="avatar-item ${i === 0 ? 'focused' : ''}" data-index="${i}">${av}</div>`).join('');
   },
 
   updateAvatarFocus() {
-    document.querySelectorAll('#avatar-grid .avatar-item').forEach((el, i) => {
-      el.classList.toggle('focused', i === this.state.focus.index);
-    });
+    document.querySelectorAll('#avatar-grid .avatar-item').forEach((el, i) => el.classList.toggle('focused', i === this.state.focus.index));
   },
 
   renderColorSetupGrid() {
     const grid = document.getElementById('color-setup-grid');
-    if (!grid) return;
-    
-    grid.innerHTML = COLORES.map((c, i) => `
-      <div class="color-setup-item ${i === 0 ? 'focused' : ''}" 
-           style="background: ${c.hex};" data-color="${i}" data-index="${i}">
-      </div>
-    `).join('');
+    if (grid) grid.innerHTML = COLORES.map((c, i) => `<div class="color-setup-item ${i === 0 ? 'focused' : ''}" style="background: ${c.hex};" data-index="${i}"></div>`).join('');
   },
 
   updateColorSetupFocus() {
-    document.querySelectorAll('#color-setup-grid .color-setup-item').forEach((el, i) => {
-      el.classList.toggle('focused', i === this.state.focus.index);
-    });
+    document.querySelectorAll('#color-setup-grid .color-setup-item').forEach((el, i) => el.classList.toggle('focused', i === this.state.focus.index));
   },
 
   goBack() {
     const confirmModal = document.getElementById('confirm-reiniciar');
-    if (confirmModal && confirmModal.classList.contains('active')) {
-      confirmModal.classList.remove('active');
-      return;
-    }
+    if (confirmModal?.classList.contains('active')) { confirmModal.classList.remove('active'); return; }
     
     if (this.state.inSelector) {
       document.querySelectorAll('.selector-modal').forEach(m => m.classList.remove('active'));
@@ -1773,116 +750,50 @@ const app = {
       return;
     }
     
-    const respModal = document.getElementById('response-modal');
-    if (respModal && respModal.classList.contains('active')) {
-      respModal.classList.remove('active');
-      return;
-    }
-
     const toqueModal = document.getElementById('toque-recibido-modal');
-    if (toqueModal && toqueModal.classList.contains('active')) {
-      return;
-    }
+    if (toqueModal?.classList.contains('active')) return;
 
-    if (['consent', 'setup', 'avatar', 'color'].includes(this.state.currentPage)) {
-      return;
-    }
+    if (['consent', 'setup', 'avatar', 'color'].includes(this.state.currentPage)) return;
     
     if (this.state.history.length > 0) {
       const prev = this.state.history.pop();
-      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-      const pageEl = document.getElementById('page-' + prev);
-      if (pageEl) pageEl.classList.add('active');
-      this.state.currentPage = prev;
-      
-      switch(prev) {
-        case 'menu': 
-          this.state.focus = { type: 'menu', index: this.state.menuIndex };
-          this.updateMenuFocus();
-          break;
-        case 'tokes':
-          this.state.focus = { type: 'tokes', index: this.state.selectedCategoria ? this.state.selectedCategoria - 1 : 0 };
-          this.updateTokesFocus();
-          break;
-        case 'variantes':
-          this.state.focus = { type: 'variantes', index: 0 };
-          this.updateVariantesFocus();
-          break;
-        case 'enviar':
-          this.state.focus = { type: 'enviar', index: 0 };
-          this.updateEnviarFocus();
-          break;
-        case 'contacts':
-          this.state.focus = { type: 'contacts', index: 0 };
-          this.updateContactsFocus();
-          break;
-      }
+      this.showPage(prev, false);
     } else if (this.state.currentPage !== 'home') {
       this.showPage('home', false);
     }
   },
 
-  handleBack() {
-    this.initAudio();
-    this.playSound('back');
-    this.goBack();
-  },
+  handleBack() { this.goBack(); },
 
   handleOK() {
-    this.initAudio();
-    this.playSound('select');
-    
-    const { currentPage, focus, inSelector } = this.state;
+    const { currentPage, focus } = this.state;
     
     const confirmModal = document.getElementById('confirm-reiniciar');
-    if (confirmModal && confirmModal.classList.contains('active')) {
-      if (this.state.confirmIndex === 0) {
-        this.cancelarReinicio();
-      } else {
-        this.confirmarReinicio();
-      }
+    if (confirmModal?.classList.contains('active')) {
+      this.state.confirmIndex === 0 ? this.cancelarReinicio() : this.confirmarReinicio();
       return;
     }
     
-    if (inSelector) {
-      this.selectFromSelector();
-      return;
-    }
-    
-    const respModal = document.getElementById('response-modal');
-    if (respModal && respModal.classList.contains('active')) {
-      this.handleResponseOK();
-      return;
-    }
+    if (this.state.inSelector) { this.selectFromSelector(); return; }
 
     switch(currentPage) {
       case 'splash':
         const hasConsent = localStorage.getItem('consent');
         const hasNombre = localStorage.getItem('miNombre');
-        if (!hasConsent) {
-          this.showPage('consent', false);
-        } else if (!hasNombre) {
-          this.showPage('setup', false);
-        } else {
-          this.showPage('home', false);
-        }
+        if (!hasConsent) this.showPage('consent', false);
+        else if (!hasNombre) this.showPage('setup', false);
+        else this.showPage('home', false);
         break;
-      case 'consent':
-        this.handleConsent(focus.index === 1);
-        break;
+      case 'consent': this.handleConsent(focus.index === 1); break;
       case 'setup':
         const nom = document.getElementById('miNombre').value.trim();
-        if (!nom) {
-          this.showMsg('Escribe tu nombre');
-          return;
-        }
+        if (!nom) { this.showMsg('Escribe tu nombre'); return; }
         localStorage.setItem('miNombre', nom);
         this.showPage('avatar', false);
         break;
       case 'avatar':
-        const avatarSel = AVATARES[focus.index];
-        this.state.settings.avatar = avatarSel;
-        localStorage.setItem('avatar', avatarSel);
+        this.state.settings.avatar = AVATARES[focus.index];
+        localStorage.setItem('avatar', this.state.settings.avatar);
         this.showPage('color', false);
         break;
       case 'color':
@@ -1892,11 +803,9 @@ const app = {
         this.generarQR();
         this.showPage('home', false);
         break;
-      case 'home':
-        this.showPage('menu');
-        break;
+      case 'home': this.showPage('menu'); break;
       case 'menu':
-        const items = ['tokes', 'contacts', 'qr', 'todox', 'combates', 'settings'];
+        const items = ['tokes', 'contacts', 'qr', 'todox', 'settings', 'test'];
         this.showPage(items[focus.index]);
         break;
       case 'tokes':
@@ -1910,449 +819,99 @@ const app = {
         break;
       case 'enviar':
         const amigosList = Object.entries(this.contactos);
-        if (focus.index === 0) {
-          this.scanQR();
-        } else if (amigosList[focus.index - 1]) {
+        if (focus.index === 0) this.scanQR();
+        else if (amigosList[focus.index - 1]) {
           const [id, nombre] = amigosList[focus.index - 1];
           this.enviarToque(id, nombre);
         }
         break;
-      case 'contacts':
-        if (focus.index === 0) {
-          this.scanQR();
-        }
-        break;
-      case 'todox':
-        const id = focus.index + 1;
-        if (this.todex.captured.includes(id)) {
-          this.showEmojiDetail(id);
-        }
-        break;
-      case 'combates':
-        if (focus.index === 0) this.jugarVSIA();
-        else this.jugarVSAmigo();
-        break;
-      case 'settings':
-        this.activateSetting(focus.index);
-        break;
+      case 'contacts': if (focus.index === 0) this.scanQR(); break;
+      case 'todox': if (this.todex.captured.includes(focus.index + 1)) this.showEmojiDetail(focus.index + 1); break;
+      case 'settings': this.activateSetting(focus.index); break;
     }
   },
 
   handleUp() {
-    this.initAudio();
-    this.playSound('move');
-    
-    const confirmModal = document.getElementById('confirm-reiniciar');
-    if (confirmModal && confirmModal.classList.contains('active')) return;
-    
-    if (this.state.inSelector) {
-      this.navigateSelector('up');
-      return;
-    }
-    
-    const respModal = document.getElementById('response-modal');
-    if (respModal && respModal.classList.contains('active')) {
-      if (this.state.focus.index >= 2) {
-        this.state.focus.index -= 2;
-        this.updateResponseFocus();
-      }
-      return;
-    }
-
     const { type, index } = this.state.focus;
-    
     switch(type) {
-      case 'avatar':
-        if (index >= 4) {
-          this.state.focus.index -= 4;
-          this.updateAvatarFocus();
-        }
-        break;
-      case 'color':
-        if (index >= 2) {
-          this.state.focus.index -= 2;
-          this.updateColorSetupFocus();
-        }
-        break;
-      case 'menu':
-        if (index >= 2) {
-          this.state.focus.index -= 2;
-          this.state.menuIndex = this.state.focus.index;
-          this.updateMenuFocus();
-        }
-        break;
-      case 'tokes':
-        if (index > 0) {
-          this.state.focus.index--;
-          this.updateTokesFocus();
-          this.scrollToFocused('tokes-list');
-        }
-        break;
-      case 'variantes':
-        if (index > 0) {
-          this.state.focus.index--;
-          this.updateVariantesFocus();
-          this.scrollToFocused('variantes-list');
-        }
-        break;
-      case 'enviar':
-        if (index > 0) {
-          this.state.focus.index--;
-          this.updateEnviarFocus();
-          this.scrollToFocused('enviar-list');
-        }
-        break;
-      case 'contacts':
-        if (index > 0) {
-          this.state.focus.index--;
-          this.updateContactsFocus();
-          this.scrollToFocused('contacts-list');
-        }
-        break;
-      case 'grid':
-        if (index >= 5) {
-          this.state.focus.index -= 5;
-          this.updateGridFocus();
-          this.scrollToFocused('todex-grid');
-        }
-        break;
-      case 'settings':
-        if (index > 0) {
-          this.state.focus.index--;
-          this.updateSettingsFocus();
-          this.scrollToFocused('settings-list');
-        }
-        break;
+      case 'avatar': if (index >= 4) { this.state.focus.index -= 4; this.updateAvatarFocus(); } break;
+      case 'color': if (index >= 2) { this.state.focus.index -= 2; this.updateColorSetupFocus(); } break;
+      case 'menu': if (index >= 2) { this.state.focus.index -= 2; this.state.menuIndex = this.state.focus.index; this.updateMenuFocus(); } break;
+      case 'tokes': if (index > 0) { this.state.focus.index--; this.updateTokesFocus(); } break;
+      case 'variantes': if (index > 0) { this.state.focus.index--; this.updateVariantesFocus(); } break;
+      case 'enviar': if (index > 0) { this.state.focus.index--; this.updateEnviarFocus(); } break;
+      case 'contacts': if (index > 0) { this.state.focus.index--; this.updateContactsFocus(); } break;
+      case 'grid': if (index >= 5) { this.state.focus.index -= 5; this.updateGridFocus(); } break;
+      case 'settings': if (index > 0) { this.state.focus.index--; this.updateSettingsFocus(); } break;
     }
-    this.vibrar();
   },
 
   handleDown() {
-    this.initAudio();
-    this.playSound('move');
-    
-    const confirmModal = document.getElementById('confirm-reiniciar');
-    if (confirmModal && confirmModal.classList.contains('active')) return;
-    
-    if (this.state.inSelector) {
-      this.navigateSelector('down');
-      return;
-    }
-    
-    const respModal = document.getElementById('response-modal');
-    if (respModal && respModal.classList.contains('active')) {
-      if (this.state.focus.index < 4) {
-        this.state.focus.index += 2;
-        if (this.state.focus.index > 5) this.state.focus.index = 5;
-        this.updateResponseFocus();
-      }
-      return;
-    }
-
     const { type, index } = this.state.focus;
-    
     switch(type) {
-      case 'avatar':
-        if (index < 8) {
-          this.state.focus.index += 4;
-          if (this.state.focus.index > 11) this.state.focus.index = 11;
-          this.updateAvatarFocus();
-        }
+      case 'avatar': if (index < 8) { this.state.focus.index = Math.min(index + 4, 11); this.updateAvatarFocus(); } break;
+      case 'color': if (index < 4) { this.state.focus.index = Math.min(index + 2, 5); this.updateColorSetupFocus(); } break;
+      case 'menu': if (index < 4) { this.state.focus.index = Math.min(index + 2, 5); this.state.menuIndex = this.state.focus.index; this.updateMenuFocus(); } break;
+      case 'tokes': if (index < TOKES_TYPES.length - 1) { this.state.focus.index++; this.updateTokesFocus(); } break;
+      case 'variantes': 
+        const vars = CONTEXTOS_TOKES[this.state.selectedCategoria] || [];
+        if (index < vars.length - 1) { this.state.focus.index++; this.updateVariantesFocus(); }
         break;
-      case 'color':
-        if (index < 4) {
-          this.state.focus.index += 2;
-          if (this.state.focus.index > 5) this.state.focus.index = 5;
-          this.updateColorSetupFocus();
-        }
-        break;
-      case 'menu':
-        if (index < 4) {
-          this.state.focus.index += 2;
-          if (this.state.focus.index > 5) this.state.focus.index = 5;
-          this.state.menuIndex = this.state.focus.index;
-          this.updateMenuFocus();
-        }
-        break;
-      case 'tokes':
-        if (index < TOKES_TYPES.length - 1) {
-          this.state.focus.index++;
-          this.updateTokesFocus();
-          this.scrollToFocused('tokes-list');
-        }
-        break;
-      case 'variantes':
-        const variantes = CONTEXTOS_TOKES[this.state.selectedCategoria] || [];
-        if (index < variantes.length - 1) {
-          this.state.focus.index++;
-          this.updateVariantesFocus();
-          this.scrollToFocused('variantes-list');
-        }
-        break;
-      case 'enviar':
-        const maxAmigos = Object.keys(this.contactos).length;
-        if (index < maxAmigos) {
-          this.state.focus.index++;
-          this.updateEnviarFocus();
-          this.scrollToFocused('enviar-list');
-        }
+      case 'enviar': 
+        const maxA = Object.keys(this.contactos).length;
+        if (index < maxA) { this.state.focus.index++; this.updateEnviarFocus(); }
         break;
       case 'contacts':
-        const maxContacts = Object.keys(this.contactos).length;
-        if (index < maxContacts) {
-          this.state.focus.index++;
-          this.updateContactsFocus();
-          this.scrollToFocused('contacts-list');
-        }
+        const maxC = Object.keys(this.contactos).length;
+        if (index < maxC) { this.state.focus.index++; this.updateContactsFocus(); }
         break;
-      case 'grid':
-        if (index < 145) {
-          this.state.focus.index += 5;
-          this.updateGridFocus();
-          this.scrollToFocused('todex-grid');
-        }
-        break;
-      case 'combates':
-        if (index === 0) {
-          this.state.focus.index = 1;
-          this.updateCombatesFocus();
-        }
-        break;
-      case 'settings':
-        if (index < 4) {
-          this.state.focus.index++;
-          this.updateSettingsFocus();
-          this.scrollToFocused('settings-list');
-        }
-        break;
+      case 'grid': if (index < 145) { this.state.focus.index += 5; this.updateGridFocus(); } break;
+      case 'settings': if (index < 3) { this.state.focus.index++; this.updateSettingsFocus(); } break;
     }
-    this.vibrar();
   },
 
   handleLeft() {
-    this.initAudio();
-    this.playSound('move');
-    
-    const confirmModal = document.getElementById('confirm-reiniciar');
-    if (confirmModal && confirmModal.classList.contains('active')) {
-      this.state.confirmIndex = 0;
-      this.updateConfirmFocus();
-      return;
-    }
-    
-    if (this.state.inSelector) {
-      this.navigateSelector('left');
-      return;
-    }
-    
-    const respModal = document.getElementById('response-modal');
-    if (respModal && respModal.classList.contains('active')) {
-      if (this.state.focus.index === 5) {
-        this.state.focus.index = 4;
-        this.updateResponseFocus();
-      } else if (this.state.focus.index > 0 && this.state.focus.index !== 4) {
-        this.state.focus.index--;
-        this.updateResponseFocus();
-      }
-      return;
-    }
-
     const { type, index } = this.state.focus;
-    
     switch(type) {
-      case 'consent':
-        this.state.focus.index = 0;
-        this.updateConsentFocus();
-        break;
-      case 'avatar':
-        if (index % 4 > 0) {
-          this.state.focus.index--;
-          this.updateAvatarFocus();
-        }
-        break;
-      case 'color':
-        if (index % 2 > 0) {
-          this.state.focus.index--;
-          this.updateColorSetupFocus();
-        }
-        break;
-      case 'menu':
-        if (index % 2 !== 0) {
-          this.state.focus.index--;
-          this.state.menuIndex = this.state.focus.index;
-          this.updateMenuFocus();
-        }
-        break;
-      case 'grid':
-        if (index % 5 > 0) {
-          this.state.focus.index--;
-          this.updateGridFocus();
-        }
-        break;
+      case 'consent': this.state.focus.index = 0; this.updateConsentFocus(); break;
+      case 'avatar': if (index % 4 > 0) { this.state.focus.index--; this.updateAvatarFocus(); } break;
+      case 'color': if (index % 2 > 0) { this.state.focus.index--; this.updateColorSetupFocus(); } break;
+      case 'menu': if (index % 2 !== 0) { this.state.focus.index--; this.state.menuIndex = this.state.focus.index; this.updateMenuFocus(); } break;
+      case 'grid': if (index % 5 > 0) { this.state.focus.index--; this.updateGridFocus(); } break;
     }
   },
 
   handleRight() {
-    this.initAudio();
-    this.playSound('move');
-    
-    const confirmModal = document.getElementById('confirm-reiniciar');
-    if (confirmModal && confirmModal.classList.contains('active')) {
-      this.state.confirmIndex = 1;
-      this.updateConfirmFocus();
-      return;
-    }
-    
-    if (this.state.inSelector) {
-      this.navigateSelector('right');
-      return;
-    }
-    
-    const respModal = document.getElementById('response-modal');
-    if (respModal && respModal.classList.contains('active')) {
-      if (this.state.focus.index === 4) {
-        this.state.focus.index = 5;
-        this.updateResponseFocus();
-      } else if (this.state.focus.index < 3) {
-        this.state.focus.index++;
-        this.updateResponseFocus();
-      }
-      return;
-    }
-
     const { type, index } = this.state.focus;
-    
     switch(type) {
-      case 'consent':
-        this.state.focus.index = 1;
-        this.updateConsentFocus();
-        break;
-      case 'avatar':
-        if (index % 4 < 3 && index < 11) {
-          this.state.focus.index++;
-          this.updateAvatarFocus();
-        }
-        break;
-      case 'color':
-        if (index % 2 === 0 && index < 5) {
-          this.state.focus.index++;
-          this.updateColorSetupFocus();
-        }
-        break;
-      case 'menu':
-        if (index % 2 === 0 && index < 5) {
-          this.state.focus.index++;
-          this.state.menuIndex = this.state.focus.index;
-          this.updateMenuFocus();
-        }
-        break;
-      case 'grid':
-        if (index % 5 < 4 && index < 149) {
-          this.state.focus.index++;
-          this.updateGridFocus();
-        }
-        break;
+      case 'consent': this.state.focus.index = 1; this.updateConsentFocus(); break;
+      case 'avatar': if (index % 4 < 3 && index < 11) { this.state.focus.index++; this.updateAvatarFocus(); } break;
+      case 'color': if (index % 2 === 0 && index < 5) { this.state.focus.index++; this.updateColorSetupFocus(); } break;
+      case 'menu': if (index % 2 === 0 && index < 5) { this.state.focus.index++; this.state.menuIndex = this.state.focus.index; this.updateMenuFocus(); } break;
+      case 'grid': if (index % 5 < 4 && index < 149) { this.state.focus.index++; this.updateGridFocus(); } break;
     }
   },
 
-  updateConfirmFocus() {
-    document.querySelectorAll('.confirm-btn').forEach((btn, i) => {
-      btn.classList.toggle('focused', i === this.state.confirmIndex);
-    });
-  },
-
-  cancelarReinicio() {
-    document.getElementById('confirm-reiniciar').classList.remove('active');
-    this.showMsg('Cancelado');
-  },
-
-  confirmarReinicio() {
-    localStorage.clear();
-    location.reload();
-  },
-
-  updateMenuFocus() {
-    document.querySelectorAll('.menu-item').forEach((el, i) => {
-      el.classList.toggle('focused', i === this.state.focus.index);
-    });
-  },
-
-  updateTokesFocus() {
-    document.querySelectorAll('#tokes-list .toke-item').forEach((el, i) => {
-      el.classList.toggle('focused', i === this.state.focus.index);
-    });
-  },
-
-  updateVariantesFocus() {
-    document.querySelectorAll('#variantes-list .variante-item').forEach((el, i) => {
-      el.classList.toggle('focused', i === this.state.focus.index);
-    });
-  },
-
-  updateEnviarFocus() {
-    const items = document.querySelectorAll('#enviar-list .list-item');
-    items.forEach((el, i) => {
-      el.classList.toggle('focused', i === this.state.focus.index);
-    });
-  },
-
+  updateMenuFocus() { document.querySelectorAll('.menu-item').forEach((el, i) => el.classList.toggle('focused', i === this.state.focus.index)); },
+  updateTokesFocus() { document.querySelectorAll('#tokes-list .toke-item').forEach((el, i) => el.classList.toggle('focused', i === this.state.focus.index)); },
+  updateVariantesFocus() { document.querySelectorAll('#variantes-list .variante-item').forEach((el, i) => el.classList.toggle('focused', i === this.state.focus.index)); },
+  updateEnviarFocus() { document.querySelectorAll('#enviar-list .list-item').forEach((el, i) => el.classList.toggle('focused', i === this.state.focus.index)); },
   updateContactsFocus() {
     const scanBtn = document.getElementById('scan-btn');
     const items = document.querySelectorAll('#contacts-list .list-item');
-    
     if (scanBtn) scanBtn.classList.toggle('focused', this.state.focus.index === 0);
-    items.forEach((el, i) => {
-      el.classList.toggle('focused', i === this.state.focus.index - 1);
-    });
+    items.forEach((el, i) => el.classList.toggle('focused', i === this.state.focus.index - 1));
   },
-
-  updateGridFocus() {
-    document.querySelectorAll('.emoji-card').forEach((el, i) => {
-      el.classList.toggle('focused', i === this.state.focus.index);
-    });
-  },
-
-  updateCombatesFocus() {
-    document.querySelectorAll('.combate-card').forEach((el, i) => {
-      el.classList.toggle('focused', i === this.state.focus.index);
-    });
-  },
-
-  updateSettingsFocus() {
-    document.querySelectorAll('.setting-item').forEach((el, i) => {
-      el.classList.toggle('focused', i === this.state.focus.index);
-    });
-  },
-
-  updateResponseFocus() {
-    document.querySelectorAll('.response-btn').forEach((el, i) => {
-      el.classList.toggle('focused', i === this.state.focus.index);
-    });
-    document.querySelectorAll('.response-action').forEach((el, i) => {
-      const idx = i === 0 ? 4 : 5;
-      el.classList.toggle('focused', this.state.focus.index === idx);
-    });
-  },
-
-  scrollToFocused(containerId) {
-    const container = document.getElementById(containerId);
-    if (!container) return;
-    const focused = container.querySelector('.focused');
-    if (focused) focused.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
-  },
+  updateGridFocus() { document.querySelectorAll('.emoji-card').forEach((el, i) => el.classList.toggle('focused', i === this.state.focus.index)); },
+  updateSettingsFocus() { document.querySelectorAll('.setting-item').forEach((el, i) => el.classList.toggle('focused', i === this.state.focus.index)); },
 
   renderTokes() {
     const container = document.getElementById('tokes-list');
-    if (!container) return;
-    
-    container.innerHTML = TOKES_TYPES.map((t, i) => `
+    if (container) container.innerHTML = TOKES_TYPES.map((t, i) => `
       <div class="toke-item t${t.id} ${i === 0 ? 'focused' : ''}" data-index="${i}">
         <span style="font-size: 26px;">${t.emoji}</span>
-        <div style="flex: 1;">
-          <div style="font-weight: 800; color: ${t.color}; font-size: 14px;">${t.name}</div>
-          <div style="font-size: 11px; color: #718096;">${t.desc}</div>
-        </div>
-        <span style="font-size: 10px; background: #EDF2F7; padding: 2px 6px; border-radius: 10px; color: #4A5568;">4</span>
+        <div style="flex: 1;"><div style="font-weight: 800; color: ${t.color}; font-size: 14px;">${t.name}</div><div style="font-size: 11px; color: #718096;">${t.desc}</div></div>
+        <span style="font-size: 10px; background: #EDF2F7; padding: 2px 6px; border-radius: 10px;">4</span>
       </div>
     `).join('');
   },
@@ -2361,19 +920,13 @@ const app = {
     const container = document.getElementById('variantes-list');
     const title = document.getElementById('variantes-title');
     if (!container || !title) return;
-    
     const categoria = TOKES_TYPES.find(t => t.id === this.state.selectedCategoria);
     const variantes = CONTEXTOS_TOKES[this.state.selectedCategoria] || [];
-    
     title.textContent = `${categoria?.emoji || '💌'} ${categoria?.name || 'Toque'}`;
-    
     container.innerHTML = variantes.map((v, i) => `
       <div class="variante-item v${this.state.selectedCategoria} ${i === 0 ? 'focused' : ''}" data-index="${i}">
         <span style="font-size: 26px;">${v.emoji}</span>
-        <div style="flex: 1;">
-          <div style="font-weight: 800; color: #2D3748; font-size: 14px;">${v.nombre}</div>
-          <div style="font-size: 10px; color: #718096; line-height: 1.3;">${v.texto}</div>
-        </div>
+        <div style="flex: 1;"><div style="font-weight: 800; font-size: 14px;">${v.nombre}</div><div style="font-size: 10px; color: #718096;">${v.texto}</div></div>
       </div>
     `).join('');
   },
@@ -2382,86 +935,55 @@ const app = {
     const container = document.getElementById('enviar-list');
     const info = document.getElementById('toke-seleccionado');
     if (!container || !info) return;
-    
     const categoria = TOKES_TYPES.find(t => t.id === this.state.selectedCategoria);
     const variante = this.state.selectedVariante;
-    if (categoria && variante) {
-      info.innerHTML = `${categoria.emoji} ${variante.nombre} <span style="font-size: 10px; color: #666;">(${variante.texto})</span>`;
-    }
+    if (categoria && variante) info.innerHTML = `${categoria.emoji} ${variante.nombre}`;
     
     const amigos = Object.entries(this.contactos);
-    
-    let html = `
-      <div class="list-item focused" data-index="0">
-        <span style="font-size: 26px;">📷</span>
-        <div style="flex: 1;">
-          <div style="font-weight: 800; color: #805AD5;">Escanear QR</div>
-          <div style="font-size: 10px; color: #A0AEC0;">Nuevo amigo</div>
-        </div>
+    let html = `<div class="list-item focused" data-index="0"><span style="font-size: 26px;">📷</span><div style="flex: 1;"><div style="font-weight: 800; color: #805AD5;">Escanear QR</div></div></div>`;
+    if (amigos.length === 0) html += `<div style="text-align: center; color: #A0AEC0; padding: 25px;">No tienes amigos</div>`;
+    else html += amigos.map(([id, nom], i) => `
+      <div class="list-item" data-index="${i + 1}">
+        <span style="font-size: 26px;">👤</span>
+        <div style="flex: 1;"><div style="font-weight: 800;">${nom}</div><div style="font-size: 9px; color: #A0AEC0;">${id.substring(0, 10)}...</div></div>
+        <button class="btn-eliminar" onclick="event.stopPropagation(); app.eliminarAmigo('${id}')">✕</button>
       </div>
-    `;
-    
-    if (amigos.length === 0) {
-      html += `<div style="text-align: center; color: #A0AEC0; padding: 25px; font-size: 12px;">No tienes amigos aún.<br>¡Escanea un QR!</div>`;
-    } else {
-      html += amigos.map(([id, nom], i) => `
-        <div class="list-item" data-index="${i + 1}">
-          <span style="font-size: 26px;">👤</span>
-          <div style="flex: 1;">
-            <div style="font-weight: 800; color: #2D3748;">${nom}</div>
-            <div style="font-size: 9px; color: #A0AEC0;">${id.substring(0, 10)}...</div>
-          </div>
-          <button class="btn-eliminar" onclick="event.stopPropagation(); app.eliminarAmigo('${id}')">✕</button>
-        </div>
-      `).join('');
-    }
-    
+    `).join('');
     container.innerHTML = html;
   },
 
   eliminarAmigo(id) {
-    if (confirm('¿Eliminar este amigo?')) {
+    if (confirm('¿Eliminar?')) {
       delete this.contactos[id];
       localStorage.setItem('cts', JSON.stringify(this.contactos));
       this.renderEnviarList();
       this.renderContacts();
-      this.showMsg('✅ Amigo eliminado');
+      this.showMsg('Eliminado');
     }
   },
 
   renderContacts() {
     const container = document.getElementById('contacts-list');
     if (!container) return;
-    
     const lista = Object.entries(this.contactos);
-    
-    if (lista.length === 0) {
-      container.innerHTML = '<div style="text-align: center; color: #A0AEC0; padding: 35px; font-size: 12px;">No tienes amigos.<br>¡Escanea un QR!</div>';
-    } else {
-      container.innerHTML = lista.map(([id, nom], i) => `
-        <div class="list-item" data-index="${i}">
-          <span style="font-size: 26px;">👤</span>
-          <div style="flex: 1;">
-            <div style="font-weight: 800; color: #2D3748;">${nom}</div>
-            <div style="font-size: 9px; color: #A0AEC0;">${id.substring(0, 10)}...</div>
-          </div>
-          <button class="btn-eliminar" onclick="event.stopPropagation(); app.eliminarAmigo('${id}')">✕</button>
-        </div>
-      `).join('');
-    }
+    if (lista.length === 0) container.innerHTML = '<div style="text-align: center; color: #A0AEC0; padding: 35px;">No tienes amigos</div>';
+    else container.innerHTML = lista.map(([id, nom], i) => `
+      <div class="list-item" data-index="${i}">
+        <span style="font-size: 26px;">👤</span>
+        <div style="flex: 1;"><div style="font-weight: 800;">${nom}</div><div style="font-size: 9px; color: #A0AEC0;">${id.substring(0, 10)}...</div></div>
+        <button class="btn-eliminar" onclick="event.stopPropagation(); app.eliminarAmigo('${id}')">✕</button>
+      </div>
+    `).join('');
   },
 
   renderTodex() {
     const grid = document.getElementById('todex-grid');
     const count = document.getElementById('todex-count');
     if (!grid || !count) return;
-    
     count.textContent = `${this.todex.captured.length}/150`;
-    
     grid.innerHTML = Array(150).fill(0).map((_, i) => {
       const captured = this.todex.captured.includes(i+1);
-      const emoji = captured ? (EMOJIS_LIST[i] || '✨') : '•';
-      return `<div class="emoji-card ${captured ? 'captured' : ''} ${i === 0 ? 'focused' : ''}" data-index="${i}">${emoji}</div>`;
+      return `<div class="emoji-card ${captured ? 'captured' : ''} ${i === 0 ? 'focused' : ''}" data-index="${i}">${captured ? (EMOJIS_LIST[i] || '✨') : '•'}</div>`;
     }).join('');
   },
 
@@ -2469,156 +991,50 @@ const app = {
     const nom = localStorage.getItem('miNombre') || 'Amigo';
     const nameEl = document.getElementById('home-name');
     const badgeEl = document.getElementById('tokes-badge');
-    const statusEl = document.getElementById('home-status');
     const avatarEl = document.getElementById('home-avatar');
-    
     if (nameEl) nameEl.textContent = nom;
     if (badgeEl) badgeEl.textContent = `🎯 ${this.state.toquesRestantes}/30`;
     if (avatarEl) avatarEl.textContent = this.state.settings.avatar;
-    
-    const st = ESTADOS.find(e => e.id === this.state.settings.status) || ESTADOS[0];
-    if (statusEl) {
-      statusEl.textContent = `${st.emoji} ${st.label}`;
-      statusEl.style.background = st.color;
-    }
   },
 
   updateSettingsUI() {
     const sonidoEl = document.getElementById('toggle-sonido');
     const vibraEl = document.getElementById('toggle-vibra');
     const colorEl = document.getElementById('color-preview');
-    const statusEl = document.getElementById('status-text');
-    
     if (sonidoEl) sonidoEl.classList.toggle('active', this.state.settings.sonido);
     if (vibraEl) vibraEl.classList.toggle('active', this.state.settings.vibracion);
-    
     const c = COLORES[this.state.settings.color];
     if (colorEl && c) colorEl.style.background = c.hex;
-    
-    const st = ESTADOS.find(e => e.id === this.state.settings.status);
-    if (statusEl) {
-      statusEl.textContent = st ? st.label : 'Disponible';
-      statusEl.style.color = st ? st.color : '#48BB78';
-    }
   },
 
   activateSetting(index) {
     switch(index) {
-      case 0:
-        this.state.settings.sonido = !this.state.settings.sonido;
-        localStorage.setItem('sonido', this.state.settings.sonido ? 'on' : 'off');
-        this.playSound('select');
-        this.showMsg(this.state.settings.sonido ? '🔊 Sonido ON' : '🔇 Sonido OFF');
-        this.updateSettingsUI();
-        break;
-      case 1:
-        this.state.settings.vibracion = !this.state.settings.vibracion;
-        localStorage.setItem('vibracion', this.state.settings.vibracion ? 'on' : 'off');
-        this.showMsg(this.state.settings.vibracion ? '📳 Vibración ON' : '📳 Vibración OFF');
-        this.updateSettingsUI();
-        break;
-      case 2:
-        this.showColorSelector();
-        break;
-      case 3:
-        this.showStatusSelector();
-        break;
-      case 4:
-        this.mostrarConfirmReinicio();
-        break;
+      case 0: this.state.settings.sonido = !this.state.settings.sonido; localStorage.setItem('sonido', this.state.settings.sonido ? 'on' : 'off'); this.showMsg(this.state.settings.sonido ? '🔊 ON' : '🔇 OFF'); this.updateSettingsUI(); break;
+      case 1: this.state.settings.vibracion = !this.state.settings.vibracion; localStorage.setItem('vibracion', this.state.settings.vibracion ? 'on' : 'off'); this.showMsg(this.state.settings.vibracion ? '📳 ON' : '📳 OFF'); this.updateSettingsUI(); break;
+      case 2: this.showColorSelector(); break;
+      case 3: this.mostrarConfirmReinicio(); break;
     }
   },
 
-  mostrarConfirmReinicio() {
-    this.state.confirmIndex = 0;
-    document.getElementById('confirm-reiniciar').classList.add('active');
-    this.updateConfirmFocus();
-  },
+  mostrarConfirmReinicio() { this.state.confirmIndex = 0; document.getElementById('confirm-reiniciar').classList.add('active'); },
+
+  cancelarReinicio() { document.getElementById('confirm-reiniciar').classList.remove('active'); },
+
+  confirmarReinicio() { localStorage.clear(); location.reload(); },
 
   showColorSelector() {
     this.state.inSelector = true;
-    this.state.selectorType = 'color';
     this.state.selectorIndex = this.state.settings.color;
-    
     const modal = document.getElementById('color-selector');
     const grid = document.getElementById('color-grid');
-    if (!modal || !grid) return;
-    
-    grid.innerHTML = COLORES.map((c, i) => `
-      <div class="selector-item ${i === this.state.selectorIndex ? 'focused' : ''}" 
-           style="background: ${c.hex};" data-index="${i}">
-        <div style="width: 35px; height: 35px; border-radius: 50%; background: ${c.hex}; border: 3px solid white; box-shadow: 0 3px 10px rgba(0,0,0,0.3);"></div>
-        <span style="margin-top: 6px; font-size: 11px;">${c.name}</span>
-      </div>
-    `).join('');
-    
-    modal.classList.add('active');
-  },
-
-  showStatusSelector() {
-    this.state.inSelector = true;
-    this.state.selectorType = 'status';
-    this.state.selectorIndex = ESTADOS.findIndex(e => e.id === this.state.settings.status);
-    if (this.state.selectorIndex < 0) this.state.selectorIndex = 0;
-    
-    const modal = document.getElementById('status-selector');
-    const grid = document.getElementById('status-grid');
-    if (!modal || !grid) return;
-    
-    grid.innerHTML = ESTADOS.map((s, i) => `
-      <div class="selector-item ${i === this.state.selectorIndex ? 'focused' : ''}" 
-           style="background: ${s.color};" data-index="${i}">
-        <div style="font-size: 35px;">${s.emoji}</div>
-        <span style="margin-top: 6px; font-size: 11px;">${s.label}</span>
-      </div>
-    `).join('');
-    
-    modal.classList.add('active');
-  },
-
-  navigateSelector(dir) {
-    const items = document.querySelectorAll('.selector-modal.active .selector-item');
-    if (!items.length) return;
-    
-    items[this.state.selectorIndex].classList.remove('focused');
-    
-    if (this.state.selectorType === 'color') {
-      const cols = 2;
-      if (dir === 'right' && this.state.selectorIndex % cols === 0 && this.state.selectorIndex < 5) this.state.selectorIndex++;
-      else if (dir === 'left' && this.state.selectorIndex % cols === 1) this.state.selectorIndex--;
-      else if (dir === 'down' && this.state.selectorIndex < 4) this.state.selectorIndex += 2;
-      else if (dir === 'up' && this.state.selectorIndex >= 2) this.state.selectorIndex -= 2;
-    } else {
-      const cols = 2;
-      if (dir === 'right' && this.state.selectorIndex % cols === 0 && this.state.selectorIndex < 3) this.state.selectorIndex++;
-      else if (dir === 'left' && this.state.selectorIndex % cols === 1) this.state.selectorIndex--;
-      else if (dir === 'down' && this.state.selectorIndex < 2) this.state.selectorIndex += 2;
-      else if (dir === 'up' && this.state.selectorIndex >= 2) this.state.selectorIndex -= 2;
-    }
-    
-    if (items[this.state.selectorIndex]) {
-      items[this.state.selectorIndex].classList.add('focused');
-    }
-    this.vibrar();
+    if (grid) grid.innerHTML = COLORES.map((c, i) => `<div class="selector-item ${i === this.state.selectorIndex ? 'focused' : ''}" style="background: ${c.hex};" data-index="${i}"><div style="width: 35px; height: 35px; border-radius: 50%; background: ${c.hex}; border: 3px solid white;"></div><span style="margin-top: 6px; font-size: 11px;">${c.name}</span></div>`).join('');
+    if (modal) modal.classList.add('active');
   },
 
   selectFromSelector() {
-    if (this.state.selectorType === 'color') {
-      this.state.settings.color = this.state.selectorIndex;
-      localStorage.setItem('colorIndex', this.state.selectorIndex);
-      this.applyColor();
-      const c = COLORES[this.state.selectorIndex];
-      this.showMsg(c ? `🎨 ${c.name}` : 'Color cambiado');
-    } else {
-      const s = ESTADOS[this.state.selectorIndex];
-      if (s) {
-        this.state.settings.status = s.id;
-        localStorage.setItem('status', s.id);
-        this.showMsg(`${s.emoji} ${s.label}`);
-        this.updateHome();
-      }
-    }
-    
+    this.state.settings.color = this.state.selectorIndex;
+    localStorage.setItem('colorIndex', this.state.selectorIndex);
+    this.applyColor();
     document.querySelectorAll('.selector-modal').forEach(m => m.classList.remove('active'));
     this.state.inSelector = false;
     this.updateSettingsUI();
@@ -2628,180 +1044,80 @@ const app = {
     const nom = localStorage.getItem('miNombre') || 'Amigo';
     const texto = `${this.miID}|${nom}`;
     const qrDiv = document.getElementById('qr-mio');
-    if (qrDiv) {
-      qrDiv.innerHTML = `<img src="https://api.qrserver.com/v1/create-qr-code/?size=280x280&data=${encodeURIComponent(texto)}" alt="QR" style="width: 140px; height: 140px;"/>`;
-    }
+    if (qrDiv) qrDiv.innerHTML = `<img src="https://api.qrserver.com/v1/create-qr-code/?size=280x280&data=${encodeURIComponent(texto)}" style="width: 140px; height: 140px;"/>`;
   },
 
   async scanQR() {
     if (location.protocol !== 'https:' && location.hostname !== 'localhost') {
-      this.showMsg('⚠️ HTTPS requerido');
-      setTimeout(() => this.inputManualQR(), 500);
+      this.inputManualQR();
       return;
     }
     
     let stream = null;
     const modal = document.createElement('div');
-    modal.className = 'selector-modal active';
-    modal.style.zIndex = '200';
-    modal.innerHTML = `
-      <div class="selector-title">📷 Escaneando...</div>
-      <div style="background: white; padding: 20px; border-radius: 20px; position: relative;">
-        <video id="scan-video" style="width: 260px; height: 260px; object-fit: cover; border-radius: 16px; display: block; background: #000;" autoplay playsinline muted></video>
-        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 220px; height: 220px; border: 4px solid #48BB78; border-radius: 16px; pointer-events: none;"></div>
-      </div>
-      <div style="text-align: center; margin-top: 15px; color: white; font-size: 12px;">Enfoca el código QR</div>
-      <div style="display: flex; gap: 10px; margin-top: 15px;">
-        <button id="btn-cancel-scan" style="padding: 10px 20px; background: #F56565; color: white; border: none; border-radius: 20px; font-weight: 800; font-family: 'Nunito'; cursor: pointer; font-size: 12px;">Cancelar</button>
-        <button id="btn-manual-scan" style="padding: 10px 20px; background: #4299E1; color: white; border: none; border-radius: 20px; font-weight: 800; font-family: 'Nunito'; cursor: pointer; font-size: 12px;">Manual</button>
-      </div>
-    `;
+    modal.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.9);z-index:999;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;';
+    modal.innerHTML = `<div style="color:white;font-size:18px;margin-bottom:20px;">📷 Escaneando...</div><video id="scan-video" style="width:260px;height:260px;border-radius:16px;background:#000;" autoplay playsinline></video><button onclick="this.parentElement.remove()" style="margin-top:20px;padding:10px 20px;background:#F56565;color:white;border:none;border-radius:20px;">Cancelar</button>`;
     document.body.appendChild(modal);
     
-    document.getElementById('btn-cancel-scan').onclick = () => {
-      if (stream) stream.getTracks().forEach(t => t.stop());
-      modal.remove();
-    };
-    
-    document.getElementById('btn-manual-scan').onclick = () => {
-      if (stream) stream.getTracks().forEach(t => t.stop());
-      modal.remove();
-      this.inputManualQR();
-    };
-    
     try {
-      try {
-        stream = await navigator.mediaDevices.getUserMedia({ 
-          video: { facingMode: "environment" },
-          audio: false
-        });
-      } catch(e) {
-        try {
-          stream = await navigator.mediaDevices.getUserMedia({ 
-            video: { facingMode: "user" },
-            audio: false
-          });
-        } catch(e2) {
-          stream = await navigator.mediaDevices.getUserMedia({ 
-            video: true,
-            audio: false
-          });
-        }
-      }
-      
+      stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" }, audio: false });
       const video = document.getElementById('scan-video');
-      if (!video) throw new Error('No video element');
-      
       video.srcObject = stream;
       
-      await new Promise((resolve, reject) => {
-        video.onloadedmetadata = () => {
-          video.play().then(resolve).catch(reject);
-        };
-        setTimeout(() => reject(new Error('Timeout')), 10000);
-      });
-      
       const canvas = document.createElement('canvas');
-      const ctx = canvas.getContext('2d', { willReadFrequently: true });
+      const ctx = canvas.getContext('2d');
       
-      let scanning = true;
-      let frames = 0;
-      
-      const scan = () => {
-        if (!scanning || !document.getElementById('scan-video')) {
-          if (stream) stream.getTracks().forEach(t => t.stop());
-          return;
-        }
+      const scan = setInterval(() => {
+        if (!document.getElementById('scan-video')) { clearInterval(scan); return; }
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        ctx.drawImage(video, 0, 0);
+        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        const code = jsQR(imageData.data, canvas.width, canvas.height);
         
-        frames++;
-        if (frames % 4 === 0) {
-          try {
-            canvas.width = video.videoWidth || 640;
-            canvas.height = video.videoHeight || 640;
-            ctx.drawImage(video, 0, 0);
-            
-            const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-            const code = jsQR(imageData.data, canvas.width, canvas.height, {
-              inversionAttempts: "dontInvert"
-            });
-            
-            if (code && code.data) {
-              scanning = false;
-              if (stream) stream.getTracks().forEach(t => t.stop());
-              modal.remove();
-              this.procesarQR(code.data);
-              return;
-            }
-          } catch(e) {
-            console.error('Scan error:', e);
-          }
+        if (code?.data) {
+          clearInterval(scan);
+          stream.getTracks().forEach(t => t.stop());
+          modal.remove();
+          this.procesarQR(code.data);
         }
-        
-        requestAnimationFrame(scan);
-      };
-      
-      scan();
-      
+      }, 200);
     } catch(err) {
-      console.error('Camera error:', err);
-      if (stream) stream.getTracks().forEach(t => t.stop());
-      this.showMsg('❌ Cámara no disponible. Usa manual.');
+      this.log('Camera error: ' + err.message);
+      modal.remove();
+      this.inputManualQR();
     }
   },
 
   inputManualQR() {
-    const codigo = prompt('Pega el código del amigo (formato: ID|Nombre):');
-    if (codigo && codigo.trim()) {
-      this.procesarQR(codigo.trim());
-    }
+    const codigo = prompt('Pega código (ID|Nombre):');
+    if (codigo?.trim()) this.procesarQR(codigo.trim());
   },
 
   procesarQR(data) {
-    console.log('Procesando QR:', data);
-    
-    let cleanData = data.trim();
-    
-    if (cleanData.includes('?data=')) {
-      const urlParams = new URLSearchParams(cleanData.split('?')[1]);
-      const dataParam = urlParams.get('data');
-      if (dataParam) cleanData = decodeURIComponent(dataParam);
-    }
-    
-    const parts = cleanData.split('|');
+    this.log('Procesando: ' + data);
+    const parts = data.split('|');
     if (parts.length >= 2) {
       const [id, nombre] = parts;
       if (id && nombre && id !== this.miID) {
-        if (!/^[a-zA-Z0-9\-]+$/.test(id)) {
-          this.showMsg('❌ Código QR inválido');
-          return;
-        }
-        
         this.contactos[id] = nombre;
         localStorage.setItem('cts', JSON.stringify(this.contactos));
         this.showMsg(`✅ ${nombre} agregado`);
-        
-        if (this.state.currentPage === 'enviar') {
-          this.renderEnviarList();
-        } else if (this.state.currentPage === 'contacts') {
-          this.renderContacts();
-        }
-        return;
-      } else if (id === this.miID) {
-        this.showMsg('❌ No puedes agregarte a ti mismo');
+        if (this.state.currentPage === 'enviar') this.renderEnviarList();
+        else if (this.state.currentPage === 'contacts') this.renderContacts();
         return;
       }
     }
-    this.showMsg('❌ QR inválido. Formato: ID|Nombre');
+    this.showMsg('❌ QR inválido');
   },
 
   // ========================================
-  // ENVÍO DE TOQUES - CORREGIDO PARA DAMEUNTOQUE
+  // ENVÍO DE TOQUES - VERSIÓN ROBUSTA
   // ========================================
-  
+
   async enviarToque(paraId, paraNombre) {
-    console.log('=== ENVIANDO TOQUE ===');
-    console.log('Para:', paraId, paraNombre);
-    console.log('Backend:', BACK);
+    this.log('=== ENVIANDO TOQUE ===');
+    this.log('Para: ' + paraId + ' / ' + paraNombre);
     
     if (!this.state.selectedVariante || !this.state.selectedCategoria) {
       this.showMsg('Error: No hay toque seleccionado');
@@ -2809,126 +1125,142 @@ const app = {
     }
     
     if (this.state.toquesRestantes <= 0) {
-      this.showMsg('❌ No te quedan tokes hoy');
+      this.showMsg('❌ Sin tokes');
       return;
     }
     
-    // Encontrar el índice de la variante (1-4)
     const variantes = CONTEXTOS_TOKES[this.state.selectedCategoria];
     const contextoIndex = variantes.findIndex(v => v.nombre === this.state.selectedVariante.nombre) + 1;
     
-    // Payload exactamente como lo espera DameUnToque
     const payload = {
       de: this.miID,
       para: paraId,
-      num: this.state.selectedCategoria,  // 1-5
-      contexto: contextoIndex             // 1-4
+      num: this.state.selectedCategoria,
+      contexto: contextoIndex
     };
     
-    console.log('Payload:', JSON.stringify(payload));
-    this.showMsg('Enviando... ⏳');
+    this.log('Payload: ' + JSON.stringify(payload));
+    this.showMsg('Enviando...');
+    
+    // Intentar con XMLHttpRequest primero (más compatible)
+    try {
+      const result = await this.sendWithXHR(payload);
+      this.handleSendSuccess(result, paraNombre);
+    } catch(xhrError) {
+      this.log('XHR failed, trying fetch: ' + xhrError);
+      // Fallback a fetch
+      try {
+        const result = await this.sendWithFetch(payload);
+        this.handleSendSuccess(result, paraNombre);
+      } catch(fetchError) {
+        this.log('FETCH ERROR: ' + fetchError.message);
+        this.showMsg('❌ Error de red');
+        alert('Error al enviar:\n' + fetchError.message + '\n\nRevisa la consola (F12) para más detalles.');
+      }
+    }
+  },
+
+  sendWithXHR(payload) {
+    return new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+      xhr.open('POST', `${BACK}/toque`, true);
+      xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+      xhr.setRequestHeader('Accept', 'application/json');
+      
+      xhr.onload = function() {
+        if (xhr.status >= 200 && xhr.status < 300) {
+          try {
+            resolve(JSON.parse(xhr.responseText));
+          } catch(e) {
+            resolve({ ok: true, raw: xhr.responseText });
+          }
+        } else {
+          reject(new Error('HTTP ' + xhr.status + ': ' + xhr.responseText));
+        }
+      };
+      
+      xhr.onerror = () => reject(new Error('Network Error (XHR)'));
+      xhr.ontimeout = () => reject(new Error('Timeout'));
+      xhr.timeout = 10000;
+      
+      xhr.send(JSON.stringify(payload));
+    });
+  },
+
+  async sendWithFetch(payload) {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 10000);
+    
+    const response = await fetch(`${BACK}/toque`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify(payload),
+      signal: controller.signal,
+      mode: 'cors',
+      credentials: 'omit'
+    });
+    
+    clearTimeout(timeoutId);
+    
+    const text = await response.text();
+    this.log('Response: ' + response.status + ' - ' + text.substring(0, 100));
+    
+    if (!response.ok) throw new Error('HTTP ' + response.status);
     
     try {
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 10000);
-      
-      const response = await fetch(`${BACK}/toque`, {
-        method: 'POST',
-        headers: { 
-          'Content-Type': 'application/json;charset=UTF-8',
-          'Accept': 'application/json'
-        },
-        body: JSON.stringify(payload),
-        signal: controller.signal,
-        mode: 'cors'
-      });
-      
-      clearTimeout(timeoutId);
-      
-      const data = await response.json();
-      console.log('Respuesta:', data);
-      
-      if (response.ok && data.ok) {
-        // Actualizar toques restantes desde servidor
-        this.state.toquesRestantes = data.toques_restantes;
-        localStorage.setItem('toquesRestantes', this.state.toquesRestantes);
-        this.updateHome();
-        
-        // Actualizar ToDex
-        this.todex.total_toques_enviados = (this.todex.total_toques_enviados || 0) + 1;
-        localStorage.setItem('todex', JSON.stringify(this.todex));
-        
-        // Verificar desbloqueo cada 5 toques
-        if (this.todex.total_toques_enviados % 5 === 0) {
-          this.verificarDesbloqueos();
-        }
-        
-        this.showMsg(`✅ Toque enviado a ${paraNombre}`);
-        
-        // Reset selección
-        this.state.selectedCategoria = null;
-        this.state.selectedVariante = null;
-        
-        setTimeout(() => this.showPage('home'), 2000);
-      } else {
-        throw new Error(data.error || `Error ${response.status}`);
-      }
+      return JSON.parse(text);
     } catch(e) {
-      console.error('Error:', e);
-      this.showMsg('❌ Error: ' + e.message);
+      return { ok: true, raw: text };
     }
+  },
+
+  handleSendSuccess(data, paraNombre) {
+    this.log('Success: ' + JSON.stringify(data));
+    
+    if (data.toques_restantes !== undefined) {
+      this.state.toquesRestantes = data.toques_restantes;
+      localStorage.setItem('toquesRestantes', this.state.toquesRestantes);
+    } else {
+      this.state.toquesRestantes--;
+      localStorage.setItem('toquesRestantes', this.state.toquesRestantes);
+    }
+    
+    this.updateHome();
+    this.todex.total_toques_enviados++;
+    localStorage.setItem('todex', JSON.stringify(this.todex));
+    
+    if (this.todex.total_toques_enviados % 5 === 0) {
+      this.verificarDesbloqueos();
+    }
+    
+    this.showMsg(`✅ Enviado a ${paraNombre}`);
+    this.state.selectedCategoria = null;
+    this.state.selectedVariante = null;
+    
+    setTimeout(() => this.showPage('home'), 2000);
   },
 
   verificarDesbloqueos() {
     const disponibles = [];
-    for (let i = 1; i <= 150; i++) {
-      if (!this.todex.captured.includes(i)) disponibles.push(i);
-    }
-    
+    for (let i = 1; i <= 150; i++) if (!this.todex.captured.includes(i)) disponibles.push(i);
     if (disponibles.length > 0) {
       const nuevo = disponibles[Math.floor(Math.random() * disponibles.length)];
       this.todex.captured.push(nuevo);
-      
-      // Generar stats aleatorios
-      const rangos = {
-        comun: { aura: [5, 15], vibra: [5, 15], suerte: [1, 3] },
-        raro: { aura: [15, 25], vibra: [15, 25], suerte: [3, 5] },
-        epico: { aura: [25, 35], vibra: [25, 35], suerte: [5, 7] },
-        mitico: { aura: [35, 50], vibra: [35, 50], suerte: [7, 10] },
-        legendario: { aura: [50, 70], vibra: [50, 70], suerte: [10, 15] }
-      };
-      
-      const randomBetween = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
-      
-      // Determinar rareza basada en ID
-      let rarity = 'comun';
-      if (nuevo > 140) rarity = 'legendario';
-      else if (nuevo > 120) rarity = 'mitico';
-      else if (nuevo > 90) rarity = 'epico';
-      else if (nuevo > 50) rarity = 'raro';
-      
-      const rango = rangos[rarity];
-      this.todex.emojis_stats[nuevo] = {
-        aura: randomBetween(rango.aura[0], rango.aura[1]),
-        vibra: randomBetween(rango.vibra[0], rango.vibra[1]),
-        suerte: randomBetween(rango.suerte[0], rango.suerte[1])
-      };
-      
       localStorage.setItem('todex', JSON.stringify(this.todex));
-      
       const emoji = EMOJIS_LIST[nuevo - 1] || '✨';
-      this.showMsg(`🎉 ¡${emoji} #${nuevo} desbloqueado!`);
+      this.showMsg(`🎉 ¡${emoji} #${nuevo}!`);
     }
   },
 
   // ========================================
-  // RECEPCIÓN DE TOQUES - CORREGIDO
+  // RECEPCIÓN DE TOQUES
   // ========================================
-  
+
   async checkIncoming() {
-    if (this.state.currentPage === 'splash' || 
-        this.state.currentPage === 'setup' || 
-        this.state.currentPage === 'consent') return;
+    if (['splash', 'setup', 'consent'].includes(this.state.currentPage)) return;
     
     try {
       const response = await fetch(`${BACK}/toques-pendientes?userId=${this.miID}`, {
@@ -2939,46 +1271,33 @@ const app = {
       if (!response.ok) return;
       
       const data = await response.json();
+      this.log('Check incoming: ' + JSON.stringify(data).substring(0, 100));
       
-      if (data && data.ok && data.toques && data.toques.length > 0) {
-        console.log(`${data.toques.length} toque(s) recibido(s):`, data.toques);
-        
+      if (data?.ok && data.toques?.length > 0) {
         data.toques.forEach((toque, i) => {
           setTimeout(() => this.mostrarToqueRecibido(toque), i * 1500);
         });
       }
     } catch(e) {
-      // Silenciar errores de red
+      // Silenciar errores de polling
     }
   },
 
   mostrarToqueRecibido(toque) {
-    // Evitar duplicados
     const hoy = new Date().toDateString();
     const idUnico = `${hoy}-${toque.de}-${toque.num}-${toque.hora || Date.now()}`;
-    
-    if (this.state.toquesMostrados.has(idUnico)) {
-      console.log('Toque ya mostrado:', idUnico);
-      return;
-    }
+    if (this.state.toquesMostrados.has(idUnico)) return;
     this.state.toquesMostrados.add(idUnico);
-    
-    // Limpiar set si crece mucho
-    if (this.state.toquesMostrados.size > 500) {
-      this.state.toquesMostrados.clear();
-    }
     
     const nombre = this.contactos[toque.de] || 'Alguien';
     const categoria = TOKES_TYPES.find(t => t.id === toque.num) || TOKES_TYPES[0];
     
-    // Obtener mensaje según contexto
     let mensajeTexto = `¡${nombre} te dio un Toque!`;
     if (toque.contexto && CONTEXTOS_TOKES[toque.num]) {
       const ctx = CONTEXTOS_TOKES[toque.num][parseInt(toque.contexto) - 1];
       if (ctx) mensajeTexto = `¡${nombre} dice ${ctx.texto}!`;
     }
     
-    // Mostrar modal
     const modal = document.getElementById('toque-recibido-modal');
     const emojiEl = document.getElementById('toque-emoji');
     const nombreEl = document.getElementById('toque-nombre');
@@ -2989,11 +1308,7 @@ const app = {
       nombreEl.textContent = nombre;
       mensajeEl.textContent = mensajeTexto;
       modal.classList.add('active');
-      
-      if (this.state.settings.sonido) this.playSound('select');
-      if (this.state.settings.vibracion && navigator.vibrate) {
-        navigator.vibrate([200, 100, 200]);
-      }
+      if (this.state.settings.vibracion && navigator.vibrate) navigator.vibrate([200, 100, 200]);
     }
   },
 
@@ -3002,76 +1317,22 @@ const app = {
     if (modal) modal.classList.remove('active');
   },
 
-  jugarVSIA() {
-    if (this.todex.captured.length < 3) {
-      this.showMsg('Necesitas 3 emojis en ToDox');
-      return;
-    }
-    this.showMsg('🤖 VS IA - Próximamente');
-  },
-
-  jugarVSAmigo() {
-    if (Object.keys(this.contactos).length === 0) {
-      this.showMsg('Agrega amigos primero');
-      return;
-    }
-    this.showMsg('⚔️ VS Amigo - Próximamente');
-  },
-
   showEmojiDetail(id) {
     const emoji = EMOJIS_LIST[id-1] || '✨';
-    this.showMsg(`${emoji} #${id} capturado`);
-  },
-
-  handleResponseOK() {
-    const idx = this.state.focus.index;
-    const modal = document.getElementById('response-modal');
-    if (!modal) return;
-    
-    if (idx === 4 || idx === 5) {
-      modal.classList.remove('active');
-      this.state.pendingToque = null;
-    } else {
-      const respuestas = ['💕','😂','🙏','🔥'];
-      const respuesta = respuestas[idx] || respuestas[0];
-      
-      if (this.state.pendingToque) {
-        fetch(`${BACK}/respuesta`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            de: this.miID,
-            para: this.state.pendingToque.de,
-            respuesta: respuesta
-          })
-        }).catch(() => {});
-      }
-      
-      this.showMsg(`Respondiste ${respuesta}`);
-      modal.classList.remove('active');
-      this.state.pendingToque = null;
-    }
+    this.showMsg(`${emoji} #${id}`);
   },
 
   showMsg(text) {
     const bar = document.getElementById('msg-bar');
-    if (!bar) return;
-    bar.textContent = text;
-    bar.classList.add('show');
-    setTimeout(() => bar.classList.remove('show'), 3000);
-  },
-
-  vibrar() {
-    if (this.state.settings.vibracion && navigator.vibrate) {
-      navigator.vibrate(8);
+    if (bar) {
+      bar.textContent = text;
+      bar.classList.add('show');
+      setTimeout(() => bar.classList.remove('show'), 3000);
     }
   }
 };
 
-window.addEventListener('load', () => {
-  console.log('Tokeji v10 iniciando...');
-  app.init();
-});
+window.addEventListener('load', () => app.init());
 </script>
 </body>
 </html>
