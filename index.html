@@ -46,7 +46,6 @@
       height: 100%;
     }
 
-    /* DISPOSITIVO - Centrado y ajustado */
     .device {
       width: 340px;
       height: 600px;
@@ -115,7 +114,6 @@
       pointer-events: none;
     }
 
-    /* PANTALLA */
     .screen-container {
       width: 100%;
       flex: 1;
@@ -164,7 +162,6 @@
       position: relative;
     }
 
-    /* PAGINAS */
     .page { 
       display: none; 
       width: 100%; 
@@ -173,7 +170,6 @@
     }
     .page.active { display: flex; }
 
-    /* SPLASH - Pantalla completa con fondo de color */
     #page-splash {
       justify-content: center;
       align-items: center;
@@ -219,7 +215,6 @@
       50% { opacity: 1; }
     }
 
-    /* CONSENTIMIENTO - Botones más pequeños */
     #page-consent {
       justify-content: center;
       align-items: center;
@@ -282,7 +277,6 @@
       box-shadow: 0 0 0 3px rgba(255,107,157,0.3);
     }
 
-    /* SETUP NOMBRE */
     #page-setup {
       justify-content: center;
       align-items: center;
@@ -322,7 +316,6 @@
       color: #A0AEC0;
     }
 
-    /* AVATAR */
     #page-avatar {
       justify-content: flex-start;
       align-items: center;
@@ -367,7 +360,6 @@
       box-shadow: 0 0 0 3px rgba(255,107,157,0.3);
     }
 
-    /* COLOR SETUP */
     #page-color {
       justify-content: flex-start;
       align-items: center;
@@ -405,7 +397,6 @@
       box-shadow: 0 0 0 4px rgba(255,255,255,0.8), 0 4px 0 rgba(0,0,0,0.2);
     }
 
-    /* HOME */
     .home-main {
       flex: 1;
       display: flex;
@@ -454,7 +445,6 @@
       box-shadow: 0 2px 0 #B7791F;
     }
 
-    /* MENU GRID 2x3 */
     .menu-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -505,7 +495,6 @@
       transform: scale(1.1);
     }
 
-    /* LISTAS */
     .list-container {
       width: 100%;
       flex: 1;
@@ -541,7 +530,6 @@
       box-shadow: 0 2px 0 #F687B3;
     }
 
-    /* TOKES COLORES */
     .toke-item.t1 { border-color: #FF0066; background: #FFF0F3; }
     .toke-item.t1.focused { box-shadow: 0 2px 0 #CC0052; }
     .toke-item.t2 { border-color: #FF5400; background: #FFF4F0; }
@@ -589,7 +577,6 @@
       box-shadow: 0 0 0 3px rgba(159,122,234,0.3), 0 3px 0 #6B46C1;
     }
 
-    /* QR */
     .qr-container {
       flex: 1;
       display: flex;
@@ -612,7 +599,6 @@
       display: block;
     }
 
-    /* TODEX */
     .todex-grid {
       display: grid;
       grid-template-columns: repeat(5, 1fr);
@@ -648,7 +634,6 @@
       z-index: 10;
     }
 
-    /* COMBATES */
     .combate-container {
       flex: 1;
       display: flex;
@@ -694,7 +679,6 @@
       box-shadow: 0 3px 0 #C05621;
     }
 
-    /* SETTINGS */
     .settings-list {
       width: 100%;
       flex: 1;
@@ -758,7 +742,6 @@
       left: 22px;
     }
 
-    /* BOTÓN ELIMINAR */
     .btn-eliminar {
       background: #F56565;
       color: white;
@@ -782,7 +765,6 @@
       box-shadow: 0 0 0 #C53030;
     }
 
-    /* SELECTOR COLOR - MÁS PEQUEÑO */
     .selector-modal {
       position: absolute;
       top: 0;
@@ -931,7 +913,6 @@
       border-color: white;
     }
 
-    /* MODAL CONFIRMACIÓN */
     .confirm-modal {
       position: absolute;
       top: 0;
@@ -1020,7 +1001,6 @@
       box-shadow: 0 0 0 3px rgba(255,107,157,0.3);
     }
 
-    /* BOTONES FÍSICOS - MÁS COMPACTOS */
     .controls {
       margin-top: 3px;
       display: flex;
@@ -1105,7 +1085,6 @@
 
     .dpad-empty { visibility: hidden; }
 
-    /* MSG BAR */
     .msg-bar {
       position: absolute;
       bottom: 0;
@@ -1127,12 +1106,10 @@
       transform: translateY(0);
     }
 
-    /* SCROLLBAR */
     ::-webkit-scrollbar { width: 3px; }
     ::-webkit-scrollbar-thumb { background: #F687B3; border-radius: 2px; }
     ::-webkit-scrollbar-track { background: transparent; }
 
-    /* INFO DE ENVÍO */
     .envio-info {
       background: #FFF5F7;
       border: 2px solid var(--device-color);
@@ -1148,6 +1125,62 @@
     .envio-info strong {
       color: var(--device-color);
       font-size: 13px;
+    }
+
+    .toque-recibido-modal {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(145deg, rgba(0,197,152,0.95), rgba(0,221,170,0.95));
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      z-index: 150;
+      text-align: center;
+      color: white;
+    }
+
+    .toque-recibido-modal.active {
+      display: flex;
+    }
+
+    .toque-recibido-modal .emoji-big {
+      font-size: 80px;
+      margin-bottom: 20px;
+      animation: bounce 0.6s infinite alternate;
+    }
+
+    @keyframes bounce {
+      from { transform: scale(1); }
+      to { transform: scale(1.2); }
+    }
+
+    .toque-recibido-modal .nombre {
+      font-family: 'Fredoka One', cursive;
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+
+    .toque-recibido-modal .mensaje {
+      font-size: 16px;
+      margin-bottom: 30px;
+      padding: 0 20px;
+    }
+
+    .toque-recibido-modal .btn-cerrar {
+      background: white;
+      color: #00c598;
+      border: none;
+      padding: 15px 40px;
+      border-radius: 30px;
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 4px 0 rgba(0,0,0,0.2);
     }
   </style>
 </head>
@@ -1169,13 +1202,11 @@
         </div>
 
         <div class="content">
-          <!-- SPLASH - Pantalla de bienvenida -->
           <div class="page active" id="page-splash">
             <div class="splash-logo">TOKEJI</div>
             <div class="splash-hint">Pulsa OK ✨</div>
           </div>
 
-          <!-- CONSENTIMIENTO -->
           <div class="page" id="page-consent">
             <div class="consent-title">📋 Bienvenido</div>
             <div class="consent-text">
@@ -1190,26 +1221,22 @@
             </div>
           </div>
 
-          <!-- SETUP NOMBRE -->
           <div class="page" id="page-setup">
             <div class="setup-title">¿Cómo te llamas?</div>
             <input type="text" id="miNombre" class="setup-input" maxlength="8" placeholder="TU NOMBRE" autocomplete="off" autocapitalize="characters">
             <div class="setup-hint">Pulsa OK para continuar</div>
           </div>
 
-          <!-- AVATAR - Sin frase de abajo -->
           <div class="page" id="page-avatar">
             <div class="setup-title">Elige tu avatar</div>
             <div class="avatar-grid" id="avatar-grid"></div>
           </div>
 
-          <!-- COLOR -->
           <div class="page" id="page-color">
             <div class="setup-title">Elige tu color</div>
             <div class="color-setup-grid" id="color-setup-grid"></div>
           </div>
 
-          <!-- HOME -->
           <div class="page" id="page-home">
             <div class="home-main">
               <div class="home-avatar" id="home-avatar">🐱</div>
@@ -1219,7 +1246,6 @@
             </div>
           </div>
 
-          <!-- MENU -->
           <div class="page" id="page-menu">
             <div class="setup-title">Menú</div>
             <div class="menu-grid" id="menu-grid">
@@ -1250,19 +1276,16 @@
             </div>
           </div>
 
-          <!-- TOKES -->
           <div class="page" id="page-tokes">
             <div class="setup-title">Elige Categoría</div>
             <div class="list-container" id="tokes-list"></div>
           </div>
 
-          <!-- VARIANTES -->
           <div class="page" id="page-variantes">
             <div class="setup-title" id="variantes-title">Variante</div>
             <div class="list-container" id="variantes-list"></div>
           </div>
 
-          <!-- ENVIAR -->
           <div class="page" id="page-enviar">
             <div class="setup-title">Enviar a...</div>
             <div class="envio-info" id="envio-info">
@@ -1271,14 +1294,12 @@
             <div class="list-container" id="enviar-list"></div>
           </div>
 
-          <!-- CONTACTS -->
           <div class="page" id="page-contacts">
             <div class="setup-title">Amigos</div>
             <button class="scan-btn focused" id="scan-btn">📷 Escanear QR</button>
             <div class="list-container" id="contacts-list"></div>
           </div>
 
-          <!-- QR -->
           <div class="page" id="page-qr">
             <div class="setup-title">Mi Código QR</div>
             <div class="qr-container">
@@ -1289,13 +1310,11 @@
             </div>
           </div>
 
-          <!-- TODEX -->
           <div class="page" id="page-todox">
             <div class="setup-title">ToDox <span style="color: var(--device-color);" id="todex-count">0/150</span></div>
             <div class="todex-grid" id="todex-grid"></div>
           </div>
 
-          <!-- COMBATES -->
           <div class="page" id="page-combates">
             <div class="setup-title">⚔️ Arena</div>
             <div class="combate-container">
@@ -1312,7 +1331,6 @@
             </div>
           </div>
 
-          <!-- SETTINGS -->
           <div class="page" id="page-settings">
             <div class="setup-title">⚙️ Ajustes</div>
             <div class="settings-list" id="settings-list">
@@ -1338,19 +1356,16 @@
             </div>
           </div>
 
-          <!-- SELECTOR COLOR -->
           <div class="selector-modal" id="color-selector">
             <div class="selector-title">🎨 Elige color</div>
             <div class="selector-grid" id="color-grid"></div>
           </div>
 
-          <!-- SELECTOR ESTADO -->
           <div class="selector-modal" id="status-selector">
             <div class="selector-title">🟢 Estado</div>
             <div class="selector-grid" id="status-grid"></div>
           </div>
 
-          <!-- RESPONSE MODAL -->
           <div class="response-modal" id="response-modal">
             <div class="response-title" id="response-title">¡Toque!</div>
             <div class="response-grid">
@@ -1365,7 +1380,13 @@
             </div>
           </div>
 
-          <!-- MODAL CONFIRMACIÓN REINICIAR -->
+          <div class="toque-recibido-modal" id="toque-recibido-modal">
+            <div class="emoji-big" id="toque-emoji">🎉</div>
+            <div class="nombre" id="toque-nombre">Alguien</div>
+            <div class="mensaje" id="toque-mensaje">Te envió un toque</div>
+            <button class="btn-cerrar" onclick="app.cerrarToqueRecibido()">¡Genial!</button>
+          </div>
+
           <div class="confirm-modal" id="confirm-reiniciar">
             <div class="confirm-box">
               <div class="confirm-title">🗑️ ¿Reiniciar?</div>
@@ -1382,7 +1403,6 @@
       </div>
     </div>
 
-    <!-- CONTROLES - Sin texto "Navega con botones" -->
     <div class="controls">
       <div class="controls-row">
         <button class="btn-candy btn-back" onclick="app.handleBack()">◄</button>
@@ -1402,11 +1422,9 @@
 <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
 <script>
 // ========================================
-// TOKEJI v9 - CON SPLASH Y BACKEND CORREGIDO
+// TOKEJI v10 - CON SISTEMA DE TOQUES FUNCIONANDO
 // ========================================
 
-// IMPORTANTE: Cambia esto a tu URL real del backend
-// Si tienes el código del backend, pásamelo para ver la URL correcta
 const BACK = "https://dame-un-toque-1.onrender.com";
 
 const CONTEXTOS_TOKES = {
@@ -1474,7 +1492,7 @@ const app = {
   state: {
     currentPage: 'splash',
     menuIndex: 0,
-    focus: { type: 'menu', index: 0 },
+    focus: { type: 'splash', index: 0 },
     history: [],
     toquesRestantes: 30,
     selectedCategoria: null,
@@ -1491,25 +1509,27 @@ const app = {
     selectorIndex: 0,
     pendingToque: null,
     audioInitialized: false,
-    confirmIndex: 0
+    confirmIndex: 0,
+    toquesMostrados: new Set()
   },
   
   contactos: {},
-  todex: { captured: [], total: 0 },
+  todex: { captured: [], total_toques_enviados: 0, emojis_stats: {} },
   miID: '',
 
   init() {
-    console.log('=== TOKEJI INICIANDO ===');
+    console.log('=== TOKEJI v10 INICIANDO ===');
     
     this.miID = localStorage.getItem("miid");
     if (!this.miID) {
-      this.miID = Math.random().toString(36).substring(2, 12);
+      this.miID = crypto.randomUUID ? crypto.randomUUID().slice(0, 10) : Math.random().toString(36).substring(2, 12);
       localStorage.setItem("miid", this.miID);
     }
     
     try {
       this.contactos = JSON.parse(localStorage.getItem("cts")) || {};
-      this.todex = JSON.parse(localStorage.getItem("todex")) || { captured: [], total: 0 };
+      this.todex = JSON.parse(localStorage.getItem("todex")) || { captured: [], total_toques_enviados: 0, emojis_stats: {} };
+      if (!this.todex.emojis_stats) this.todex.emojis_stats = {};
       this.state.settings.sonido = localStorage.getItem('sonido') !== 'off';
       this.state.settings.vibracion = localStorage.getItem('vibracion') !== 'off';
       this.state.settings.color = parseInt(localStorage.getItem('colorIndex')) || 0;
@@ -1521,21 +1541,24 @@ const app = {
     }
     
     const hoy = new Date().toDateString();
-    if (localStorage.getItem('lastReset') !== hoy) {
+    const ultima = localStorage.getItem("ultimaFechaToques");
+    if (ultima !== hoy) {
       this.state.toquesRestantes = 30;
-      localStorage.setItem('toquesRestantes', 30);
-      localStorage.setItem('lastReset', hoy);
+      localStorage.setItem("toquesRestantes", "30");
+      localStorage.setItem("ultimaFechaToques", hoy);
     }
     
     this.applyColor();
     this.updateClock();
     setInterval(() => this.updateClock(), 60000);
-    setInterval(() => this.checkIncoming(), 10000);
+    
+    // Polling de toques cada 8 segundos
+    setTimeout(() => this.checkIncoming(), 2000);
+    setInterval(() => this.checkIncoming(), 8000);
     
     console.log('Inicializado. ID:', this.miID);
     console.log('Backend:', BACK);
     
-    // Siempre empezar en splash, el flujo continúa desde ahí
     this.showPage('splash', false);
   },
 
@@ -1688,7 +1711,6 @@ const app = {
     this.vibrar();
   },
 
-  // Manejar consentimiento
   handleConsent(accepted) {
     if (accepted) {
       localStorage.setItem('consent', 'true');
@@ -1704,7 +1726,6 @@ const app = {
     });
   },
 
-  // Avatar
   renderAvatarGrid() {
     const grid = document.getElementById('avatar-grid');
     if (!grid) return;
@@ -1722,7 +1743,6 @@ const app = {
     });
   },
 
-  // Color setup
   renderColorSetupGrid() {
     const grid = document.getElementById('color-setup-grid');
     if (!grid) return;
@@ -1759,7 +1779,11 @@ const app = {
       return;
     }
 
-    // No permitir volver atrás en el setup inicial
+    const toqueModal = document.getElementById('toque-recibido-modal');
+    if (toqueModal && toqueModal.classList.contains('active')) {
+      return;
+    }
+
     if (['consent', 'setup', 'avatar', 'color'].includes(this.state.currentPage)) {
       return;
     }
@@ -1938,9 +1962,6 @@ const app = {
     const { type, index } = this.state.focus;
     
     switch(type) {
-      case 'consent':
-        // No hay arriba en consent
-        break;
       case 'avatar':
         if (index >= 4) {
           this.state.focus.index -= 4;
@@ -2031,9 +2052,6 @@ const app = {
     const { type, index } = this.state.focus;
     
     switch(type) {
-      case 'consent':
-        // No hay abajo en consent
-        break;
       case 'avatar':
         if (index < 8) {
           this.state.focus.index += 4;
@@ -2753,7 +2771,7 @@ const app = {
     if (parts.length >= 2) {
       const [id, nombre] = parts;
       if (id && nombre && id !== this.miID) {
-        if (!/^[a-zA-Z0-9]+$/.test(id)) {
+        if (!/^[a-zA-Z0-9\-]+$/.test(id)) {
           this.showMsg('❌ Código QR inválido');
           return;
         }
@@ -2777,13 +2795,13 @@ const app = {
   },
 
   // ========================================
-  // TOQUES - CORREGIDO
+  // ENVÍO DE TOQUES - CORREGIDO PARA DAMEUNTOQUE
   // ========================================
   
   async enviarToque(paraId, paraNombre) {
     console.log('=== ENVIANDO TOQUE ===');
     console.log('Para:', paraId, paraNombre);
-    console.log('URL Backend:', BACK);
+    console.log('Backend:', BACK);
     
     if (!this.state.selectedVariante || !this.state.selectedCategoria) {
       this.showMsg('Error: No hay toque seleccionado');
@@ -2795,81 +2813,193 @@ const app = {
       return;
     }
     
-    this.showMsg('Enviando... ⏳');
+    // Encontrar el índice de la variante (1-4)
+    const variantes = CONTEXTOS_TOKES[this.state.selectedCategoria];
+    const contextoIndex = variantes.findIndex(v => v.nombre === this.state.selectedVariante.nombre) + 1;
     
-    const categoria = TOKES_TYPES.find(t => t.id === this.state.selectedCategoria);
-    const variante = this.state.selectedVariante;
-    
+    // Payload exactamente como lo espera DameUnToque
     const payload = {
       de: this.miID,
       para: paraId,
-      tipo: this.state.selectedCategoria,
-      emoji: variante.emoji,
-      nombre: variante.nombre,
-      mensaje: variante.texto,
-      categoria_emoji: categoria?.emoji || '💌'
+      num: this.state.selectedCategoria,  // 1-5
+      contexto: contextoIndex             // 1-4
     };
     
     console.log('Payload:', JSON.stringify(payload));
+    this.showMsg('Enviando... ⏳');
     
     try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 10000);
+      
       const response = await fetch(`${BACK}/toque`, {
         method: 'POST',
         headers: { 
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/json;charset=UTF-8',
           'Accept': 'application/json'
         },
-        body: JSON.stringify(payload)
+        body: JSON.stringify(payload),
+        signal: controller.signal,
+        mode: 'cors'
       });
       
-      console.log('Status:', response.status);
+      clearTimeout(timeoutId);
       
-      const responseText = await response.text();
-      console.log('Response:', responseText);
-      
-      let data;
-      try {
-        data = JSON.parse(responseText);
-      } catch(e) {
-        data = { ok: response.ok, text: responseText };
-      }
+      const data = await response.json();
+      console.log('Respuesta:', data);
       
       if (response.ok && data.ok) {
-        this.state.toquesRestantes = data.toques_restantes !== undefined ? data.toques_restantes : this.state.toquesRestantes - 1;
+        // Actualizar toques restantes desde servidor
+        this.state.toquesRestantes = data.toques_restantes;
         localStorage.setItem('toquesRestantes', this.state.toquesRestantes);
-        
         this.updateHome();
         
-        this.todex.total = (this.todex.total || 0) + 1;
-        if (this.todex.total % 5 === 0) {
-          const disponibles = [];
-          for (let i = 1; i <= 150; i++) {
-            if (!this.todex.captured.includes(i)) disponibles.push(i);
-          }
-          if (disponibles.length > 0) {
-            const nuevo = disponibles[Math.floor(Math.random() * disponibles.length)];
-            this.todex.captured.push(nuevo);
-            localStorage.setItem('todex', JSON.stringify(this.todex));
-            setTimeout(() => this.showMsg(`🎉 ¡Emoji #${nuevo} desbloqueado!`), 1000);
-          }
-        }
+        // Actualizar ToDex
+        this.todex.total_toques_enviados = (this.todex.total_toques_enviados || 0) + 1;
         localStorage.setItem('todex', JSON.stringify(this.todex));
         
-        this.showMsg(`✅ ${variante.emoji} enviado a ${paraNombre}`);
+        // Verificar desbloqueo cada 5 toques
+        if (this.todex.total_toques_enviados % 5 === 0) {
+          this.verificarDesbloqueos();
+        }
         
+        this.showMsg(`✅ Toque enviado a ${paraNombre}`);
+        
+        // Reset selección
         this.state.selectedCategoria = null;
         this.state.selectedVariante = null;
         
         setTimeout(() => this.showPage('home'), 2000);
       } else {
-        const errorMsg = data.error || data.message || `Error ${response.status}`;
-        this.showMsg('❌ ' + errorMsg);
-        console.error('Error servidor:', data);
+        throw new Error(data.error || `Error ${response.status}`);
       }
     } catch(e) {
-      console.error('Error fetch:', e);
-      this.showMsg('❌ Error de red. ¿Backend activo?');
+      console.error('Error:', e);
+      this.showMsg('❌ Error: ' + e.message);
     }
+  },
+
+  verificarDesbloqueos() {
+    const disponibles = [];
+    for (let i = 1; i <= 150; i++) {
+      if (!this.todex.captured.includes(i)) disponibles.push(i);
+    }
+    
+    if (disponibles.length > 0) {
+      const nuevo = disponibles[Math.floor(Math.random() * disponibles.length)];
+      this.todex.captured.push(nuevo);
+      
+      // Generar stats aleatorios
+      const rangos = {
+        comun: { aura: [5, 15], vibra: [5, 15], suerte: [1, 3] },
+        raro: { aura: [15, 25], vibra: [15, 25], suerte: [3, 5] },
+        epico: { aura: [25, 35], vibra: [25, 35], suerte: [5, 7] },
+        mitico: { aura: [35, 50], vibra: [35, 50], suerte: [7, 10] },
+        legendario: { aura: [50, 70], vibra: [50, 70], suerte: [10, 15] }
+      };
+      
+      const randomBetween = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
+      
+      // Determinar rareza basada en ID
+      let rarity = 'comun';
+      if (nuevo > 140) rarity = 'legendario';
+      else if (nuevo > 120) rarity = 'mitico';
+      else if (nuevo > 90) rarity = 'epico';
+      else if (nuevo > 50) rarity = 'raro';
+      
+      const rango = rangos[rarity];
+      this.todex.emojis_stats[nuevo] = {
+        aura: randomBetween(rango.aura[0], rango.aura[1]),
+        vibra: randomBetween(rango.vibra[0], rango.vibra[1]),
+        suerte: randomBetween(rango.suerte[0], rango.suerte[1])
+      };
+      
+      localStorage.setItem('todex', JSON.stringify(this.todex));
+      
+      const emoji = EMOJIS_LIST[nuevo - 1] || '✨';
+      this.showMsg(`🎉 ¡${emoji} #${nuevo} desbloqueado!`);
+    }
+  },
+
+  // ========================================
+  // RECEPCIÓN DE TOQUES - CORREGIDO
+  // ========================================
+  
+  async checkIncoming() {
+    if (this.state.currentPage === 'splash' || 
+        this.state.currentPage === 'setup' || 
+        this.state.currentPage === 'consent') return;
+    
+    try {
+      const response = await fetch(`${BACK}/toques-pendientes?userId=${this.miID}`, {
+        method: 'GET',
+        headers: { 'Cache-Control': 'no-cache' }
+      });
+      
+      if (!response.ok) return;
+      
+      const data = await response.json();
+      
+      if (data && data.ok && data.toques && data.toques.length > 0) {
+        console.log(`${data.toques.length} toque(s) recibido(s):`, data.toques);
+        
+        data.toques.forEach((toque, i) => {
+          setTimeout(() => this.mostrarToqueRecibido(toque), i * 1500);
+        });
+      }
+    } catch(e) {
+      // Silenciar errores de red
+    }
+  },
+
+  mostrarToqueRecibido(toque) {
+    // Evitar duplicados
+    const hoy = new Date().toDateString();
+    const idUnico = `${hoy}-${toque.de}-${toque.num}-${toque.hora || Date.now()}`;
+    
+    if (this.state.toquesMostrados.has(idUnico)) {
+      console.log('Toque ya mostrado:', idUnico);
+      return;
+    }
+    this.state.toquesMostrados.add(idUnico);
+    
+    // Limpiar set si crece mucho
+    if (this.state.toquesMostrados.size > 500) {
+      this.state.toquesMostrados.clear();
+    }
+    
+    const nombre = this.contactos[toque.de] || 'Alguien';
+    const categoria = TOKES_TYPES.find(t => t.id === toque.num) || TOKES_TYPES[0];
+    
+    // Obtener mensaje según contexto
+    let mensajeTexto = `¡${nombre} te dio un Toque!`;
+    if (toque.contexto && CONTEXTOS_TOKES[toque.num]) {
+      const ctx = CONTEXTOS_TOKES[toque.num][parseInt(toque.contexto) - 1];
+      if (ctx) mensajeTexto = `¡${nombre} dice ${ctx.texto}!`;
+    }
+    
+    // Mostrar modal
+    const modal = document.getElementById('toque-recibido-modal');
+    const emojiEl = document.getElementById('toque-emoji');
+    const nombreEl = document.getElementById('toque-nombre');
+    const mensajeEl = document.getElementById('toque-mensaje');
+    
+    if (modal && emojiEl && nombreEl && mensajeEl) {
+      emojiEl.textContent = categoria.emoji;
+      nombreEl.textContent = nombre;
+      mensajeEl.textContent = mensajeTexto;
+      modal.classList.add('active');
+      
+      if (this.state.settings.sonido) this.playSound('select');
+      if (this.state.settings.vibracion && navigator.vibrate) {
+        navigator.vibrate([200, 100, 200]);
+      }
+    }
+  },
+
+  cerrarToqueRecibido() {
+    const modal = document.getElementById('toque-recibido-modal');
+    if (modal) modal.classList.remove('active');
   },
 
   jugarVSIA() {
@@ -2891,34 +3021,6 @@ const app = {
   showEmojiDetail(id) {
     const emoji = EMOJIS_LIST[id-1] || '✨';
     this.showMsg(`${emoji} #${id} capturado`);
-  },
-
-  checkIncoming() {
-    if (this.state.currentPage === 'splash' || this.state.currentPage === 'setup' || this.state.currentPage === 'consent') return;
-    
-    fetch(`${BACK}/toques-pendientes?userId=${this.miID}`)
-      .then(r => r.ok ? r.json() : null)
-      .then(data => {
-        if (data && data.ok && data.toques && data.toques.length > 0) {
-          this.mostrarRespuestaToque(data.toques[0]);
-        }
-      })
-      .catch(() => {});
-  },
-
-  mostrarRespuestaToque(toque) {
-    const modal = document.getElementById('response-modal');
-    const title = document.getElementById('response-title');
-    if (!modal || !title) return;
-    
-    const nombre = this.contactos[toque.de] || 'Alguien';
-    const emoji = toque.categoria_emoji || toque.emoji || '💌';
-    title.innerHTML = `${emoji} Toque de <strong>${nombre}</strong><br><span style="font-size: 15px; opacity: 0.9;">${toque.mensaje || ''}</span>`;
-    modal.classList.add('active');
-    
-    this.state.focus = { type: 'response', index: 0 };
-    this.updateResponseFocus();
-    this.state.pendingToque = toque;
   },
 
   handleResponseOK() {
@@ -2967,7 +3069,7 @@ const app = {
 };
 
 window.addEventListener('load', () => {
-  console.log('Tokeji v9 iniciando...');
+  console.log('Tokeji v10 iniciando...');
   app.init();
 });
 </script>
