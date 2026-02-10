@@ -619,6 +619,7 @@
       justify-content: center;
       font-size: 16px;
       transition: all 0.1s ease;
+      cursor: pointer;
     }
 
     .emoji-card.captured {
@@ -1145,7 +1146,6 @@
       left: 0;
       right: 0;
       bottom: 0;
-      background: linear-gradient(145deg, rgba(255,107,157,0.98), rgba(255,71,133,0.98));
       display: none;
       flex-direction: column;
       align-items: center;
@@ -1163,10 +1163,29 @@
       to { opacity: 1; }
     }
 
+    .envio-avatar-container {
+      position: relative;
+      width: 120px;
+      height: 120px;
+      margin-bottom: 20px;
+    }
+
     .envio-avatar {
+      position: absolute;
       font-size: 80px;
       animation: enviarAnim 1.5s ease-in-out;
       filter: drop-shadow(0 10px 20px rgba(0,0,0,0.3));
+      top: 0;
+      left: 0;
+    }
+
+    .envio-emoji-toke {
+      position: absolute;
+      font-size: 50px;
+      bottom: -10px;
+      right: -10px;
+      animation: enviarAnim 1.5s ease-in-out 0.2s both;
+      filter: drop-shadow(0 5px 10px rgba(0,0,0,0.3));
     }
 
     @keyframes enviarAnim {
@@ -1204,6 +1223,7 @@
       margin-top: 20px;
       animation: checkPop 0.5s ease 1s both;
       text-shadow: 0 4px 8px rgba(0,0,0,0.3);
+      display: none;
     }
 
     @keyframes checkPop {
@@ -1212,19 +1232,18 @@
       100% { transform: scale(1) rotate(0deg); }
     }
 
-    /* ANIMACIÓN DE RECEPCIÓN MEJORADA */
+    /* RECEPCIÓN DE TOKE MEJORADA */
     .toque-recibido-modal {
       position: absolute;
       top: 0;
       left: 0;
       right: 0;
       bottom: 0;
-      background: linear-gradient(145deg, rgba(0,197,152,0.98), rgba(0,221,170,0.98));
       display: none;
       flex-direction: column;
       align-items: center;
       justify-content: flex-start;
-      padding: 30px 20px 20px 20px;
+      padding: 20px 15px 15px 15px;
       z-index: 150;
       text-align: center;
       color: white;
@@ -1240,11 +1259,28 @@
       display: flex;
     }
 
-    .toque-recibido-modal .emoji-big {
-      font-size: 100px;
+    .toque-recibido-header {
       margin-bottom: 15px;
+    }
+
+    .toque-recibido-avatar {
+      font-size: 50px;
+      margin-bottom: 5px;
       animation: bounceIn 0.8s ease;
-      filter: drop-shadow(0 10px 20px rgba(0,0,0,0.2));
+      filter: drop-shadow(0 5px 10px rgba(0,0,0,0.2));
+    }
+
+    .toque-recibido-nombre {
+      font-family: 'Fredoka One', cursive;
+      font-size: 24px;
+      text-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+
+    .toque-recibido-emoji {
+      font-size: 80px;
+      margin: 10px 0;
+      animation: bounceIn 0.8s ease 0.2s both;
+      filter: drop-shadow(0 10px 20px rgba(0,0,0,0.3));
     }
 
     @keyframes bounceIn {
@@ -1254,21 +1290,13 @@
       100% { transform: scale(1) rotate(0deg); }
     }
 
-    .toque-recibido-modal .nombre {
-      font-family: 'Fredoka One', cursive;
-      font-size: 28px;
-      margin-bottom: 8px;
-      text-shadow: 0 4px 8px rgba(0,0,0,0.2);
-      animation: fadeInUp 0.5s ease 0.3s both;
-    }
-
-    .toque-recibido-modal .mensaje {
-      font-size: 16px;
+    .toque-recibido-mensaje {
+      font-size: 14px;
       margin-bottom: 20px;
       padding: 0 10px;
       font-weight: 600;
-      animation: fadeInUp 0.5s ease 0.5s both;
       line-height: 1.4;
+      animation: fadeInUp 0.5s ease 0.4s both;
     }
 
     @keyframes fadeInUp {
@@ -1280,40 +1308,41 @@
     .respuestas-container {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
+      gap: 10px;
       width: 100%;
-      max-width: 280px;
-      margin-top: 10px;
+      max-width: 260px;
+      margin-top: auto;
+      margin-bottom: 10px;
     }
 
     .respuesta-option {
       background: rgba(255,255,255,0.95);
       border: 3px solid transparent;
-      border-radius: 16px;
-      padding: 15px 10px;
+      border-radius: 12px;
+      padding: 12px 8px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 5px;
+      gap: 4px;
       cursor: pointer;
       transition: all 0.2s ease;
       box-shadow: 0 4px 0 rgba(0,0,0,0.1);
       animation: fadeInUp 0.5s ease both;
     }
 
-    .respuesta-option:nth-child(1) { animation-delay: 0.6s; }
-    .respuesta-option:nth-child(2) { animation-delay: 0.7s; }
-    .respuesta-option:nth-child(3) { animation-delay: 0.8s; }
-    .respuesta-option:nth-child(4) { animation-delay: 0.9s; }
+    .respuesta-option:nth-child(1) { animation-delay: 0.5s; }
+    .respuesta-option:nth-child(2) { animation-delay: 0.6s; }
+    .respuesta-option:nth-child(3) { animation-delay: 0.7s; }
+    .respuesta-option:nth-child(4) { animation-delay: 0.8s; }
 
     .respuesta-option.focused {
       border-color: #FFD93D;
-      transform: scale(1.08) translateY(-5px);
-      box-shadow: 0 8px 0 rgba(0,0,0,0.2), 0 0 20px rgba(255,217,61,0.5);
+      transform: scale(1.05) translateY(-3px);
+      box-shadow: 0 6px 0 rgba(0,0,0,0.2), 0 0 15px rgba(255,217,61,0.5);
     }
 
     .respuesta-option .emoji-resp {
-      font-size: 36px;
+      font-size: 28px;
       transition: transform 0.2s;
     }
 
@@ -1322,32 +1351,80 @@
     }
 
     .respuesta-option .texto-resp {
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 800;
       color: #2D3748;
     }
 
-    .toque-recibido-modal .btn-cerrar {
+    /* RECEPCIÓN DE RESPUESTA (NUEVA) */
+    .respuesta-recibida-modal {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(145deg, #4299E1, #2B6CB0);
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      z-index: 150;
+      text-align: center;
+      color: white;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .respuesta-recibida-modal.active {
+      display: flex;
+    }
+
+    .respuesta-recibida-avatar {
+      font-size: 60px;
+      margin-bottom: 10px;
+      animation: bounceIn 0.6s ease;
+      filter: drop-shadow(0 5px 10px rgba(0,0,0,0.2));
+    }
+
+    .respuesta-recibida-nombre {
+      font-family: 'Fredoka One', cursive;
+      font-size: 22px;
+      margin-bottom: 5px;
+    }
+
+    .respuesta-recibida-texto {
+      font-size: 14px;
+      opacity: 0.9;
+      margin-bottom: 15px;
+    }
+
+    .respuesta-recibida-emoji {
+      font-size: 50px;
+      margin: 10px 0;
+      animation: bounceIn 0.6s ease 0.2s both;
+      filter: drop-shadow(0 5px 15px rgba(0,0,0,0.3));
+    }
+
+    .respuesta-recibida-btn {
       background: white;
-      color: #00c598;
+      color: #4299E1;
       border: none;
-      padding: 15px 40px;
-      border-radius: 30px;
+      padding: 12px 40px;
+      border-radius: 25px;
       font-size: 16px;
       font-weight: 800;
       cursor: pointer;
       box-shadow: 0 4px 0 rgba(0,0,0,0.2);
       margin-top: 20px;
-      animation: fadeInUp 0.5s ease 1s both;
       transition: all 0.2s ease;
     }
 
-    .toque-recibido-modal .btn-cerrar:active {
+    .respuesta-recibida-btn:active {
       transform: translateY(4px);
       box-shadow: 0 0 0 rgba(0,0,0,0.2);
     }
 
-    /* NOTIFICACIÓN DE NUEVO EMOJI */
+    /* NOTIFICACIÓN NUEVO EMOJI - INTEGRADA EN PANTALLA */
     .nuevo-emoji-notificacion {
       position: absolute;
       top: 50%;
@@ -1355,14 +1432,16 @@
       transform: translate(-50%, -50%);
       background: linear-gradient(145deg, #FFD93D, #F6AD55);
       border-radius: 20px;
-      padding: 25px;
+      padding: 20px;
       text-align: center;
       box-shadow: 0 20px 60px rgba(0,0,0,0.4);
       z-index: 300;
       display: none;
       animation: popIn 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
       border: 4px solid white;
-      min-width: 200px;
+      width: 90%;
+      max-width: 280px;
+      max-height: 320px;
     }
 
     .nuevo-emoji-notificacion.active {
@@ -1377,14 +1456,14 @@
 
     .nuevo-emoji-titulo {
       font-family: 'Fredoka One', cursive;
-      font-size: 18px;
+      font-size: 16px;
       color: #744210;
-      margin-bottom: 15px;
+      margin-bottom: 10px;
     }
 
     .nuevo-emoji-display {
-      font-size: 80px;
-      margin: 10px 0;
+      font-size: 60px;
+      margin: 5px 0;
       animation: floatEmoji 2s ease-in-out infinite;
       filter: drop-shadow(0 5px 15px rgba(0,0,0,0.2));
     }
@@ -1395,26 +1474,40 @@
     }
 
     .nuevo-emoji-numero {
-      font-size: 24px;
+      font-size: 18px;
       font-weight: 800;
       color: #744210;
-      margin-bottom: 5px;
+      margin-bottom: 3px;
+    }
+
+    .nuevo-emoji-rareza {
+      font-size: 12px;
+      font-weight: 700;
+      color: #975A16;
+      margin-bottom: 8px;
+      padding: 2px 10px;
+      background: rgba(255,255,255,0.5);
+      border-radius: 10px;
+      display: inline-block;
     }
 
     .nuevo-emoji-stats {
-      font-size: 12px;
+      font-size: 11px;
       color: #975A16;
-      margin-bottom: 15px;
+      margin-bottom: 12px;
       font-weight: 600;
+      display: flex;
+      justify-content: center;
+      gap: 8px;
     }
 
     .nuevo-emoji-btn {
       background: white;
       color: #D69E2E;
       border: none;
-      padding: 12px 30px;
-      border-radius: 25px;
-      font-size: 14px;
+      padding: 10px 30px;
+      border-radius: 20px;
+      font-size: 13px;
       font-weight: 800;
       cursor: pointer;
       box-shadow: 0 4px 0 rgba(0,0,0,0.1);
@@ -1424,6 +1517,120 @@
     .nuevo-emoji-btn:active {
       transform: translateY(4px);
       box-shadow: 0 0 0 rgba(0,0,0,0.1);
+    }
+
+    /* FICHA TÉCNICA TODEX */
+    .ficha-todex-modal {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.85);
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      z-index: 250;
+    }
+
+    .ficha-todex-modal.active {
+      display: flex;
+    }
+
+    .ficha-todex-content {
+      background: white;
+      border-radius: 20px;
+      padding: 25px;
+      width: 100%;
+      max-width: 260px;
+      text-align: center;
+      box-shadow: 0 15px 50px rgba(0,0,0,0.4);
+      border: 4px solid;
+      animation: popIn 0.4s ease;
+    }
+
+    .ficha-todex-content.comun { border-color: #A0AEC0; background: linear-gradient(145deg, #F7FAFC, #EDF2F7); }
+    .ficha-todex-content.raro { border-color: #4299E1; background: linear-gradient(145deg, #EBF8FF, #BEE3F8); }
+    .ficha-todex-content.epico { border-color: #9F7AEA; background: linear-gradient(145deg, #FAF5FF, #E9D8FD); }
+    .ficha-todex-content.mitico { border-color: #ED64A6; background: linear-gradient(145deg, #FFF5F7, #FED7E2); }
+    .ficha-todex-content.legendario { border-color: #ECC94B; background: linear-gradient(145deg, #FFFBEB, #FEFCBF); }
+
+    .ficha-todex-emoji {
+      font-size: 70px;
+      margin-bottom: 10px;
+      filter: drop-shadow(0 5px 10px rgba(0,0,0,0.2));
+    }
+
+    .ficha-todex-numero {
+      font-family: 'Fredoka One', cursive;
+      font-size: 20px;
+      color: #2D3748;
+      margin-bottom: 5px;
+    }
+
+    .ficha-todex-rareza {
+      font-size: 12px;
+      font-weight: 800;
+      padding: 4px 12px;
+      border-radius: 12px;
+      margin-bottom: 15px;
+      display: inline-block;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .ficha-todex-content.comun .ficha-todex-rareza { background: #A0AEC0; color: white; }
+    .ficha-todex-content.raro .ficha-todex-rareza { background: #4299E1; color: white; }
+    .ficha-todex-content.epico .ficha-todex-rareza { background: #9F7AEA; color: white; }
+    .ficha-todex-content.mitico .ficha-todex-rareza { background: #ED64A6; color: white; }
+    .ficha-todex-content.legendario .ficha-todex-rareza { background: #ECC94B; color: #744210; }
+
+    .ficha-todex-stats {
+      display: flex;
+      justify-content: space-around;
+      margin-bottom: 20px;
+      gap: 10px;
+    }
+
+    .ficha-stat {
+      flex: 1;
+      background: rgba(255,255,255,0.6);
+      border-radius: 12px;
+      padding: 10px 5px;
+    }
+
+    .ficha-stat-label {
+      font-size: 10px;
+      color: #718096;
+      margin-bottom: 3px;
+      font-weight: 700;
+    }
+
+    .ficha-stat-valor {
+      font-size: 16px;
+      font-weight: 800;
+      color: #2D3748;
+    }
+
+    .ficha-todex-btn {
+      background: #48BB78;
+      color: white;
+      border: none;
+      padding: 12px 30px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 4px 0 #38A169;
+      transition: all 0.2s ease;
+      width: 100%;
+    }
+
+    .ficha-todex-btn:active {
+      transform: translateY(4px);
+      box-shadow: 0 0 0 #38A169;
     }
 
     .debug-info {
@@ -1643,38 +1850,51 @@
 
           <!-- ANIMACIÓN DE ENVÍO -->
           <div class="envio-animacion" id="envio-animacion">
-            <div class="envio-avatar" id="envio-avatar-anim">🐱</div>
+            <div class="envio-avatar-container">
+              <div class="envio-avatar" id="envio-avatar-anim">🐱</div>
+              <div class="envio-emoji-toke" id="envio-emoji-toke">🔥</div>
+            </div>
             <div class="envio-texto">¡Toque Enviado!</div>
             <div class="envio-destino" id="envio-destino-anim">A: Amigo</div>
             <div class="envio-check">✅</div>
           </div>
 
-          <!-- RECEPCIÓN DE TOQUE MEJORADA CON RESPUESTAS -->
+          <!-- RECEPCIÓN DE TOKE -->
           <div class="toque-recibido-modal" id="toque-recibido-modal">
-            <div class="emoji-big" id="toque-emoji">🎉</div>
-            <div class="nombre" id="toque-nombre">Alguien</div>
-            <div class="mensaje" id="toque-mensaje">Te envió un toque</div>
+            <div class="toque-recibido-header">
+              <div class="toque-recibido-avatar" id="toque-avatar">👤</div>
+              <div class="toque-recibido-nombre" id="toque-nombre">Alguien</div>
+            </div>
+            <div class="toque-recibido-emoji" id="toque-emoji">🎉</div>
+            <div class="toque-recibido-mensaje" id="toque-mensaje">Te envió un toque</div>
             
             <div class="respuestas-container" id="respuestas-container">
-              <div class="respuesta-option focused" data-index="0" data-emoji="❤️">
+              <div class="respuesta-option focused" data-index="0" data-emoji="👍" data-texto="OK">
+                <span class="emoji-resp">👍</span>
+                <span class="texto-resp">OK</span>
+              </div>
+              <div class="respuesta-option" data-index="1" data-emoji="❤️" data-texto="Gracias">
                 <span class="emoji-resp">❤️</span>
-                <span class="texto-resp">Me gusta</span>
-              </div>
-              <div class="respuesta-option" data-index="1" data-emoji="😂">
-                <span class="emoji-resp">😂</span>
-                <span class="texto-resp">Jaja</span>
-              </div>
-              <div class="respuesta-option" data-index="2" data-emoji="🔥">
-                <span class="emoji-resp">🔥</span>
-                <span class="texto-resp">¡Quema!</span>
-              </div>
-              <div class="respuesta-option" data-index="3" data-emoji="🙏">
-                <span class="emoji-resp">🙏</span>
                 <span class="texto-resp">Gracias</span>
               </div>
+              <div class="respuesta-option" data-index="2" data-emoji="😊" data-texto="Igualmente">
+                <span class="emoji-resp">😊</span>
+                <span class="texto-resp">Igualmente</span>
+              </div>
+              <div class="respuesta-option" data-index="3" data-emoji="🤔" data-texto="Ahora no">
+                <span class="emoji-resp">🤔</span>
+                <span class="texto-resp">Ahora no</span>
+              </div>
             </div>
-            
-            <button class="btn-cerrar" onclick="app.cerrarToqueRecibido()">Responder</button>
+          </div>
+
+          <!-- RECEPCIÓN DE RESPUESTA -->
+          <div class="respuesta-recibida-modal" id="respuesta-recibida-modal">
+            <div class="respuesta-recibida-avatar" id="respuesta-avatar">👤</div>
+            <div class="respuesta-recibida-nombre" id="respuesta-nombre">Amigo</div>
+            <div class="respuesta-recibida-texto" id="respuesta-texto">respondió:</div>
+            <div class="respuesta-recibida-emoji" id="respuesta-emoji">❤️</div>
+            <button class="respuesta-recibida-btn" onclick="app.cerrarRespuestaRecibida()">OK</button>
           </div>
 
           <!-- NOTIFICACIÓN NUEVO EMOJI -->
@@ -1682,8 +1902,37 @@
             <div class="nuevo-emoji-titulo">🎉 ¡Nuevo Emoji!</div>
             <div class="nuevo-emoji-display" id="nuevo-emoji-icon">🎉</div>
             <div class="nuevo-emoji-numero" id="nuevo-emoji-num">#1</div>
-            <div class="nuevo-emoji-stats" id="nuevo-emoji-stats">Aura: 10 | Vibra: 15</div>
+            <div class="nuevo-emoji-rareza" id="nuevo-emoji-rareza">COMÚN</div>
+            <div class="nuevo-emoji-stats" id="nuevo-emoji-stats">
+              <span>✨ Aura: 10</span>
+              <span>🌟 Vibra: 15</span>
+              <span>🍀 Suerte: 3</span>
+            </div>
             <button class="nuevo-emoji-btn" onclick="app.cerrarNuevoEmoji()">¡Genial!</button>
+          </div>
+
+          <!-- FICHA TÉCNICA TODEX -->
+          <div class="ficha-todex-modal" id="ficha-todex-modal">
+            <div class="ficha-todex-content" id="ficha-todex-content">
+              <div class="ficha-todex-emoji" id="ficha-emoji">🎉</div>
+              <div class="ficha-todex-numero" id="ficha-numero">#1</div>
+              <div class="ficha-todex-rareza" id="ficha-rareza">COMÚN</div>
+              <div class="ficha-todex-stats">
+                <div class="ficha-stat">
+                  <div class="ficha-stat-label">Aura</div>
+                  <div class="ficha-stat-valor" id="ficha-aura">10</div>
+                </div>
+                <div class="ficha-stat">
+                  <div class="ficha-stat-label">Vibra</div>
+                  <div class="ficha-stat-valor" id="ficha-vibra">15</div>
+                </div>
+                <div class="ficha-stat">
+                  <div class="ficha-stat-label">Suerte</div>
+                  <div class="ficha-stat-valor" id="ficha-suerte">3</div>
+                </div>
+              </div>
+              <button class="ficha-todex-btn" onclick="app.cerrarFichaTodex()">Cerrar</button>
+            </div>
           </div>
 
           <div class="confirm-modal" id="confirm-reiniciar">
@@ -1721,10 +1970,29 @@
 <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
 <script>
 // ========================================
-// TOKEJI v12 - CON ANIMACIONES Y RESPUESTAS
+// TOKEJI v13 - CON ANIMACIONES COMPLETAS
 // ========================================
 
 const BACK = "https://tokeji-device.onrender.com";
+
+// Rarezas fijas tipo Pokémon (mezcladas pero iguales para todos)
+const RAREZAS_TODEX = {
+  1: 'comun', 2: 'mitico', 3: 'raro', 4: 'comun', 5: 'raro', 6: 'epico', 7: 'legendario', 8: 'mitico', 9: 'mitico', 10: 'raro',
+  11: 'epico', 12: 'epico', 13: 'epico', 14: 'epico', 15: 'raro', 16: 'epico', 17: 'comun', 18: 'raro', 19: 'comun', 20: 'epico',
+  21: 'mitico', 22: 'raro', 23: 'legendario', 24: 'mitico', 25: 'epico', 26: 'raro', 27: 'legendario', 28: 'epico', 29: 'legendario', 30: 'raro',
+  31: 'comun', 32: 'raro', 33: 'comun', 34: 'mitico', 35: 'epico', 36: 'comun', 37: 'raro', 38: 'epico', 39: 'comun', 40: 'raro',
+  41: 'comun', 42: 'epico', 43: 'raro', 44: 'comun', 45: 'mitico', 46: 'comun', 47: 'epico', 48: 'raro', 49: 'comun', 50: 'comun',
+  51: 'mitico', 52: 'raro', 53: 'comun', 54: 'epico', 55: 'comun', 56: 'raro', 57: 'legendario', 58: 'epico', 59: 'raro', 60: 'comun',
+  61: 'epico', 62: 'mitico', 63: 'comun', 64: 'raro', 65: 'epico', 66: 'comun', 67: 'raro', 68: 'comun', 69: 'mitico', 70: 'epico',
+  71: 'raro', 72: 'comun', 73: 'epico', 74: 'raro', 75: 'comun', 76: 'mitico', 77: 'raro', 78: 'epico', 79: 'comun', 80: 'raro',
+  81: 'comun', 82: 'epico', 83: 'raro', 84: 'comun', 85: 'mitico', 86: 'raro', 87: 'epico', 88: 'comun', 89: 'raro', 90: 'mitico',
+  91: 'epico', 92: 'raro', 93: 'comun', 94: 'legendario', 95: 'epico', 96: 'raro', 97: 'comun', 98: 'mitico', 99: 'epico', 100: 'raro',
+  101: 'comun', 102: 'epico', 103: 'raro', 104: 'comun', 105: 'mitico', 106: 'raro', 107: 'epico', 108: 'comun', 109: 'raro', 110: 'comun',
+  111: 'epico', 112: 'mitico', 113: 'raro', 114: 'comun', 115: 'epico', 116: 'raro', 117: 'comun', 118: 'mitico', 119: 'raro', 120: 'comun',
+  121: 'raro', 122: 'epico', 123: 'mitico', 124: 'raro', 125: 'comun', 126: 'epico', 127: 'legendario', 128: 'mitico', 129: 'raro', 130: 'epico',
+  131: 'comun', 132: 'mitico', 133: 'raro', 134: 'epico', 135: 'comun', 136: 'legendario', 137: 'raro', 138: 'epico', 139: 'mitico', 140: 'legendario',
+  141: 'epico', 142: 'raro', 143: 'mitico', 144: 'epico', 145: 'legendario', 146: 'mitico', 147: 'raro', 148: 'epico', 149: 'mitico', 150: 'legendario'
+};
 
 const CONTEXTOS_TOKES = {
   1: [ 
@@ -1811,8 +2079,10 @@ const app = {
     confirmIndex: 0,
     toquesMostrados: new Set(),
     debugMode: false,
-    respuestaToqueIndex: 0, // Índice de respuesta seleccionada
-    lastToqueSender: null // Guardar quién envió el último toque
+    respuestaToqueIndex: 0,
+    lastToqueSender: null,
+    colaTokes: [],
+    procesandoCola: false
   },
   
   contactos: {},
@@ -1832,7 +2102,7 @@ const app = {
   },
 
   init() {
-    this.debug('=== TOKEJI v12 INICIANDO ===');
+    this.debug('=== TOKEJI v13 INICIANDO ===');
     this.debug('Backend: ' + BACK);
     
     this.miID = localStorage.getItem("miid");
@@ -1915,13 +2185,30 @@ const app = {
         osc.start(now);
         osc.stop(now + 0.05);
       } else if (type === 'success') {
-        // Sonido de éxito más alegre
         osc.frequency.setValueAtTime(600, now);
         osc.frequency.exponentialRampToValueAtTime(1200, now + 0.1);
         gain.gain.setValueAtTime(0.1, now);
         gain.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
         osc.start(now);
         osc.stop(now + 0.3);
+      } else if (type === 'respuesta') {
+        // Sonido más suave para respuestas
+        osc.frequency.setValueAtTime(400, now);
+        osc.frequency.exponentialRampToValueAtTime(600, now + 0.1);
+        gain.gain.setValueAtTime(0.05, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.2);
+        osc.start(now);
+        osc.stop(now + 0.2);
+      } else if (type === 'unlock') {
+        // Sonido especial para desbloqueo
+        osc.frequency.setValueAtTime(523, now); // C5
+        osc.frequency.setValueAtTime(659, now + 0.1); // E5
+        osc.frequency.setValueAtTime(784, now + 0.2); // G5
+        osc.frequency.setValueAtTime(1047, now + 0.3); // C6
+        gain.gain.setValueAtTime(0.1, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.5);
+        osc.start(now);
+        osc.stop(now + 0.5);
       }
     } catch(e) {
       this.debug('Error sonido: ' + e.message);
@@ -2104,6 +2391,18 @@ const app = {
       return;
     }
 
+    const respuestaModal = document.getElementById('respuesta-recibida-modal');
+    if (respuestaModal && respuestaModal.classList.contains('active')) {
+      this.cerrarRespuestaRecibida();
+      return;
+    }
+
+    const fichaModal = document.getElementById('ficha-todex-modal');
+    if (fichaModal && fichaModal.classList.contains('active')) {
+      this.cerrarFichaTodex();
+      return;
+    }
+
     if (['consent', 'setup', 'avatar', 'color'].includes(this.state.currentPage)) {
       return;
     }
@@ -2175,10 +2474,21 @@ const app = {
       return;
     }
 
-    // Si estamos en el modal de toque recibido, enviar respuesta
     const toqueModal = document.getElementById('toque-recibido-modal');
     if (toqueModal && toqueModal.classList.contains('active')) {
       this.enviarRespuestaToque();
+      return;
+    }
+
+    const respuestaModal = document.getElementById('respuesta-recibida-modal');
+    if (respuestaModal && respuestaModal.classList.contains('active')) {
+      this.cerrarRespuestaRecibida();
+      return;
+    }
+
+    const fichaModal = document.getElementById('ficha-todex-modal');
+    if (fichaModal && fichaModal.classList.contains('active')) {
+      this.cerrarFichaTodex();
       return;
     }
 
@@ -2252,7 +2562,7 @@ const app = {
       case 'todox':
         const id = focus.index + 1;
         if (this.todex.captured.includes(id)) {
-          this.showEmojiDetail(id);
+          this.mostrarFichaTodex(id);
         }
         break;
       case 'combates':
@@ -2286,7 +2596,6 @@ const app = {
       return;
     }
 
-    // Navegación en respuestas de toque recibido
     const toqueModal = document.getElementById('toque-recibido-modal');
     if (toqueModal && toqueModal.classList.contains('active')) {
       if (this.state.respuestaToqueIndex >= 2) {
@@ -2386,7 +2695,6 @@ const app = {
       return;
     }
 
-    // Navegación en respuestas de toque recibido
     const toqueModal = document.getElementById('toque-recibido-modal');
     if (toqueModal && toqueModal.classList.contains('active')) {
       if (this.state.respuestaToqueIndex < 2) {
@@ -2504,7 +2812,6 @@ const app = {
       return;
     }
 
-    // Navegación en respuestas de toque recibido
     const toqueModal = document.getElementById('toque-recibido-modal');
     if (toqueModal && toqueModal.classList.contains('active')) {
       if (this.state.respuestaToqueIndex % 2 === 1) {
@@ -2577,7 +2884,6 @@ const app = {
       return;
     }
 
-    // Navegación en respuestas de toque recibido
     const toqueModal = document.getElementById('toque-recibido-modal');
     if (toqueModal && toqueModal.classList.contains('active')) {
       if (this.state.respuestaToqueIndex % 2 === 0 && this.state.respuestaToqueIndex < 3) {
@@ -2701,7 +3007,6 @@ const app = {
     });
   },
 
-  // NUEVO: Actualizar focus en respuestas de toque
   updateRespuestasFocus() {
     document.querySelectorAll('.respuesta-option').forEach((el, i) => {
       el.classList.toggle('focused', i === this.state.respuestaToqueIndex);
@@ -2835,8 +3140,34 @@ const app = {
     grid.innerHTML = Array(150).fill(0).map((_, i) => {
       const captured = this.todex.captured.includes(i+1);
       const emoji = captured ? (EMOJIS_LIST[i] || '✨') : '•';
-      return `<div class="emoji-card ${captured ? 'captured' : ''} ${i === 0 ? 'focused' : ''}" data-index="${i}">${emoji}</div>`;
+      return `<div class="emoji-card ${captured ? 'captured' : ''} ${i === 0 ? 'focused' : ''}" data-index="${i}" onclick="app.mostrarFichaTodex(${i+1})">${emoji}</div>`;
     }).join('');
+  },
+
+  mostrarFichaTodex(id) {
+    if (!this.todex.captured.includes(id)) return;
+    
+    const emoji = EMOJIS_LIST[id-1] || '✨';
+    const rareza = RAREZAS_TODEX[id] || 'comun';
+    const stats = this.todex.emojis_stats[id] || { aura: 10, vibra: 15, suerte: 3 };
+    
+    const modal = document.getElementById('ficha-todex-modal');
+    const content = document.getElementById('ficha-todex-content');
+    
+    document.getElementById('ficha-emoji').textContent = emoji;
+    document.getElementById('ficha-numero').textContent = `#${id}`;
+    document.getElementById('ficha-rareza').textContent = rareza;
+    document.getElementById('ficha-aura').textContent = stats.aura;
+    document.getElementById('ficha-vibra').textContent = stats.vibra;
+    document.getElementById('ficha-suerte').textContent = stats.suerte;
+    
+    content.className = 'ficha-todex-content ' + rareza;
+    
+    modal.classList.add('active');
+  },
+
+  cerrarFichaTodex() {
+    document.getElementById('ficha-todex-modal').classList.remove('active');
   },
 
   updateHome() {
@@ -3000,7 +3331,8 @@ const app = {
 
   generarQR() {
     const nom = localStorage.getItem('miNombre') || 'Amigo';
-    const texto = `${this.miID}|${nom}`;
+    const avatar = this.state.settings.avatar;
+    const texto = `${this.miID}|${nom}|${avatar}`;
     const qrDiv = document.getElementById('qr-mio');
     if (qrDiv) {
       qrDiv.innerHTML = `<img src="https://api.qrserver.com/v1/create-qr-code/?size=280x280&data=${encodeURIComponent(texto)}" alt="QR" style="width: 140px; height: 140px;"/>`;
@@ -3124,7 +3456,7 @@ const app = {
   },
 
   inputManualQR() {
-    const codigo = prompt('Pega el código del amigo (formato: ID|Nombre):');
+    const codigo = prompt('Pega el código del amigo (formato: ID|Nombre|Avatar):');
     if (codigo && codigo.trim()) {
       this.procesarQR(codigo.trim());
     }
@@ -3143,7 +3475,7 @@ const app = {
     
     const parts = cleanData.split('|');
     if (parts.length >= 2) {
-      const [id, nombre] = parts;
+      const [id, nombre, avatar] = parts;
       if (id && nombre && id !== this.miID) {
         if (!/^[a-zA-Z0-9\-]+$/.test(id)) {
           this.showMsg('❌ Código QR inválido');
@@ -3151,6 +3483,10 @@ const app = {
         }
         
         this.contactos[id] = nombre;
+        if (avatar) {
+          // Guardar avatar del amigo si viene en el QR
+          localStorage.setItem('avatar_' + id, avatar);
+        }
         localStorage.setItem('cts', JSON.stringify(this.contactos));
         this.showMsg(`✅ ${nombre} agregado`);
         
@@ -3165,7 +3501,7 @@ const app = {
         return;
       }
     }
-    this.showMsg('❌ QR inválido. Formato: ID|Nombre');
+    this.showMsg('❌ QR inválido. Formato: ID|Nombre|Avatar');
   },
 
   // ========================================
@@ -3186,8 +3522,12 @@ const app = {
       return;
     }
     
+    // Obtener color del toke para el fondo
+    const categoria = TOKES_TYPES.find(t => t.id === this.state.selectedCategoria);
+    const colorToke = categoria ? categoria.color : '#FF6B9D';
+    
     // Mostrar animación de envío PRIMERO
-    this.mostrarAnimacionEnvio(paraNombre);
+    this.mostrarAnimacionEnvio(paraNombre, colorToke, categoria.emoji);
     
     // Esperar a que termine la animación antes de enviar
     await new Promise(r => setTimeout(r, 1500));
@@ -3200,7 +3540,9 @@ const app = {
       de: this.miID,
       para: paraId,
       num: this.state.selectedCategoria,
-      contexto: contextoIndex
+      contexto: contextoIndex,
+      avatarRemitente: this.state.settings.avatar,
+      nombreRemitente: localStorage.getItem('miNombre') || 'Amigo'
     };
     
     this.debug('Payload: ' + JSON.stringify(payload));
@@ -3266,26 +3608,32 @@ const app = {
     }
   },
 
-  // NUEVO: Mostrar animación de envío
-  mostrarAnimacionEnvio(nombreDestino) {
+  mostrarAnimacionEnvio(nombreDestino, colorFondo, emojiToke) {
     const anim = document.getElementById('envio-animacion');
     const avatar = document.getElementById('envio-avatar-anim');
+    const emojiEl = document.getElementById('envio-emoji-toke');
     const destino = document.getElementById('envio-destino-anim');
     
+    // Aplicar color de fondo del toke
+    anim.style.background = colorFondo;
+    
     if (avatar) avatar.textContent = this.state.settings.avatar;
+    if (emojiEl) emojiEl.textContent = emojiToke;
     if (destino) destino.textContent = `A: ${nombreDestino}`;
     
     if (anim) {
       anim.classList.add('active');
       // Reiniciar animación
       const avatarEl = anim.querySelector('.envio-avatar');
+      const emojiElAnim = anim.querySelector('.envio-emoji-toke');
       avatarEl.style.animation = 'none';
+      emojiElAnim.style.animation = 'none';
       avatarEl.offsetHeight; // Trigger reflow
       avatarEl.style.animation = 'enviarAnim 1.5s ease-in-out';
+      emojiElAnim.style.animation = 'enviarAnim 1.5s ease-in-out 0.2s both';
     }
   },
 
-  // NUEVO: Mostrar confirmación (check)
   mostrarConfirmacionEnvio() {
     const check = document.querySelector('.envio-check');
     if (check) {
@@ -3296,7 +3644,6 @@ const app = {
     }
   },
 
-  // NUEVO: Ocultar animación
   ocultarAnimacionEnvio() {
     const anim = document.getElementById('envio-animacion');
     const check = document.querySelector('.envio-check');
@@ -3321,9 +3668,10 @@ const app = {
     if (disponibles.length > 0) {
       const nuevo = disponibles[Math.floor(Math.random() * disponibles.length)];
       this.todex.captured.push(nuevo);
-      this.todex.captured.sort((a, b) => a - b); // Mantener orden
+      this.todex.captured.sort((a, b) => a - b);
       
-      // Generar stats aleatorios
+      // Generar stats según rareza
+      const rareza = RAREZAS_TODEX[nuevo] || 'comun';
       const rangos = {
         comun: { aura: [5, 15], vibra: [5, 15], suerte: [1, 3] },
         raro: { aura: [15, 25], vibra: [15, 25], suerte: [3, 5] },
@@ -3333,15 +3681,8 @@ const app = {
       };
       
       const randomBetween = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
+      const rango = rangos[rareza];
       
-      // Determinar rareza basada en ID
-      let rarity = 'comun';
-      if (nuevo > 140) rarity = 'legendario';
-      else if (nuevo > 120) rarity = 'mitico';
-      else if (nuevo > 90) rarity = 'epico';
-      else if (nuevo > 50) rarity = 'raro';
-      
-      const rango = rangos[rarity];
       this.todex.emojis_stats[nuevo] = {
         aura: randomBetween(rango.aura[0], rango.aura[1]),
         vibra: randomBetween(rango.vibra[0], rango.vibra[1]),
@@ -3350,15 +3691,14 @@ const app = {
       
       localStorage.setItem('todex', JSON.stringify(this.todex));
       
-      this.debug('¡Nuevo emoji desbloqueado!: #' + nuevo);
+      this.debug('¡Nuevo emoji desbloqueado!: #' + nuevo + ' ' + rareza);
       
       // Mostrar notificación
-      this.mostrarNotificacionNuevoEmoji(nuevo, rarity);
+      this.mostrarNotificacionNuevoEmoji(nuevo, rareza);
       
       // Actualizar ToDox si estamos en esa página
       if (this.state.currentPage === 'todox') {
         this.renderTodex();
-        // Destacar el nuevo emoji
         setTimeout(() => {
           const cards = document.querySelectorAll('.emoji-card');
           if (cards[nuevo - 1]) {
@@ -3370,32 +3710,32 @@ const app = {
     }
   },
 
-  // NUEVO: Mostrar notificación de nuevo emoji
   mostrarNotificacionNuevoEmoji(numero, rareza) {
     const notif = document.getElementById('nuevo-emoji-notif');
     const icon = document.getElementById('nuevo-emoji-icon');
     const num = document.getElementById('nuevo-emoji-num');
+    const rarezaEl = document.getElementById('nuevo-emoji-rareza');
     const stats = document.getElementById('nuevo-emoji-stats');
     
     const emoji = EMOJIS_LIST[numero - 1] || '✨';
     const stats_data = this.todex.emojis_stats[numero];
     
     if (icon) icon.textContent = emoji;
-    if (num) num.textContent = `#${numero} ${rareza.toUpperCase()}`;
+    if (num) num.textContent = `#${numero}`;
+    if (rarezaEl) rarezaEl.textContent = rareza.toUpperCase();
     if (stats && stats_data) {
-      stats.textContent = `✨ Aura: ${stats_data.aura} | 🌟 Vibra: ${stats_data.vibra} | 🍀 Suerte: ${stats_data.suerte}`;
+      stats.innerHTML = `<span>✨ ${stats_data.aura}</span><span>🌟 ${stats_data.vibra}</span><span>🍀 ${stats_data.suerte}</span>`;
     }
     
     if (notif) {
       notif.classList.add('active');
-      if (this.state.settings.sonido) this.playSound('success');
+      this.playSound('unlock');
       if (this.state.settings.vibracion && navigator.vibrate) {
         navigator.vibrate([100, 50, 100, 50, 200]);
       }
     }
   },
 
-  // NUEVO: Cerrar notificación de nuevo emoji
   cerrarNuevoEmoji() {
     const notif = document.getElementById('nuevo-emoji-notif');
     if (notif) notif.classList.remove('active');
@@ -3410,9 +3750,12 @@ const app = {
         this.state.currentPage === 'setup' || 
         this.state.currentPage === 'consent') return;
     
-    // No hacer polling si ya hay un toque mostrándose
+    // No hacer polling si ya hay un toque mostrándose o procesando cola
     const toqueModal = document.getElementById('toque-recibido-modal');
-    if (toqueModal && toqueModal.classList.contains('active')) return;
+    const respuestaModal = document.getElementById('respuesta-recibida-modal');
+    if ((toqueModal && toqueModal.classList.contains('active')) ||
+        (respuestaModal && respuestaModal.classList.contains('active')) ||
+        this.state.procesandoCola) return;
     
     try {
       const url = `${BACK}/toques-pendientes?userId=${this.miID}`;
@@ -3433,9 +3776,16 @@ const app = {
       if (data && data.ok && data.toques && data.toques.length > 0) {
         this.debug(data.toques.length + ' toque(s) recibido(s)');
         
-        data.toques.forEach((toque, i) => {
-          setTimeout(() => this.mostrarToqueRecibido(toque), i * 1500);
+        // Añadir a la cola
+        data.toques.forEach(toque => {
+          const idUnico = `${Date.now()}-${toque.de}-${Math.random()}`;
+          this.state.colaTokes.push({ ...toque, idUnico });
         });
+        
+        // Procesar cola si no estamos procesando ya
+        if (!this.state.procesandoCola) {
+          this.procesarColaTokes();
+        }
       }
     } catch(e) {
       if (this.state.debugMode) {
@@ -3444,12 +3794,22 @@ const app = {
     }
   },
 
-  mostrarToqueRecibido(toque) {
+  async procesarColaTokes() {
+    if (this.state.colaTokes.length === 0) {
+      this.state.procesandoCola = false;
+      return;
+    }
+    
+    this.state.procesandoCola = true;
+    const toque = this.state.colaTokes.shift();
+    
+    // Verificar si ya mostramos este toque
     const hoy = new Date().toDateString();
     const idUnico = `${hoy}-${toque.de}-${toque.num}-${toque.hora || Date.now()}`;
     
     if (this.state.toquesMostrados.has(idUnico)) {
       this.debug('Toque ya mostrado: ' + idUnico);
+      this.procesarColaTokes();
       return;
     }
     this.state.toquesMostrados.add(idUnico);
@@ -3458,56 +3818,64 @@ const app = {
       this.state.toquesMostrados.clear();
     }
     
-    const nombre = this.contactos[toque.de] || 'Alguien';
+    this.mostrarToqueRecibido(toque);
+  },
+
+  mostrarToqueRecibido(toque) {
+    const nombre = this.contactos[toque.de] || toque.nombreRemitente || 'Alguien';
+    const avatar = toque.avatarRemitente || localStorage.getItem('avatar_' + toque.de) || '👤';
     const categoria = TOKES_TYPES.find(t => t.id === toque.num) || TOKES_TYPES[0];
     
     // Guardar quién envió el toque para la respuesta
     this.state.lastToqueSender = toque.de;
-    this.state.respuestaToqueIndex = 0; // Reset selección
+    this.state.respuestaToqueIndex = 0;
     
-    let mensajeTexto = `¡${nombre} te dio un Toque!`;
+    let mensajeTexto = `¡${nombre} te envió un Toque!`;
     if (toque.contexto && CONTEXTOS_TOKES[toque.num]) {
       const ctx = CONTEXTOS_TOKES[toque.num][parseInt(toque.contexto) - 1];
       if (ctx) mensajeTexto = `¡${nombre} dice ${ctx.texto}!`;
     }
     
     const modal = document.getElementById('toque-recibido-modal');
-    const emojiEl = document.getElementById('toque-emoji');
+    const avatarEl = document.getElementById('toque-avatar');
     const nombreEl = document.getElementById('toque-nombre');
+    const emojiEl = document.getElementById('toque-emoji');
     const mensajeEl = document.getElementById('toque-mensaje');
     
-    if (modal && emojiEl && nombreEl && mensajeEl) {
-      emojiEl.textContent = categoria.emoji;
+    // Aplicar color de fondo según el tipo de toke
+    modal.style.background = categoria.color;
+    
+    if (modal && avatarEl && nombreEl && emojiEl && mensajeEl) {
+      avatarEl.textContent = avatar;
       nombreEl.textContent = nombre;
+      emojiEl.textContent = categoria.emoji;
       mensajeEl.textContent = mensajeTexto;
       
-      // Reset y mostrar opciones de respuesta
       this.updateRespuestasFocus();
       
       modal.classList.add('active');
       
-      if (this.state.settings.sonido) this.playSound('success');
+      this.playSound('success');
       if (this.state.settings.vibracion && navigator.vibrate) {
         navigator.vibrate([200, 100, 200]);
       }
     }
   },
 
-  // NUEVO: Enviar respuesta al toque recibido
   async enviarRespuestaToque() {
     const opciones = document.querySelectorAll('.respuesta-option');
     const seleccionada = opciones[this.state.respuestaToqueIndex];
     if (!seleccionada) return;
     
     const emoji = seleccionada.dataset.emoji;
-    const texto = seleccionada.querySelector('.texto-resp').textContent;
+    const texto = seleccionada.dataset.texto;
     
     this.debug('Enviando respuesta: ' + emoji + ' a ' + this.state.lastToqueSender);
     
     // Cerrar modal primero
-    this.cerrarToqueRecibido();
+    document.getElementById('toque-recibido-modal').classList.remove('active');
     
-    // Enviar respuesta al servidor
+    // Enviar respuesta al servidor (no consume toques)
     if (this.state.lastToqueSender) {
       try {
         await fetch(`${BACK}/respuesta`, {
@@ -3517,7 +3885,9 @@ const app = {
             de: this.miID,
             para: this.state.lastToqueSender,
             respuesta: emoji,
-            texto: texto
+            texto: texto,
+            avatarRemitente: this.state.settings.avatar,
+            nombreRemitente: localStorage.getItem('miNombre') || 'Amigo'
           })
         });
         this.showMsg(`Respondiste ${emoji}`);
@@ -3527,12 +3897,47 @@ const app = {
     }
     
     this.state.lastToqueSender = null;
+    
+    // Procesar siguiente en cola después de un delay
+    setTimeout(() => {
+      this.procesarColaTokes();
+    }, 500);
   },
 
-  cerrarToqueRecibido() {
-    const modal = document.getElementById('toque-recibido-modal');
-    if (modal) modal.classList.remove('active');
-    this.state.lastToqueSender = null;
+  // ========================================
+  // RECEPCIÓN DE RESPUESTAS
+  // ========================================
+  
+  mostrarRespuestaRecibida(respuesta) {
+    const modal = document.getElementById('respuesta-recibida-modal');
+    const avatarEl = document.getElementById('respuesta-avatar');
+    const nombreEl = document.getElementById('respuesta-nombre');
+    const textoEl = document.getElementById('respuesta-texto');
+    const emojiEl = document.getElementById('respuesta-emoji');
+    
+    const nombre = this.contactos[respuesta.de] || respuesta.nombreRemitente || 'Alguien';
+    const avatar = respuesta.avatarRemitente || localStorage.getItem('avatar_' + respuesta.de) || '👤';
+    
+    if (avatarEl) avatarEl.textContent = avatar;
+    if (nombreEl) nombreEl.textContent = nombre;
+    if (textoEl) textoEl.textContent = `respondió: ${respuesta.texto || 'OK'}`;
+    if (emojiEl) emojiEl.textContent = respuesta.respuesta || '👍';
+    
+    if (modal) {
+      modal.classList.add('active');
+      this.playSound('respuesta');
+      if (this.state.settings.vibracion && navigator.vibrate) {
+        navigator.vibrate([100, 50]);
+      }
+    }
+  },
+
+  cerrarRespuestaRecibida() {
+    document.getElementById('respuesta-recibida-modal').classList.remove('active');
+    // Procesar siguiente en cola
+    setTimeout(() => {
+      this.procesarColaTokes();
+    }, 300);
   },
 
   jugarVSIA() {
@@ -3549,16 +3954,6 @@ const app = {
       return;
     }
     this.showMsg('⚔️ VS Amigo - Próximamente');
-  },
-
-  showEmojiDetail(id) {
-    const emoji = EMOJIS_LIST[id-1] || '✨';
-    const stats = this.todex.emojis_stats[id];
-    if (stats) {
-      this.showMsg(`${emoji} #${id} ✨${stats.aura} 🌟${stats.vibra} 🍀${stats.suerte}`);
-    } else {
-      this.showMsg(`${emoji} #${id} capturado`);
-    }
   },
 
   handleResponseOK() {
@@ -3607,7 +4002,7 @@ const app = {
 };
 
 window.addEventListener('load', () => {
-  console.log('Tokeji v12 iniciando...');
+  console.log('Tokeji v13 iniciando...');
   app.init();
 });
 </script>
