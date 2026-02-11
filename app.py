@@ -6,11 +6,8 @@ import json
 import random
 
 app = Flask(__name__)
-CORS(app)  # Permitir conexiones de cualquier origen
+CORS(app)
 
-# ========================================
-# DATOS EN MEMORIA + ARCHIVO
-# ========================================
 ARCHIVO_DATOS = "tokeji_datos.json"
 
 def cargar_datos():
@@ -21,7 +18,7 @@ def cargar_datos():
         return {
             "toques_por_usuario": {},
             "toques_recibidos": {},
-            "respuestas_recibidas": {},  # NUEVO: Almacenar respuestas
+            "respuestas_recibidas": {},
             "desafios_pendientes": {},
             "combates_finalizados": []
         }
@@ -31,7 +28,7 @@ def guardar_datos():
         json.dump({
             "toques_por_usuario": toques_por_usuario,
             "toques_recibidos": toques_recibidos,
-            "respuestas_recibidas": respuestas_recibidas,  # NUEVO
+            "respuestas_recibidas": respuestas_recibidas,
             "desafios_pendientes": desafios_pendientes,
             "combates_finalizados": combates_finalizados
         }, f)
@@ -39,13 +36,10 @@ def guardar_datos():
 datos = cargar_datos()
 toques_por_usuario = datos["toques_por_usuario"]
 toques_recibidos = datos["toques_recibidos"]
-respuestas_recibidas = datos.get("respuestas_recibidas", {})  # NUEVO
+respuestas_recibidas = datos.get("respuestas_recibidas", {})
 desafios_pendientes = datos["desafios_pendientes"]
 combates_finalizados = datos.get("combates_finalizados", [])
 
-# ========================================
-# BASE DE DATOS DE 150 EMOJIS
-# ========================================
 EMOJIS_DATABASE = [
     {"id": i, "rarity": r} for i, r in enumerate([
         "comun", "comun", "comun", "raro", "epico", "comun", "raro", "comun", "raro", "comun",
@@ -67,24 +61,6 @@ EMOJIS_DATABASE = [
     ], start=1)
 ]
 
-def generar_stats_aleatorios(rareza):
-    rangos = {
-        "comun": {"aura": [5, 15], "vibra": [5, 15], "suerte": [1, 3]},
-        "raro": {"aura": [15, 25], "vibra": [15, 25], "suerte": [3, 5]},
-        "epico": {"aura": [25, 35], "vibra": [25, 35], "suerte": [5, 7]},
-        "mitico": {"aura": [35, 50], "vibra": [35, 50], "suerte": [7, 10]},
-        "legendario": {"aura": [50, 70], "vibra": [50, 70], "suerte": [10, 15]}
-    }
-    rango = rangos.get(rareza, rangos["comun"])
-    return {
-        "aura": random.randint(rango["aura"][0], rango["aura"][1]),
-        "vibra": random.randint(rango["vibra"][0], rango["vibra"][1]),
-        "suerte": random.randint(rango["suerte"][0], rango["suerte"][1])
-    }
-
-# ========================================
-# SERVIR FRONTEND
-# ========================================
 @app.route('/')
 def index():
     return send_from_directory('.', 'index.html')
@@ -93,9 +69,6 @@ def index():
 def static_files(filename):
     return send_from_directory('.', filename)
 
-# ========================================
-# API TOQUES
-# ========================================
 @app.route("/toque", methods=["POST"])
 def toque():
     try:
@@ -149,11 +122,10 @@ def toques_pendientes():
         if user_id in toques_recibidos:
             toques_recibidos[user_id] = [
                 t for t in toques_recibidos[user_id]
-                if ahora - t["hora"] < 3600  # Expiran en 1 hora
+                if ahora - t["hora"] < 3600
             ]
         
         toques = toques_recibidos.get(user_id, [])
-        # Limpiar después de enviar
         toques_recibidos[user_id] = []
         guardar_datos()
         
@@ -162,27 +134,20 @@ def toques_pendientes():
     except Exception as e:
         return jsonify(ok=False, error=str(e)), 500
 
-# ========================================
-# API RESPUESTAS (NUEVO - FALTABA ESTO)
-# ========================================
 @app.route("/respuesta", methods=["POST"])
 def enviar_respuesta():
-    """
-    Endpoint para enviar una respuesta a un toque recibido
-    """
     try:
         data = request.get_json()
         de = data.get("de")
         para = data.get("para")
-        respuesta = data.get("respuesta")  # Emoji de respuesta
-        texto = data.get("texto")  # Texto descriptivo
+        respuesta = data.get("respuesta")
+        texto = data.get("texto")
         avatar_remitente = data.get("avatarRemitente", "👤")
         nombre_remitente = data.get("nombreRemitente", "Alguien")
 
         if not all([de, para, respuesta]):
             return jsonify(ok=False, error="Faltan datos requeridos (de, para, respuesta)"), 400
 
-        # Almacenar respuesta para el destinatario
         if para not in respuestas_recibidas:
             respuestas_recibidas[para] = []
         
@@ -204,9 +169,6 @@ def enviar_respuesta():
 
 @app.route("/respuestas-pendientes", methods=["GET"])
 def respuestas_pendientes():
-    """
-    Endpoint para obtener respuestas pendientes (polling)
-    """
     try:
         user_id = request.args.get("userId")
         if not user_id:
@@ -214,14 +176,12 @@ def respuestas_pendientes():
         
         ahora = int(time.time())
         if user_id in respuestas_recibidas:
-            # Filtrar respuestas antiguas (expiran en 1 hora)
             respuestas_recibidas[user_id] = [
                 r for r in respuestas_recibidas[user_id]
                 if ahora - r["hora"] < 3600
             ]
         
         respuestas = respuestas_recibidas.get(user_id, [])
-        # Limpiar después de enviar
         respuestas_recibidas[user_id] = []
         guardar_datos()
         
@@ -230,9 +190,6 @@ def respuestas_pendientes():
     except Exception as e:
         return jsonify(ok=False, error=str(e)), 500
 
-# ========================================
-# API COMBATES PVP
-# ========================================
 @app.route("/desafio", methods=["POST"])
 def crear_desafio():
     try:
@@ -297,7 +254,6 @@ def responder_desafio():
         if not desafio_id:
             return jsonify(ok=False, error="Falta desafioId"), 400
         
-        # Buscar desafío
         desafio = None
         for usuario, lista in desafios_pendientes.items():
             for d in lista:
@@ -310,7 +266,6 @@ def responder_desafio():
         if not desafio:
             return jsonify(ok=False, error="Desafío no encontrado"), 404
         
-        # Eliminar de pendientes
         for usuario in desafios_pendientes:
             desafios_pendientes[usuario] = [
                 d for d in desafios_pendientes[usuario]
@@ -321,7 +276,6 @@ def responder_desafio():
             guardar_datos()
             return jsonify(ok=True, mensaje="Desafío rechazado")
         
-        # Calcular combate (RNG puro)
         poder_atacante = random.random() * 100
         poder_defensor = random.random() * 100
         ganador = desafio["de"] if poder_atacante > poder_defensor else desafio["para"]
@@ -340,7 +294,6 @@ def responder_desafio():
         
         combates_finalizados.append(resultado)
         
-        # Limpiar antiguos
         ahora = int(time.time())
         combates_finalizados[:] = [c for c in combates_finalizados if ahora - c["timestamp"] < 86400]
         
@@ -374,9 +327,6 @@ def obtener_combates_finalizados():
     except Exception as e:
         return jsonify(ok=False, error=str(e)), 500
 
-# ========================================
-# HEALTH CHECK
-# ========================================
 @app.route("/health", methods=["GET"])
 def health_check():
     return jsonify(ok=True, status="running", version="1.1.0")
