@@ -8,7 +8,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes"/>
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400 ;600;700;800&display=swap');
     
     * {
       margin: 0;
@@ -443,6 +443,31 @@
       font-weight: 800;
       margin-top: 6px;
       box-shadow: 0 2px 0 #B7791F;
+    }
+
+    .cola-badge {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      background: #F56565;
+      color: white;
+      font-size: 11px;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: 12px;
+      box-shadow: 0 2px 0 #C53030;
+      animation: pulse-badge 2s infinite;
+      display: none;
+      z-index: 50;
+    }
+
+    .cola-badge.active {
+      display: block;
+    }
+
+    @keyframes pulse-badge {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
     }
 
     .menu-grid {
@@ -1139,7 +1164,6 @@
       font-size: 13px;
     }
 
-    /* ANIMACIÓN DE ENVÍO MEJORADA */
     .envio-animacion {
       position: absolute;
       top: 0;
@@ -1232,7 +1256,6 @@
       100% { transform: scale(1) rotate(0deg); }
     }
 
-    /* RECEPCIÓN DE TOKE MEJORADA */
     .toque-recibido-modal {
       position: absolute;
       top: 0;
@@ -1304,7 +1327,6 @@
       to { transform: translateY(0); opacity: 1; }
     }
 
-    /* OPCIONES DE RESPUESTA */
     .respuestas-container {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -1356,7 +1378,6 @@
       color: #2D3748;
     }
 
-    /* RECEPCIÓN DE RESPUESTA (NUEVA) */
     .respuesta-recibida-modal {
       position: absolute;
       top: 0;
@@ -1424,7 +1445,6 @@
       box-shadow: 0 0 0 rgba(0,0,0,0.2);
     }
 
-    /* NOTIFICACIÓN NUEVO EMOJI - INTEGRADA EN PANTALLA */
     .nuevo-emoji-notificacion {
       position: absolute;
       top: 50%;
@@ -1519,7 +1539,6 @@
       box-shadow: 0 0 0 rgba(0,0,0,0.1);
     }
 
-    /* FICHA TÉCNICA TODEX */
     .ficha-todex-modal {
       position: absolute;
       top: 0;
@@ -1660,6 +1679,8 @@
     
     <div class="device-logo">✨ TOKEJI ✨</div>
     <div class="shine"></div>
+    
+    <div class="cola-badge" id="cola-badge">📨 <span id="cola-count">0</span></div>
     
     <div class="screen-container">
       <div class="screen">
@@ -1848,7 +1869,6 @@
             </div>
           </div>
 
-          <!-- ANIMACIÓN DE ENVÍO -->
           <div class="envio-animacion" id="envio-animacion">
             <div class="envio-avatar-container">
               <div class="envio-avatar" id="envio-avatar-anim">🐱</div>
@@ -1859,7 +1879,6 @@
             <div class="envio-check">✅</div>
           </div>
 
-          <!-- RECEPCIÓN DE TOKE -->
           <div class="toque-recibido-modal" id="toque-recibido-modal">
             <div class="toque-recibido-header">
               <div class="toque-recibido-avatar" id="toque-avatar">👤</div>
@@ -1888,7 +1907,6 @@
             </div>
           </div>
 
-          <!-- RECEPCIÓN DE RESPUESTA -->
           <div class="respuesta-recibida-modal" id="respuesta-recibida-modal">
             <div class="respuesta-recibida-avatar" id="respuesta-avatar">👤</div>
             <div class="respuesta-recibida-nombre" id="respuesta-nombre">Amigo</div>
@@ -1897,7 +1915,6 @@
             <button class="respuesta-recibida-btn" onclick="app.cerrarRespuestaRecibida()">OK</button>
           </div>
 
-          <!-- NOTIFICACIÓN NUEVO EMOJI -->
           <div class="nuevo-emoji-notificacion" id="nuevo-emoji-notif">
             <div class="nuevo-emoji-titulo">🎉 ¡Nuevo Emoji!</div>
             <div class="nuevo-emoji-display" id="nuevo-emoji-icon">🎉</div>
@@ -1911,7 +1928,6 @@
             <button class="nuevo-emoji-btn" onclick="app.cerrarNuevoEmoji()">¡Genial!</button>
           </div>
 
-          <!-- FICHA TÉCNICA TODEX -->
           <div class="ficha-todex-modal" id="ficha-todex-modal">
             <div class="ficha-todex-content" id="ficha-todex-content">
               <div class="ficha-todex-emoji" id="ficha-emoji">🎉</div>
@@ -1967,15 +1983,14 @@
     </div>
   </div>
 
-<script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js "></script>
 <script>
 // ========================================
-// TOKEJI v13 - CON ANIMACIONES COMPLETAS
+// TOKEJI v14.1 - COMPATIBLE CON BACKEND ORIGINAL
 // ========================================
 
-const BACK = "https://tokeji-device.onrender.com";
+const BACK = "https://tokeji-device.onrender.com ";
 
-// Rarezas fijas tipo Pokémon (mezcladas pero iguales para todos)
 const RAREZAS_TODEX = {
   1: 'comun', 2: 'mitico', 3: 'raro', 4: 'comun', 5: 'raro', 6: 'epico', 7: 'legendario', 8: 'mitico', 9: 'mitico', 10: 'raro',
   11: 'epico', 12: 'epico', 13: 'epico', 14: 'epico', 15: 'raro', 16: 'epico', 17: 'comun', 18: 'raro', 19: 'comun', 20: 'epico',
@@ -1993,6 +2008,26 @@ const RAREZAS_TODEX = {
   131: 'comun', 132: 'mitico', 133: 'raro', 134: 'epico', 135: 'comun', 136: 'legendario', 137: 'raro', 138: 'epico', 139: 'mitico', 140: 'legendario',
   141: 'epico', 142: 'raro', 143: 'mitico', 144: 'epico', 145: 'legendario', 146: 'mitico', 147: 'raro', 148: 'epico', 149: 'mitico', 150: 'legendario'
 };
+
+function calcularStatsBase(id) {
+  const rareza = RAREZAS_TODEX[id] || 'comun';
+  const rangos = {
+    comun: { aura: [5, 15], vibra: [5, 15], suerte: [1, 3] },
+    raro: { aura: [15, 25], vibra: [15, 25], suerte: [3, 5] },
+    epico: { aura: [25, 35], vibra: [25, 35], suerte: [5, 7] },
+    mitico: { aura: [35, 50], vibra: [35, 50], suerte: [7, 10] },
+    legendario: { aura: [50, 70], vibra: [50, 70], suerte: [10, 15] }
+  };
+  
+  const randomBetween = (min, max, seed) => ((seed * 7 + 13) % (max - min + 1)) + min;
+  const r = rangos[rareza];
+  
+  return {
+    aura: randomBetween(r.aura[0], r.aura[1], id),
+    vibra: randomBetween(r.vibra[0], r.vibra[1], id + 100),
+    suerte: randomBetween(r.suerte[0], r.suerte[1], id + 200)
+  };
+}
 
 const CONTEXTOS_TOKES = {
   1: [ 
@@ -2081,8 +2116,9 @@ const app = {
     debugMode: false,
     respuestaToqueIndex: 0,
     lastToqueSender: null,
-    colaTokes: [],
-    procesandoCola: false
+    colaMensajes: [],
+    procesandoCola: false,
+    mensajesPendientes: 0
   },
   
   contactos: {},
@@ -2102,7 +2138,7 @@ const app = {
   },
 
   init() {
-    this.debug('=== TOKEJI v13 INICIANDO ===');
+    this.debug('=== TOKEJI v14.1 INICIANDO ===');
     this.debug('Backend: ' + BACK);
     
     this.miID = localStorage.getItem("miid");
@@ -2138,10 +2174,41 @@ const app = {
     this.updateClock();
     setInterval(() => this.updateClock(), 60000);
     
-    setTimeout(() => this.checkIncoming(), 1000);
-    setInterval(() => this.checkIncoming(), 5000);
+    this.prevenirZoom();
+    
+    setTimeout(() => {
+      this.checkTokes();
+      this.checkRespuestas();
+    }, 1000);
+    
+    setInterval(() => {
+      this.checkTokes();
+      this.checkRespuestas();
+    }, 5000);
+      setTimeout(() => this.reintentarRespuestasPendientes(), 10000);
     
     this.showPage('splash', false);
+  },
+
+  prevenirZoom() {
+    let lastTouchEnd = 0;
+    document.addEventListener('touchend', (e) => {
+      const now = Date.now();
+      if (now - lastTouchEnd <= 300) {
+        e.preventDefault();
+      }
+      lastTouchEnd = now;
+    }, { passive: false });
+
+    document.addEventListener('touchmove', (e) => {
+      if (e.touches.length > 1) {
+        e.preventDefault();
+      }
+    }, { passive: false });
+
+    document.addEventListener('dblclick', (e) => {
+      e.preventDefault();
+    }, { passive: false });
   },
 
   initAudio() {
@@ -2192,7 +2259,6 @@ const app = {
         osc.start(now);
         osc.stop(now + 0.3);
       } else if (type === 'respuesta') {
-        // Sonido más suave para respuestas
         osc.frequency.setValueAtTime(400, now);
         osc.frequency.exponentialRampToValueAtTime(600, now + 0.1);
         gain.gain.setValueAtTime(0.05, now);
@@ -2200,11 +2266,10 @@ const app = {
         osc.start(now);
         osc.stop(now + 0.2);
       } else if (type === 'unlock') {
-        // Sonido especial para desbloqueo
-        osc.frequency.setValueAtTime(523, now); // C5
-        osc.frequency.setValueAtTime(659, now + 0.1); // E5
-        osc.frequency.setValueAtTime(784, now + 0.2); // G5
-        osc.frequency.setValueAtTime(1047, now + 0.3); // C6
+        osc.frequency.setValueAtTime(523, now);
+        osc.frequency.setValueAtTime(659, now + 0.1);
+        osc.frequency.setValueAtTime(784, now + 0.2);
+        osc.frequency.setValueAtTime(1047, now + 0.3);
         gain.gain.setValueAtTime(0.1, now);
         gain.gain.exponentialRampToValueAtTime(0.01, now + 0.5);
         osc.start(now);
@@ -2232,6 +2297,21 @@ const app = {
     }
   },
 
+  updateColaBadge() {
+    const badge = document.getElementById('cola-badge');
+    const count = document.getElementById('cola-count');
+    if (!badge || !count) return;
+    
+    const total = this.state.colaMensajes.length;
+    
+    if (total > 0 && this.state.currentPage === 'home') {
+      count.textContent = total;
+      badge.classList.add('active');
+    } else {
+      badge.classList.remove('active');
+    }
+  },
+
   showPage(page, save = true) {
     if (save && this.state.currentPage !== page) {
       this.state.history.push(this.state.currentPage);
@@ -2243,6 +2323,10 @@ const app = {
     
     this.state.currentPage = page;
     this.state.inSelector = false;
+    
+    if (page === 'home') {
+      this.updateColaBadge();
+    }
     
     switch(page) {
       case 'splash':
@@ -2309,6 +2393,9 @@ const app = {
         break;
       case 'home':
         this.updateHome();
+        if (this.state.colaMensajes.length > 0 && !this.state.procesandoCola) {
+          this.procesarColaMensajes();
+        }
         break;
       case 'qr':
         this.generarQR();
@@ -3149,7 +3236,7 @@ const app = {
     
     const emoji = EMOJIS_LIST[id-1] || '✨';
     const rareza = RAREZAS_TODEX[id] || 'comun';
-    const stats = this.todex.emojis_stats[id] || { aura: 10, vibra: 15, suerte: 3 };
+    const stats = this.todex.emojis_stats[id] || calcularStatsBase(id);
     
     const modal = document.getElementById('ficha-todex-modal');
     const content = document.getElementById('ficha-todex-content');
@@ -3186,6 +3273,8 @@ const app = {
       statusEl.textContent = `${st.emoji} ${st.label}`;
       statusEl.style.background = st.color;
     }
+    
+    this.updateColaBadge();
   },
 
   updateSettingsUI() {
@@ -3335,7 +3424,7 @@ const app = {
     const texto = `${this.miID}|${nom}|${avatar}`;
     const qrDiv = document.getElementById('qr-mio');
     if (qrDiv) {
-      qrDiv.innerHTML = `<img src="https://api.qrserver.com/v1/create-qr-code/?size=280x280&data=${encodeURIComponent(texto)}" alt="QR" style="width: 140px; height: 140px;"/>`;
+      qrDiv.innerHTML = `<img src="https://api.qrserver.com/v1/create-qr-code/?size=280x280&data= ${encodeURIComponent(texto)}" alt="QR" style="width: 140px; height: 140px;"/>`;
     }
   },
 
@@ -3484,7 +3573,6 @@ const app = {
         
         this.contactos[id] = nombre;
         if (avatar) {
-          // Guardar avatar del amigo si viene en el QR
           localStorage.setItem('avatar_' + id, avatar);
         }
         localStorage.setItem('cts', JSON.stringify(this.contactos));
@@ -3504,10 +3592,6 @@ const app = {
     this.showMsg('❌ QR inválido. Formato: ID|Nombre|Avatar');
   },
 
-  // ========================================
-  // ENVÍO DE TOQUES CON ANIMACIÓN
-  // ========================================
-  
   async enviarToque(paraId, paraNombre) {
     this.debug('=== ENVIANDO TOQUE ===');
     this.debug('Para: ' + paraId + ' - ' + paraNombre);
@@ -3522,17 +3606,13 @@ const app = {
       return;
     }
     
-    // Obtener color del toke para el fondo
     const categoria = TOKES_TYPES.find(t => t.id === this.state.selectedCategoria);
     const colorToke = categoria ? categoria.color : '#FF6B9D';
     
-    // Mostrar animación de envío PRIMERO
     this.mostrarAnimacionEnvio(paraNombre, colorToke, categoria.emoji);
     
-    // Esperar a que termine la animación antes de enviar
     await new Promise(r => setTimeout(r, 1500));
     
-    // Encontrar el índice de la variante (1-4)
     const variantes = CONTEXTOS_TOKES[this.state.selectedCategoria];
     const contextoIndex = variantes.findIndex(v => v.nombre === this.state.selectedVariante.nombre) + 1;
     
@@ -3571,26 +3651,21 @@ const app = {
       this.debug('Respuesta: ' + JSON.stringify(data));
       
       if (response.ok && data.ok) {
-        // ÉXITO - Mostrar check en animación
         this.mostrarConfirmacionEnvio();
         this.playSound('success');
         
-        // Actualizar toques restantes
         this.state.toquesRestantes = data.toques_restantes || (this.state.toquesRestantes - 1);
         localStorage.setItem('toquesRestantes', this.state.toquesRestantes);
         this.updateHome();
         
-        // Actualizar ToDex y verificar desbloqueos
         this.todex.total_toques_enviados = (this.todex.total_toques_enviados || 0) + 1;
         localStorage.setItem('todex', JSON.stringify(this.todex));
         
-        // Verificar desbloqueo CADA 5 tokes
         if (this.todex.total_toques_enviados % 5 === 0) {
           this.debug('¡Verificando desbloqueo! Toques totales: ' + this.todex.total_toques_enviados);
           setTimeout(() => this.verificarDesbloqueos(), 500);
         }
         
-        // Reset selección
         this.state.selectedCategoria = null;
         this.state.selectedVariante = null;
         
@@ -3614,7 +3689,6 @@ const app = {
     const emojiEl = document.getElementById('envio-emoji-toke');
     const destino = document.getElementById('envio-destino-anim');
     
-    // Aplicar color de fondo del toke
     anim.style.background = colorFondo;
     
     if (avatar) avatar.textContent = this.state.settings.avatar;
@@ -3623,12 +3697,11 @@ const app = {
     
     if (anim) {
       anim.classList.add('active');
-      // Reiniciar animación
       const avatarEl = anim.querySelector('.envio-avatar');
       const emojiElAnim = anim.querySelector('.envio-emoji-toke');
       avatarEl.style.animation = 'none';
       emojiElAnim.style.animation = 'none';
-      avatarEl.offsetHeight; // Trigger reflow
+      avatarEl.offsetHeight;
       avatarEl.style.animation = 'enviarAnim 1.5s ease-in-out';
       emojiElAnim.style.animation = 'enviarAnim 1.5s ease-in-out 0.2s both';
     }
@@ -3651,10 +3724,6 @@ const app = {
     if (check) check.style.display = 'none';
   },
 
-  // ========================================
-  // SISTEMA DE DESBLOQUEO CORREGIDO
-  // ========================================
-  
   verificarDesbloqueos() {
     this.debug('=== VERIFICANDO DESBLOQUEO ===');
     
@@ -3670,33 +3739,17 @@ const app = {
       this.todex.captured.push(nuevo);
       this.todex.captured.sort((a, b) => a - b);
       
-      // Generar stats según rareza
       const rareza = RAREZAS_TODEX[nuevo] || 'comun';
-      const rangos = {
-        comun: { aura: [5, 15], vibra: [5, 15], suerte: [1, 3] },
-        raro: { aura: [15, 25], vibra: [15, 25], suerte: [3, 5] },
-        epico: { aura: [25, 35], vibra: [25, 35], suerte: [5, 7] },
-        mitico: { aura: [35, 50], vibra: [35, 50], suerte: [7, 10] },
-        legendario: { aura: [50, 70], vibra: [50, 70], suerte: [10, 15] }
-      };
+      const stats = calcularStatsBase(nuevo);
       
-      const randomBetween = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
-      const rango = rangos[rareza];
-      
-      this.todex.emojis_stats[nuevo] = {
-        aura: randomBetween(rango.aura[0], rango.aura[1]),
-        vibra: randomBetween(rango.vibra[0], rango.vibra[1]),
-        suerte: randomBetween(rango.suerte[0], rango.suerte[1])
-      };
+      this.todex.emojis_stats[nuevo] = stats;
       
       localStorage.setItem('todex', JSON.stringify(this.todex));
       
       this.debug('¡Nuevo emoji desbloqueado!: #' + nuevo + ' ' + rareza);
       
-      // Mostrar notificación
       this.mostrarNotificacionNuevoEmoji(nuevo, rareza);
       
-      // Actualizar ToDox si estamos en esa página
       if (this.state.currentPage === 'todox') {
         this.renderTodex();
         setTimeout(() => {
@@ -3741,24 +3794,24 @@ const app = {
     if (notif) notif.classList.remove('active');
   },
 
-  // ========================================
-  // RECEPCIÓN DE TOQUES CON RESPUESTAS
-  // ========================================
-  
-  async checkIncoming() {
+  async checkTokes() {
     if (this.state.currentPage === 'splash' || 
         this.state.currentPage === 'setup' || 
         this.state.currentPage === 'consent') return;
     
-    // No hacer polling si ya hay un toque mostrándose o procesando cola
+    if (this.state.procesandoCola) return;
+    
     const toqueModal = document.getElementById('toque-recibido-modal');
     const respuestaModal = document.getElementById('respuesta-recibida-modal');
     if ((toqueModal && toqueModal.classList.contains('active')) ||
-        (respuestaModal && respuestaModal.classList.contains('active')) ||
-        this.state.procesandoCola) return;
+        (respuestaModal && respuestaModal.classList.contains('active'))) {
+      return;
+    }
     
     try {
       const url = `${BACK}/toques-pendientes?userId=${this.miID}`;
+      
+      this.debug('Polling tokes: ' + url);
       
       const response = await fetch(url, {
         method: 'GET',
@@ -3769,47 +3822,126 @@ const app = {
         mode: 'cors'
       });
       
-      if (!response.ok) return;
+      if (!response.ok) {
+        this.debug('Error HTTP tokes: ' + response.status);
+        return;
+      }
       
       const data = await response.json();
+      this.debug('Respuesta tokes: ' + JSON.stringify(data));
       
       if (data && data.ok && data.toques && data.toques.length > 0) {
-        this.debug(data.toques.length + ' toque(s) recibido(s)');
+        this.debug(data.toques.length + ' toke(s) recibido(s)');
         
-        // Añadir a la cola
         data.toques.forEach(toque => {
-          const idUnico = `${Date.now()}-${toque.de}-${Math.random()}`;
-          this.state.colaTokes.push({ ...toque, idUnico });
+          const idUnico = `toque-${Date.now()}-${toque.de}-${Math.random()}`;
+          this.state.colaMensajes.push({ 
+            ...toque, 
+            tipo: 'toque',
+            idUnico 
+          });
         });
         
-        // Procesar cola si no estamos procesando ya
-        if (!this.state.procesandoCola) {
-          this.procesarColaTokes();
+        this.state.mensajesPendientes = this.state.colaMensajes.length;
+        this.updateColaBadge();
+        
+        if (!this.state.procesandoCola && this.state.currentPage === 'home') {
+          this.procesarColaMensajes();
+        }
+      }
+    } catch(e) {
+      this.debug('Error checkTokes: ' + e.message);
+    }
+  },
+
+  async checkRespuestas() {
+    if (this.state.currentPage === 'splash' || 
+        this.state.currentPage === 'setup' || 
+        this.state.currentPage === 'consent') return;
+    
+    if (this.state.procesandoCola) return;
+    
+    const toqueModal = document.getElementById('toque-recibido-modal');
+    const respuestaModal = document.getElementById('respuesta-recibida-modal');
+    if ((toqueModal && toqueModal.classList.contains('active')) ||
+        (respuestaModal && respuestaModal.classList.contains('active'))) {
+      return;
+    }
+    
+    try {
+      const url = `${BACK}/respuestas-pendientes?userId=${this.miID}`;
+      
+      this.debug('Polling respuestas: ' + url);
+      
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: { 
+          'Cache-Control': 'no-cache',
+          'Accept': 'application/json'
+        },
+        mode: 'cors'
+      });
+      
+      if (!response.ok) {
+        if (response.status !== 404) {
+          this.debug('Error HTTP respuestas: ' + response.status);
+        }
+        return;
+      }
+      
+      const data = await response.json();
+      this.debug('Respuesta respuestas: ' + JSON.stringify(data));
+      
+      if (data && data.ok && data.respuestas && data.respuestas.length > 0) {
+        this.debug(data.respuestas.length + ' respuesta(s) recibida(s)');
+        
+        data.respuestas.forEach(respuesta => {
+          const idUnico = `respuesta-${Date.now()}-${respuesta.de}-${Math.random()}`;
+          this.state.colaMensajes.push({ 
+            ...respuesta, 
+            tipo: 'respuesta',
+            idUnico 
+          });
+        });
+        
+        this.state.mensajesPendientes = this.state.colaMensajes.length;
+        this.updateColaBadge();
+        
+        if (!this.state.procesandoCola && this.state.currentPage === 'home') {
+          this.procesarColaMensajes();
         }
       }
     } catch(e) {
       if (this.state.debugMode) {
-        this.debug('Error checkIncoming: ' + e.message);
+        this.debug('Error checkRespuestas: ' + e.message);
       }
     }
   },
 
-  async procesarColaTokes() {
-    if (this.state.colaTokes.length === 0) {
+  async procesarColaMensajes() {
+    if (this.state.colaMensajes.length === 0) {
+      this.state.procesandoCola = false;
+      this.state.mensajesPendientes = 0;
+      this.updateColaBadge();
+      return;
+    }
+    
+    if (this.state.currentPage !== 'home') {
       this.state.procesandoCola = false;
       return;
     }
     
     this.state.procesandoCola = true;
-    const toque = this.state.colaTokes.shift();
+    const msg = this.state.colaMensajes.shift();
+    this.state.mensajesPendientes = this.state.colaMensajes.length;
+    this.updateColaBadge();
     
-    // Verificar si ya mostramos este toque
     const hoy = new Date().toDateString();
-    const idUnico = `${hoy}-${toque.de}-${toque.num}-${toque.hora || Date.now()}`;
+    const idUnico = `${hoy}-${msg.de}-${msg.tipo}-${msg.hora || Date.now()}`;
     
     if (this.state.toquesMostrados.has(idUnico)) {
-      this.debug('Toque ya mostrado: ' + idUnico);
-      this.procesarColaTokes();
+      this.debug('Mensaje ya mostrado: ' + idUnico);
+      this.procesarColaMensajes();
       return;
     }
     this.state.toquesMostrados.add(idUnico);
@@ -3818,21 +3950,26 @@ const app = {
       this.state.toquesMostrados.clear();
     }
     
-    this.mostrarToqueRecibido(toque);
+    if (msg.tipo === 'toque') {
+      this.mostrarToqueRecibido(msg);
+    } else if (msg.tipo === 'respuesta') {
+      this.mostrarRespuestaRecibida(msg);
+    } else {
+      this.mostrarToqueRecibido(msg);
+    }
   },
 
-  mostrarToqueRecibido(toque) {
-    const nombre = this.contactos[toque.de] || toque.nombreRemitente || 'Alguien';
-    const avatar = toque.avatarRemitente || localStorage.getItem('avatar_' + toque.de) || '👤';
-    const categoria = TOKES_TYPES.find(t => t.id === toque.num) || TOKES_TYPES[0];
+  mostrarToqueRecibido(msg) {
+    const nombre = this.contactos[msg.de] || msg.nombreRemitente || 'Alguien';
+    const avatar = msg.avatarRemitente || localStorage.getItem('avatar_' + msg.de) || '👤';
+    const categoria = TOKES_TYPES.find(t => t.id === msg.num) || TOKES_TYPES[0];
     
-    // Guardar quién envió el toque para la respuesta
-    this.state.lastToqueSender = toque.de;
+    this.state.lastToqueSender = msg.de;
     this.state.respuestaToqueIndex = 0;
     
     let mensajeTexto = `¡${nombre} te envió un Toque!`;
-    if (toque.contexto && CONTEXTOS_TOKES[toque.num]) {
-      const ctx = CONTEXTOS_TOKES[toque.num][parseInt(toque.contexto) - 1];
+    if (msg.contexto && CONTEXTOS_TOKES[msg.num]) {
+      const ctx = CONTEXTOS_TOKES[msg.num][parseInt(msg.contexto) - 1];
       if (ctx) mensajeTexto = `¡${nombre} dice ${ctx.texto}!`;
     }
     
@@ -3842,7 +3979,6 @@ const app = {
     const emojiEl = document.getElementById('toque-emoji');
     const mensajeEl = document.getElementById('toque-mensaje');
     
-    // Aplicar color de fondo según el tipo de toke
     modal.style.background = categoria.color;
     
     if (modal && avatarEl && nombreEl && emojiEl && mensajeEl) {
@@ -3862,7 +3998,7 @@ const app = {
     }
   },
 
-  async enviarRespuestaToque() {
+   async enviarRespuestaToque() {
     const opciones = document.querySelectorAll('.respuesta-option');
     const seleccionada = opciones[this.state.respuestaToqueIndex];
     if (!seleccionada) return;
@@ -3870,44 +4006,146 @@ const app = {
     const emoji = seleccionada.dataset.emoji;
     const texto = seleccionada.dataset.texto;
     
-    this.debug('Enviando respuesta: ' + emoji + ' a ' + this.state.lastToqueSender);
+    this.debug('=== ENVIANDO RESPUESTA ===');
+    this.debug('Emoji: ' + emoji);
+    this.debug('Texto: ' + texto);
+    this.debug('Para: ' + this.state.lastToqueSender);
     
-    // Cerrar modal primero
     document.getElementById('toque-recibido-modal').classList.remove('active');
     
-    // Enviar respuesta al servidor (no consume toques)
-    if (this.state.lastToqueSender) {
+    if (!this.state.lastToqueSender) {
+      this.debug('Error: No hay lastToqueSender');
+      this.showMsg('❌ Error: No se pudo identificar al destinatario');
+      setTimeout(() => this.procesarColaMensajes(), 500);
+      return;
+    }
+    
+    const payload = {
+      de: this.miID,
+      para: this.state.lastToqueSender,
+      respuesta: emoji,
+      texto: texto,
+      avatarRemitente: this.state.settings.avatar || '🐱',
+      nombreRemitente: localStorage.getItem('miNombre') || 'Amigo'
+    };
+    
+    this.debug('Payload: ' + JSON.stringify(payload));
+    
+    const endpoints = [
+      `${BACK}/respuesta`,
+      `${BACK}/respuestas`,
+      `${BACK}/responder`
+    ];
+    
+    let enviado = false;
+    let ultimoError = '';
+    
+    for (const url of endpoints) {
       try {
-        await fetch(`${BACK}/respuesta`, {
+        this.debug('Intentando: ' + url);
+        
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 10000);
+        
+        const response = await fetch(url, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            de: this.miID,
-            para: this.state.lastToqueSender,
-            respuesta: emoji,
-            texto: texto,
-            avatarRemitente: this.state.settings.avatar,
-            nombreRemitente: localStorage.getItem('miNombre') || 'Amigo'
-          })
+          headers: { 
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          },
+          body: JSON.stringify(payload),
+          signal: controller.signal,
+          mode: 'cors'
         });
-        this.showMsg(`Respondiste ${emoji}`);
+        
+        clearTimeout(timeoutId);
+        
+        this.debug('Status: ' + response.status);
+        
+        if (response.ok) {
+          const data = await response.json();
+          this.debug('Respuesta OK: ' + JSON.stringify(data));
+          this.showMsg(`Respondiste ${emoji}`);
+          enviado = true;
+          break;
+        } else {
+          const errorText = await response.text();
+          this.debug('Error en ' + url + ': ' + response.status + ' - ' + errorText);
+          ultimoError = `HTTP ${response.status}`;
+        }
       } catch(e) {
-        this.debug('Error enviando respuesta: ' + e.message);
+        this.debug('Error fetch ' + url + ': ' + e.message);
+        ultimoError = e.message;
       }
+    }
+    
+    if (!enviado) {
+      this.debug('Fallaron todos los endpoints. Error: ' + ultimoError);
+      this.showMsg('❌ Error al enviar. Guardado localmente.');
+      this.guardarRespuestaPendiente(payload);
     }
     
     this.state.lastToqueSender = null;
     
-    // Procesar siguiente en cola después de un delay
     setTimeout(() => {
-      this.procesarColaTokes();
-    }, 500);
+      this.procesarColaMensajes();
+    }, 800);
   },
 
-  // ========================================
-  // RECEPCIÓN DE RESPUESTAS
-  // ========================================
-  
+  guardarRespuestaPendiente(payload) {
+    try {
+      let pendientes = JSON.parse(localStorage.getItem('respuestasPendientes') || '[]');
+      pendientes.push({
+        ...payload,
+        timestamp: Date.now(),
+        intentos: 1
+      });
+      localStorage.setItem('respuestasPendientes', JSON.stringify(pendientes));
+      this.debug('Respuesta guardada para reintentar luego');
+    } catch(e) {
+      this.debug('Error guardando respuesta pendiente: ' + e.message);
+    }
+  },
+
+  async reintentarRespuestasPendientes() {
+    try {
+      const pendientes = JSON.parse(localStorage.getItem('respuestasPendientes') || '[]');
+      if (pendientes.length === 0) return;
+      
+      this.debug('Reintentando ' + pendientes.length + ' respuestas pendientes');
+      
+      const nuevosPendientes = [];
+      
+      for (const resp of pendientes) {
+        if (resp.intentos > 3) {
+          this.debug('Respuesta descartada por demasiados intentos');
+          continue;
+        }
+        
+        try {
+          const response = await fetch(`${BACK}/respuesta`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(resp),
+            mode: 'cors'
+          });
+          
+          if (!response.ok) {
+            resp.intentos++;
+            nuevosPendientes.push(resp);
+          }
+        } catch(e) {
+          resp.intentos++;
+          nuevosPendientes.push(resp);
+        }
+      }
+      
+      localStorage.setItem('respuestasPendientes', JSON.stringify(nuevosPendientes));
+    } catch(e) {
+      this.debug('Error reintentando respuestas: ' + e.message);
+    }
+  },
+
   mostrarRespuestaRecibida(respuesta) {
     const modal = document.getElementById('respuesta-recibida-modal');
     const avatarEl = document.getElementById('respuesta-avatar');
@@ -3934,9 +4172,8 @@ const app = {
 
   cerrarRespuestaRecibida() {
     document.getElementById('respuesta-recibida-modal').classList.remove('active');
-    // Procesar siguiente en cola
     setTimeout(() => {
-      this.procesarColaTokes();
+      this.procesarColaMensajes();
     }, 300);
   },
 
@@ -4002,7 +4239,7 @@ const app = {
 };
 
 window.addEventListener('load', () => {
-  console.log('Tokeji v13 iniciando...');
+  console.log('Tokeji v14.1 iniciando...');
   app.init();
 });
 </script>
