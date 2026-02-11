@@ -23,6 +23,7 @@
     :root {
       --device-color: #FF6B9D;
       --device-dark: #FF4785;
+      --device-light: #FFB8D0;
       --screen-bg: #FFF5F7;
     }
 
@@ -49,7 +50,7 @@
     .device {
       width: 340px;
       height: 600px;
-      background: linear-gradient(145deg, #FFB8D0 0%, var(--device-color) 50%, var(--device-dark) 100%);
+      background: linear-gradient(145deg, var(--device-light) 0%, var(--device-color) 50%, var(--device-dark) 100%);
       border-radius: 40px;
       padding: 25px 15px 15px 15px;
       box-shadow: 0 20px 40px rgba(0,0,0,0.3);
@@ -174,7 +175,7 @@
       justify-content: center;
       align-items: center;
       text-align: center;
-      background: linear-gradient(145deg, var(--device-color), #FFB8D0);
+      background: linear-gradient(145deg, var(--device-color), var(--device-light));
       height: 100%;
       width: 100%;
       padding: 0;
@@ -372,19 +373,25 @@
     .color-setup-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 15px;
+      gap: 12px;
       width: 100%;
       max-width: 200px;
+      max-height: 240px;
+      overflow-y: auto;
       margin-top: 10px;
+      padding: 5px;
+      -webkit-overflow-scrolling: touch;
     }
 
     .color-setup-item {
-      aspect-ratio: 1;
+      width: 85px;
+      height: 85px;
       border: 4px solid white;
       border-radius: 16px;
       cursor: pointer;
       transition: all 0.1s ease;
       box-shadow: 0 4px 0 rgba(0,0,0,0.2);
+      flex-shrink: 0;
     }
 
     .color-setup-item:active {
@@ -393,7 +400,7 @@
     }
 
     .color-setup-item.focused {
-      transform: scale(1.1);
+      transform: scale(1.08);
       box-shadow: 0 0 0 4px rgba(255,255,255,0.8), 0 4px 0 rgba(0,0,0,0.2);
     }
 
@@ -834,14 +841,18 @@
     .selector-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 15px;
+      gap: 12px;
       width: 100%;
-      max-width: 240px;
-      padding-bottom: 20px;
+      max-width: 220px;
+      max-height: 280px;
+      overflow-y: auto;
+      padding: 5px;
+      -webkit-overflow-scrolling: touch;
     }
 
     .selector-item {
-      aspect-ratio: 1;
+      width: 95px;
+      height: 95px;
       border: 3px solid transparent;
       border-radius: 14px;
       display: flex;
@@ -854,8 +865,7 @@
       cursor: pointer;
       color: white;
       padding: 10px;
-      min-height: 90px;
-      max-height: 100px;
+      flex-shrink: 0;
     }
 
     .selector-item.focused {
@@ -1038,89 +1048,181 @@
       box-shadow: 0 0 0 3px rgba(255,107,157,0.3);
     }
 
-    .controls {
-      margin-top: 3px;
+    /* ===== NUEVOS CONTROLES CIRCULARES ===== */
+    .controls-wrapper {
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 8px;
-      padding-bottom: 3px;
+      position: relative;
+      z-index: 15;
+      margin-top: 5px;
     }
 
-    .controls-row {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-    }
-
-    .btn-candy {
-      border: none;
-      font-family: 'Fredoka One', cursive;
-      cursor: pointer;
-      transition: all 0.08s ease;
+    .dpad-circle {
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      background: linear-gradient(145deg, 
+        rgba(255,255,255,0.4) 0%, 
+        rgba(255,255,255,0.1) 50%,
+        rgba(0,0,0,0.1) 100%);
+      box-shadow: 
+        0 4px 12px rgba(0,0,0,0.2),
+        inset 0 1px 3px rgba(255,255,255,0.5),
+        inset 0 -2px 4px rgba(0,0,0,0.1);
+      position: relative;
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 3px 0 rgba(0,0,0,0.2);
-      -webkit-tap-highlight-color: transparent;
-      -webkit-appearance: none;
+      z-index: 10;
     }
 
-    .btn-candy:active {
-      transform: translateY(3px);
-      box-shadow: 0 0 0 rgba(0,0,0,0.2);
+    .nav-ring {
+      width: 92px;
+      height: 92px;
+      border-radius: 50%;
+      background: linear-gradient(145deg, 
+        var(--device-light) 0%, 
+        var(--device-color) 60%, 
+        var(--device-dark) 100%);
+      box-shadow: 
+        inset 0 2px 5px rgba(0,0,0,0.15),
+        0 1px 3px rgba(255,255,255,0.3);
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
-    .btn-back {
-      width: 50px;
-      height: 38px;
-      background: #4299E1;
-      border-radius: 19px;
-      color: white;
-      font-size: 11px;
-    }
-
-    .btn-ok {
-      width: 65px;
-      height: 48px;
-      background: #48BB78;
-      border-radius: 24px;
-      color: white;
-      font-size: 16px;
-      box-shadow: 0 4px 0 #38A169;
-    }
-
-    .btn-ok:active {
-      box-shadow: 0 0 0 #38A169;
-    }
-
-    .dpad {
-      display: grid;
-      grid-template-columns: repeat(3, 38px);
-      grid-template-rows: repeat(3, 38px);
-      gap: 3px;
-    }
-
-    .dpad-btn {
-      width: 38px;
-      height: 38px;
-      background: #D69E2E;
-      border-radius: 10px;
-      color: #744210;
-      font-size: 16px;
-      border: none;
+    .nav-arrow {
+      position: absolute;
+      width: 0;
+      height: 0;
       cursor: pointer;
-      box-shadow: 0 2px 0 #B7791F;
-      -webkit-appearance: none;
+      filter: drop-shadow(0 1px 2px rgba(0,0,0,0.3));
+      transition: all 0.1s ease;
+      opacity: 0.95;
+    }
+
+    .nav-arrow:hover {
+      opacity: 1;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.4));
+    }
+
+    .nav-arrow:active {
+      transform: scale(0.9);
+      opacity: 0.8;
+    }
+
+    .arrow-up {
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-left: 11px solid transparent;
+      border-right: 11px solid transparent;
+      border-bottom: 15px solid rgba(255,255,255,0.95);
+    }
+
+    .arrow-up:active { transform: translateX(-50%) scale(0.9); }
+
+    .arrow-down {
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-left: 11px solid transparent;
+      border-right: 11px solid transparent;
+      border-top: 15px solid rgba(255,255,255,0.95);
+    }
+
+    .arrow-down:active { transform: translateX(-50%) scale(0.9); }
+
+    .arrow-left {
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      border-top: 11px solid transparent;
+      border-bottom: 11px solid transparent;
+      border-right: 15px solid rgba(255,255,255,0.95);
+    }
+
+    .arrow-left:active { transform: translateY(-50%) scale(0.9); }
+
+    .arrow-right {
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      border-top: 11px solid transparent;
+      border-bottom: 11px solid transparent;
+      border-left: 15px solid rgba(255,255,255,0.95);
+    }
+
+    .arrow-right:active { transform: translateY(-50%) scale(0.9); }
+
+    .ok-btn {
+      width: 36px;
+      height: 36px;
+      background: radial-gradient(circle at 30% 30%, var(--device-light) 0%, var(--device-color) 60%, var(--device-dark) 100%);
+      border-radius: 50%;
+      border: 2px solid rgba(255,255,255,0.4);
+      box-shadow: 
+        0 3px 8px rgba(0,0,0,0.25),
+        inset 0 -2px 4px rgba(0,0,0,0.2),
+        inset 0 2px 4px rgba(255,255,255,0.3);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Fredoka One', cursive;
+      font-size: 10px;
+      color: white;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+      z-index: 10;
       transition: all 0.08s ease;
     }
 
-    .dpad-btn:active {
-      transform: translateY(2px);
-      box-shadow: 0 0 0 #B7791F;
+    .ok-btn:active {
+      transform: scale(0.9);
+      box-shadow: 
+        0 1px 4px rgba(0,0,0,0.25),
+        inset 0 2px 4px rgba(0,0,0,0.3);
     }
 
-    .dpad-empty { visibility: hidden; }
+    .back-c {
+      width: 85px;
+      height: 42px;
+      background: linear-gradient(145deg, 
+        var(--device-color) 0%, 
+        var(--device-dark) 100%);
+      border-radius: 0 0 38px 38px;
+      border: none;
+      margin-top: -22px;
+      padding-top: 22px;
+      position: relative;
+      z-index: 5;
+      cursor: pointer;
+      box-shadow: 
+        0 4px 8px rgba(0,0,0,0.2),
+        inset 0 -2px 4px rgba(0,0,0,0.2),
+        inset 0 1px 2px rgba(255,255,255,0.3);
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      padding-bottom: 7px;
+      font-family: 'Nunito', sans-serif;
+      font-size: 11px;
+      font-weight: 800;
+      color: white;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+      letter-spacing: 1px;
+      transition: all 0.1s ease;
+    }
+
+    .back-c:active {
+      transform: translateY(2px);
+      box-shadow: 
+        0 2px 4px rgba(0,0,0,0.2),
+        inset 0 1px 3px rgba(0,0,0,0.25);
+    }
 
     .msg-bar {
       position: absolute;
@@ -1967,26 +2069,25 @@
       </div>
     </div>
 
-    <div class="controls">
-      <div class="controls-row">
-        <button class="btn-candy btn-back" onclick="app.handleBack()">◄</button>
-        <button class="btn-candy btn-ok" onclick="app.handleOK()">OK</button>
-        <div class="dpad">
-          <div class="dpad-empty"></div>
-          <button class="dpad-btn" onclick="app.handleUp()">▲</button>
-          <div class="dpad-empty"></div>
-          <button class="dpad-btn" onclick="app.handleLeft()">◄</button>
-          <button class="dpad-btn" onclick="app.handleDown()">▼</button>
-          <button class="dpad-btn" onclick="app.handleRight()">►</button>
+    <!-- NUEVOS CONTROLES CIRCULARES -->
+    <div class="controls-wrapper">
+      <div class="dpad-circle">
+        <div class="nav-ring">
+          <div class="nav-arrow arrow-up" onclick="app.handleUp()"></div>
+          <div class="nav-arrow arrow-down" onclick="app.handleDown()"></div>
+          <div class="nav-arrow arrow-left" onclick="app.handleLeft()"></div>
+          <div class="nav-arrow arrow-right" onclick="app.handleRight()"></div>
+          <button class="ok-btn" onclick="app.handleOK()">OK</button>
         </div>
       </div>
+      <button class="back-c" onclick="app.handleBack()">C</button>
     </div>
   </div>
 
-<script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js "></script>
+<script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
 <script>
 // ========================================
-// TOKEJI v14.1 - COMPATIBLE CON BACKEND ORIGINAL
+// TOKEJI v15.0 - 8 COLORES + CONTROLES NUEVOS
 // ========================================
 
 const BACK = "https://tokeji-device.onrender.com";
@@ -2062,13 +2163,16 @@ const CONTEXTOS_TOKES = {
   ]
 };
 
+// 8 COLORES ACTUALIZADOS
 const COLORES = [
   { hex: '#FF6B9D', name: 'Rosa', shadow: '#FF4785', gradient: ['#FFB8D0', '#FF6B9D', '#FF4785'] },
   { hex: '#4299E1', name: 'Azul', shadow: '#2B6CB0', gradient: ['#90CDF4', '#4299E1', '#2B6CB0'] },
   { hex: '#48BB78', name: 'Verde', shadow: '#276749', gradient: ['#9AE6B4', '#48BB78', '#276749'] },
   { hex: '#ECC94B', name: 'Amarillo', shadow: '#B7791F', gradient: ['#F6E05E', '#ECC94B', '#B7791F'] },
   { hex: '#9F7AEA', name: 'Morado', shadow: '#6B46C1', gradient: ['#D6BCFA', '#9F7AEA', '#6B46C1'] },
-  { hex: '#1A202C', name: 'Negro', shadow: '#000000', gradient: ['#4A5568', '#2D3748', '#1A202C'] }
+  { hex: '#1A202C', name: 'Negro', shadow: '#000000', gradient: ['#4A5568', '#2D3748', '#1A202C'] },
+  { hex: '#C0C0C0', name: 'Metal', shadow: '#808080', gradient: ['#E8E8E8', '#C0C0C0', '#808080'] },
+  { hex: '#FF8C42', name: 'Naranja', shadow: '#CC6A2A', gradient: ['#FFB366', '#FF8C42', '#CC6A2A'] }
 ];
 
 const ESTADOS = [
@@ -2138,7 +2242,7 @@ const app = {
   },
 
   init() {
-    this.debug('=== TOKEJI v14.1 INICIANDO ===');
+    this.debug('=== TOKEJI v15.0 INICIANDO ===');
     this.debug('Backend: ' + BACK);
     
     this.miID = localStorage.getItem("miid");
@@ -2290,6 +2394,7 @@ const app = {
     const c = COLORES[this.state.settings.color] || COLORES[0];
     document.documentElement.style.setProperty('--device-color', c.hex);
     document.documentElement.style.setProperty('--device-dark', c.shadow);
+    document.documentElement.style.setProperty('--device-light', c.gradient[0]);
     
     const device = document.getElementById('device');
     if (device) {
@@ -2452,6 +2557,12 @@ const app = {
     document.querySelectorAll('#color-setup-grid .color-setup-item').forEach((el, i) => {
       el.classList.toggle('focused', i === this.state.focus.index);
     });
+    
+    // Scroll al elemento enfocado
+    const focused = document.querySelector('#color-setup-grid .color-setup-item.focused');
+    if (focused) {
+      focused.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    }
   },
 
   goBack() {
@@ -2802,9 +2913,9 @@ const app = {
         }
         break;
       case 'color':
-        if (index < 4) {
+        if (index < 6) {
           this.state.focus.index += 2;
-          if (this.state.focus.index > 5) this.state.focus.index = 5;
+          if (this.state.focus.index > 7) this.state.focus.index = 7;
           this.updateColorSetupFocus();
         }
         break;
@@ -2994,7 +3105,7 @@ const app = {
         }
         break;
       case 'color':
-        if (index % 2 === 0 && index < 5) {
+        if (index % 2 === 0 && index < 7) {
           this.state.focus.index++;
           this.updateColorSetupFocus();
         }
@@ -3347,6 +3458,12 @@ const app = {
     `).join('');
     
     modal.classList.add('active');
+    
+    // Scroll al color seleccionado
+    setTimeout(() => {
+      const focused = grid.querySelector('.selector-item.focused');
+      if (focused) focused.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    }, 50);
   },
 
   showStatusSelector() {
@@ -3378,9 +3495,9 @@ const app = {
     
     if (this.state.selectorType === 'color') {
       const cols = 2;
-      if (dir === 'right' && this.state.selectorIndex % cols === 0 && this.state.selectorIndex < 5) this.state.selectorIndex++;
+      if (dir === 'right' && this.state.selectorIndex % cols === 0 && this.state.selectorIndex < 7) this.state.selectorIndex++;
       else if (dir === 'left' && this.state.selectorIndex % cols === 1) this.state.selectorIndex--;
-      else if (dir === 'down' && this.state.selectorIndex < 4) this.state.selectorIndex += 2;
+      else if (dir === 'down' && this.state.selectorIndex < 6) this.state.selectorIndex += 2;
       else if (dir === 'up' && this.state.selectorIndex >= 2) this.state.selectorIndex -= 2;
     } else {
       const cols = 2;
@@ -3392,6 +3509,7 @@ const app = {
     
     if (items[this.state.selectorIndex]) {
       items[this.state.selectorIndex].classList.add('focused');
+      items[this.state.selectorIndex].scrollIntoView({ block: 'nearest', behavior: 'smooth' });
     }
     this.vibrar();
   },
@@ -3424,7 +3542,7 @@ const app = {
     const texto = `${this.miID}|${nom}|${avatar}`;
     const qrDiv = document.getElementById('qr-mio');
     if (qrDiv) {
-      qrDiv.innerHTML = `<img src="https://api.qrserver.com/v1/create-qr-code/?size=280x280&data= ${encodeURIComponent(texto)}" alt="QR" style="width: 140px; height: 140px;"/>`;
+      qrDiv.innerHTML = `<img src="https://api.qrserver.com/v1/create-qr-code/?size=280x280&data=${encodeURIComponent(texto)}" alt="QR" style="width: 140px; height: 140px;"/>`;
     }
   },
 
@@ -4239,7 +4357,7 @@ const app = {
 };
 
 window.addEventListener('load', () => {
-  console.log('Tokeji v14.1 iniciando...');
+  console.log('Tokeji v15.0 iniciando...');
   app.init();
 });
 </script>
