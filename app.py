@@ -1,6 +1,9 @@
 from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
-import os, time, json, random
+import os
+import time
+import json
+import random
 
 app = Flask(__name__)
 CORS(app)  # Permitir conexiones de cualquier origen
@@ -18,6 +21,7 @@ def cargar_datos():
         return {
             "toques_por_usuario": {},
             "toques_recibidos": {},
+            "respuestas_recibidas": {},  # NUEVO: Almacenar respuestas
             "desafios_pendientes": {},
             "combates_finalizados": []
         }
@@ -27,6 +31,7 @@ def guardar_datos():
         json.dump({
             "toques_por_usuario": toques_por_usuario,
             "toques_recibidos": toques_recibidos,
+            "respuestas_recibidas": respuestas_recibidas,  # NUEVO
             "desafios_pendientes": desafios_pendientes,
             "combates_finalizados": combates_finalizados
         }, f)
@@ -34,6 +39,7 @@ def guardar_datos():
 datos = cargar_datos()
 toques_por_usuario = datos["toques_por_usuario"]
 toques_recibidos = datos["toques_recibidos"]
+respuestas_recibidas = datos.get("respuestas_recibidas", {})  # NUEVO
 desafios_pendientes = datos["desafios_pendientes"]
 combates_finalizados = datos.get("combates_finalizados", [])
 
@@ -83,9 +89,9 @@ def generar_stats_aleatorios(rareza):
 def index():
     return send_from_directory('.', 'index.html')
 
-@app.route('/js/<path:filename>')
-def js_files(filename):
-    return send_from_directory('js', filename)
+@app.route('/<path:filename>')
+def static_files(filename):
+    return send_from_directory('.', filename)
 
 # ========================================
 # API TOQUES
@@ -94,10 +100,15 @@ def js_files(filename):
 def toque():
     try:
         data = request.get_json()
-        de = data["de"]
-        para = data["para"]
-        num = data["num"]
-        contexto = data.get("contexto", None)
+        de = data.get("de")
+        para = data.get("para")
+        num = data.get("num")
+        contexto = data.get("contexto")
+        avatar_remitente = data.get("avatarRemitente", "👤")
+        nombre_remitente = data.get("nombreRemitente", "Alguien")
+
+        if not all([de, para, num]):
+            return jsonify(ok=False, error="Faltan datos requeridos"), 400
 
         clave_usuario = f"rl:{de}"
         contador = toques_por_usuario.get(clave_usuario, 0)
@@ -114,6 +125,8 @@ def toque():
             "de": de,
             "num": num,
             "contexto": contexto,
+            "avatarRemitente": avatar_remitente,
+            "nombreRemitente": nombre_remitente,
             "hora": int(time.time())
         })
         
@@ -136,11 +149,83 @@ def toques_pendientes():
         if user_id in toques_recibidos:
             toques_recibidos[user_id] = [
                 t for t in toques_recibidos[user_id]
-                if ahora - t["hora"] < 3600
+                if ahora - t["hora"] < 3600  # Expiran en 1 hora
             ]
         
         toques = toques_recibidos.get(user_id, [])
+        # Limpiar después de enviar
+        toques_recibidos[user_id] = []
+        guardar_datos()
+        
         return jsonify(ok=True, toques=toques)
+        
+    except Exception as e:
+        return jsonify(ok=False, error=str(e)), 500
+
+# ========================================
+# API RESPUESTAS (NUEVO - FALTABA ESTO)
+# ========================================
+@app.route("/respuesta", methods=["POST"])
+def enviar_respuesta():
+    """
+    Endpoint para enviar una respuesta a un toque recibido
+    """
+    try:
+        data = request.get_json()
+        de = data.get("de")
+        para = data.get("para")
+        respuesta = data.get("respuesta")  # Emoji de respuesta
+        texto = data.get("texto")  # Texto descriptivo
+        avatar_remitente = data.get("avatarRemitente", "👤")
+        nombre_remitente = data.get("nombreRemitente", "Alguien")
+
+        if not all([de, para, respuesta]):
+            return jsonify(ok=False, error="Faltan datos requeridos (de, para, respuesta)"), 400
+
+        # Almacenar respuesta para el destinatario
+        if para not in respuestas_recibidas:
+            respuestas_recibidas[para] = []
+        
+        respuestas_recibidas[para].append({
+            "de": de,
+            "respuesta": respuesta,
+            "texto": texto or "OK",
+            "avatarRemitente": avatar_remitente,
+            "nombreRemitente": nombre_remitente,
+            "hora": int(time.time())
+        })
+        
+        guardar_datos()
+        
+        return jsonify(ok=True, mensaje="Respuesta enviada")
+        
+    except Exception as e:
+        return jsonify(ok=False, error=str(e)), 500
+
+@app.route("/respuestas-pendientes", methods=["GET"])
+def respuestas_pendientes():
+    """
+    Endpoint para obtener respuestas pendientes (polling)
+    """
+    try:
+        user_id = request.args.get("userId")
+        if not user_id:
+            return jsonify(ok=False, error="Falta userId"), 400
+        
+        ahora = int(time.time())
+        if user_id in respuestas_recibidas:
+            # Filtrar respuestas antiguas (expiran en 1 hora)
+            respuestas_recibidas[user_id] = [
+                r for r in respuestas_recibidas[user_id]
+                if ahora - r["hora"] < 3600
+            ]
+        
+        respuestas = respuestas_recibidas.get(user_id, [])
+        # Limpiar después de enviar
+        respuestas_recibidas[user_id] = []
+        guardar_datos()
+        
+        return jsonify(ok=True, respuestas=respuestas)
         
     except Exception as e:
         return jsonify(ok=False, error=str(e)), 500
@@ -288,6 +373,13 @@ def obtener_combates_finalizados():
         
     except Exception as e:
         return jsonify(ok=False, error=str(e)), 500
+
+# ========================================
+# HEALTH CHECK
+# ========================================
+@app.route("/health", methods=["GET"])
+def health_check():
+    return jsonify(ok=True, status="running", version="1.1.0")
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
