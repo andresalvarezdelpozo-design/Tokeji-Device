@@ -2185,6 +2185,7 @@ const app = {
       this.checkTokes();
       this.checkRespuestas();
     }, 5000);
+      setTimeout(() => this.reintentarRespuestasPendientes(), 10000);
     
     this.showPage('splash', false);
   },
@@ -3997,7 +3998,7 @@ const app = {
     }
   },
 
-  async enviarRespuestaToque() {
+   async enviarRespuestaToque() {
     const opciones = document.querySelectorAll('.respuesta-option');
     const seleccionada = opciones[this.state.respuestaToqueIndex];
     if (!seleccionada) return;
@@ -4005,41 +4006,144 @@ const app = {
     const emoji = seleccionada.dataset.emoji;
     const texto = seleccionada.dataset.texto;
     
-    this.debug('Enviando respuesta: ' + emoji + ' a ' + this.state.lastToqueSender);
+    this.debug('=== ENVIANDO RESPUESTA ===');
+    this.debug('Emoji: ' + emoji);
+    this.debug('Texto: ' + texto);
+    this.debug('Para: ' + this.state.lastToqueSender);
     
     document.getElementById('toque-recibido-modal').classList.remove('active');
     
-    if (this.state.lastToqueSender) {
+    if (!this.state.lastToqueSender) {
+      this.debug('Error: No hay lastToqueSender');
+      this.showMsg('❌ Error: No se pudo identificar al destinatario');
+      setTimeout(() => this.procesarColaMensajes(), 500);
+      return;
+    }
+    
+    const payload = {
+      de: this.miID,
+      para: this.state.lastToqueSender,
+      respuesta: emoji,
+      texto: texto,
+      avatarRemitente: this.state.settings.avatar || '🐱',
+      nombreRemitente: localStorage.getItem('miNombre') || 'Amigo'
+    };
+    
+    this.debug('Payload: ' + JSON.stringify(payload));
+    
+    const endpoints = [
+      `${BACK}/respuesta`,
+      `${BACK}/respuestas`,
+      `${BACK}/responder`
+    ];
+    
+    let enviado = false;
+    let ultimoError = '';
+    
+    for (const url of endpoints) {
       try {
-        const response = await fetch(`${BACK}/respuesta`, {
+        this.debug('Intentando: ' + url);
+        
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 10000);
+        
+        const response = await fetch(url, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            de: this.miID,
-            para: this.state.lastToqueSender,
-            respuesta: emoji,
-            texto: texto,
-            avatarRemitente: this.state.settings.avatar,
-            nombreRemitente: localStorage.getItem('miNombre') || 'Amigo'
-          })
+          headers: { 
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          },
+          body: JSON.stringify(payload),
+          signal: controller.signal,
+          mode: 'cors'
         });
         
+        clearTimeout(timeoutId);
+        
+        this.debug('Status: ' + response.status);
+        
         if (response.ok) {
+          const data = await response.json();
+          this.debug('Respuesta OK: ' + JSON.stringify(data));
           this.showMsg(`Respondiste ${emoji}`);
+          enviado = true;
+          break;
         } else {
-          this.showMsg('❌ Error al enviar respuesta');
+          const errorText = await response.text();
+          this.debug('Error en ' + url + ': ' + response.status + ' - ' + errorText);
+          ultimoError = `HTTP ${response.status}`;
         }
       } catch(e) {
-        this.debug('Error enviando respuesta: ' + e.message);
-        this.showMsg('❌ Error de conexión');
+        this.debug('Error fetch ' + url + ': ' + e.message);
+        ultimoError = e.message;
       }
+    }
+    
+    if (!enviado) {
+      this.debug('Fallaron todos los endpoints. Error: ' + ultimoError);
+      this.showMsg('❌ Error al enviar. Guardado localmente.');
+      this.guardarRespuestaPendiente(payload);
     }
     
     this.state.lastToqueSender = null;
     
     setTimeout(() => {
       this.procesarColaMensajes();
-    }, 500);
+    }, 800);
+  },
+
+  guardarRespuestaPendiente(payload) {
+    try {
+      let pendientes = JSON.parse(localStorage.getItem('respuestasPendientes') || '[]');
+      pendientes.push({
+        ...payload,
+        timestamp: Date.now(),
+        intentos: 1
+      });
+      localStorage.setItem('respuestasPendientes', JSON.stringify(pendientes));
+      this.debug('Respuesta guardada para reintentar luego');
+    } catch(e) {
+      this.debug('Error guardando respuesta pendiente: ' + e.message);
+    }
+  },
+
+  async reintentarRespuestasPendientes() {
+    try {
+      const pendientes = JSON.parse(localStorage.getItem('respuestasPendientes') || '[]');
+      if (pendientes.length === 0) return;
+      
+      this.debug('Reintentando ' + pendientes.length + ' respuestas pendientes');
+      
+      const nuevosPendientes = [];
+      
+      for (const resp of pendientes) {
+        if (resp.intentos > 3) {
+          this.debug('Respuesta descartada por demasiados intentos');
+          continue;
+        }
+        
+        try {
+          const response = await fetch(`${BACK}/respuesta`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(resp),
+            mode: 'cors'
+          });
+          
+          if (!response.ok) {
+            resp.intentos++;
+            nuevosPendientes.push(resp);
+          }
+        } catch(e) {
+          resp.intentos++;
+          nuevosPendientes.push(resp);
+        }
+      }
+      
+      localStorage.setItem('respuestasPendientes', JSON.stringify(nuevosPendientes));
+    } catch(e) {
+      this.debug('Error reintentando respuestas: ' + e.message);
+    }
   },
 
   mostrarRespuestaRecibida(respuesta) {
