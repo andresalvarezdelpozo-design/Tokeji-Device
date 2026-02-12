@@ -223,7 +223,6 @@
       height: 100%;
       width: 100%;
       padding: 20px;
-      text-align: center;
     }
 
     .consent-title {
@@ -361,6 +360,7 @@
       box-shadow: 0 0 0 3px rgba(255,107,157,0.3);
     }
 
+    /* ===== SELECTOR DE COLOR MEJORADO - FONDO CLARO ===== */
     #page-color {
       justify-content: flex-start;
       align-items: center;
@@ -373,13 +373,13 @@
     .color-setup-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
+      gap: 15px;
       width: 100%;
-      max-width: 200px;
-      max-height: 240px;
+      max-width: 220px;
+      max-height: 320px;
       overflow-y: auto;
       margin-top: 10px;
-      padding: 5px;
+      padding: 10px;
       -webkit-overflow-scrolling: touch;
     }
 
@@ -392,6 +392,19 @@
       transition: all 0.1s ease;
       box-shadow: 0 4px 0 rgba(0,0,0,0.2);
       flex-shrink: 0;
+      position: relative;
+    }
+
+    .color-setup-item::after {
+      content: attr(data-name);
+      position: absolute;
+      bottom: -20px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 11px;
+      font-weight: 700;
+      color: #2D3748;
+      white-space: nowrap;
     }
 
     .color-setup-item:active {
@@ -401,7 +414,7 @@
 
     .color-setup-item.focused {
       transform: scale(1.08);
-      box-shadow: 0 0 0 4px rgba(255,255,255,0.8), 0 4px 0 rgba(0,0,0,0.2);
+      box-shadow: 0 0 0 4px rgba(255,107,157,0.5), 0 4px 0 rgba(0,0,0,0.2);
     }
 
     .home-main {
@@ -809,13 +822,14 @@
       box-shadow: 0 0 0 #C53030;
     }
 
+    /* ===== SELECTOR MODAL - FONDO CLARO ===== */
     .selector-modal {
       position: absolute;
       top: 0;
       left: 0;
       right: 0;
       bottom: 0;
-      background: rgba(0,0,0,0.9);
+      background: var(--screen-bg);
       display: none;
       flex-direction: column;
       align-items: center;
@@ -830,7 +844,7 @@
     }
 
     .selector-title {
-      color: white;
+      color: #2D3748;
       font-family: 'Fredoka One', cursive;
       font-size: 18px;
       margin-bottom: 20px;
@@ -841,20 +855,20 @@
     .selector-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
+      gap: 15px;
       width: 100%;
       max-width: 220px;
-      max-height: 280px;
+      max-height: 320px;
       overflow-y: auto;
-      padding: 5px;
+      padding: 10px;
       -webkit-overflow-scrolling: touch;
     }
 
     .selector-item {
-      width: 95px;
-      height: 95px;
-      border: 3px solid transparent;
-      border-radius: 14px;
+      width: 85px;
+      height: 85px;
+      border: 4px solid white;
+      border-radius: 16px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -866,12 +880,25 @@
       color: white;
       padding: 10px;
       flex-shrink: 0;
+      box-shadow: 0 4px 0 rgba(0,0,0,0.2);
+      position: relative;
+    }
+
+    .selector-item::after {
+      content: attr(data-name);
+      position: absolute;
+      bottom: -20px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 11px;
+      font-weight: 700;
+      color: #2D3748;
+      white-space: nowrap;
     }
 
     .selector-item.focused {
-      border-color: white;
-      transform: scale(1.05);
-      box-shadow: 0 0 15px rgba(255,255,255,0.5);
+      transform: scale(1.08);
+      box-shadow: 0 0 0 4px rgba(255,107,157,0.5), 0 4px 0 rgba(0,0,0,0.2);
     }
 
     .response-modal {
@@ -1048,14 +1075,14 @@
       box-shadow: 0 0 0 3px rgba(255,107,157,0.3);
     }
 
-    /* ===== NUEVOS CONTROLES CIRCULARES ===== */
+    /* ===== CONTROLES CIRCULARES - SIN HUECOS ===== */
     .controls-wrapper {
       display: flex;
       flex-direction: column;
       align-items: center;
       position: relative;
       z-index: 15;
-      margin-top: 5px;
+      margin-top: -5px;
     }
 
     .dpad-circle {
@@ -1092,71 +1119,125 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      overflow: hidden;
     }
 
+    /* SECTORES QUE CUBREN TODO EL CÍRCULO - SIN HUECOS */
+    .nav-sector {
+      position: absolute;
+      width: 50%;
+      height: 50%;
+      cursor: pointer;
+      z-index: 5;
+      transition: all 0.05s ease;
+    }
+
+    .nav-sector:active {
+      background: rgba(0,0,0,0.15);
+    }
+
+    /* Sector superior - triángulo que llega al centro */
+    .sector-up {
+      top: 0;
+      left: 25%;
+      width: 50%;
+      height: 50%;
+      clip-path: polygon(50% 100%, 0 0, 100% 0);
+    }
+
+    /* Sector inferior - triángulo que llega al centro */
+    .sector-down {
+      bottom: 0;
+      left: 25%;
+      width: 50%;
+      height: 50%;
+      clip-path: polygon(50% 0, 0 100%, 100% 100%);
+    }
+
+    /* Sector izquierdo - triángulo que llega al centro */
+    .sector-left {
+      left: 0;
+      top: 25%;
+      width: 50%;
+      height: 50%;
+      clip-path: polygon(100% 50%, 0 0, 0 100%);
+    }
+
+    /* Sector derecho - triángulo que llega al centro */
+    .sector-right {
+      right: 0;
+      top: 25%;
+      width: 50%;
+      height: 50%;
+      clip-path: polygon(0 50%, 100% 0, 100% 100%);
+    }
+
+    /* Flechas decorativas - sin pointer-events */
     .nav-arrow {
       position: absolute;
       width: 0;
       height: 0;
-      cursor: pointer;
+      pointer-events: none;
       filter: drop-shadow(0 1px 2px rgba(0,0,0,0.3));
-      transition: all 0.1s ease;
-      opacity: 0.95;
-    }
-
-    .nav-arrow:hover {
-      opacity: 1;
-      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.4));
-    }
-
-    .nav-arrow:active {
-      transform: scale(0.9);
-      opacity: 0.8;
+      z-index: 6;
     }
 
     .arrow-up {
-      top: 10px;
+      top: 8px;
       left: 50%;
       transform: translateX(-50%);
-      border-left: 11px solid transparent;
-      border-right: 11px solid transparent;
-      border-bottom: 15px solid rgba(255,255,255,0.95);
+      border-left: 10px solid transparent;
+      border-right: 10px solid transparent;
+      border-bottom: 14px solid rgba(255,255,255,0.95);
     }
-
-    .arrow-up:active { transform: translateX(-50%) scale(0.9); }
 
     .arrow-down {
-      bottom: 10px;
+      bottom: 8px;
       left: 50%;
       transform: translateX(-50%);
-      border-left: 11px solid transparent;
-      border-right: 11px solid transparent;
-      border-top: 15px solid rgba(255,255,255,0.95);
+      border-left: 10px solid transparent;
+      border-right: 10px solid transparent;
+      border-top: 14px solid rgba(255,255,255,0.95);
     }
-
-    .arrow-down:active { transform: translateX(-50%) scale(0.9); }
 
     .arrow-left {
-      left: 10px;
+      left: 8px;
       top: 50%;
       transform: translateY(-50%);
-      border-top: 11px solid transparent;
-      border-bottom: 11px solid transparent;
-      border-right: 15px solid rgba(255,255,255,0.95);
+      border-top: 10px solid transparent;
+      border-bottom: 10px solid transparent;
+      border-right: 14px solid rgba(255,255,255,0.95);
     }
-
-    .arrow-left:active { transform: translateY(-50%) scale(0.9); }
 
     .arrow-right {
-      right: 10px;
+      right: 8px;
       top: 50%;
       transform: translateY(-50%);
-      border-top: 11px solid transparent;
-      border-bottom: 11px solid transparent;
-      border-left: 15px solid rgba(255,255,255,0.95);
+      border-top: 10px solid transparent;
+      border-bottom: 10px solid transparent;
+      border-left: 14px solid rgba(255,255,255,0.95);
     }
 
-    .arrow-right:active { transform: translateY(-50%) scale(0.9); }
+    /* Efecto visual al presionar sector */
+    .sector-up:active ~ .arrow-up {
+      transform: translateX(-50%) scale(0.85);
+      opacity: 0.7;
+    }
+
+    .sector-down:active ~ .arrow-down {
+      transform: translateX(-50%) scale(0.85);
+      opacity: 0.7;
+    }
+
+    .sector-left:active ~ .arrow-left {
+      transform: translateY(-50%) scale(0.85);
+      opacity: 0.7;
+    }
+
+    .sector-right:active ~ .arrow-right {
+      transform: translateY(-50%) scale(0.85);
+      opacity: 0.7;
+    }
 
     .ok-btn {
       width: 36px;
@@ -1177,7 +1258,8 @@
       color: white;
       text-shadow: 0 1px 2px rgba(0,0,0,0.3);
       z-index: 10;
-      transition: all 0.08s ease;
+      transition: all 0.05s ease;
+      position: relative;
     }
 
     .ok-btn:active {
@@ -1214,7 +1296,7 @@
       color: white;
       text-shadow: 0 1px 2px rgba(0,0,0,0.3);
       letter-spacing: 1px;
-      transition: all 0.1s ease;
+      transition: all 0.05s ease;
     }
 
     .back-c:active {
@@ -2069,25 +2151,33 @@
       </div>
     </div>
 
-    <!-- NUEVOS CONTROLES CIRCULARES -->
+    <!-- CONTROLES CIRCULARES SIN HUECOS - OPTIMIZADOS PARA iPHONE -->
     <div class="controls-wrapper">
       <div class="dpad-circle">
         <div class="nav-ring">
-          <div class="nav-arrow arrow-up" onclick="app.handleUp()"></div>
-          <div class="nav-arrow arrow-down" onclick="app.handleDown()"></div>
-          <div class="nav-arrow arrow-left" onclick="app.handleLeft()"></div>
-          <div class="nav-arrow arrow-right" onclick="app.handleRight()"></div>
-          <button class="ok-btn" onclick="app.handleOK()">OK</button>
+          <!-- Sectores que cubren TODO el círculo sin huecos -->
+          <div class="nav-sector sector-up" onclick="app.handleUp()" ontouchstart="app.handleTouchStart(event, 'up')" ontouchend="app.handleTouchEnd(event)"></div>
+          <div class="nav-sector sector-down" onclick="app.handleDown()" ontouchstart="app.handleTouchStart(event, 'down')" ontouchend="app.handleTouchEnd(event)"></div>
+          <div class="nav-sector sector-left" onclick="app.handleLeft()" ontouchstart="app.handleTouchStart(event, 'left')" ontouchend="app.handleTouchEnd(event)"></div>
+          <div class="nav-sector sector-right" onclick="app.handleRight()" ontouchstart="app.handleTouchStart(event, 'right')" ontouchend="app.handleTouchEnd(event)"></div>
+          
+          <!-- Flechas decorativas -->
+          <div class="nav-arrow arrow-up"></div>
+          <div class="nav-arrow arrow-down"></div>
+          <div class="nav-arrow arrow-left"></div>
+          <div class="nav-arrow arrow-right"></div>
+          
+          <button class="ok-btn" onclick="app.handleOK()" ontouchstart="app.handleTouchStartOK(event)" ontouchend="app.handleTouchEndOK(event)">OK</button>
         </div>
       </div>
-      <button class="back-c" onclick="app.handleBack()">C</button>
+      <button class="back-c" onclick="app.handleBack()" ontouchstart="app.handleTouchStartBack(event)" ontouchend="app.handleTouchEndBack(event)">C</button>
     </div>
   </div>
 
 <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
 <script>
 // ========================================
-// TOKEJI v15.0 - 8 COLORES + CONTROLES NUEVOS
+// TOKEJI v15.2 - CONTROLES SIN HUECOS + RÁPIDOS EN iPHONE
 // ========================================
 
 const BACK = "https://tokeji-device.onrender.com";
@@ -2163,7 +2253,6 @@ const CONTEXTOS_TOKES = {
   ]
 };
 
-// 8 COLORES ACTUALIZADOS
 const COLORES = [
   { hex: '#FF6B9D', name: 'Rosa', shadow: '#FF4785', gradient: ['#FFB8D0', '#FF6B9D', '#FF4785'] },
   { hex: '#4299E1', name: 'Azul', shadow: '#2B6CB0', gradient: ['#90CDF4', '#4299E1', '#2B6CB0'] },
@@ -2222,7 +2311,10 @@ const app = {
     lastToqueSender: null,
     colaMensajes: [],
     procesandoCola: false,
-    mensajesPendientes: 0
+    mensajesPendientes: 0,
+    // Para evitar doble firing en iPhone
+    lastTouchTime: 0,
+    touchDelay: 50
   },
   
   contactos: {},
@@ -2242,7 +2334,7 @@ const app = {
   },
 
   init() {
-    this.debug('=== TOKEJI v15.0 INICIANDO ===');
+    this.debug('=== TOKEJI v15.2 INICIANDO ===');
     this.debug('Backend: ' + BACK);
     
     this.miID = localStorage.getItem("miid");
@@ -2279,6 +2371,7 @@ const app = {
     setInterval(() => this.updateClock(), 60000);
     
     this.prevenirZoom();
+    this.optimizarTouch();
     
     setTimeout(() => {
       this.checkTokes();
@@ -2294,7 +2387,12 @@ const app = {
     this.showPage('splash', false);
   },
 
-  prevenirZoom() {
+  // ===== OPTIMIZACIÓN PARA iPHONE - RESPUESTA RÁPIDA =====
+  optimizarTouch() {
+    // Eliminar delay táctil de 300ms en iPhone
+    document.addEventListener('touchstart', function(){}, {passive: true});
+    
+    // Prevenir zoom double-tap
     let lastTouchEnd = 0;
     document.addEventListener('touchend', (e) => {
       const now = Date.now();
@@ -2303,7 +2401,9 @@ const app = {
       }
       lastTouchEnd = now;
     }, { passive: false });
+  },
 
+  prevenirZoom() {
     document.addEventListener('touchmove', (e) => {
       if (e.touches.length > 1) {
         e.preventDefault();
@@ -2313,6 +2413,63 @@ const app = {
     document.addEventListener('dblclick', (e) => {
       e.preventDefault();
     }, { passive: false });
+  },
+
+  // ===== HANDLERS DE TOUCH RÁPIDOS PARA iPHONE =====
+  handleTouchStart(event, direction) {
+    event.preventDefault();
+    event.stopPropagation();
+    const now = Date.now();
+    if (now - this.state.lastTouchTime < this.state.touchDelay) return;
+    this.state.lastTouchTime = now;
+    
+    // Efecto visual inmediato
+    const sector = event.target;
+    sector.style.background = 'rgba(0,0,0,0.15)';
+    
+    // Ejecutar acción inmediatamente
+    switch(direction) {
+      case 'up': this.handleUp(); break;
+      case 'down': this.handleDown(); break;
+      case 'left': this.handleLeft(); break;
+      case 'right': this.handleRight(); break;
+    }
+  },
+
+  handleTouchEnd(event) {
+    event.preventDefault();
+    const sector = event.target;
+    sector.style.background = '';
+  },
+
+  handleTouchStartOK(event) {
+    event.preventDefault();
+    const now = Date.now();
+    if (now - this.state.lastTouchTime < this.state.touchDelay) return;
+    this.state.lastTouchTime = now;
+    
+    event.target.style.transform = 'scale(0.9)';
+    this.handleOK();
+  },
+
+  handleTouchEndOK(event) {
+    event.preventDefault();
+    event.target.style.transform = '';
+  },
+
+  handleTouchStartBack(event) {
+    event.preventDefault();
+    const now = Date.now();
+    if (now - this.state.lastTouchTime < this.state.touchDelay) return;
+    this.state.lastTouchTime = now;
+    
+    event.target.style.transform = 'translateY(2px)';
+    this.handleBack();
+  },
+
+  handleTouchEndBack(event) {
+    event.preventDefault();
+    event.target.style.transform = '';
   },
 
   initAudio() {
@@ -2542,15 +2699,45 @@ const app = {
     });
   },
 
+  // ===== SELECTOR DE COLOR CON NOMBRES =====
   renderColorSetupGrid() {
     const grid = document.getElementById('color-setup-grid');
     if (!grid) return;
     
     grid.innerHTML = COLORES.map((c, i) => `
       <div class="color-setup-item ${i === 0 ? 'focused' : ''}" 
-           style="background: ${c.hex};" data-color="${i}" data-index="${i}">
+           style="background: ${c.hex};" 
+           data-color="${i}" 
+           data-index="${i}"
+           data-name="${c.name}"
+           onclick="app.selectColorSetup(${i})"
+           ontouchstart="app.handleTouchColorSetup(event, ${i})">
       </div>
     `).join('');
+  },
+
+  handleTouchColorSetup(event, index) {
+    event.preventDefault();
+    const now = Date.now();
+    if (now - this.state.lastTouchTime < this.state.touchDelay) return;
+    this.state.lastTouchTime = now;
+    
+    this.selectColorSetup(index);
+  },
+
+  selectColorSetup(index) {
+    this.initAudio();
+    this.playSound('select');
+    
+    this.state.settings.color = index;
+    localStorage.setItem('colorIndex', index);
+    this.applyColor();
+    
+    const c = COLORES[index];
+    this.showMsg(c ? `🎨 ${c.name}` : 'Color cambiado');
+    
+    this.generarQR();
+    this.showPage('home', false);
   },
 
   updateColorSetupFocus() {
@@ -2558,7 +2745,6 @@ const app = {
       el.classList.toggle('focused', i === this.state.focus.index);
     });
     
-    // Scroll al elemento enfocado
     const focused = document.querySelector('#color-setup-grid .color-setup-item.focused');
     if (focused) {
       focused.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
@@ -2721,11 +2907,7 @@ const app = {
         this.showPage('color', false);
         break;
       case 'color':
-        this.state.settings.color = focus.index;
-        localStorage.setItem('colorIndex', focus.index);
-        this.applyColor();
-        this.generarQR();
-        this.showPage('home', false);
+        // Ahora se selecciona directamente al tocar el color
         break;
       case 'home':
         this.showPage('menu');
@@ -3451,19 +3633,35 @@ const app = {
     
     grid.innerHTML = COLORES.map((c, i) => `
       <div class="selector-item ${i === this.state.selectorIndex ? 'focused' : ''}" 
-           style="background: ${c.hex};" data-index="${i}">
+           style="background: ${c.hex};" 
+           data-index="${i}"
+           data-name="${c.name}"
+           onclick="app.selectFromSelectorDirect(${i})"
+           ontouchstart="app.handleTouchSelector(event, ${i})">
         <div style="width: 35px; height: 35px; border-radius: 50%; background: ${c.hex}; border: 3px solid white; box-shadow: 0 3px 10px rgba(0,0,0,0.3);"></div>
-        <span style="margin-top: 6px; font-size: 11px;">${c.name}</span>
       </div>
     `).join('');
     
     modal.classList.add('active');
     
-    // Scroll al color seleccionado
     setTimeout(() => {
       const focused = grid.querySelector('.selector-item.focused');
       if (focused) focused.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
     }, 50);
+  },
+
+  handleTouchSelector(event, index) {
+    event.preventDefault();
+    const now = Date.now();
+    if (now - this.state.lastTouchTime < this.state.touchDelay) return;
+    this.state.lastTouchTime = now;
+    
+    this.selectFromSelectorDirect(index);
+  },
+
+  selectFromSelectorDirect(index) {
+    this.state.selectorIndex = index;
+    this.selectFromSelector();
   },
 
   showStatusSelector() {
@@ -3478,13 +3676,39 @@ const app = {
     
     grid.innerHTML = ESTADOS.map((s, i) => `
       <div class="selector-item ${i === this.state.selectorIndex ? 'focused' : ''}" 
-           style="background: ${s.color};" data-index="${i}">
+           style="background: ${s.color};" 
+           data-index="${i}"
+           data-name="${s.label}"
+           onclick="app.selectStatusDirect(${i})"
+           ontouchstart="app.handleTouchStatus(event, ${i})">
         <div style="font-size: 35px;">${s.emoji}</div>
-        <span style="margin-top: 6px; font-size: 11px;">${s.label}</span>
       </div>
     `).join('');
     
     modal.classList.add('active');
+  },
+
+  handleTouchStatus(event, index) {
+    event.preventDefault();
+    const now = Date.now();
+    if (now - this.state.lastTouchTime < this.state.touchDelay) return;
+    this.state.lastTouchTime = now;
+    
+    this.selectStatusDirect(index);
+  },
+
+  selectStatusDirect(index) {
+    this.state.selectorIndex = index;
+    const s = ESTADOS[index];
+    if (s) {
+      this.state.settings.status = s.id;
+      localStorage.setItem('status', s.id);
+      this.showMsg(`${s.emoji} ${s.label}`);
+      this.updateHome();
+    }
+    document.querySelectorAll('.selector-modal').forEach(m => m.classList.remove('active'));
+    this.state.inSelector = false;
+    this.updateSettingsUI();
   },
 
   navigateSelector(dir) {
@@ -3563,7 +3787,7 @@ const app = {
         <video id="scan-video" style="width: 260px; height: 260px; object-fit: cover; border-radius: 16px; display: block; background: #000;" autoplay playsinline muted></video>
         <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 220px; height: 220px; border: 4px solid #48BB78; border-radius: 16px; pointer-events: none;"></div>
       </div>
-      <div style="text-align: center; margin-top: 15px; color: white; font-size: 12px;">Enfoca el código QR</div>
+      <div style="text-align: center; margin-top: 15px; color: #2D3748; font-size: 12px;">Enfoca el código QR</div>
       <div style="display: flex; gap: 10px; margin-top: 15px;">
         <button id="btn-cancel-scan" style="padding: 10px 20px; background: #F56565; color: white; border: none; border-radius: 20px; font-weight: 800; font-family: 'Nunito'; cursor: pointer; font-size: 12px;">Cancelar</button>
         <button id="btn-manual-scan" style="padding: 10px 20px; background: #4299E1; color: white; border: none; border-radius: 20px; font-weight: 800; font-family: 'Nunito'; cursor: pointer; font-size: 12px;">Manual</button>
@@ -4357,7 +4581,7 @@ const app = {
 };
 
 window.addEventListener('load', () => {
-  console.log('Tokeji v15.0 iniciando...');
+  console.log('Tokeji v15.2 iniciando...');
   app.init();
 });
 </script>
