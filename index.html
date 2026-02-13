@@ -360,7 +360,6 @@
       box-shadow: 0 0 0 3px rgba(255,107,157,0.3);
     }
 
-    /* ===== SELECTOR DE COLOR MEJORADO - FONDO CLARO ===== */
     #page-color {
       justify-content: flex-start;
       align-items: center;
@@ -822,7 +821,6 @@
       box-shadow: 0 0 0 #C53030;
     }
 
-    /* ===== SELECTOR MODAL - FONDO CLARO ===== */
     .selector-modal {
       position: absolute;
       top: 0;
@@ -1075,7 +1073,6 @@
       box-shadow: 0 0 0 3px rgba(255,107,157,0.3);
     }
 
-    /* ===== CONTROLES CIRCULARES - SIN HUECOS ===== */
     .controls-wrapper {
       display: flex;
       flex-direction: column;
@@ -1122,7 +1119,6 @@
       overflow: hidden;
     }
 
-    /* SECTORES QUE CUBREN TODO EL CÍRCULO - SIN HUECOS */
     .nav-sector {
       position: absolute;
       width: 50%;
@@ -1136,7 +1132,6 @@
       background: rgba(0,0,0,0.15);
     }
 
-    /* Sector superior - triángulo que llega al centro */
     .sector-up {
       top: 0;
       left: 25%;
@@ -1145,7 +1140,6 @@
       clip-path: polygon(50% 100%, 0 0, 100% 0);
     }
 
-    /* Sector inferior - triángulo que llega al centro */
     .sector-down {
       bottom: 0;
       left: 25%;
@@ -1154,7 +1148,6 @@
       clip-path: polygon(50% 0, 0 100%, 100% 100%);
     }
 
-    /* Sector izquierdo - triángulo que llega al centro */
     .sector-left {
       left: 0;
       top: 25%;
@@ -1163,7 +1156,6 @@
       clip-path: polygon(100% 50%, 0 0, 0 100%);
     }
 
-    /* Sector derecho - triángulo que llega al centro */
     .sector-right {
       right: 0;
       top: 25%;
@@ -1172,7 +1164,6 @@
       clip-path: polygon(0 50%, 100% 0, 100% 100%);
     }
 
-    /* Flechas decorativas - sin pointer-events */
     .nav-arrow {
       position: absolute;
       width: 0;
@@ -1216,27 +1207,6 @@
       border-top: 10px solid transparent;
       border-bottom: 10px solid transparent;
       border-left: 14px solid rgba(255,255,255,0.95);
-    }
-
-    /* Efecto visual al presionar sector */
-    .sector-up:active ~ .arrow-up {
-      transform: translateX(-50%) scale(0.85);
-      opacity: 0.7;
-    }
-
-    .sector-down:active ~ .arrow-down {
-      transform: translateX(-50%) scale(0.85);
-      opacity: 0.7;
-    }
-
-    .sector-left:active ~ .arrow-left {
-      transform: translateY(-50%) scale(0.85);
-      opacity: 0.7;
-    }
-
-    .sector-right:active ~ .arrow-right {
-      transform: translateY(-50%) scale(0.85);
-      opacity: 0.7;
     }
 
     .ok-btn {
@@ -1852,6 +1822,83 @@
       overflow-y: auto;
       display: none;
     }
+
+    /* ESTILOS PARA COMBATES */
+    .combate-vs-screen {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(145deg, #1a202c, #2d3748);
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 400;
+      color: white;
+      padding: 20px;
+    }
+
+    .combate-vs-screen.active {
+      display: flex;
+    }
+
+    .combate-vs-avatars {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 30px;
+      margin-bottom: 30px;
+    }
+
+    .combate-vs-avatar {
+      font-size: 60px;
+      filter: drop-shadow(0 5px 15px rgba(0,0,0,0.5));
+    }
+
+    .combate-vs-vs {
+      font-family: 'Fredoka One', cursive;
+      font-size: 40px;
+      color: #FFD93D;
+      text-shadow: 0 4px 8px rgba(0,0,0,0.5);
+      animation: pulse 1s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+
+    .combate-vs-poder {
+      font-size: 24px;
+      font-weight: 800;
+      margin-top: 10px;
+    }
+
+    .combate-vs-barra {
+      width: 200px;
+      height: 20px;
+      background: rgba(255,255,255,0.2);
+      border-radius: 10px;
+      overflow: hidden;
+      margin-top: 10px;
+      position: relative;
+    }
+
+    .combate-vs-progreso {
+      height: 100%;
+      background: linear-gradient(90deg, #48BB78, #FFD93D);
+      width: 0%;
+      transition: width 2s ease;
+    }
+
+    .combate-resultado-final {
+      font-family: 'Fredoka One', cursive;
+      font-size: 32px;
+      margin-top: 20px;
+      text-shadow: 0 4px 8px rgba(0,0,0,0.5);
+    }
   </style>
 </head>
 <body>
@@ -2145,23 +2192,42 @@
               </div>
             </div>
           </div>
+
+          <!-- PANTALLA DE COMBATE VS -->
+          <div class="combate-vs-screen" id="combate-vs-screen">
+            <div class="combate-vs-avatars">
+              <div style="text-align: center;">
+                <div class="combate-vs-avatar" id="vs-mi-emoji">🐱</div>
+                <div style="font-size: 12px; margin-top: 5px;">Tú</div>
+                <div class="combate-vs-poder" id="vs-mi-poder">⚡0</div>
+              </div>
+              <div class="combate-vs-vs">VS</div>
+              <div style="text-align: center;">
+                <div class="combate-vs-avatar" id="vs-su-emoji">🤖</div>
+                <div style="font-size: 12px; margin-top: 5px;" id="vs-rival-nombre">IA</div>
+                <div class="combate-vs-poder" id="vs-su-poder">⚡0</div>
+              </div>
+            </div>
+            <div class="combate-vs-barra">
+              <div class="combate-vs-progreso" id="vs-progreso"></div>
+            </div>
+            <div class="combate-resultado-final" id="vs-resultado"></div>
+            <button onclick="app.cerrarPantallaVS()" style="margin-top: 30px; padding: 12px 40px; background: white; color: #2D3748; border: none; border-radius: 25px; font-weight: 800; font-family: Nunito; cursor: pointer; box-shadow: 0 4px 0 rgba(0,0,0,0.2);">OK</button>
+          </div>
         </div>
 
         <div class="msg-bar" id="msg-bar"></div>
       </div>
     </div>
 
-    <!-- CONTROLES CIRCULARES SIN HUECOS - OPTIMIZADOS PARA iPHONE -->
     <div class="controls-wrapper">
       <div class="dpad-circle">
         <div class="nav-ring">
-          <!-- Sectores que cubren TODO el círculo sin huecos -->
           <div class="nav-sector sector-up" onclick="app.handleUp()" ontouchstart="app.handleTouchStart(event, 'up')" ontouchend="app.handleTouchEnd(event)"></div>
           <div class="nav-sector sector-down" onclick="app.handleDown()" ontouchstart="app.handleTouchStart(event, 'down')" ontouchend="app.handleTouchEnd(event)"></div>
           <div class="nav-sector sector-left" onclick="app.handleLeft()" ontouchstart="app.handleTouchStart(event, 'left')" ontouchend="app.handleTouchEnd(event)"></div>
           <div class="nav-sector sector-right" onclick="app.handleRight()" ontouchstart="app.handleTouchStart(event, 'right')" ontouchend="app.handleTouchEnd(event)"></div>
           
-          <!-- Flechas decorativas -->
           <div class="nav-arrow arrow-up"></div>
           <div class="nav-arrow arrow-down"></div>
           <div class="nav-arrow arrow-left"></div>
@@ -2176,10 +2242,6 @@
 
 <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
 <script>
-// ========================================
-// TOKEJI v15.2 - CONTROLES SIN HUECOS + RÁPIDOS EN iPHONE
-// ========================================
-
 const BACK = "https://tokeji-device.onrender.com";
 
 const RAREZAS_TODEX = {
@@ -2312,9 +2374,22 @@ const app = {
     colaMensajes: [],
     procesandoCola: false,
     mensajesPendientes: 0,
-    // Para evitar doble firing en iPhone
     lastTouchTime: 0,
-    touchDelay: 50
+    touchDelay: 50,
+    
+    // NUEVO: Sistema de combates
+    combate: {
+      modo: null,
+      oponenteId: null,
+      miEmojiSeleccionado: null,
+      desafioPendiente: null,
+      resultadoMostrado: false,
+      selectorAmigoIndex: 0,
+      enSelectorAmigo: false,
+      selectorEmojiIndex: 0,
+      enSelectorEmoji: false
+    },
+    pollingCombates: null
   },
   
   contactos: {},
@@ -2334,7 +2409,7 @@ const app = {
   },
 
   init() {
-    this.debug('=== TOKEJI v15.2 INICIANDO ===');
+    this.debug('=== TOKEJI v16.0 CON COMBATES ===');
     this.debug('Backend: ' + BACK);
     
     this.miID = localStorage.getItem("miid");
@@ -2373,6 +2448,13 @@ const app = {
     this.prevenirZoom();
     this.optimizarTouch();
     
+    // Iniciar verificación de desafíos pendientes cada 5 segundos
+    setInterval(() => {
+      if (!this.state.combate.desafioPendiente && !document.getElementById('desafio-recibido-modal')) {
+        this.verificarDesafiosPendientes();
+      }
+    }, 5000);
+    
     setTimeout(() => {
       this.checkTokes();
       this.checkRespuestas();
@@ -2382,17 +2464,15 @@ const app = {
       this.checkTokes();
       this.checkRespuestas();
     }, 5000);
-      setTimeout(() => this.reintentarRespuestasPendientes(), 10000);
+    
+    setTimeout(() => this.reintentarRespuestasPendientes(), 10000);
     
     this.showPage('splash', false);
   },
 
-  // ===== OPTIMIZACIÓN PARA iPHONE - RESPUESTA RÁPIDA =====
   optimizarTouch() {
-    // Eliminar delay táctil de 300ms en iPhone
     document.addEventListener('touchstart', function(){}, {passive: true});
     
-    // Prevenir zoom double-tap
     let lastTouchEnd = 0;
     document.addEventListener('touchend', (e) => {
       const now = Date.now();
@@ -2415,7 +2495,6 @@ const app = {
     }, { passive: false });
   },
 
-  // ===== HANDLERS DE TOUCH RÁPIDOS PARA iPHONE =====
   handleTouchStart(event, direction) {
     event.preventDefault();
     event.stopPropagation();
@@ -2423,11 +2502,9 @@ const app = {
     if (now - this.state.lastTouchTime < this.state.touchDelay) return;
     this.state.lastTouchTime = now;
     
-    // Efecto visual inmediato
     const sector = event.target;
     sector.style.background = 'rgba(0,0,0,0.15)';
     
-    // Ejecutar acción inmediatamente
     switch(direction) {
       case 'up': this.handleUp(); break;
       case 'down': this.handleDown(); break;
@@ -2699,7 +2776,6 @@ const app = {
     });
   },
 
-  // ===== SELECTOR DE COLOR CON NOMBRES =====
   renderColorSetupGrid() {
     const grid = document.getElementById('color-setup-grid');
     if (!grid) return;
@@ -2755,6 +2831,29 @@ const app = {
     const confirmModal = document.getElementById('confirm-reiniciar');
     if (confirmModal && confirmModal.classList.contains('active')) {
       confirmModal.classList.remove('active');
+      return;
+    }
+    
+    // Cerrar modales de combate
+    if (document.getElementById('selector-amigo-combate')) {
+      document.getElementById('selector-amigo-combate').remove();
+      this.state.combate.enSelectorAmigo = false;
+      return;
+    }
+    
+    if (document.getElementById('selector-emoji-combate')) {
+      document.getElementById('selector-emoji-combate').remove();
+      this.state.combate.enSelectorEmoji = false;
+      return;
+    }
+    
+    if (document.getElementById('desafio-recibido-modal')) {
+      // No cerrar, debe decidir
+      return;
+    }
+    
+    if (document.getElementById('selector-defensa')) {
+      document.getElementById('selector-defensa').remove();
       return;
     }
     
@@ -2835,6 +2934,27 @@ const app = {
     this.initAudio();
     this.playSound('select');
     
+    // Verificar si estamos en selector de amigo para combate
+    if (this.state.combate.enSelectorAmigo) {
+      const items = document.querySelectorAll('#selector-amigo-combate .list-item');
+      if (items[this.state.combate.selectorAmigoIndex]) {
+        const amigoId = items[this.state.combate.selectorAmigoIndex].dataset.id;
+        const amigoNombre = this.contactos[amigoId];
+        this.seleccionarAmigoCombate(amigoId, amigoNombre);
+      }
+      return;
+    }
+    
+    // Verificar si estamos en selector de emoji para combate
+    if (this.state.combate.enSelectorEmoji) {
+      const cards = document.querySelectorAll('#selector-emoji-combate .emoji-card');
+      if (cards[this.state.combate.selectorEmojiIndex]) {
+        const emojiId = parseInt(cards[this.state.combate.selectorEmojiIndex].dataset.id);
+        this.seleccionarEmojiCombate(emojiId);
+      }
+      return;
+    }
+    
     const { currentPage, focus, inSelector } = this.state;
     
     const confirmModal = document.getElementById('confirm-reiniciar');
@@ -2907,7 +3027,6 @@ const app = {
         this.showPage('color', false);
         break;
       case 'color':
-        // Ahora se selecciona directamente al tocar el color
         break;
       case 'home':
         this.showPage('menu');
@@ -2958,6 +3077,24 @@ const app = {
   handleUp() {
     this.initAudio();
     this.playSound('move');
+    
+    // Navegación en selector de amigo para combate
+    if (this.state.combate.enSelectorAmigo) {
+      if (this.state.combate.selectorAmigoIndex > 0) {
+        this.state.combate.selectorAmigoIndex--;
+        this.updateSelectorAmigoFocus();
+      }
+      return;
+    }
+    
+    // Navegación en selector de emoji para combate
+    if (this.state.combate.enSelectorEmoji) {
+      if (this.state.combate.selectorEmojiIndex >= 4) {
+        this.state.combate.selectorEmojiIndex -= 4;
+        this.updateSelectorEmojiFocus();
+      }
+      return;
+    }
     
     const confirmModal = document.getElementById('confirm-reiniciar');
     if (confirmModal && confirmModal.classList.contains('active')) return;
@@ -3056,6 +3193,27 @@ const app = {
   handleDown() {
     this.initAudio();
     this.playSound('move');
+    
+    // Navegación en selector de amigo para combate
+    if (this.state.combate.enSelectorAmigo) {
+      const max = Object.keys(this.contactos).length - 1;
+      if (this.state.combate.selectorAmigoIndex < max) {
+        this.state.combate.selectorAmigoIndex++;
+        this.updateSelectorAmigoFocus();
+      }
+      return;
+    }
+    
+    // Navegación en selector de emoji para combate
+    if (this.state.combate.enSelectorEmoji) {
+      const max = this.todex.captured.length - 1;
+      if (this.state.combate.selectorEmojiIndex < max - 3) {
+        this.state.combate.selectorEmojiIndex += 4;
+        if (this.state.combate.selectorEmojiIndex > max) this.state.combate.selectorEmojiIndex = max;
+        this.updateSelectorEmojiFocus();
+      }
+      return;
+    }
     
     const confirmModal = document.getElementById('confirm-reiniciar');
     if (confirmModal && confirmModal.classList.contains('active')) return;
@@ -3168,6 +3326,15 @@ const app = {
     this.initAudio();
     this.playSound('move');
     
+    // Navegación en selector de emoji para combate
+    if (this.state.combate.enSelectorEmoji) {
+      if (this.state.combate.selectorEmojiIndex % 4 > 0) {
+        this.state.combate.selectorEmojiIndex--;
+        this.updateSelectorEmojiFocus();
+      }
+      return;
+    }
+    
     const confirmModal = document.getElementById('confirm-reiniciar');
     if (confirmModal && confirmModal.classList.contains('active')) {
       this.state.confirmIndex = 0;
@@ -3240,6 +3407,18 @@ const app = {
     this.initAudio();
     this.playSound('move');
     
+    // Navegación en selector de emoji para combate
+    if (this.state.combate.enSelectorEmoji) {
+      if (this.state.combate.selectorEmojiIndex % 4 < 3) {
+        const max = this.todex.captured.length - 1;
+        if (this.state.combate.selectorEmojiIndex < max) {
+          this.state.combate.selectorEmojiIndex++;
+          this.updateSelectorEmojiFocus();
+        }
+      }
+      return;
+    }
+    
     const confirmModal = document.getElementById('confirm-reiniciar');
     if (confirmModal && confirmModal.classList.contains('active')) {
       this.state.confirmIndex = 1;
@@ -3306,6 +3485,21 @@ const app = {
         }
         break;
     }
+  },
+
+  updateSelectorAmigoFocus() {
+    const items = document.querySelectorAll('#selector-amigo-combate .list-item');
+    items.forEach((el, i) => {
+      el.classList.toggle('focused', i === this.state.combate.selectorAmigoIndex);
+    });
+  },
+
+  updateSelectorEmojiFocus() {
+    const cards = document.querySelectorAll('#selector-emoji-combate .emoji-card, #selector-defensa .emoji-card');
+    cards.forEach((el, i) => {
+      el.classList.toggle('focused', i === this.state.combate.selectorEmojiIndex);
+      el.style.border = i === this.state.combate.selectorEmojiIndex ? '3px solid var(--device-color)' : '3px solid transparent';
+    });
   },
 
   updateConfirmFocus() {
@@ -4519,22 +4713,6 @@ const app = {
     }, 300);
   },
 
-  jugarVSIA() {
-    if (this.todex.captured.length < 3) {
-      this.showMsg('Necesitas 3 emojis en ToDox');
-      return;
-    }
-    this.showMsg('🤖 VS IA - Próximamente');
-  },
-
-  jugarVSAmigo() {
-    if (Object.keys(this.contactos).length === 0) {
-      this.showMsg('Agrega amigos primero');
-      return;
-    }
-    this.showMsg('⚔️ VS Amigo - Próximamente');
-  },
-
   handleResponseOK() {
     const idx = this.state.focus.index;
     const modal = document.getElementById('response-modal');
@@ -4577,11 +4755,499 @@ const app = {
     if (this.state.settings.vibracion && navigator.vibrate) {
       navigator.vibrate(8);
     }
+  },
+
+  // ===== SISTEMA DE COMBATES COMPLETO =====
+
+  async jugarVSAmigo() {
+    if (Object.keys(this.contactos).length === 0) {
+      this.showMsg('Agrega amigos primero');
+      return;
+    }
+    
+    this.mostrarSelectorAmigoCombate();
+  },
+
+  async jugarVSIA() {
+    if (this.todex.captured.length < 3) {
+      this.showMsg('Necesitas 3+ emojis en ToDox');
+      return;
+    }
+    
+    this.state.combate.modo = 'ia';
+    this.mostrarSelectorEmojiCombate();
+  },
+
+  mostrarSelectorAmigoCombate() {
+    const amigos = Object.entries(this.contactos);
+    if (amigos.length === 0) return;
+    
+    const modal = document.createElement('div');
+    modal.className = 'selector-modal active';
+    modal.id = 'selector-amigo-combate';
+    modal.style.zIndex = '150';
+    modal.innerHTML = `
+      <div class="selector-title">⚔️ ¿A quién retar?</div>
+      <div class="list-container" id="lista-amigos-combate" style="max-height: 250px;">
+        ${amigos.map(([id, nombre], i) => `
+          <div class="list-item ${i === 0 ? 'focused' : ''}" data-id="${id}" data-index="${i}" style="margin-bottom: 8px;">
+            <span style="font-size: 28px;">👤</span>
+            <div style="flex: 1;">
+              <div style="font-weight: 800; color: #2D3748;">${nombre}</div>
+            </div>
+          </div>
+        `).join('')}
+      </div>
+      <div style="margin-top: 15px; font-size: 11px; color: #718096;">OK para seleccionar, C para cancelar</div>
+    `;
+    
+    document.body.appendChild(modal);
+    
+    this.state.combate.selectorAmigoIndex = 0;
+    this.state.combate.enSelectorAmigo = true;
+    
+    const items = modal.querySelectorAll('.list-item');
+    items.forEach((item, idx) => {
+      item.onclick = () => {
+        const amigoId = item.dataset.id;
+        const amigoNombre = this.contactos[amigoId];
+        this.seleccionarAmigoCombate(amigoId, amigoNombre);
+      };
+    });
+  },
+
+  seleccionarAmigoCombate(amigoId, amigoNombre) {
+    document.getElementById('selector-amigo-combate')?.remove();
+    this.state.combate.enSelectorAmigo = false;
+    this.state.combate.modo = 'amigo';
+    this.state.combate.oponenteId = amigoId;
+    
+    this.showMsg(`Retando a ${amigoNombre}...`);
+    this.mostrarSelectorEmojiCombate();
+  },
+
+  mostrarSelectorEmojiCombate() {
+    const emojisDisponibles = this.todex.captured;
+    if (emojisDisponibles.length === 0) {
+      this.showMsg('No tienes emojis para combatir');
+      return;
+    }
+    
+    const modal = document.createElement('div');
+    modal.className = 'selector-modal active';
+    modal.id = 'selector-emoji-combate';
+    modal.style.zIndex = '150';
+    
+    const gridEmojis = emojisDisponibles.map((id, i) => {
+      const emoji = EMOJIS_LIST[id - 1] || '✨';
+      const stats = this.todex.emojis_stats[id] || calcularStatsBase(id);
+      return `
+        <div class="emoji-card captured ${i === 0 ? 'focused' : ''}" 
+             data-id="${id}" 
+             data-index="${i}"
+             style="aspect-ratio: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 24px; cursor: pointer; border: 3px solid ${i === 0 ? 'var(--device-color)' : 'transparent'};">
+          <div>${emoji}</div>
+          <div style="font-size: 8px; margin-top: 2px; color: #666;">⚡${stats.aura}</div>
+        </div>
+      `;
+    }).join('');
+    
+    modal.innerHTML = `
+      <div class="selector-title">🎯 Elige tu guerrero</div>
+      <div class="todex-grid" style="grid-template-columns: repeat(4, 1fr); gap: 8px; max-height: 280px; overflow-y: auto;">
+        ${gridEmojis}
+      </div>
+      <div style="margin-top: 10px; font-size: 11px; color: #718096;">Selecciona tu emoji más fuerte</div>
+    `;
+    
+    document.body.appendChild(modal);
+    
+    this.state.combate.selectorEmojiIndex = 0;
+    this.state.combate.enSelectorEmoji = true;
+    
+    const cards = modal.querySelectorAll('.emoji-card');
+    cards.forEach((card, idx) => {
+      card.onclick = () => {
+        const emojiId = parseInt(card.dataset.id);
+        this.seleccionarEmojiCombate(emojiId);
+      };
+    });
+  },
+
+  seleccionarEmojiCombate(emojiId) {
+    document.getElementById('selector-emoji-combate')?.remove();
+    document.getElementById('selector-defensa')?.remove();
+    this.state.combate.enSelectorEmoji = false;
+    this.state.combate.miEmojiSeleccionado = emojiId;
+    
+    if (this.state.combate.modo === 'amigo') {
+      this.enviarDesafioCombate();
+    } else {
+      this.combateVsIA();
+    }
+  },
+
+  async enviarDesafioCombate() {
+    const payload = {
+      de: this.miID,
+      para: this.state.combate.oponenteId,
+      miEmojiId: this.state.combate.miEmojiSeleccionado
+    };
+    
+    this.showMsg('Enviando desafío...');
+    
+    try {
+      const response = await fetch(`${BACK}/desafio`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+        mode: 'cors'
+      });
+      
+      const data = await response.json();
+      
+      if (data.ok) {
+        this.showMsg('⚔️ Desafío enviado! Esperando respuesta...');
+        this.iniciarPollingCombates();
+        this.showPage('home');
+      } else {
+        this.showMsg('❌ Error: ' + (data.error || 'No se pudo enviar'));
+      }
+    } catch(e) {
+      this.showMsg('❌ Error de conexión');
+      console.error(e);
+    }
+  },
+
+  async combateVsIA() {
+    const miEmoji = this.state.combate.miEmojiSeleccionado;
+    const misStats = this.todex.emojis_stats[miEmoji] || calcularStatsBase(miEmoji);
+    
+    // IA selecciona emoji aleatorio de los comunes
+    const emojisIA = [1, 4, 17, 19, 31, 33, 36, 39, 41, 44, 46, 49, 50, 53, 55, 60, 63, 66, 68, 72, 75, 79, 81, 84, 88, 93, 97, 101, 104, 108, 110, 114, 117, 120, 125, 131, 135];
+    const emojiIA = emojisIA[Math.floor(Math.random() * emojisIA.length)];
+    const statsIA = calcularStatsBase(emojiIA);
+    
+    const miPoder = (misStats.aura + misStats.vibra + misStats.suerte) * (0.8 + Math.random() * 0.4);
+    const poderIA = (statsIA.aura + statsIA.vibra + statsIA.suerte) * (0.8 + Math.random() * 0.4);
+    
+    const gane = miPoder > poderIA;
+    
+    this.mostrarPantallaVS({
+      modo: 'ia',
+      ganador: gane ? 'yo' : 'ia',
+      miEmoji: miEmoji,
+      suEmoji: emojiIA,
+      miPoder: Math.floor(miPoder),
+      suPoder: Math.floor(poderIA),
+      nombreRival: 'IA'
+    });
+  },
+
+  async verificarDesafiosPendientes() {
+    try {
+      const response = await fetch(`${BACK}/desafios-pendientes?userId=${this.miID}`, {
+        method: 'GET',
+        headers: { 'Accept': 'application/json' },
+        mode: 'cors'
+      });
+      
+      const data = await response.json();
+      
+      if (data.ok && data.desafios && data.desafios.length > 0) {
+        const desafio = data.desafios[0];
+        this.mostrarDesafioRecibido(desafio);
+      }
+    } catch(e) {
+      console.error('Error verificando desafíos:', e);
+    }
+  },
+
+  mostrarDesafioRecibido(desafio) {
+    const nombreRival = this.contactos[desafio.de] || 'Alguien';
+    const emojiRival = EMOJIS_LIST[desafio.miEmojiId - 1] || '❓';
+    
+    this.state.combate.desafioPendiente = desafio;
+    
+    const modal = document.createElement('div');
+    modal.className = 'selector-modal active';
+    modal.id = 'desafio-recibido-modal';
+    modal.style.zIndex = '200';
+    modal.style.background = 'linear-gradient(145deg, #805AD5, #6B46C1)';
+    modal.style.color = 'white';
+    
+    modal.innerHTML = `
+      <div style="font-family: Fredoka One; font-size: 24px; margin-bottom: 15px;">⚔️ ¡DESAFÍO!</div>
+      <div style="font-size: 50px; margin: 10px 0;">${emojiRival}</div>
+      <div style="font-size: 16px; font-weight: 700; margin-bottom: 5px;">${nombreRival}</div>
+      <div style="font-size: 12px; opacity: 0.9; margin-bottom: 20px;">te reta a un combate</div>
+      <div style="display: flex; gap: 15px;">
+        <button onclick="app.rechazarDesafio()" style="padding: 12px 25px; background: #E53E3E; color: white; border: none; border-radius: 20px; font-weight: 800; font-family: Nunito; cursor: pointer; box-shadow: 0 4px 0 #C53030;">Rechazar</button>
+        <button onclick="app.aceptarDesafio()" style="padding: 12px 25px; background: #48BB78; color: white; border: none; border-radius: 20px; font-weight: 800; font-family: Nunito; cursor: pointer; box-shadow: 0 4px 0 #38A169;">⚔️ Aceptar</button>
+      </div>
+    `;
+    
+    document.body.appendChild(modal);
+    this.playSound('success');
+    
+    if (this.state.settings.vibracion && navigator.vibrate) {
+      navigator.vibrate([200, 100, 200, 100, 200]);
+    }
+  },
+
+  rechazarDesafio() {
+    document.getElementById('desafio-recibido-modal')?.remove();
+    this.state.combate.desafioPendiente = null;
+    this.showMsg('Desafío rechazado');
+  },
+
+  aceptarDesafio() {
+    document.getElementById('desafio-recibido-modal')?.remove();
+    this.mostrarSelectorEmojiParaDefender();
+  },
+
+  mostrarSelectorEmojiParaDefender() {
+    const desafio = this.state.combate.desafioPendiente;
+    if (!desafio) return;
+    
+    const emojisDisponibles = this.todex.captured;
+    if (emojisDisponibles.length === 0) {
+      this.showMsg('No tienes emojis para defender');
+      return;
+    }
+    
+    const modal = document.createElement('div');
+    modal.className = 'selector-modal active';
+    modal.id = 'selector-defensa';
+    modal.style.zIndex = '150';
+    
+    const gridEmojis = emojisDisponibles.map((id, i) => {
+      const emoji = EMOJIS_LIST[id - 1] || '✨';
+      const stats = this.todex.emojis_stats[id] || calcularStatsBase(id);
+      return `
+        <div class="emoji-card captured ${i === 0 ? 'focused' : ''}" 
+             data-id="${id}" 
+             style="aspect-ratio: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 24px; cursor: pointer; border: 3px solid ${i === 0 ? 'var(--device-color)' : 'transparent'};">
+          <div>${emoji}</div>
+          <div style="font-size: 8px; margin-top: 2px; color: #666;">⚡${stats.aura}</div>
+        </div>
+      `;
+    }).join('');
+    
+    modal.innerHTML = `
+      <div class="selector-title">🛡️ Elige defensor</div>
+      <div class="todex-grid" style="grid-template-columns: repeat(4, 1fr); gap: 8px; max-height: 280px;">
+        ${gridEmojis}
+      </div>
+      <div style="margin-top: 10px; font-size: 11px; color: #718096;">¿Qué emoji usarás para defenderte?</div>
+    `;
+    
+    document.body.appendChild(modal);
+    
+    this.state.combate.selectorEmojiIndex = 0;
+    this.state.combate.enSelectorEmoji = true;
+    
+    const cards = modal.querySelectorAll('.emoji-card');
+    cards.forEach(card => {
+      card.onclick = () => {
+        const emojiId = parseInt(card.dataset.id);
+        this.responderDesafio(emojiId);
+      };
+    });
+  },
+
+  async responderDesafio(miEmojiId) {
+    document.getElementById('selector-defensa')?.remove();
+    this.state.combate.enSelectorEmoji = false;
+    
+    const desafio = this.state.combate.desafioPendiente;
+    if (!desafio) return;
+    
+    const payload = {
+      desafioId: desafio.id,
+      aceptado: true,
+      miEmojiId: miEmojiId
+    };
+    
+    this.showMsg('⚔️ ¡Combate en curso!');
+    
+    try {
+      const response = await fetch(`${BACK}/desafio/responder`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+        mode: 'cors'
+      });
+      
+      const data = await response.json();
+      
+      if (data.ok && data.resultado) {
+        this.procesarResultadoCombate(data.resultado, desafio.de);
+      } else {
+        this.showMsg('Error en el combate: ' + (data.error || 'Desconocido'));
+      }
+    } catch(e) {
+      this.showMsg('❌ Error de conexión');
+      console.error(e);
+    }
+    
+    this.state.combate.desafioPendiente = null;
+  },
+
+  async iniciarPollingCombates() {
+    if (this.state.pollingCombates) {
+      clearInterval(this.state.pollingCombates);
+    }
+    
+    this.verificarCombatesFinalizados();
+    
+    this.state.pollingCombates = setInterval(() => {
+      this.verificarCombatesFinalizados();
+    }, 3000);
+    
+    setTimeout(() => {
+      if (this.state.pollingCombates) {
+        clearInterval(this.state.pollingCombates);
+        this.state.pollingCombates = null;
+      }
+    }, 120000);
+  },
+
+  async verificarCombatesFinalizados() {
+    try {
+      const response = await fetch(`${BACK}/combates-finalizados?userId=${this.miID}`, {
+        method: 'GET',
+        headers: { 'Accept': 'application/json' },
+        mode: 'cors'
+      });
+      
+      const data = await response.json();
+      
+      if (data.ok && data.combates && data.combates.length > 0) {
+        if (this.state.pollingCombates) {
+          clearInterval(this.state.pollingCombates);
+          this.state.pollingCombates = null;
+        }
+        
+        const combate = data.combates[0];
+        this.procesarResultadoCombate(combate, combate.de === this.miID ? combate.para : combate.de);
+      }
+    } catch(e) {
+      console.error('Error verificando combates:', e);
+    }
+  },
+
+  procesarResultadoCombate(resultado, oponenteId) {
+    const gane = resultado.ganador === this.miID;
+    const nombreOponente = this.contactos[oponenteId] || (resultado.modo === 'ia' ? 'IA' : 'Rival');
+    
+    // Si perdí, transferir emoji al ganador
+    if (!gane && resultado.modo !== 'ia') {
+      const emojiPerdido = parseInt(resultado.de === this.miID ? resultado.miEmoji : resultado.suEmoji);
+      this.transferirEmojiPerdido(emojiPerdido, resultado.ganador);
+    }
+    
+    // Si gané, recibir emoji del perdedor (si no es IA)
+    if (gane && resultado.modo !== 'ia') {
+      const emojiGanado = parseInt(resultado.de === this.miID ? resultado.suEmoji : resultado.miEmoji);
+      this.recibirEmojiGanado(emojiGanado);
+    }
+    
+    this.mostrarPantallaVS({
+      modo: resultado.modo || 'amigo',
+      ganador: gane ? 'yo' : 'rival',
+      miEmoji: resultado.de === this.miID ? resultado.miEmoji : resultado.suEmoji,
+      suEmoji: resultado.de === this.miID ? resultado.suEmoji : resultado.miEmoji,
+      miPoder: resultado.de === this.miID ? Math.floor(resultado.miPoder) : Math.floor(resultado.suPoder),
+      suPoder: resultado.de === this.miID ? Math.floor(resultado.suPoder) : Math.floor(resultado.miPoder),
+      nombreRival: nombreOponente
+    });
+  },
+
+  transferirEmojiPerdido(emojiId, ganadorId) {
+    const index = this.todex.captured.indexOf(emojiId);
+    if (index > -1) {
+      this.todex.captured.splice(index, 1);
+      delete this.todex.emojis_stats[emojiId];
+      localStorage.setItem('todex', JSON.stringify(this.todex));
+      
+      // Notificar al backend
+      fetch(`${BACK}/transferir-emoji`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          emojiId: emojiId,
+          de: this.miID,
+          para: ganadorId
+        }),
+        mode: 'cors'
+      }).catch(() => {});
+    }
+  },
+
+  recibirEmojiGanado(emojiId) {
+    if (!this.todex.captured.includes(emojiId)) {
+      this.todex.captured.push(emojiId);
+      this.todex.captured.sort((a, b) => a - b);
+      this.todex.emojis_stats[emojiId] = calcularStatsBase(emojiId);
+      localStorage.setItem('todex', JSON.stringify(this.todex));
+    }
+  },
+
+  mostrarPantallaVS(datos) {
+    const miEmoji = EMOJIS_LIST[datos.miEmoji - 1] || '❓';
+    const suEmoji = EMOJIS_LIST[datos.suEmoji - 1] || '❓';
+    const gane = datos.ganador === 'yo';
+    
+    document.getElementById('vs-mi-emoji').textContent = miEmoji;
+    document.getElementById('vs-su-emoji').textContent = suEmoji;
+    document.getElementById('vs-mi-poder').textContent = '⚡' + datos.miPoder;
+    document.getElementById('vs-su-poder').textContent = '⚡' + datos.suPoder;
+    document.getElementById('vs-rival-nombre').textContent = datos.nombreRival;
+    
+    const pantalla = document.getElementById('combate-vs-screen');
+    const resultado = document.getElementById('vs-resultado');
+    const progreso = document.getElementById('vs-progreso');
+    
+    resultado.textContent = '';
+    progreso.style.width = '0%';
+    pantalla.classList.add('active');
+    
+    // Animación de batalla
+    setTimeout(() => {
+      progreso.style.width = '100%';
+    }, 100);
+    
+    setTimeout(() => {
+      resultado.textContent = gane ? '🏆 ¡VICTORIA!' : '💔 DERROTA';
+      resultado.style.color = gane ? '#48BB78' : '#F56565';
+      this.playSound(gane ? 'unlock' : 'back');
+      
+      if (this.state.settings.vibracion && navigator.vibrate) {
+        navigator.vibrate(gane ? [100, 50, 100, 50, 200] : [300, 100, 300]);
+      }
+    }, 2000);
+  },
+
+  cerrarPantallaVS() {
+    document.getElementById('combate-vs-screen').classList.remove('active');
+    this.state.combate = {
+      modo: null,
+      oponenteId: null,
+      miEmojiSeleccionado: null,
+      desafioPendiente: null,
+      resultadoMostrado: false,
+      selectorAmigoIndex: 0,
+      enSelectorAmigo: false,
+      selectorEmojiIndex: 0,
+      enSelectorEmoji: false
+    };
+    this.showPage('home');
   }
 };
 
 window.addEventListener('load', () => {
-  console.log('Tokeji v15.2 iniciando...');
+  console.log('Tokeji v16.0 con Combates iniciando...');
   app.init();
 });
 </script>
