@@ -4206,6 +4206,629 @@
             <div class="combate-resultado-final" id="vs-resultado"></div>
             <button onclick="app.cerrarPantallaVS()" style="margin-top: 30px; padding: 12px 40px; background: white; color: #2D3748; border: none; border-radius: 25px; font-weight: 800; font-family: Nunito; cursor: pointer; box-shadow: 0 4px 0 rgba(0,0,0,0.2);">OK</button>
           </div>
+          <!-- ============================================ -->
+<!-- NUEVAS PANTALLAS TOKEJI v2.0 - GAS EDITION -->
+<!-- ============================================ -->
+
+<!-- 1. PANTALLA CIUDAD/INSTITUTO (REGISTRO) -->
+<div class="page" id="page-registro">
+  <div class="registro-container">
+    <div class="registro-pasos">
+      <div class="paso-indicador">
+        <span class="paso-dot active"></span>
+        <span class="paso-dot"></span>
+        <span class="paso-dot"></span>
+        <span class="paso-dot"></span>
+        <span class="paso-dot"></span>
+      </div>
+      <div class="paso-titulo" id="registro-titulo">¿Dónde estudias?</div>
+    </div>
+    
+    <div class="registro-content" id="registro-content">
+      <!-- Paso 1: País -->
+      <div class="registro-paso active" data-paso="0">
+        <div class="selector-lista" id="lista-paises">
+          <div class="selector-item focused" data-valor="ES">🇪🇸 España</div>
+          <div class="selector-item" data-valor="MX">🇲🇽 México</div>
+          <div class="selector-item" data-valor="AR">🇦🇷 Argentina</div>
+          <div class="selector-item" data-valor="CO">🇨🇴 Colombia</div>
+          <div class="selector-item" data-valor="CL">🇨🇱 Chile</div>
+          <div class="selector-item" data-valor="PE">🇵🇪 Perú</div>
+          <div class="selector-item" data-valor="OT">🌍 Otro</div>
+        </div>
+      </div>
+      
+      <!-- Paso 2: Ciudad -->
+      <div class="registro-paso" data-paso="1">
+        <div class="registro-seleccionada" id="pais-seleccionado">🇪🇸 España</div>
+        <div class="selector-lista" id="lista-ciudades">
+          <div class="selector-item focused" data-valor="valencia">📍 Valencia</div>
+          <div class="selector-item" data-valor="madrid">📍 Madrid</div>
+          <div class="selector-item" data-valor="barcelona">📍 Barcelona</div>
+          <div class="selector-item" data-valor="sevilla">📍 Sevilla</div>
+          <div class="selector-item" data-valor="zaragoza">📍 Zaragoza</div>
+          <div class="selector-item" data-valor="malaga">📍 Málaga</div>
+        </div>
+      </div>
+      
+      <!-- Paso 3: Instituto -->
+      <div class="registro-paso" data-paso="2">
+        <div class="registro-seleccionada" id="ciudad-seleccionada">📍 Valencia</div>
+        <div class="selector-lista" id="lista-institutos">
+          <div class="selector-item focused" data-valor="ies-moncada">IES Moncada</div>
+          <div class="selector-item" data-valor="ies-joan-fuster">IES Joan Fuster</div>
+          <div class="selector-item" data-valor="colegio-san-jose">Colegio San José</div>
+          <div class="selector-item" data-valor="ies-luis-vives">IES Luis Vives</div>
+          <div class="selector-item nuevo-instituto" data-valor="nuevo">➕ Añadir nuevo</div>
+        </div>
+      </div>
+      
+      <!-- Paso 4: Curso -->
+      <div class="registro-paso" data-paso="3">
+        <div class="registro-label">¿Qué curso?</div>
+        <div class="grid-cursos">
+          <div class="curso-item focused" data-valor="1eso">1º ESO</div>
+          <div class="curso-item" data-valor="2eso">2º ESO</div>
+          <div class="curso-item" data-valor="3eso">3º ESO</div>
+          <div class="curso-item" data-valor="4eso">4º ESO</div>
+          <div class="curso-item" data-valor="1bach">1º Bach</div>
+          <div class="curso-item" data-valor="2bach">2º Bach</div>
+        </div>
+      </div>
+      
+      <!-- Paso 5: Género -->
+      <div class="registro-paso" data-paso="4">
+        <div class="registro-label">Género</div>
+        <div class="lista-genero">
+          <div class="genero-item focused" data-valor="chico">
+            <span class="genero-icon">👦</span>
+            <span class="genero-text">Chico</span>
+          </div>
+          <div class="genero-item" data-valor="chica">
+            <span class="genero-icon">👧</span>
+            <span class="genero-text">Chica</span>
+          </div>
+          <div class="genero-item" data-valor="prefiero-no-decir">
+            <span class="genero-icon">🤷</span>
+            <span class="genero-text">Prefiero no decir</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 2. PANTALLA HOME SIMPLIFICADA (REEMPLAZA LA ACTUAL) -->
+<!-- REEMPLAZAR el div #page-home actual con este: -->
+<div class="page" id="page-home">
+  <div class="home-simple">
+    <div class="home-avatar-container">
+      <div class="home-avatar-glow"></div>
+      <div class="home-avatar" id="home-avatar">🐱</div>
+      <div class="home-avatar-shadow"></div>
+    </div>
+    
+    <div class="home-info">
+      <div class="home-name" id="home-name">LUCAS</div>
+      <div class="home-racha" id="home-racha">
+        <span class="racha-icon">🔥</span>
+        <span class="racha-num">12</span>
+        <span class="racha-text">días con María</span>
+      </div>
+    </div>
+    
+    <div class="home-acciones">
+      <div class="home-btn focused" data-index="0">
+        <div class="home-btn-icon">📷</div>
+        <div class="home-btn-text">ESCANEAR</div>
+        <div class="home-btn-glow"></div>
+      </div>
+      <div class="home-btn" data-index="1">
+        <div class="home-btn-icon">📋</div>
+        <div class="home-btn-text">MENÚ</div>
+        <div class="home-btn-glow"></div>
+      </div>
+    </div>
+    
+    <!-- Pop-up contextual (aparece solo) -->
+    <div class="popup-contextual" id="popup-contextual">
+      <div class="popup-sobre">
+        <div class="popup-icon">💜</div>
+        <div class="popup-text">
+          <div class="popup-titulo">SOBRE SECRETO</div>
+          <div class="popup-desc">"Alguien de tu clase pensó en ti"</div>
+        </div>
+        <div class="popup-actions">
+          <div class="popup-btn focused">Ver ahora</div>
+          <div class="popup-btn">Ignorar</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 3. PANTALLA MENÚ REORGANIZADA 3x3 (REEMPLAZA LA ACTUAL) -->
+<!-- REEMPLAZAR el div #page-menu actual con este: -->
+<div class="page" id="page-menu">
+  <div class="menu-header-compact">MENÚ</div>
+  <div class="menu-grid-y2k" id="menu-grid-y2k">
+    <!-- Fila 1: Interacción directa -->
+    <div class="menu-y2k-item focused" data-index="0" data-page="sobres">
+      <div class="menu-y2k-icon">💌</div>
+      <div class="menu-y2k-label">Sobres</div>
+    </div>
+    <div class="menu-y2k-item" data-index="1" data-page="instituto">
+      <div class="menu-y2k-icon">🏫</div>
+      <div class="menu-y2k-label">Instituto</div>
+    </div>
+    <div class="menu-y2k-item" data-index="2" data-page="contacts">
+      <div class="menu-y2k-icon">👥</div>
+      <div class="menu-y2k-label">Amigos</div>
+    </div>
+    
+    <!-- Fila 2: Perfil/Info -->
+    <div class="menu-y2k-item" data-index="3" data-page="todox">
+      <div class="menu-y2k-icon">📖</div>
+      <div class="menu-y2k-label">ToDox</div>
+    </div>
+    <div class="menu-y2k-item" data-index="4" data-page="murmullo">
+      <div class="menu-y2k-icon">🔮</div>
+      <div class="menu-y2k-label">Murmullo</div>
+    </div>
+    <div class="menu-y2k-item" data-index="5" data-page="qr">
+      <div class="menu-y2k-icon">📱</div>
+      <div class="menu-y2k-label">Mi QR</div>
+    </div>
+    
+    <!-- Fila 3: Juego/Utilidades -->
+    <div class="menu-y2k-item" data-index="6" data-page="combates">
+      <div class="menu-y2k-icon">⚔️</div>
+      <div class="menu-y2k-label">Combates</div>
+    </div>
+    <div class="menu-y2k-item" data-index="7" data-page="tienda">
+      <div class="menu-y2k-icon">🛒</div>
+      <div class="menu-y2k-label">Tienda</div>
+    </div>
+    <div class="menu-y2k-item" data-index="8" data-page="settings">
+      <div class="menu-y2k-icon">⚙️</div>
+      <div class="menu-y2k-label">Ajustes</div>
+    </div>
+  </div>
+</div>
+
+<!-- 4. PANTALLA SOBRES (NUEVA - 4 BOTONES) -->
+<div class="page" id="page-sobres">
+  <div class="sobres-header">
+    <div class="sobres-titulo">SOBRES</div>
+    <div class="sobres-timer" id="sobres-timer">Próximos en: 14:23:15</div>
+  </div>
+  
+  <div class="sobres-grid">
+    <!-- Fila superior: 3 sobres de colores -->
+    <div class="sobre-color focused" data-tipo="verde" data-index="0">
+      <div class="sobre-boton" style="--sobre-color: #48BB78; --sobre-glow: #9AE6B4;">
+        <div class="sobre-icon">🟢</div>
+      </div>
+      <div class="sobre-label">Verde</div>
+      <div class="sobre-desc">Amistad</div>
+    </div>
+    
+    <div class="sobre-color" data-tipo="azul" data-index="1">
+      <div class="sobre-boton" style="--sobre-color: #4299E1; --sobre-glow: #90CDF4;">
+        <div class="sobre-icon">🔵</div>
+      </div>
+      <div class="sobre-label">Azul</div>
+      <div class="sobre-desc">Broma</div>
+    </div>
+    
+    <div class="sobre-color" data-tipo="morado" data-index="2">
+      <div class="sobre-boton" style="--sobre-color: #9F7AEA; --sobre-glow: #D6BCFA;">
+        <div class="sobre-icon">🟣</div>
+      </div>
+      <div class="sobre-label">Morado</div>
+      <div class="sobre-desc">Interés</div>
+    </div>
+  </div>
+  
+  <!-- Fila inferior: Sobre blanco (secreto) -->
+  <div class="sobre-secreto-container">
+    <div class="sobre-secreto" data-tipo="blanco" data-index="3">
+      <div class="sobre-boton-secreto">
+        <div class="sobre-icon-secreto">⚪</div>
+        <div class="sobre-aura"></div>
+      </div>
+      <div class="sobre-label-secreto">Blanco</div>
+      <div class="sobre-desc-secreto">Secreto</div>
+    </div>
+  </div>
+  
+  <!-- TOKES 20 (acceso al sistema antiguo) -->
+  <div class="tokes20-acceso" data-index="4">
+    <div class="tokes20-boton">
+      <span class="tokes20-icon">🎯</span>
+      <span class="tokes20-text">TOKES 20</span>
+    </div>
+  </div>
+  
+  <!-- Historial -->
+  <div class="sobres-historial" data-index="5">
+    <div class="historial-btn">
+      <span>Historial</span>
+      <span class="historial-flecha">▼</span>
+    </div>
+  </div>
+</div>
+
+<!-- 5. FLUJO SOBRE BLANCO - PASO 1: CURSO -->
+<div class="page" id="page-secreto-curso">
+  <div class="secreto-header">
+    <div class="secreto-titulo">SOBRE SECRETO</div>
+    <div class="secreto-pasos">
+      <span class="paso-activo">1</span>
+      <span class="paso-linea"></span>
+      <span class="paso-inactivo">2</span>
+      <span class="paso-linea"></span>
+      <span class="paso-inactivo">3</span>
+    </div>
+  </div>
+  
+  <div class="secreto-pregunta">¿Qué curso?</div>
+  
+  <div class="grid-cursos-secreto">
+    <div class="curso-secreto-item focused" data-valor="1eso">1º ESO</div>
+    <div class="curso-secreto-item" data-valor="2eso">2º ESO</div>
+    <div class="curso-secreto-item" data-valor="3eso">3º ESO</div>
+    <div class="curso-secreto-item" data-valor="4eso">4º ESO</div>
+    <div class="curso-secreto-item" data-valor="1bach">1º Bach</div>
+    <div class="curso-secreto-item" data-valor="2bach">2º Bach</div>
+  </div>
+</div>
+
+<!-- 6. FLUJO SOBRE BLANCO - PASO 2: GÉNERO -->
+<div class="page" id="page-secreto-genero">
+  <div class="secreto-header">
+    <div class="secreto-titulo">SOBRE SECRETO</div>
+    <div class="secreto-pasos">
+      <span class="paso-completado">✓</span>
+      <span class="paso-linea activa"></span>
+      <span class="paso-activo">2</span>
+      <span class="paso-linea"></span>
+      <span class="paso-inactivo">3</span>
+    </div>
+  </div>
+  
+  <div class="secreto-contexto" id="curso-seleccionado">2º Bach</div>
+  <div class="secreto-pregunta">¿Qué género?</div>
+  
+  <div class="lista-genero-secreto">
+    <div class="genero-secreto-item focused" data-valor="chicos">
+      <span class="genero-secreto-icon">👦</span>
+      <span class="genero-secreto-text">Chicos</span>
+    </div>
+    <div class="genero-secreto-item" data-valor="chicas">
+      <span class="genero-secreto-icon">👧</span>
+      <span class="genero-secreto-text">Chicas</span>
+    </div>
+    <div class="genero-secreto-item" data-valor="indiferente">
+      <span class="genero-secreto-icon">🤷</span>
+      <span class="genero-secreto-text">Indiferente</span>
+    </div>
+  </div>
+</div>
+
+<!-- 7. FLUJO SOBRE BLANCO - PASO 3: LISTA NOMBRES -->
+<div class="page" id="page-secreto-nombres">
+  <div class="secreto-header">
+    <div class="secreto-titulo">SOBRE SECRETO</div>
+    <div class="secreto-pasos">
+      <span class="paso-completado">✓</span>
+      <span class="paso-linea activa"></span>
+      <span class="paso-completado">✓</span>
+      <span class="paso-linea activa"></span>
+      <span class="paso-activo">3</span>
+    </div>
+  </div>
+  
+  <div class="secreto-filtros">
+    <span id="filtro-curso">Chicos 2º Bach</span>
+    <span class="filtro-contador" id="contador-alumnos">12 alumnos</span>
+  </div>
+  
+  <div class="lista-alumnos-secreto" id="lista-alumnos-secreto">
+    <!-- Se llena dinámicamente -->
+    <div class="alumno-secreto-item focused" data-id="1">
+      <span class="alumno-avatar">🐱</span>
+      <span class="alumno-nombre">Marcos</span>
+    </div>
+    <div class="alumno-secreto-item" data-id="2">
+      <span class="alumno-avatar">🐶</span>
+      <span class="alumno-nombre">Lucas</span>
+    </div>
+    <div class="alumno-secreto-item" data-id="3">
+      <span class="alumno-avatar">🦊</span>
+      <span class="alumno-nombre">Dani</span>
+    </div>
+    <!-- ... más items -->
+  </div>
+</div>
+
+<!-- 8. PANTALLA RECEPCIÓN SOBRE SECRETO -->
+<div class="page" id="page-secreto-recibido">
+  <div class="recibido-container">
+    <div class="recibido-header">
+      <div class="recibido-icon">💜</div>
+      <div class="recibido-titulo">SOBRE SECRETO</div>
+    </div>
+    
+    <div class="recibido-mensaje">
+      <div class="recibido-cita">"</div>
+      <div class="recibido-texto">Alguien de tu clase pensó en ti</div>
+      <div class="recibido-cita">"</div>
+    </div>
+    
+    <div class="recibido-pista" id="recibido-pista">
+      <div class="pista-label">PISTA:</div>
+      <div class="pista-contenido">Su dispositivo es 🔴 ROJO</div>
+    </div>
+    
+    <div class="recibido-responder">Responder con:</div>
+    
+    <div class="grid-respuestas-secreto">
+      <div class="respuesta-secreto-item focused" data-index="0">
+        <span class="respuesta-emoji">😊</span>
+        <span class="respuesta-texto">Gracias</span>
+      </div>
+      <div class="respuesta-secreto-item" data-index="1">
+        <span class="respuesta-emoji">😎</span>
+        <span class="respuesta-texto">Misterioso</span>
+      </div>
+      <div class="respuesta-secreto-item" data-index="2">
+        <span class="respuesta-emoji">🤔</span>
+        <span class="respuesta-texto">¿Quién?</span>
+      </div>
+      <div class="respuesta-secreto-item" data-index="3">
+        <span class="respuesta-emoji">😍</span>
+        <span class="respuesta-texto">¿Hablamos?</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 9. PANTALLA INSTITUTO -->
+<div class="page" id="page-instituto">
+  <div class="instituto-header">
+    <div class="instituto-nombre" id="instituto-nombre">IES MONCADA</div>
+    <div class="instituto-contador" id="instituto-contador">127 alumnos</div>
+  </div>
+  
+  <div class="instituto-filtros">
+    <div class="filtro-dropdown focused" data-index="0">
+      <span>Curso ▼</span>
+    </div>
+    <div class="filtro-dropdown" data-index="1">
+      <span>Género ▼</span>
+    </div>
+  </div>
+  
+  <div class="instituto-lista" id="instituto-lista">
+    <div class="instituto-seccion">2º BACH (34)</div>
+    <div class="instituto-alumno focused" data-index="0">
+      <span class="alumno-avatar-inst">🐱</span>
+      <span class="alumno-nombre-inst">Marcos</span>
+      <span class="alumno-ver">👁️</span>
+    </div>
+    <div class="instituto-alumno" data-index="1">
+      <span class="alumno-avatar-inst">🐶</span>
+      <span class="alumno-nombre-inst">Lucas</span>
+      <span class="alumno-ver">👁️</span>
+    </div>
+    <!-- ... más alumnos -->
+  </div>
+</div>
+
+<!-- 10. PANTALLA MURMULLO -->
+<div class="page" id="page-murmullo">
+  <div class="murmullo-header">
+    <div class="murmullo-titulo">🔮 MURMULLO</div>
+    <div class="murmullo-subtitulo" id="murmullo-institulo">IES MONCADA</div>
+    <div class="murmullo-conectados" id="murmullo-conectados">127 alumnos conectados</div>
+  </div>
+  
+  <div class="murmullo-hoy">
+    <div class="murmullo-seccion-titulo">HOY EN TU INSTITUTO</div>
+    <div class="murmullo-stats">
+      <div class="murmullo-stat">
+        <span class="stat-icon">💜</span>
+        <span class="stat-num" id="stat-secretos">12</span>
+        <span class="stat-label">sobres secretos</span>
+      </div>
+      <div class="murmullo-stat">
+        <span class="stat-icon">🔥</span>
+        <span class="stat-num" id="stat-rachas">89</span>
+        <span class="stat-label">rachas activas</span>
+      </div>
+      <div class="murmullo-stat">
+        <span class="stat-icon">👀</span>
+        <span class="stat-num" id="stat-todox">34</span>
+        <span class="stat-label">ToDox visitados</span>
+      </div>
+      <div class="murmullo-stat">
+        <span class="stat-icon">🆕</span>
+        <span class="stat-num" id="stat-nuevos">3</span>
+        <span class="stat-label">nuevos hoy</span>
+      </div>
+    </div>
+  </div>
+  
+  <div class="murmullo-tendencias">
+    <div class="murmullo-seccion-titulo">TENDENCIAS</div>
+    <div class="tendencia-item">
+      <span class="tendencia-dot">•</span>
+      <span class="tendencia-texto">Curso + rachas: <strong>2ºBach</strong></span>
+    </div>
+    <div class="tendencia-item">
+      <span class="tendencia-dot">•</span>
+      <span class="tendencia-texto">Sobre + usado: <strong>💜Morado</strong></span>
+    </div>
+    <div class="tendencia-item">
+      <span class="tendencia-dot">•</span>
+      <span class="tendencia-texto">Hora pico: <strong>21:15</strong></span>
+    </div>
+  </div>
+  
+  <div class="murmullo-actualizar focused" data-index="0">
+    <span class="actualizar-icon">🔄</span>
+    <span>Actualizar</span>
+  </div>
+</div>
+
+<!-- 11. PANTALLA AMIGOS MEJORADA (REEMPLAZA CONTACTS) -->
+<!-- REEMPLAZAR el div #page-contacts actual con este: -->
+<div class="page" id="page-contacts">
+  <div class="amigos-header">
+    <div class="amigos-titulo">AMIGOS</div>
+    <div class="amigos-contador" id="amigos-contador">12/50</div>
+  </div>
+  
+  <div class="amigos-lista" id="amigos-lista">
+    <div class="amigo-item focused" data-id="1" data-index="0">
+      <div class="amigo-racha activa">🔥</div>
+      <div class="amigo-info">
+        <div class="amigo-nombre">María</div>
+        <div class="amigo-dias">12 días</div>
+      </div>
+      <div class="amigo-estado"></div>
+    </div>
+    <div class="amigo-item" data-id="2" data-index="1">
+      <div class="amigo-racha activa">🔥</div>
+      <div class="amigo-info">
+        <div class="amigo-nombre">Carlos</div>
+        <div class="amigo-dias">8 días</div>
+      </div>
+      <div class="amigo-estado"></div>
+    </div>
+    <div class="amigo-item" data-id="3" data-index="2">
+      <div class="amigo-racha rota">💔</div>
+      <div class="amigo-info">
+        <div class="amigo-nombre">Ana</div>
+        <div class="amigo-dias">Rota</div>
+      </div>
+      <div class="amigo-estado"></div>
+    </div>
+    <div class="amigo-item" data-id="4" data-index="3">
+      <div class="amigo-racha nueva">○</div>
+      <div class="amigo-info">
+        <div class="amigo-nombre">Lucas</div>
+        <div class="amigo-dias">Nuevo</div>
+      </div>
+      <div class="amigo-estado"></div>
+    </div>
+  </div>
+  
+  <div class="amigos-leyenda">
+    <div class="leyenda-item">
+      <span class="leyenda-icon verde">🔥</span>
+      <span class="leyenda-text">Activa</span>
+    </div>
+    <div class="leyenda-item">
+      <span class="leyenda-icon naranja">🔥</span>
+      <span class="leyenda-text">Pendiente</span>
+    </div>
+    <div class="leyenda-item">
+      <span class="leyenda-icon rojo">💔</span>
+      <span class="leyenda-text">Rota</span>
+    </div>
+  </div>
+  
+  <div class="amigos-scan focused" data-index="0" id="amigos-scan-btn">
+    <span class="scan-icon">📷</span>
+    <span>Escanear QR</span>
+  </div>
+</div>
+
+<!-- 12. PANTALLA QR MEJORADA (REEMPLAZA LA ACTUAL) -->
+<!-- REEMPLAZAR el div #page-qr actual con este: -->
+<div class="page" id="page-qr">
+  <div class="qr-header">MI QR</div>
+  
+  <div class="qr-container-y2k">
+    <div class="qr-marco">
+      <div id="qr-mio-y2k">
+        <!-- QR se genera aquí -->
+      </div>
+      <div class="qr-reflejo"></div>
+    </div>
+    <div class="qr-hint">Escanea para agregar</div>
+  </div>
+  
+  <div class="qr-codigo-section">
+    <div class="qr-codigo-label">Tu código:</div>
+    <div class="qr-codigo-input-container">
+      <input type="text" 
+             id="qr-codigo-input" 
+             class="qr-codigo-input" 
+             value="ABC-123-XYZ" 
+             maxlength="20"
+             readonly>
+      <button class="qr-codigo-edit" id="qr-edit-btn" onclick="app.editarCodigoQR()">✏️</button>
+    </div>
+    <div class="qr-codigo-actions">
+      <button class="qr-action-btn focused" data-index="0" onclick="app.copiarCodigoQR()">
+        <span>📋</span>
+        <span>Copiar</span>
+      </button>
+      <button class="qr-action-btn" data-index="1" onclick="app.compartirCodigoQR()" disabled>
+        <span>💬</span>
+        <span>WhatsApp</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- 13. MODAL MENÚ CONTEXTUAL AMIGO -->
+<div class="modal-contextual" id="modal-menu-amigo">
+  <div class="modal-overlay"></div>
+  <div class="modal-contenido">
+    <div class="modal-header" id="menu-amigo-nombre">Marta</div>
+    <div class="modal-info" id="menu-amigo-info">🔥 15 días de racha</div>
+    <div class="modal-opciones">
+      <div class="modal-opcion focused" data-index="0" data-accion="ver-todox">
+        <span>👁️</span>
+        <span>Ver ToDox</span>
+      </div>
+      <div class="modal-opcion" data-index="1" data-accion="enviar">
+        <span>💌</span>
+        <span>Enviar sobre/toke</span>
+      </div>
+      <div class="modal-opcion" data-index="2" data-accion="bloquear">
+        <span>🚫</span>
+        <span>Bloquear</span>
+      </div>
+      <div class="modal-opcion" data-index="3" data-accion="eliminar">
+        <span>🗑️</span>
+        <span>Eliminar amigo</span>
+      </div>
+      <div class="modal-opcion cancelar" data-index="4" data-accion="cancelar">
+        <span>✕</span>
+        <span>Cancelar</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 14. POP-UP ENCUESTA -->
+<div class="popup-encuesta" id="popup-encuesta">
+  <div class="encuesta-container">
+    <div class="encuesta-icon">📊</div>
+    <div class="encuesta-pregunta" id="encuesta-pregunta">¿Quién te alegró el día?</div>
+    <div class="encuesta-opciones" id="encuesta-opciones">
+      <!-- Se llena dinámicamente -->
+    </div>
+    <div class="encuesta-footer">
+      <div class="encuesta-skip" onclick="app.saltarEncuesta()">Saltar</div>
+    </div>
+  </div>
+</div>
         </div>
 
         <div class="msg-bar" id="msg-bar"></div>
