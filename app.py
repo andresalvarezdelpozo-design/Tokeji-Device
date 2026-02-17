@@ -4,6 +4,7 @@ import os
 import time
 import json
 import random
+from datetime import datetime, timedelta
 
 app = Flask(__name__)
 CORS(app)
@@ -16,50 +17,46 @@ def cargar_datos():
             return json.load(f)
     except:
         return {
-            "toques_por_usuario": {},
-            "toques_recibidos": {},
-            "respuestas_recibidas": {},
-            "desafios_pendientes": {},
-            "combates_finalizados": []
+            "usuarios": {},  # Perfiles de usuario
+            "toques": {},    # Toques pendientes por usuario
+            "sobres": {},    # Sobres pendientes por usuario
+            "respuestas": {}, # Respuestas pendientes
+            "desafios": {},  # Desafíos de combate
+            "combates": [],  # Combates finalizados
+            "encuestas": {}, # Votos de encuestas por instituto
+            "consentimientos": {}, # Doble consentimiento
+            "stats": {}      # Estadísticas agregadas
         }
 
 def guardar_datos():
     with open(ARCHIVO_DATOS, "w") as f:
-        json.dump({
-            "toques_por_usuario": toques_por_usuario,
-            "toques_recibidos": toques_recibidos,
-            "respuestas_recibidas": respuestas_recibidas,
-            "desafios_pendientes": desafios_pendientes,
-            "combates_finalizados": combates_finalizados
-        }, f)
+        json.dump(datos, f)
 
 datos = cargar_datos()
-toques_por_usuario = datos["toques_por_usuario"]
-toques_recibidos = datos["toques_recibidos"]
-respuestas_recibidas = datos.get("respuestas_recibidas", {})
-desafios_pendientes = datos["desafios_pendientes"]
-combates_finalizados = datos.get("combates_finalizados", [])
 
-EMOJIS_DATABASE = [
-    {"id": i, "rarity": r} for i, r in enumerate([
-        "comun", "comun", "comun", "raro", "epico", "comun", "raro", "comun", "raro", "comun",
-        "comun", "comun", "comun", "comun", "comun", "comun", "raro", "comun", "raro", "comun",
-        "raro", "comun", "comun", "raro", "epico", "comun", "comun", "comun", "raro", "comun",
-        "raro", "comun", "comun", "comun", "raro", "comun", "comun", "epico", "comun", "raro",
-        "raro", "comun", "comun", "comun", "epico", "comun", "raro", "comun", "raro", "epico",
-        "raro", "comun", "raro", "epico", "raro", "epico", "raro", "epico", "mitico", "raro",
-        "epico", "raro", "epico", "comun", "raro", "comun", "epico", "raro", "comun", "comun",
-        "comun", "comun", "epico", "raro", "epico", "comun", "comun", "comun", "comun", "comun",
-        "epico", "raro", "comun", "comun", "comun", "comun", "comun", "comun", "comun", "comun",
-        "comun", "comun", "comun", "comun", "comun", "comun", "comun", "comun", "comun", "comun",
-        "comun", "comun", "comun", "comun", "comun", "comun", "comun", "comun", "raro", "comun",
-        "raro", "comun", "comun", "raro", "raro", "comun", "comun", "comun", "comun", "comun",
-        "comun", "comun", "comun", "comun", "comun", "comun", "comun", "raro", "comun", "comun",
-        "comun", "comun", "comun", "comun", "comun", "comun", "comun", "raro", "comun", "comun",
-        "comun", "legendario", "legendario", "comun", "comun", "comun", "comun", "comun", "raro",
-        "epico", "comun", "raro", "epico", "comun", "comun", "raro", "epico", "comun", "comun"
-    ], start=1)
-]
+# Helpers
+def get_hoy():
+    return datetime.now().strftime("%Y-%m-%d")
+
+def limpiar_antiguos():
+    """Limpiar datos antiguos (>24h)"""
+    ahora = time.time()
+    for key in ["toques", "sobres", "respuestas"]:
+        for user_id in list(datos[key].keys()):
+            datos[key][user_id] = [
+                item for item in datos[key][user_id] 
+                if ahora - item.get("timestamp", 0) < 86400
+            ]
+            if not datos[key][user_id]:
+                del datos[key][user_id]
+    
+    # Limpiar combates antiguos
+    datos["combates"] = [
+        c for c in datos["combates"] 
+        if ahora - c.get("timestamp", 0) < 86400
+    ]
+
+# ===== ENDPOINTS ESTÁTICOS =====
 
 @app.route('/')
 def index():
@@ -69,45 +66,150 @@ def index():
 def static_files(filename):
     return send_from_directory('.', filename)
 
+# ===== PERFIL =====
+
+@app.route("/perfil", methods=["POST"])
+def guardar_perfil():
+    try:
+        data = request.get_json()
+        user_id = data.get("userId")
+        
+        if not user_id:
+            return jsonify(ok=False, error="Falta userId"), 400
+        
+        datos["usuarios"][user_id] = {
+            "nombre": data.get("nombre"),
+            "avatar": data.get("avatar"),
+            "instituto": data.get("instituto"),
+            "curso": data.get("curso"),
+            "genero": data.get("genero"),
+            "ciudad": data.get("ciudad"),
+            "registrado": data.get("registrado"),
+            "ultimo_acceso": time.time()
+        }
+        
+        guardar_datos()
+        return jsonify(ok=True)
+        
+    except Exception as e:
+        return jsonify(ok=False, error=str(e)), 500
+
+@app.route("/usuarios", methods=["GET"])
+def listar_usuarios():
+    try:
+        instituto = request.args.get("instituto")
+        curso = request.args.get("curso")
+        genero = request.args.get("genero")
+        limite = int(request.args.get("limite", 50))
+        
+        usuarios = []
+        for uid, u in datos["usuarios"].items():
+            if instituto and u.get("instituto") != instituto:
+                continue
+            if curso and u.get("curso") != curso:
+                continue
+            if genero and u.get("genero") != genero:
+                continue
+            
+            # No exponer datos sensibles
+            usuarios.append({
+                "id": uid,
+                "nombre": u.get("nombre"),
+                "avatar": u.get("avatar"),
+                "curso": u.get("curso"),
+                "genero": u.get("genero"),
+                "todexCount": random.randint(10, 40)  # Simulado
+            })
+        
+        return jsonify(ok=True, usuarios=usuarios[:limite])
+        
+    except Exception as e:
+        return jsonify(ok=False, error=str(e)), 500
+
+# ===== SOBRES =====
+
+@app.route("/sobre", methods=["POST"])
+def enviar_sobre():
+    try:
+        data = request.get_json()
+        para = data.get("para")
+        
+        if not para:
+            return jsonify(ok=False, error="Falta destinatario"), 400
+        
+        if para not in datos["sobres"]:
+            datos["sobres"][para] = []
+        
+        datos["sobres"][para].append({
+            "de": data.get("de"),
+            "tipo": data.get("tipo"),
+            "mensaje": data.get("mensaje"),
+            "esSecreto": data.get("esSecreto"),
+            "avatarRemitente": data.get("avatarRemitente"),
+            "nombreRemitente": data.get("nombreRemitente"),
+            "timestamp": time.time()
+        })
+        
+        guardar_datos()
+        return jsonify(ok=True)
+        
+    except Exception as e:
+        return jsonify(ok=False, error=str(e)), 500
+
+@app.route("/sobres-pendientes", methods=["GET"])
+def sobres_pendientes():
+    try:
+        user_id = request.args.get("userId")
+        if not user_id:
+            return jsonify(ok=False, error="Falta userId"), 400
+        
+        limpiar_antiguos()
+        
+        sobres = datos["sobres"].get(user_id, [])
+        datos["sobres"][user_id] = []  # Limpiar al entregar
+        guardar_datos()
+        
+        return jsonify(ok=True, sobres=sobres)
+        
+    except Exception as e:
+        return jsonify(ok=False, error=str(e)), 500
+
+# ===== TOQUES 20 (ORIGINAL) =====
+
 @app.route("/toque", methods=["POST"])
-def toque():
+def enviar_toque():
     try:
         data = request.get_json()
         de = data.get("de")
         para = data.get("para")
-        num = data.get("num")
-        contexto = data.get("contexto")
-        avatar_remitente = data.get("avatarRemitente", "👤")
-        nombre_remitente = data.get("nombreRemitente", "Alguien")
-
-        if not all([de, para, num]):
-            return jsonify(ok=False, error="Faltan datos requeridos"), 400
-
-        clave_usuario = f"rl:{de}"
-        contador = toques_por_usuario.get(clave_usuario, 0)
         
+        if not all([de, para]):
+            return jsonify(ok=False, error="Faltan datos"), 400
+        
+        # Verificar límite (simplificado)
+        clave = f"toques_hoy_{de}_{get_hoy()}"
+        contador = datos["stats"].get(clave, 0)
         if contador >= 30:
-            return jsonify(ok=False, error="Límite de 30 tokes alcanzado", toques_restantes=0)
-
-        toques_por_usuario[clave_usuario] = contador + 1
+            return jsonify(ok=False, error="Límite alcanzado", toques_restantes=0)
         
-        if para not in toques_recibidos:
-            toques_recibidos[para] = []
+        datos["stats"][clave] = contador + 1
         
-        toques_recibidos[para].append({
+        if para not in datos["toques"]:
+            datos["toques"][para] = []
+        
+        datos["toques"][para].append({
             "de": de,
-            "num": num,
-            "contexto": contexto,
-            "avatarRemitente": avatar_remitente,
-            "nombreRemitente": nombre_remitente,
-            "hora": int(time.time())
+            "num": data.get("num"),
+            "contexto": data.get("contexto"),
+            "avatarRemitente": data.get("avatarRemitente"),
+            "nombreRemitente": data.get("nombreRemitente"),
+            "timestamp": time.time()
         })
         
         guardar_datos()
         
-        toques_restantes = 30 - (contador + 1)
-        return jsonify(ok=True, mensaje="Toke enviado", toques_restantes=toques_restantes)
-
+        return jsonify(ok=True, toques_restantes=30 - contador - 1)
+        
     except Exception as e:
         return jsonify(ok=False, error=str(e)), 500
 
@@ -118,15 +220,10 @@ def toques_pendientes():
         if not user_id:
             return jsonify(ok=False, error="Falta userId"), 400
         
-        ahora = int(time.time())
-        if user_id in toques_recibidos:
-            toques_recibidos[user_id] = [
-                t for t in toques_recibidos[user_id]
-                if ahora - t["hora"] < 3600
-            ]
+        limpiar_antiguos()
         
-        toques = toques_recibidos.get(user_id, [])
-        toques_recibidos[user_id] = []
+        toques = datos["toques"].get(user_id, [])
+        datos["toques"][user_id] = []
         guardar_datos()
         
         return jsonify(ok=True, toques=toques)
@@ -134,110 +231,54 @@ def toques_pendientes():
     except Exception as e:
         return jsonify(ok=False, error=str(e)), 500
 
-@app.route("/respuesta", methods=["POST"])
-def enviar_respuesta():
-    try:
-        data = request.get_json()
-        de = data.get("de")
-        para = data.get("para")
-        respuesta = data.get("respuesta")
-        texto = data.get("texto")
-        avatar_remitente = data.get("avatarRemitente", "👤")
-        nombre_remitente = data.get("nombreRemitente", "Alguien")
-
-        if not all([de, para, respuesta]):
-            return jsonify(ok=False, error="Faltan datos requeridos (de, para, respuesta)"), 400
-
-        if para not in respuestas_recibidas:
-            respuestas_recibidas[para] = []
-        
-        respuestas_recibidas[para].append({
-            "de": de,
-            "respuesta": respuesta,
-            "texto": texto or "OK",
-            "avatarRemitente": avatar_remitente,
-            "nombreRemitente": nombre_remitente,
-            "hora": int(time.time())
-        })
-        
-        guardar_datos()
-        
-        return jsonify(ok=True, mensaje="Respuesta enviada")
-        
-    except Exception as e:
-        return jsonify(ok=False, error=str(e)), 500
-
-@app.route("/respuestas-pendientes", methods=["GET"])
-def respuestas_pendientes():
-    try:
-        user_id = request.args.get("userId")
-        if not user_id:
-            return jsonify(ok=False, error="Falta userId"), 400
-        
-        ahora = int(time.time())
-        if user_id in respuestas_recibidas:
-            respuestas_recibidas[user_id] = [
-                r for r in respuestas_recibidas[user_id]
-                if ahora - r["hora"] < 3600
-            ]
-        
-        respuestas = respuestas_recibidas.get(user_id, [])
-        respuestas_recibidas[user_id] = []
-        guardar_datos()
-        
-        return jsonify(ok=True, respuestas=respuestas)
-        
-    except Exception as e:
-        return jsonify(ok=False, error=str(e)), 500
+# ===== COMBATES =====
 
 @app.route("/desafio", methods=["POST"])
 def crear_desafio():
     try:
         data = request.get_json()
-        de = data.get("de", "").strip()
-        para = data.get("para", "").strip()
-        mi_emoji_id = data.get("miEmojiId")
+        de = data.get("de")
+        para = data.get("para")
+        mi_emoji = data.get("miEmojiId")
         
-        if not all([de, para, mi_emoji_id]):
+        if not all([de, para, mi_emoji]):
             return jsonify(ok=False, error="Faltan datos"), 400
         
         desafio_id = f"{de}_{para}_{int(time.time())}"
-        desafio = {
+        
+        if para not in datos["desafios"]:
+            datos["desafios"][para] = []
+        
+        datos["desafios"][para].append({
             "id": desafio_id,
             "de": de,
             "para": para,
-            "miEmojiId": mi_emoji_id,
-            "creado": int(time.time())
-        }
-        
-        if para not in desafios_pendientes:
-            desafios_pendientes[para] = []
-        desafios_pendientes[para].append(desafio)
+            "miEmoji": mi_emoji,
+            "timestamp": time.time()
+        })
         
         guardar_datos()
-        
         return jsonify(ok=True, desafio_id=desafio_id)
         
     except Exception as e:
         return jsonify(ok=False, error=str(e)), 500
 
 @app.route("/desafios-pendientes", methods=["GET"])
-def obtener_desafios_pendientes():
+def desafios_pendientes():
     try:
-        user_id = request.args.get("userId", "").strip()
+        user_id = request.args.get("userId")
         if not user_id:
             return jsonify(ok=False, error="Falta userId"), 400
         
-        ahora = int(time.time())
-        for usuario in list(desafios_pendientes.keys()):
-            desafios_pendientes[usuario] = [
-                d for d in desafios_pendientes[usuario]
-                if ahora - d["creado"] < 86400
+        # Limpiar antiguos (>5 min)
+        ahora = time.time()
+        for uid in list(datos["desafios"].keys()):
+            datos["desafios"][uid] = [
+                d for d in datos["desafios"][uid] 
+                if ahora - d.get("timestamp", 0) < 300
             ]
-            if not desafios_pendientes[usuario]:
-                del desafios_pendientes[usuario]
         
-        desafios = desafios_pendientes.get(user_id, [])
+        desafios = datos["desafios"].get(user_id, [])
         return jsonify(ok=True, desafios=desafios)
         
     except Exception as e:
@@ -247,56 +288,49 @@ def obtener_desafios_pendientes():
 def responder_desafio():
     try:
         data = request.get_json()
-        desafio_id = data.get("desafioId", "").strip()
-        aceptado = bool(data.get("aceptado", False))
-        mi_emoji_id = data.get("miEmojiId")
+        desafio_id = data.get("desafioId")
+        aceptado = data.get("aceptado")
+        mi_emoji = data.get("miEmojiId")
         
-        if not desafio_id:
-            return jsonify(ok=False, error="Falta desafioId"), 400
-        
+        # Buscar desafío
         desafio = None
-        for usuario, lista in desafios_pendientes.items():
+        for uid, lista in datos["desafios"].items():
             for d in lista:
                 if d["id"] == desafio_id:
                     desafio = d
                     break
-            if desafio:
-                break
         
         if not desafio:
             return jsonify(ok=False, error="Desafío no encontrado"), 404
         
-        for usuario in desafios_pendientes:
-            desafios_pendientes[usuario] = [
-                d for d in desafios_pendientes[usuario]
-                if d["id"] != desafio_id
-            ]
+        # Eliminar de pendientes
+        for uid in datos["desafios"]:
+            datos["desafios"][uid] = [d for d in datos["desafios"][uid] if d["id"] != desafio_id]
         
         if not aceptado:
             guardar_datos()
-            return jsonify(ok=True, mensaje="Desafío rechazado")
+            return jsonify(ok=True, mensaje="Rechazado")
         
-        poder_atacante = random.random() * 100
-        poder_defensor = random.random() * 100
-        ganador = desafio["de"] if poder_atacante > poder_defensor else desafio["para"]
+        # Calcular resultado
+        poder1 = random.random() * 100
+        poder2 = random.random() * 100
+        ganador = desafio["de"] if poder1 > poder2 else desafio["para"]
         
         resultado = {
             "id": desafio_id,
             "de": desafio["de"],
             "para": desafio["para"],
             "ganador": ganador,
-            "miEmoji": desafio["miEmojiId"],
-            "suEmoji": mi_emoji_id,
-            "miPoder": poder_atacante,
-            "suPoder": poder_defensor,
-            "timestamp": int(time.time())
+            "miEmoji": desafio["miEmoji"],
+            "suEmoji": mi_emoji,
+            "miPoder": poder1,
+            "suPoder": poder2,
+            "timestamp": time.time(),
+            f"visto_{desafio['de']}": False,
+            f"visto_{desafio['para']}": False
         }
         
-        combates_finalizados.append(resultado)
-        
-        ahora = int(time.time())
-        combates_finalizados[:] = [c for c in combates_finalizados if ahora - c["timestamp"] < 86400]
-        
+        datos["combates"].append(resultado)
         guardar_datos()
         
         return jsonify(ok=True, resultado=resultado)
@@ -305,15 +339,16 @@ def responder_desafio():
         return jsonify(ok=False, error=str(e)), 500
 
 @app.route("/combates-finalizados", methods=["GET"])
-def obtener_combates_finalizados():
+def combates_finalizados():
     try:
-        user_id = request.args.get("userId", "").strip()
+        user_id = request.args.get("userId")
         if not user_id:
             return jsonify(ok=False, error="Falta userId"), 400
         
-        combates_usuario = []
+        limpiar_antiguos()
         
-        for c in combates_finalizados:
+        combates_usuario = []
+        for c in datos["combates"]:
             if c.get("de") == user_id or c.get("para") == user_id:
                 clave_visto = f"visto_{user_id}"
                 if not c.get(clave_visto, False):
@@ -321,17 +356,172 @@ def obtener_combates_finalizados():
                     c[clave_visto] = True
         
         guardar_datos()
-        
         return jsonify(ok=True, combates=combates_usuario)
         
     except Exception as e:
         return jsonify(ok=False, error=str(e)), 500
 
+# ===== ENCUESTAS =====
+
+@app.route("/encuesta/pregunta", methods=["GET"])
+def encuesta_pregunta():
+    try:
+        instituto = request.args.get("instituto")
+        
+        # Preguntas rotativas (cambian cada día)
+        preguntas = [
+            "¿Quién tiene la mejor sonrisa del instituto?",
+            "¿Quién es más amable de lo que parece?",
+            "¿Quién te hizo reír últimamente?",
+            "¿Quién crees que será más exitoso?",
+            "¿Quién tiene mejor estilo sin esfuerzo?",
+            "¿Quién alegra el día sin saberlo?",
+            "¿Quién es el más creativo?",
+            "¿Quién tiene mejor energía positiva?"
+        ]
+        
+        # Seleccionar basado en fecha
+        dia = int(datetime.now().strftime("%j"))
+        pregunta = preguntas[dia % len(preguntas)]
+        
+        return jsonify(ok=True, pregunta={
+            "id": f"enc_{instituto}_{get_hoy()}",
+            "texto": pregunta
+        })
+        
+    except Exception as e:
+        return jsonify(ok=False, error=str(e)), 500
+
+@app.route("/encuesta/votar", methods=["POST"])
+def votar_encuesta():
+    try:
+        data = request.get_json()
+        de = data.get("de")
+        para = data.get("para")
+        instituto = data.get("instituto")
+        
+        if not all([de, para, instituto]):
+            return jsonify(ok=False, error="Faltan datos"), 400
+        
+        clave = f"{instituto}_{get_hoy()}"
+        if clave not in datos["encuestas"]:
+            datos["encuestas"][clave] = []
+        
+        # Evitar votos duplicados
+        existente = next((v for v in datos["encuestas"][clave] if v["de"] == de), None)
+        if existente:
+            return jsonify(ok=False, error="Ya votaste hoy"), 400
+        
+        datos["encuestas"][clave].append({
+            "de": de,
+            "para": para,
+            "timestamp": time.time()
+        })
+        
+        guardar_datos()
+        return jsonify(ok=True)
+        
+    except Exception as e:
+        return jsonify(ok=False, error=str(e)), 500
+
+@app.route("/encuesta/match", methods=["GET"])
+def verificar_match():
+    try:
+        user1 = request.args.get("user1")
+        user2 = request.args.get("user2")
+        instituto = datos["usuarios"].get(user1, {}).get("instituto")
+        
+        if not instituto:
+            return jsonify(ok=False, error="Sin instituto"), 400
+        
+        clave = f"{instituto}_{get_hoy()}"
+        votos = datos["encuestas"].get(clave, [])
+        
+        # Buscar si user1 votó por user2
+        voto1 = next((v for v in votos if v["de"] == user1 and v["para"] == user2), None)
+        # Buscar si user2 votó por user1  
+        voto2 = next((v for v in votos if v["de"] == user2 and v["para"] == user1), None)
+        
+        match = voto1 is not None and voto2 is not None
+        
+        return jsonify(ok=True, match=match)
+        
+    except Exception as e:
+        return jsonify(ok=False, error=str(e)), 500
+
+@app.route("/encuesta/consentimiento", methods=["POST"])
+def consentimiento_revelar():
+    try:
+        data = request.get_json()
+        user_id = data.get("userId")
+        otro_id = data.get("otroId")
+        acepta = data.get("acepta")
+        
+        clave = f"{min(user_id, otro_id)}_{max(user_id, otro_id)}"
+        
+        if clave not in datos["consentimientos"]:
+            datos["consentimientos"][clave] = {}
+        
+        datos["consentimientos"][clave][user_id] = acepta
+        
+        # Verificar si ambos aceptaron
+        ambos = (datos["consentimientos"][clave].get(user_id) and 
+                 datos["consentimientos"][clave].get(otro_id))
+        
+        guardar_datos()
+        
+        return jsonify(ok=True, revelado=ambos)
+        
+    except Exception as e:
+        return jsonify(ok=False, error=str(e)), 500
+
+# ===== STATS INSTITUTO (MURMULLO) =====
+
+@app.route("/stats-instituto", methods=["GET"])
+def stats_instituto():
+    try:
+        instituto = request.args.get("instituto")
+        if not instituto:
+            return jsonify(ok=False, error="Falta instituto"), 400
+        
+        # Calcular stats agregadas (anónimas)
+        usuarios_insti = [u for u in datos["usuarios"].values() if u.get("instituto") == instituto]
+        
+        # Sobres hoy
+        clave_hoy = f"{instituto}_{get_hoy()}"
+        sobres_hoy = {"verde": 0, "azul": 0, "morado": 0, "blanco": 0}
+        
+        # Simular/contar sobres reales
+        for sobres_list in datos["sobres"].values():
+            for s in sobres_list:
+                tipo = s.get("tipo", "verde")
+                if tipo in sobres_hoy:
+                    sobres_hoy[tipo] += 1
+        
+        stats = {
+            "conectados": len(usuarios_insti),
+            "sobresHoy": sobres_hoy,
+            "rachasActivas": random.randint(50, 150),  # Simulado
+            "todexConsultados": random.randint(100, 300),  # Simulado
+            "nuevosHoy": sum(1 for u in usuarios_insti if time.time() - u.get("registrado", 0) < 86400),
+            "matchesMutuos": len(datos["consentimientos"]),  # Simplificado
+            "tendencias": {
+                "cursoMasActivo": "2º Bach",  # Simulado
+                "sobreMasUsado": max(sobres_hoy, key=sobres_hoy.get) if any(sobres_hoy.values()) else "verde",
+                "horaPico": "14:23"  # Simulado
+            },
+            "miPosicion": "top 15%"  # Simulado
+        }
+        
+        return jsonify(ok=True, stats=stats)
+        
+    except Exception as e:
+        return jsonify(ok=False, error=str(e)), 500
+
 @app.route("/health", methods=["GET"])
-def health_check():
-    return jsonify(ok=True, status="running", version="1.1.0")
+def health():
+    return jsonify(ok=True, version="17.0", status="running")
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
-    print(f"🚀 Tokeji iniciando en puerto {port}")
     app.run(host="0.0.0.0", port=port)
