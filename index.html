@@ -24,7 +24,7 @@
       --device-color: #FF6B9D;
       --device-dark: #FF4785;
       --device-light: #FFB8D0;
-      --screen-bg: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%);
+      --screen-bg: #FFF5F7;
     }
 
     html, body {
@@ -33,7 +33,7 @@
     }
 
     body {
-      background: linear-gradient(135deg, #0f0c29 0%, #302b63 100%);
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       min-height: 100vh;
       display: flex;
       flex-direction: column;
@@ -128,7 +128,7 @@
     .screen {
       width: 100%;
       height: 380px;
-      background: linear-gradient(180deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+      background: var(--screen-bg);
       border-radius: 22px;
       position: relative;
       overflow: hidden;
@@ -158,7 +158,6 @@
       padding: 28px 12px 12px;
       display: flex;
       flex-direction: column;
-      color: white;
       align-items: center;
       overflow: hidden;
       position: relative;
@@ -290,7 +289,7 @@
     .setup-title {
       font-family: 'Fredoka One', cursive;
       font-size: 20px;
-      color: #FFD93D;
+      color: #2D3748;
       margin-bottom: 25px;
       text-align: center;
     }
@@ -501,9 +500,8 @@
     }
 
     .menu-item {
-  background: rgba(255, 255, 255, 0.15);
-  border: 3px solid rgba(255, 255, 255, 0.3);
-  color: white;
+      background: #ffffff;
+      border: 3px solid #E2E8F0;
       border-radius: 16px;
       display: flex;
       flex-direction: column;
@@ -525,10 +523,8 @@
     }
 
     .menu-item.focused {
-  border-color: #FFD93D;
-  background: rgba(255, 217, 61, 0.2);
-  box-shadow: 0 0 15px rgba(255, 217, 61, 0.5), inset 0 0 10px rgba(255, 217, 61, 0.3);
-  transform: scale(1.05);
+      border-color: var(--device-color);
+      background: #FFF5F7;
       transform: scale(1.02);
       box-shadow: 0 0 0 3px rgba(255,107,157,0.3);
       z-index: 10;
@@ -536,7 +532,6 @@
 
     .menu-item .icon {
       font-size: 32px;
-      filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.5));
       transition: transform 0.2s;
     }
 
@@ -555,10 +550,9 @@
       -webkit-overflow-scrolling: touch;
     }
 
-    .list-item {
-  background: rgba(255, 255, 255, 0.1);
-  border: 2px solid rgba(255, 255, 255, 0.2);
-  color: white;
+    .list-item, .toke-item, .variante-item {
+      background: white;
+      border: 2px solid #E2E8F0;
       border-radius: 14px;
       padding: 12px;
       font-size: 13px;
@@ -574,10 +568,8 @@
     }
 
     .list-item.focused, .toke-item.focused, .variante-item.focused {
-      border-color: #FFD93D;
-  background: rgba(255, 217, 61, 0.2);
-  box-shadow: 0 0 10px rgba(255, 217, 61, 0.4);
-  transform: translateX(5px);
+      border-color: var(--device-color);
+      background: #FFF5F7;
       transform: translateX(3px);
       box-shadow: 0 2px 0 #F687B3;
     }
@@ -3035,7 +3027,6 @@ const app = {
         this.showPage('color', false);
         break;
       case 'color':
-        this.selectColorSetup(this.state.focus.index);
         break;
       case 'home':
         this.showPage('menu');
