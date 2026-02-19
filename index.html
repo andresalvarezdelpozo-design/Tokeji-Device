@@ -35,10 +35,11 @@ animation: fruit 8s ease infinite;
     }
 
     body {
-      #pagina-que-quieras-animar {
-  background: linear-gradient(135deg, #f093fb 0%, #f5576c 25%, #ffd93d 50%, #f5576c 75%, #f093fb 100%);
-  background-size: 400% 400%;  /* Hace el degradado 4x más grande que la pantalla */
-  animation: sunset 10s ease infinite;  /* Lo mueve */
+     :root {
+  --device-color: #FF6B9D;
+  --device-dark: #FF4785;
+  --device-light: #FFB8D0;
+  --screen-bg: #FFF5F7;  /* <-- ESTE ES EL PASTEL */
 }
 
 @keyframes sunset {
