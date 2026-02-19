@@ -622,27 +622,6 @@
       cursor: pointer;
     }
 
-    #page-tokes .setup-title {
-      font-size: 30px;
-      margin-bottom: 10px;
-    }
-
-    #page-tokes .list-container {
-      gap: 6px;
-      padding: 0 4px 4px;
-    }
-
-    #page-tokes .toke-item {
-      min-height: 42px;
-      padding: 6px 8px;
-      border-radius: 10px;
-    }
-
-    .toke-item.t6 { border-color: #805AD5; background: #FAF5FF; }
-    .toke-item.t6.focused { box-shadow: 0 2px 0 #6B46C1; }
-    .toke-item.t7 { border-color: #D53F8C; background: #FFF0F8; }
-    .toke-item.t7.focused { box-shadow: 0 2px 0 #B83280; }
-
     .list-item.focused, .toke-item.focused, .variante-item.focused {
       border-color: var(--device-color);
       background: #FFF5F7;
@@ -1023,17 +1002,17 @@
     .response-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 8px;
+      gap: 12px;
       width: 100%;
-      max-width: 180px;
+      max-width: 200px;
     }
 
     .response-btn {
       background: rgba(255,255,255,0.95);
       border: 3px solid transparent;
       border-radius: 16px;
-      padding: 10px 6px;
-      font-size: 24px;
+      padding: 15px;
+      font-size: 32px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -1049,61 +1028,10 @@
     }
 
     .response-btn .label {
-      font-size: 9px;
+      font-size: 10px;
       font-weight: 800;
       color: #2D3748;
-      margin-top: 2px;
-    }
-
-    .instituto-block {
-      width: 100%;
-      margin-bottom: 8px;
-    }
-
-    .instituto-label {
-      font-size: 10px;
-      color: #718096;
-      margin: 4px 0;
-      font-weight: 800;
-      text-transform: uppercase;
-    }
-
-    .instituto-option {
-      background: white;
-      border: 2px solid #E2E8F0;
-      border-radius: 10px;
-      padding: 8px;
-      font-size: 12px;
-      font-weight: 800;
-      margin-bottom: 6px;
-    }
-
-    .instituto-option.selected {
-      border-color: #48BB78;
-      background: #F0FFF4;
-    }
-
-    .instituto-option.focused {
-      border-color: var(--device-color);
-      background: #FFF5F7;
-    }
-
-    .murmullo-card {
-      background: white;
-      border: 2px solid #E2E8F0;
-      border-radius: 12px;
-      padding: 10px;
-      font-size: 11px;
-      margin-bottom: 8px;
-    }
-
-    .streak-badge {
-      font-size: 11px;
-      font-weight: 800;
-      padding: 2px 6px;
-      border-radius: 10px;
-      min-width: 32px;
-      text-align: center;
+      margin-top: 5px;
     }
 
     .response-actions {
@@ -2163,12 +2091,6 @@
             <div class="setup-hint">Pulsa OK para continuar</div>
           </div>
 
-          <div class="page" id="page-instituto">
-            <div class="setup-title">¿Dónde estás?</div>
-            <div class="list-container" id="instituto-list"></div>
-            <div class="setup-hint">OK para continuar</div>
-          </div>
-
           <div class="page" id="page-avatar">
             <div class="setup-title">Elige tu avatar</div>
             <div class="avatar-grid" id="avatar-grid"></div>
@@ -2204,8 +2126,8 @@
                 <span>Mi QR</span>
               </div>
               <div class="menu-item" data-index="3">
-                <span class="icon">🌊</span>
-                <span>Murmullo</span>
+                <span class="icon">📖</span>
+                <span>ToDox</span>
               </div>
               <div class="menu-item" data-index="4">
                 <span class="icon">⚔️</span>
@@ -2226,11 +2148,6 @@
           <div class="page" id="page-variantes">
             <div class="setup-title" id="variantes-title">Variante</div>
             <div class="list-container" id="variantes-list"></div>
-          </div>
-
-          <div class="page" id="page-instituto-filter">
-            <div class="setup-title" id="instituto-filter-title">Enviar</div>
-            <div class="list-container" id="instituto-filter-list"></div>
           </div>
 
           <div class="page" id="page-enviar">
@@ -2259,12 +2176,6 @@
             </div>
           </div>
 
-          <div class="page" id="page-murmullo">
-            <div class="setup-title">🌊 Murmullo</div>
-            <div style="font-size: 11px; color: #718096; margin-bottom: 8px;" id="murmullo-subtitle">Instituto - Curso</div>
-            <div class="list-container" id="murmullo-content"></div>
-          </div>
-
           <div class="page" id="page-todox">
             <div class="setup-title">ToDox <span style="color: var(--device-color);" id="todex-count">0/150</span></div>
             <div class="todex-grid" id="todex-grid"></div>
@@ -2282,11 +2193,6 @@
                 <div style="font-size: 32px; margin-bottom: 6px;">⚔️</div>
                 <div style="font-size: 14px;">VS Amigo</div>
                 <div style="font-size: 10px; opacity: 0.9; margin-top: 3px;">Retar</div>
-              </div>
-              <div class="combate-card" data-index="2">
-                <div style="font-size: 32px; margin-bottom: 6px;">📖</div>
-                <div style="font-size: 14px;">ToDox</div>
-                <div style="font-size: 10px; opacity: 0.9; margin-top: 3px;">Colección</div>
               </div>
             </div>
           </div>
@@ -2607,24 +2513,16 @@ const ESTADOS = [
 ];
 
 const TOKES_TYPES = [
-  { id: 1, emoji: '🔥', name: 'Fire', desc: '¡Estás imparable!', color: '#E53E3E' },
+  { id: 1, emoji: '🔥', name: 'On Fire', desc: '¡Estás imparable!', color: '#E53E3E' },
   { id: 2, emoji: '💕', name: 'Crush', desc: 'Pienso en ti', color: '#D53F8C' },
   { id: 3, emoji: '💪', name: 'Ánimo', desc: '¡Tú puedes!', color: '#38A169' },
   { id: 4, emoji: '📅', name: 'Planes', desc: '¿Quedamos?', color: '#D69E2E' },
-  { id: 5, emoji: '🚨', name: 'Urgente', desc: '¡Ayuda!', color: '#3182CE' },
-  { id: 6, emoji: '💜', name: 'Anónimo', desc: 'Mensaje secreto', color: '#805AD5' },
-  { id: 7, emoji: '💘', name: 'CRUSH', desc: 'Confesión privada', color: '#B83280' }
+  { id: 5, emoji: '🚨', name: 'Urgente', desc: '¡Ayuda!', color: '#3182CE' }
 ];
 
 const EMOJIS_LIST = ['😊','❤️','👍','🔥','💯','🤥','👾','💕','🚀','🎯','🦾','🙌','👏','💋','🐻','🐝','🌈','☀️','🌙','⭐','🌸','📸','🚗','🌷','🍀','🍕','👅','🍟','🌮','🍰','🎂','🍫','☕','🥤','🏀','⚽','🎾','🏆','🎮','🎲','🎸','🎺','🎨','📚','💡','🔧','😱','📱','💻','🛸','🥷','😇','🧟‍♂️','👽','🎩','🧙','🧚','🧜','💃🏻','🦋','🦅','🦈','🐅','🐘','🦒','🦏','🌍','📦','🏴‍☠️','✨','🚨','👑','🦄','🦁','🧌','🦉','🐣','🐉','🐲','🦕','🦖','🌋','🗿','🪄','⚡','💀','👻','🤢','🤡','🎪','🍾','🎆','🎇','🫶','🏃‍♂️','🧟‍♀️','🤖','🧊','😈','🔫','💅','🎐','🎀','🎁','🎰','✈️','🥵','🥶','⌚️','⚓️','🛁','🪒','🪤','💣','🏍️','🍒','🌪️','👙','🧩','🍪','🏎️','🎓','🧸','✂️','🕳️','❤️‍🔥','🥳','⚰️','🎈','🎉','👩🏻‍❤️‍👨','🦊','💦','🚪','🎎','⚠️','🛌','🤮','🫡','💎','🛹','💸','💵','💊','💶','🎟️','⚜️','💳','💿','📀'];
 
 const AVATARES = ['🐱', '🐶', '🦊', '🐼', '🐨', '🐯', '🦁', '🐷', '🐸', '🐙', '🦄', '🐲'];
-
-const INSTITUTO_FIELDS = [
-  { key: 'provincia', label: 'Provincia', options: [{ value: 'andalucia', label: 'Andalucía' }, { value: 'madrid', label: 'Madrid' }] },
-  { key: 'instituto', label: 'Instituto', options: [{ value: 'ies_ejemplo', label: 'IES Ejemplo' }, { value: 'otro', label: 'Otro' }] },
-  { key: 'curso', label: 'Curso', options: [{ value: '4eso', label: '4º ESO' }, { value: '1bach', label: '1º Bach' }] }
-];
 
 const app = {
   state: {
@@ -2635,8 +2533,6 @@ const app = {
     toquesRestantes: 30,
     selectedCategoria: null,
     selectedVariante: null,
-    selectedDestinoEspecial: null,
-    institutoDraft: { provincia: 'andalucia', instituto: 'ies_ejemplo', curso: '4eso' },
     settings: {
       sonido: true,
       vibracion: true,
@@ -2714,7 +2610,6 @@ const app = {
       this.state.settings.status = localStorage.getItem('status') || 'disponible';
       this.state.settings.avatar = localStorage.getItem('avatar') || '🐱';
       this.state.toquesRestantes = parseInt(localStorage.getItem("toquesRestantes")) || 30;
-      this.state.institutoDraft = this.getContextoInstituto();
     } catch(e) {
       this.debug('Error cargando datos: ' + e.message);
     }
@@ -2975,11 +2870,6 @@ const app = {
           if (input) input.focus();
         }, 100);
         break;
-      case 'instituto':
-        this.state.institutoDraft = this.getContextoInstituto();
-        this.state.focus = { type: 'instituto', index: 0 };
-        this.renderInstituto();
-        break;
       case 'avatar':
         this.state.focus = { type: 'avatar', index: 0 };
         this.renderAvatarGrid();
@@ -3004,11 +2894,6 @@ const app = {
         this.state.focus = { type: 'variantes', index: 0 };
         this.updateVariantesFocus();
         break;
-      case 'instituto-filter':
-        this.renderInstitutoFilter();
-        this.state.focus = { type: 'institutoFilter', index: 0 };
-        this.updateInstitutoFilterFocus();
-        break;
       case 'enviar':
         this.renderEnviarList();
         this.state.focus = { type: 'enviar', index: 0 };
@@ -3018,10 +2903,6 @@ const app = {
         this.renderContacts();
         this.state.focus = { type: 'contacts', index: 0 };
         this.updateContactsFocus();
-        break;
-      case 'murmullo':
-        this.renderMurmullo();
-        this.state.focus = { type: 'murmullo', index: 0 };
         break;
       case 'todox':
         this.renderTodex();
@@ -3194,7 +3075,7 @@ const app = {
       return;
     }
 
-    if (['consent', 'setup', 'instituto', 'avatar', 'color'].includes(this.state.currentPage)) {
+    if (['consent', 'setup', 'avatar', 'color'].includes(this.state.currentPage)) {
       return;
     }
     
@@ -3211,7 +3092,7 @@ const app = {
           this.updateMenuFocus();
           break;
         case 'tokes':
-          this.state.focus = { type: 'tokes', index: Math.max(0, TOKES_TYPES.findIndex(t => t.id === this.state.selectedCategoria)) };
+          this.state.focus = { type: 'tokes', index: this.state.selectedCategoria ? this.state.selectedCategoria - 1 : 0 };
           this.updateTokesFocus();
           break;
         case 'variantes':
@@ -3318,13 +3199,10 @@ const app = {
       case 'splash':
         const hasConsent = localStorage.getItem('consent');
         const hasNombre = localStorage.getItem('miNombre');
-        const hasInstituto = localStorage.getItem('provincia') && localStorage.getItem('instituto') && localStorage.getItem('curso');
         if (!hasConsent) {
           this.showPage('consent', false);
         } else if (!hasNombre) {
           this.showPage('setup', false);
-        } else if (!hasInstituto) {
-          this.showPage('instituto', false);
         } else {
           this.showPage('home', false);
         }
@@ -3339,14 +3217,7 @@ const app = {
           return;
         }
         localStorage.setItem('miNombre', nom);
-        this.showPage('instituto', false);
-        break;
-      case 'instituto':
-        this.guardarInstituto();
         this.showPage('avatar', false);
-        break;
-      case 'instituto-filter':
-        this.enviarDesdeInstitutoFilter();
         break;
       case 'avatar':
         const avatarSel = AVATARES[focus.index];
@@ -3361,18 +3232,12 @@ const app = {
         this.showPage('menu');
         break;
       case 'menu':
-        const items = ['tokes', 'contacts', 'qr', 'murmullo', 'combates', 'settings'];
+        const items = ['tokes', 'contacts', 'qr', 'todox', 'combates', 'settings'];
         this.showPage(items[focus.index]);
         break;
       case 'tokes':
         this.state.selectedCategoria = TOKES_TYPES[focus.index].id;
-        if (this.state.selectedCategoria >= 6) {
-          this.state.selectedVariante = null;
-          this.state.selectedDestinoEspecial = this.state.selectedCategoria === 6 ? 'anonimo' : 'crush';
-          this.showPage('instituto-filter');
-        } else {
-          this.showPage('variantes');
-        }
+        this.showPage('variantes');
         break;
       case 'variantes':
         const variantes = CONTEXTOS_TOKES[this.state.selectedCategoria];
@@ -3397,9 +3262,6 @@ const app = {
           this.scanQR();
         }
         break;
-      case 'murmullo':
-        this.renderMurmullo();
-        break;
       case 'todox':
         const id = focus.index + 1;
         if (this.todex.captured.includes(id)) {
@@ -3408,8 +3270,7 @@ const app = {
         break;
       case 'combates':
         if (focus.index === 0) this.jugarVSIA();
-        else if (focus.index === 1) this.jugarVSAmigo();
-        else this.showPage('todox');
+        else this.jugarVSAmigo();
         break;
       case 'settings':
         this.activateSetting(focus.index);
@@ -3480,20 +3341,6 @@ const app = {
     const { type, index } = this.state.focus;
     
     switch(type) {
-      case 'instituto':
-        if (index < 2) {
-          this.state.focus.index++;
-          this.renderInstituto();
-        }
-        break;
-      case 'institutoFilter':
-        const maxInstituto = (this.state.usuariosInstituto || []).length;
-        if (index < maxInstituto) {
-          this.state.focus.index++;
-          this.updateInstitutoFilterFocus();
-          this.scrollToFocused('instituto-filter-list');
-        }
-        break;
       case 'avatar':
         if (index >= 4) {
           this.state.focus.index -= 4;
@@ -3546,12 +3393,6 @@ const app = {
           this.state.focus.index -= 5;
           this.updateGridFocus();
           this.scrollToFocused('todex-grid');
-        }
-        break;
-      case 'combates':
-        if (index > 0) {
-          this.state.focus.index--;
-          this.updateCombatesFocus();
         }
         break;
       case 'settings':
@@ -3634,20 +3475,6 @@ const app = {
     const { type, index } = this.state.focus;
     
     switch(type) {
-      case 'instituto':
-        if (index < 2) {
-          this.state.focus.index++;
-          this.renderInstituto();
-        }
-        break;
-      case 'institutoFilter':
-        const maxInstituto = (this.state.usuariosInstituto || []).length;
-        if (index < maxInstituto) {
-          this.state.focus.index++;
-          this.updateInstitutoFilterFocus();
-          this.scrollToFocused('instituto-filter-list');
-        }
-        break;
       case 'avatar':
         if (index < 8) {
           this.state.focus.index += 4;
@@ -3709,8 +3536,8 @@ const app = {
         }
         break;
       case 'combates':
-        if (index < 2) {
-          this.state.focus.index++;
+        if (index === 0) {
+          this.state.focus.index = 1;
           this.updateCombatesFocus();
         }
         break;
@@ -3786,9 +3613,6 @@ const app = {
       case 'consent':
         this.state.focus.index = 0;
         this.updateConsentFocus();
-        break;
-      case 'instituto':
-        this.cambiarInstitutoSeleccion('left');
         break;
       case 'avatar':
         if (index % 4 > 0) {
@@ -3885,9 +3709,6 @@ const app = {
       case 'consent':
         this.state.focus.index = 1;
         this.updateConsentFocus();
-        break;
-      case 'instituto':
-        this.cambiarInstitutoSeleccion('right');
         break;
       case 'avatar':
         if (index % 4 < 3 && index < 11) {
@@ -4030,139 +3851,18 @@ const app = {
     if (focused) focused.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
   },
 
-  getContextoInstituto() {
-    return {
-      provincia: localStorage.getItem('provincia') || 'andalucia',
-      instituto: localStorage.getItem('instituto') || 'ies_ejemplo',
-      curso: localStorage.getItem('curso') || '4eso'
-    };
-  },
-
-  renderInstituto() {
-    const container = document.getElementById('instituto-list');
-    if (!container) return;
-    container.innerHTML = INSTITUTO_FIELDS.map((field, fieldIndex) => {
-      const selected = this.state.institutoDraft[field.key] || field.options[0].value;
-      const options = field.options.map((opt) => `
-        <div class="instituto-option ${opt.value === selected ? 'selected' : ''} ${fieldIndex === this.state.focus.index && opt.value === selected ? 'focused' : ''}" data-key="${field.key}" data-value="${opt.value}">${opt.label}</div>
-      `).join('');
-      return `<div class="instituto-block"><div class="instituto-label">${field.label}</div>${options}</div>`;
-    }).join('');
-  },
-
-  cambiarInstitutoSeleccion(direction) {
-    const field = INSTITUTO_FIELDS[this.state.focus.index];
-    if (!field) return;
-    const current = this.state.institutoDraft[field.key] || field.options[0].value;
-    let idx = field.options.findIndex(o => o.value === current);
-    if (idx < 0) idx = 0;
-    idx = direction === 'right' ? Math.min(field.options.length - 1, idx + 1) : Math.max(0, idx - 1);
-    this.state.institutoDraft[field.key] = field.options[idx].value;
-    this.renderInstituto();
-  },
-
-  guardarInstituto() {
-    Object.entries(this.state.institutoDraft).forEach(([k, v]) => localStorage.setItem(k, v));
-  },
-
-  async renderInstitutoFilter() {
-    const container = document.getElementById('instituto-filter-list');
-    const title = document.getElementById('instituto-filter-title');
-    if (!container || !title) return;
-    const tipo = this.state.selectedDestinoEspecial === 'crush' ? '💘 Crush' : '💜 Anónimo';
-    title.textContent = `Enviar ${tipo} a...`;
-    const contexto = this.getContextoInstituto();
-    let usuarios = [];
-    try {
-      const q = new URLSearchParams({ ...contexto, exclude_me: this.miID });
-      const res = await fetch(`${BACK}/usuarios-instituto?${q.toString()}`);
-      if (res.ok) usuarios = await res.json();
-    } catch (e) {
-      this.debug('usuarios-instituto no disponible: ' + e.message);
-    }
-    this.state.usuariosInstituto = Array.isArray(usuarios) ? usuarios : [];
-    const rows = [
-      `<div class="list-item focused" data-index="0" data-all="1">📍 <div style="font-weight:800;">Todo el instituto</div></div>`,
-      ...this.state.usuariosInstituto.map((u, i) => `<div class="list-item" data-index="${i+1}" data-id="${u.id}" data-name="${u.nombre || 'Alumno'}"><span style="font-size:24px;">${u.avatar || '👤'}</span><div style="flex:1;"><div style="font-weight:800;">${u.nombre || 'Alumno'}</div><div style="font-size:10px;color:#718096;">${u.curso || contexto.curso}</div></div></div>`)
-    ];
-    container.innerHTML = rows.join('');
-  },
-
-  updateInstitutoFilterFocus() {
-    document.querySelectorAll('#instituto-filter-list .list-item').forEach((el, i) => {
-      el.classList.toggle('focused', i === this.state.focus.index);
-    });
-  },
-
-  async enviarDesdeInstitutoFilter() {
-    const idx = this.state.focus.index;
-    const all = idx === 0;
-    const user = this.state.usuariosInstituto && this.state.usuariosInstituto[idx - 1];
-    const tipo = this.state.selectedDestinoEspecial;
-    const contexto = this.getContextoInstituto();
-    const payload = {
-      tipo,
-      de: tipo === 'anonimo' ? null : this.miID,
-      para: all ? null : user?.id,
-      para_instituto: all,
-      avatarRemitente: this.state.settings.avatar,
-      nombreRemitente: localStorage.getItem('miNombre') || 'Amigo',
-      ...contexto
-    };
-    const endpoint = tipo === 'crush' ? '/crush' : '/anonimo';
-    try {
-      const response = await fetch(BACK + endpoint, {
-        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload)
-      });
-      if (!response.ok) throw new Error('No se pudo enviar');
-      this.showMsg('✅ Enviado');
-      this.showPage('home');
-    } catch (e) {
-      this.showMsg('❌ ' + e.message);
-    }
-  },
-
-  async renderMurmullo() {
-    const subtitle = document.getElementById('murmullo-subtitle');
-    const content = document.getElementById('murmullo-content');
-    if (!subtitle || !content) return;
-    const ctx = this.getContextoInstituto();
-    subtitle.textContent = `${ctx.instituto.replace('_', ' ')} - ${ctx.curso.toUpperCase()}`;
-    let data = null;
-    try {
-      const q = new URLSearchParams(ctx);
-      const res = await fetch(`${BACK}/murmullo?${q.toString()}`);
-      if (res.ok) data = await res.json();
-    } catch (e) {
-      this.debug('murmullo no disponible: ' + e.message);
-    }
-    data = data || { tokes_hoy: 0, anonimos_hoy: 0, crushes_activos: 0, rachas_activas: 0, toke_mas_usado: { tipo: 'crush', count: 0 }, usuario_top: '—', hora_pico: '--:--' };
-    content.innerHTML = `
-      <div class="murmullo-card">📊 Hoy en tu instituto<br>🔥 ${data.tokes_hoy} tokes enviados<br>💜 ${data.anonimos_hoy} anónimos<br>💘 ${data.crushes_activos} crushes activos<br>🔥 ${data.rachas_activas} rachas en curso</div>
-      <div class="murmullo-card">📈 Lo más hot<br>${data.toke_mas_usado?.tipo || 'crush'} (${data.toke_mas_usado?.count || 0} usos)<br>👑 ${data.usuario_top} lidera<br>⏰ Pico: ${data.hora_pico}</div>
-      <div class="list-item focused" onclick="app.renderMurmullo()">🔄 Actualizar</div>
-    `;
-  },
-
-  getStreakBadge(id) {
-    const seed = id.length % 5;
-    if (seed >= 3) return '<span class="streak-badge" style="background:#C6F6D5;color:#276749;">🔥3</span>';
-    if (seed === 2) return '<span class="streak-badge" style="background:#FEEBC8;color:#C05621;">🟡2</span>';
-    if (seed === 1) return '<span class="streak-badge" style="background:#EDF2F7;color:#718096;">💔</span>';
-    return '<span class="streak-badge" style="background:#E6FFFA;color:#2C7A7B;">🌱</span>';
-  },
-
   renderTokes() {
     const container = document.getElementById('tokes-list');
     if (!container) return;
     
     container.innerHTML = TOKES_TYPES.map((t, i) => `
       <div class="toke-item t${t.id} ${i === 0 ? 'focused' : ''}" data-index="${i}">
-        <span style="font-size: 20px;">${t.emoji}</span>
-        <div style="flex: 1; overflow: hidden;">
-          <div style="font-weight: 800; color: ${t.color}; font-size: 12px; white-space: nowrap;">${t.name}</div>
-          <div style="font-size: 10px; color: #718096; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${t.desc}</div>
+        <span style="font-size: 26px;">${t.emoji}</span>
+        <div style="flex: 1;">
+          <div style="font-weight: 800; color: ${t.color}; font-size: 14px;">${t.name}</div>
+          <div style="font-size: 11px; color: #718096;">${t.desc}</div>
         </div>
+        <span style="font-size: 10px; background: #EDF2F7; padding: 2px 6px; border-radius: 10px; color: #4A5568;">4</span>
       </div>
     `).join('');
   },
@@ -4218,7 +3918,7 @@ const app = {
         <div class="list-item" data-index="${i + 1}">
           <span style="font-size: 26px;">👤</span>
           <div style="flex: 1;">
-            <div style="font-weight: 800; color: #2D3748; display:flex; justify-content:space-between; align-items:center;"><span>${nom}</span>${this.getStreakBadge(id)}</div>
+            <div style="font-weight: 800; color: #2D3748;">${nom}</div>
             <div style="font-size: 9px; color: #A0AEC0;">${id.substring(0, 10)}...</div>
           </div>
           <button class="btn-eliminar" onclick="event.stopPropagation(); app.eliminarAmigo('${id}')">✕</button>
@@ -4252,7 +3952,7 @@ const app = {
         <div class="list-item ${i === 0 ? 'focused' : ''}" data-index="${i}">
           <span style="font-size: 26px;">👤</span>
           <div style="flex: 1;">
-            <div style="font-weight: 800; color: #2D3748; display:flex; justify-content:space-between; align-items:center;"><span>${nom}</span>${this.getStreakBadge(id)}</div>
+            <div style="font-weight: 800; color: #2D3748;">${nom}</div>
             <div style="font-size: 9px; color: #A0AEC0;">${id.substring(0, 10)}...</div>
           </div>
           <button class="btn-eliminar" onclick="event.stopPropagation(); app.eliminarAmigo('${id}')">✕</button>
@@ -4715,8 +4415,7 @@ const app = {
       num: this.state.selectedCategoria,
       contexto: contextoIndex,
       avatarRemitente: this.state.settings.avatar,
-      nombreRemitente: localStorage.getItem('miNombre') || 'Amigo',
-      ...this.getContextoInstituto()
+      nombreRemitente: localStorage.getItem('miNombre') || 'Amigo'
     };
     
     this.debug('Payload: ' + JSON.stringify(payload));
@@ -5120,8 +4819,7 @@ const app = {
       respuesta: emoji,
       texto: texto,
       avatarRemitente: this.state.settings.avatar || '🐱',
-      nombreRemitente: localStorage.getItem('miNombre') || 'Amigo',
-      ...this.getContextoInstituto()
+      nombreRemitente: localStorage.getItem('miNombre') || 'Amigo'
     };
     
     this.debug('Payload: ' + JSON.stringify(payload));
