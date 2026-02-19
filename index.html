@@ -24,9 +24,29 @@
       --device-color: #FF6B9D;
       --device-dark: #FF4785;
       --device-light: #FFB8D0;
-      --screen-bg: linear-gradient(135deg, #ff9a9e 0%, #fecfef 25%, #fecfef 50%, #ff9a9e 75%, #fad0c4 100%);
-background-size: 300% 300%;
-animation: fruit 8s ease infinite;
+      --screen-bg: #FFF5F7;
+      --theme-bg: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      --card-bg: linear-gradient(145deg, #ffffff 0%, #f0f0f0 100%);
+      --text-primary: #2D3748;
+      --text-secondary: #4A5568;
+      --accent-color: #FFD93D;
+      --shadow-color: #CBD5E0;
+      --focus-border: #FF6B9D;
+    }
+
+    /* TEMA GAS - Variables */
+    :root[data-theme="gas"] {
+      --device-color: #FF0066;
+      --device-dark: #CC0052;
+      --device-light: #FF3385;
+      --screen-bg: #0a0a0f;
+      --theme-bg: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+      --card-bg: linear-gradient(145deg, #1e1e2e 0%, #252538 100%);
+      --text-primary: #ffffff;
+      --text-secondary: #a0a0b0;
+      --accent-color: #FF0066;
+      --shadow-color: #FF0066;
+      --focus-border: #FF0066;
     }
 
     html, body {
@@ -35,18 +55,7 @@ animation: fruit 8s ease infinite;
     }
 
     body {
-     :root {
-  --device-color: #FF6B9D;
-  --device-dark: #FF4785;
-  --device-light: #FFB8D0;
-  --screen-bg: #FFF5F7;  /* <-- ESTE ES EL PASTEL */
-}
-
-@keyframes sunset {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
+      background: var(--theme-bg);
       min-height: 100vh;
       display: flex;
       flex-direction: column;
@@ -151,6 +160,11 @@ animation: fruit 8s ease infinite;
       flex-direction: column;
     }
 
+    :root[data-theme="gas"] .screen {
+      border: 4px solid #FF0066;
+      box-shadow: inset 0 2px 20px rgba(255,0,102,0.2), 0 0 20px rgba(255,0,102,0.3);
+    }
+
     .status-bar {
       position: absolute;
       top: 8px;
@@ -164,6 +178,11 @@ animation: fruit 8s ease infinite;
       color: #718096;
       z-index: 10;
       font-family: 'Fredoka One', cursive;
+    }
+
+    :root[data-theme="gas"] .status-bar {
+      color: #FF0066;
+      text-shadow: 0 0 10px rgba(255,0,102,0.5);
     }
 
     .content {
@@ -200,6 +219,16 @@ animation: fruit 8s ease infinite;
       border-radius: 18px;
     }
 
+    :root[data-theme="gas"] #page-splash {
+      background: linear-gradient(145deg, #FF0066, #FF3385);
+      animation: gasPulse 2s ease-in-out infinite;
+    }
+
+    @keyframes gasPulse {
+      0%, 100% { box-shadow: inset 0 0 30px rgba(255,0,102,0.3); }
+      50% { box-shadow: inset 0 0 60px rgba(255,0,102,0.6); }
+    }
+
     .splash-logo {
       font-family: 'Fredoka One', cursive;
       font-size: 52px;
@@ -208,6 +237,16 @@ animation: fruit 8s ease infinite;
       animation: pulse-logo 2s ease-in-out infinite;
       transform: translateZ(0);
       margin-bottom: 20px;
+    }
+
+    :root[data-theme="gas"] .splash-logo {
+      text-shadow: 0 0 20px rgba(255,0,102,0.8), 0 0 40px rgba(255,0,102,0.4);
+      animation: gasGlow 1.5s ease-in-out infinite;
+    }
+
+    @keyframes gasGlow {
+      0%, 100% { text-shadow: 0 0 20px rgba(255,0,102,0.8), 0 0 40px rgba(255,0,102,0.4); transform: scale(1) translateZ(0); }
+      50% { text-shadow: 0 0 30px rgba(255,0,102,1), 0 0 60px rgba(255,0,102,0.6); transform: scale(1.05) translateZ(0); }
     }
 
     @keyframes pulse-logo {
@@ -238,19 +277,32 @@ animation: fruit 8s ease infinite;
       padding: 20px;
     }
 
+    :root[data-theme="gas"] #page-consent {
+      background: linear-gradient(180deg, #0a0a0f 0%, #1a1a2e 100%);
+    }
+
     .consent-title {
       font-family: 'Fredoka One', cursive;
       font-size: 20px;
-      color: #2D3748;
+      color: var(--text-primary);
       margin-bottom: 15px;
+    }
+
+    :root[data-theme="gas"] .consent-title {
+      color: #FF0066;
+      text-shadow: 0 0 10px rgba(255,0,102,0.5);
     }
 
     .consent-text {
       font-size: 12px;
-      color: #4A5568;
+      color: var(--text-secondary);
       line-height: 1.5;
       margin-bottom: 20px;
       max-width: 260px;
+    }
+
+    :root[data-theme="gas"] .consent-text {
+      color: #a0a0b0;
     }
 
     .consent-buttons {
@@ -273,16 +325,40 @@ animation: fruit 8s ease infinite;
       box-shadow: 0 3px 0 rgba(0,0,0,0.2);
     }
 
+    :root[data-theme="gas"] .consent-btn {
+      border-radius: 16px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
     .consent-btn.no {
       background: #E2E8F0;
       color: #4A5568;
       box-shadow: 0 3px 0 #CBD5E0;
     }
 
+    :root[data-theme="gas"] .consent-btn.no {
+      background: linear-gradient(145deg, #2a2a3e 0%, #1e1e2e 100%);
+      color: #a0a0b0;
+      box-shadow: 0 4px 0 #0f0f1a, 0 0 15px rgba(255,0,102,0.2);
+      border: 1px solid rgba(255,0,102,0.3);
+    }
+
     .consent-btn.si {
       background: #48BB78;
       color: white;
       box-shadow: 0 3px 0 #38A169;
+    }
+
+    :root[data-theme="gas"] .consent-btn.si {
+      background: linear-gradient(135deg, #FF0066 0%, #FF8E53 100%);
+      box-shadow: 0 4px 0 #CC4470, 0 0 20px rgba(255,0,102,0.4);
+      border: none;
+    }
+
+    :root[data-theme="gas"] .consent-btn.si.focused {
+      transform: translateY(-2px) scale(1.03);
+      box-shadow: 0 6px 0 #CC4470, 0 0 30px rgba(255,0,102,0.6);
     }
 
     .consent-btn.focused {
@@ -299,12 +375,21 @@ animation: fruit 8s ease infinite;
       padding: 20px;
     }
 
+    :root[data-theme="gas"] #page-setup {
+      background: linear-gradient(180deg, #0a0a0f 0%, #1a1a2e 100%);
+    }
+
     .setup-title {
       font-family: 'Fredoka One', cursive;
       font-size: 20px;
-      color: #2D3748;
+      color: var(--text-primary);
       margin-bottom: 25px;
       text-align: center;
+    }
+
+    :root[data-theme="gas"] .setup-title {
+      color: #FF0066;
+      text-shadow: 0 0 15px rgba(255,0,102,0.5);
     }
 
     .setup-input {
@@ -324,9 +409,24 @@ animation: fruit 8s ease infinite;
       margin-bottom: 15px;
     }
 
+    :root[data-theme="gas"] .setup-input {
+      background: linear-gradient(145deg, #1e1e2e 0%, #252538 100%);
+      border: 2px solid #FF0066;
+      color: white;
+      box-shadow: 0 0 20px rgba(255,0,102,0.3);
+    }
+
+    :root[data-theme="gas"] .setup-input::placeholder {
+      color: #606070;
+    }
+
     .setup-hint {
       font-size: 12px;
       color: #A0AEC0;
+    }
+
+    :root[data-theme="gas"] .setup-hint {
+      color: #606070;
     }
 
     #page-avatar {
@@ -336,6 +436,10 @@ animation: fruit 8s ease infinite;
       height: 100%;
       width: 100%;
       padding: 30px 20px 20px 20px;
+    }
+
+    :root[data-theme="gas"] #page-avatar {
+      background: linear-gradient(180deg, #0a0a0f 0%, #1a1a2e 100%);
     }
 
     .avatar-grid {
@@ -361,6 +465,19 @@ animation: fruit 8s ease infinite;
       box-shadow: 0 3px 0 #CBD5E0;
     }
 
+    :root[data-theme="gas"] .avatar-item {
+      background: linear-gradient(145deg, #1e1e2e 0%, #252538 100%);
+      border: 2px solid #2a2a3e;
+      box-shadow: 0 4px 0 #0f0f1a, 0 0 10px rgba(0,0,0,0.5);
+    }
+
+    :root[data-theme="gas"] .avatar-item.focused {
+      border-color: #FF0066;
+      background: linear-gradient(145deg, #2a1a2e 0%, #3a1a3e 100%);
+      box-shadow: 0 0 20px rgba(255,0,102,0.5), 0 4px 0 #CC4470;
+      transform: scale(1.1);
+    }
+
     .avatar-item:active {
       transform: translateY(3px);
       box-shadow: 0 0 0 #CBD5E0;
@@ -382,6 +499,11 @@ animation: fruit 8s ease infinite;
       height: 100%;
       width: 100%;
       padding: 30px 20px 20px 20px;
+    }
+
+    :root[data-theme="gas"] #page-color {
+      background: linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 50%, #16213e 100%);
+      animation: none;
     }
 
     @keyframes gradientShift {
@@ -416,6 +538,17 @@ animation: fruit 8s ease infinite;
       animation: colorPulse 2s ease-in-out infinite;
     }
 
+    :root[data-theme="gas"] .color-setup-item {
+      border: 3px solid rgba(255,0,102,0.3);
+      box-shadow: 0 0 15px rgba(255,0,102,0.2);
+      animation: gasColorPulse 2s ease-in-out infinite;
+    }
+
+    @keyframes gasColorPulse {
+      0%, 100% { box-shadow: 0 0 15px rgba(255,0,102,0.2); }
+      50% { box-shadow: 0 0 25px rgba(255,0,102,0.5); }
+    }
+
     .color-setup-item:nth-child(1) { animation-delay: 0s; }
     .color-setup-item:nth-child(2) { animation-delay: 0.2s; }
     .color-setup-item:nth-child(3) { animation-delay: 0.4s; }
@@ -443,6 +576,11 @@ animation: fruit 8s ease infinite;
       text-shadow: 0 2px 4px rgba(0,0,0,0.5);
     }
 
+    :root[data-theme="gas"] .color-setup-item::after {
+      color: #FF0066;
+      text-shadow: 0 0 10px rgba(255,0,102,0.5);
+    }
+
     .color-setup-item:active {
       transform: translateY(4px) scale(0.95);
       box-shadow: 0 0 0 rgba(0,0,0,0.2);
@@ -453,6 +591,11 @@ animation: fruit 8s ease infinite;
       box-shadow: 0 0 0 6px rgba(255,255,255,0.8), 0 8px 25px rgba(0,0,0,0.5);
       animation: none;
       z-index: 10;
+    }
+
+    :root[data-theme="gas"] .color-setup-item.focused {
+      box-shadow: 0 0 0 4px #FF0066, 0 0 30px rgba(255,0,102,0.8);
+      border-color: #FF0066;
     }
 
     .home-main {
@@ -471,6 +614,16 @@ animation: fruit 8s ease infinite;
       transform: translateZ(0);
     }
 
+    :root[data-theme="gas"] .home-avatar {
+      filter: drop-shadow(0 0 20px rgba(255,0,102,0.5));
+      animation: gasFloat 3s ease-in-out infinite;
+    }
+
+    @keyframes gasFloat {
+      0%, 100% { transform: translateY(0) translateZ(0); filter: drop-shadow(0 0 20px rgba(255,0,102,0.5)); }
+      50% { transform: translateY(-8px) translateZ(0); filter: drop-shadow(0 0 30px rgba(255,0,102,0.8)); }
+    }
+
     @keyframes float {
       0%, 100% { transform: translateY(0) translateZ(0); }
       50% { transform: translateY(-8px) translateZ(0); }
@@ -479,7 +632,12 @@ animation: fruit 8s ease infinite;
     .home-name {
       font-family: 'Fredoka One', cursive;
       font-size: 22px;
-      color: #2D3748;
+      color: var(--text-primary);
+    }
+
+    :root[data-theme="gas"] .home-name {
+      color: white;
+      text-shadow: 0 0 10px rgba(255,0,102,0.5);
     }
 
     .home-status {
@@ -492,6 +650,11 @@ animation: fruit 8s ease infinite;
       box-shadow: 0 2px 0 #2F855A;
     }
 
+    :root[data-theme="gas"] .home-status {
+      background: linear-gradient(135deg, #FF0066 0%, #FF8E53 100%);
+      box-shadow: 0 0 15px rgba(255,0,102,0.5);
+    }
+
     .tokes-badge {
       background: #ECC94B;
       color: #744210;
@@ -501,6 +664,12 @@ animation: fruit 8s ease infinite;
       font-weight: 800;
       margin-top: 6px;
       box-shadow: 0 2px 0 #B7791F;
+    }
+
+    :root[data-theme="gas"] .tokes-badge {
+      background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+      color: #1a1a2e;
+      box-shadow: 0 0 15px rgba(255,215,0,0.5);
     }
 
     .cola-badge {
@@ -517,6 +686,11 @@ animation: fruit 8s ease infinite;
       animation: pulse-badge 2s infinite;
       display: none;
       z-index: 50;
+    }
+
+    :root[data-theme="gas"] .cola-badge {
+      background: linear-gradient(135deg, #FF0066 0%, #FF8E53 100%);
+      box-shadow: 0 0 15px rgba(255,0,102,0.6);
     }
 
     .cola-badge.active {
@@ -539,7 +713,7 @@ animation: fruit 8s ease infinite;
     }
 
     .menu-item {
-      background: linear-gradient(145deg, #ffffff 0%, #f0f0f0 100%);
+      background: var(--card-bg);
       border: 3px solid transparent;
       border-radius: 16px;
       display: flex;
@@ -549,13 +723,20 @@ animation: fruit 8s ease infinite;
       gap: 6px;
       font-size: 12px;
       font-weight: 800;
-      color: #4A5568;
+      color: var(--text-secondary);
       transition: all 0.3s ease;
       cursor: pointer;
-      box-shadow: 0 4px 0 #CBD5E0, 0 6px 15px rgba(0,0,0,0.1);
+      box-shadow: 0 4px 0 var(--shadow-color), 0 6px 15px rgba(0,0,0,0.1);
       min-height: 0;
       position: relative;
       overflow: hidden;
+    }
+
+    :root[data-theme="gas"] .menu-item {
+      background: linear-gradient(145deg, #1e1e2e 0%, #252538 100%);
+      border: 2px solid rgba(255,0,102,0.2);
+      color: #a0a0b0;
+      box-shadow: 0 4px 0 #0f0f1a, 0 0 10px rgba(0,0,0,0.5);
     }
 
     .menu-item::before {
@@ -575,16 +756,32 @@ animation: fruit 8s ease infinite;
 
     .menu-item:active {
       transform: translateY(3px) scale(0.98);
-      box-shadow: 0 1px 0 #CBD5E0, 0 2px 8px rgba(0,0,0,0.1);
+      box-shadow: 0 1px 0 var(--shadow-color), 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    :root[data-theme="gas"] .menu-item:active {
+      box-shadow: 0 1px 0 #0f0f1a, 0 0 20px rgba(255,0,102,0.3);
     }
 
     .menu-item.focused {
-      border-color: var(--device-color);
+      border-color: var(--focus-border);
       background: linear-gradient(145deg, #FFF5F7 0%, #FFE4EC 100%);
       transform: scale(1.05) translateY(-2px);
       box-shadow: 0 6px 0 var(--device-dark), 0 10px 25px rgba(255,107,157,0.4);
       z-index: 10;
       animation: menuGlow 1.5s ease-in-out infinite;
+    }
+
+    :root[data-theme="gas"] .menu-item.focused {
+      background: linear-gradient(135deg, rgba(255,0,102,0.2) 0%, rgba(255,142,83,0.2) 100%);
+      border-color: #FF0066;
+      box-shadow: 0 0 25px rgba(255,0,102,0.6), 0 4px 0 #CC4470;
+      animation: gasMenuGlow 1.5s ease-in-out infinite;
+    }
+
+    @keyframes gasMenuGlow {
+      0%, 100% { box-shadow: 0 0 25px rgba(255,0,102,0.6), 0 4px 0 #CC4470; }
+      50% { box-shadow: 0 0 35px rgba(255,0,102,0.8), 0 4px 0 #CC4470; }
     }
 
     @keyframes menuGlow {
@@ -600,6 +797,10 @@ animation: fruit 8s ease infinite;
     .menu-item.focused .icon {
       transform: scale(1.2) rotate(5deg);
       animation: iconBounce 0.5s ease;
+    }
+
+    :root[data-theme="gas"] .menu-item.focused .icon {
+      filter: drop-shadow(0 0 10px rgba(255,0,102,0.8));
     }
 
     @keyframes iconBounce {
@@ -635,22 +836,48 @@ animation: fruit 8s ease infinite;
       cursor: pointer;
     }
 
+    :root[data-theme="gas"] .list-item,
+    :root[data-theme="gas"] .toke-item,
+    :root[data-theme="gas"] .variante-item {
+      background: linear-gradient(145deg, #1e1e2e 0%, #252538 100%);
+      border: 2px solid rgba(255,0,102,0.2);
+      color: #e0e0e0;
+      box-shadow: 0 2px 0 #0f0f1a, 0 0 10px rgba(0,0,0,0.3);
+    }
+
     .list-item.focused, .toke-item.focused, .variante-item.focused {
-      border-color: var(--device-color);
+      border-color: var(--focus-border);
       background: #FFF5F7;
       transform: translateX(3px);
       box-shadow: 0 2px 0 #F687B3;
     }
 
+    :root[data-theme="gas"] .list-item.focused,
+    :root[data-theme="gas"] .toke-item.focused,
+    :root[data-theme="gas"] .variante-item.focused {
+      background: linear-gradient(145deg, #2a1a2e 0%, #3a1a3e 100%);
+      border-color: #FF0066;
+      box-shadow: 0 0 20px rgba(255,0,102,0.4), 0 2px 0 #CC4470;
+    }
+
     .toke-item.t1 { border-color: #FF0066; background: #FFF0F3; }
+    :root[data-theme="gas"] .toke-item.t1 { border-color: #FF0066; background: linear-gradient(145deg, #2a0a1a 0%, #1e0a1e 100%); }
     .toke-item.t1.focused { box-shadow: 0 2px 0 #CC0052; }
+    
     .toke-item.t2 { border-color: #FF5400; background: #FFF4F0; }
+    :root[data-theme="gas"] .toke-item.t2 { border-color: #FF8E53; background: linear-gradient(145deg, #2a1a0a 0%, #1e1a0e 100%); }
     .toke-item.t2.focused { box-shadow: 0 2px 0 #CC4400; }
+    
     .toke-item.t3 { border-color: #38A169; background: #F0FFF4; }
+    :root[data-theme="gas"] .toke-item.t3 { border-color: #00FF88; background: linear-gradient(145deg, #0a2a1a 0%, #0a1e14 100%); }
     .toke-item.t3.focused { box-shadow: 0 2px 0 #276749; }
+    
     .toke-item.t4 { border-color: #D69E2E; background: #FFFBEB; }
+    :root[data-theme="gas"] .toke-item.t4 { border-color: #FFD700; background: linear-gradient(145deg, #2a2a0a 0%, #1e1e0a 100%); }
     .toke-item.t4.focused { box-shadow: 0 2px 0 #B7791F; }
+    
     .toke-item.t5 { border-color: #3182CE; background: #EBF8FF; }
+    :root[data-theme="gas"] .toke-item.t5 { border-color: #00CCFF; background: linear-gradient(145deg, #0a1a2a 0%, #0a141e 100%); }
     .toke-item.t5.focused { box-shadow: 0 2px 0 #2C5282; }
 
     .variante-item {
@@ -679,6 +906,19 @@ animation: fruit 8s ease infinite;
       -webkit-appearance: none;
     }
 
+    :root[data-theme="gas"] .scan-btn {
+      background: linear-gradient(135deg, #FF0066 0%, #FF8E53 100%);
+      box-shadow: 0 4px 0 #CC4470, 0 0 20px rgba(255,0,102,0.3);
+      border-radius: 16px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    :root[data-theme="gas"] .scan-btn.focused {
+      box-shadow: 0 0 25px rgba(255,0,102,0.6), 0 4px 0 #CC4470;
+      transform: scale(1.02);
+    }
+
     .scan-btn:active {
       transform: translateY(3px);
       box-shadow: 0 0 0 #6B46C1;
@@ -705,6 +945,12 @@ animation: fruit 8s ease infinite;
       border: 3px solid #FFD93D;
     }
 
+    :root[data-theme="gas"] #qr-mio {
+      background: linear-gradient(145deg, #1e1e2e 0%, #252538 100%);
+      border: 3px solid #FF0066;
+      box-shadow: 0 0 30px rgba(255,0,102,0.4);
+    }
+
     #qr-mio img {
       width: 140px;
       height: 140px;
@@ -721,6 +967,10 @@ animation: fruit 8s ease infinite;
       padding: 0 5px 5px 5px;
     }
 
+    :root[data-theme="gas"] .todex-grid {
+      gap: 6px;
+    }
+
     .emoji-card {
       aspect-ratio: 1;
       background: #EDF2F7;
@@ -734,23 +984,47 @@ animation: fruit 8s ease infinite;
       cursor: pointer;
     }
 
+    :root[data-theme="gas"] .emoji-card {
+      background: linear-gradient(145deg, #1e1e2e 0%, #252538 100%);
+      border: 1px solid rgba(255,0,102,0.1);
+      font-size: 18px;
+    }
+
     .emoji-card.captured {
       background: #48BB78;
       border-color: #276749;
       color: white;
     }
 
+    :root[data-theme="gas"] .emoji-card.captured {
+      background: linear-gradient(135deg, #FF0066 0%, #FF8E53 100%);
+      border-color: #FF0066;
+      box-shadow: 0 0 10px rgba(255,0,102,0.4);
+    }
+
     .emoji-card.focused {
-      border-color: var(--device-color);
+      border-color: var(--focus-border);
       transform: scale(1.1);
       box-shadow: 0 0 8px rgba(255,107,157,0.4);
       z-index: 10;
+    }
+
+    :root[data-theme="gas"] .emoji-card.focused {
+      border-color: #FF0066;
+      box-shadow: 0 0 20px rgba(255,0,102,0.6);
+      transform: scale(1.15);
     }
 
     .emoji-card.new-unlock {
       animation: unlockPulse 1s ease-in-out;
       background: #FFD93D !important;
       border-color: #B7791F !important;
+    }
+
+    :root[data-theme="gas"] .emoji-card.new-unlock {
+      background: linear-gradient(135deg, #FF0066 0%, #FFD700 100%) !important;
+      border-color: #FFD700 !important;
+      box-shadow: 0 0 30px rgba(255,215,0,0.8) !important;
     }
 
     @keyframes unlockPulse {
@@ -789,6 +1063,19 @@ animation: fruit 8s ease infinite;
       overflow: hidden;
     }
 
+    :root[data-theme="gas"] .combate-card {
+      background: linear-gradient(135deg, #FF0066 0%, #FF8E53 100%);
+      box-shadow: 0 4px 0 #CC4470, 0 0 20px rgba(255,0,102,0.3);
+      border: 2px solid rgba(255,0,102,0.3);
+      border-radius: 20px;
+    }
+
+    :root[data-theme="gas"] .combate-card.focused {
+      box-shadow: 0 0 30px rgba(255,0,102,0.6), 0 4px 0 #CC4470;
+      transform: scale(1.03);
+      border-color: #FF0066;
+    }
+
     .combate-card::before {
       content: '';
       position: absolute;
@@ -810,6 +1097,10 @@ animation: fruit 8s ease infinite;
       box-shadow: 0 0 0 #6B46C1;
     }
 
+    :root[data-theme="gas"] .combate-card:active {
+      box-shadow: 0 0 20px rgba(255,0,102,0.4);
+    }
+
     .combate-card.focused {
       border-color: #FFD93D;
       transform: scale(1.02);
@@ -819,6 +1110,11 @@ animation: fruit 8s ease infinite;
     .combate-card.vs-amigo {
       background: linear-gradient(145deg, #DD6B20 0%, #C05621 100%);
       box-shadow: 0 3px 0 #C05621;
+    }
+
+    :root[data-theme="gas"] .combate-card.vs-amigo {
+      background: linear-gradient(135deg, #FF8E53 0%, #FF0066 100%);
+      box-shadow: 0 4px 0 #CC4470, 0 0 20px rgba(255,0,102,0.3);
     }
 
     .settings-list {
@@ -848,10 +1144,23 @@ animation: fruit 8s ease infinite;
       min-height: 50px;
     }
 
+    :root[data-theme="gas"] .setting-item {
+      background: linear-gradient(145deg, #1e1e2e 0%, #252538 100%);
+      border: 2px solid rgba(255,0,102,0.2);
+      color: #e0e0e0;
+      box-shadow: 0 2px 0 #0f0f1a, 0 0 10px rgba(0,0,0,0.3);
+    }
+
     .setting-item.focused {
-      border-color: var(--device-color);
+      border-color: var(--focus-border);
       background: #FFF5F7;
       transform: scale(1.01);
+    }
+
+    :root[data-theme="gas"] .setting-item.focused {
+      background: linear-gradient(145deg, #2a1a2e 0%, #3a1a3e 100%);
+      border-color: #FF0066;
+      box-shadow: 0 0 20px rgba(255,0,102,0.4);
     }
 
     .toggle-switch {
@@ -863,8 +1172,18 @@ animation: fruit 8s ease infinite;
       transition: all 0.3s;
     }
 
+    :root[data-theme="gas"] .toggle-switch {
+      background: #2a2a3e;
+      border: 1px solid rgba(255,0,102,0.3);
+    }
+
     .toggle-switch.active {
       background: #48BB78;
+    }
+
+    :root[data-theme="gas"] .toggle-switch.active {
+      background: linear-gradient(135deg, #FF0066 0%, #FF8E53 100%);
+      box-shadow: 0 0 10px rgba(255,0,102,0.5);
     }
 
     .toggle-switch::after {
@@ -902,6 +1221,11 @@ animation: fruit 8s ease infinite;
       -webkit-appearance: none;
     }
 
+    :root[data-theme="gas"] .btn-eliminar {
+      background: linear-gradient(135deg, #FF0066 0%, #CC4470 100%);
+      box-shadow: 0 2px 0 #992233;
+    }
+
     .btn-eliminar:active {
       transform: translateY(2px);
       box-shadow: 0 0 0 #C53030;
@@ -923,17 +1247,26 @@ animation: fruit 8s ease infinite;
       overflow-y: auto;
     }
 
+    :root[data-theme="gas"] .selector-modal {
+      background: linear-gradient(180deg, #0a0a0f 0%, #1a1a2e 100%);
+    }
+
     .selector-modal.active {
       display: flex;
     }
 
     .selector-title {
-      color: #2D3748;
+      color: var(--text-primary);
       font-family: 'Fredoka One', cursive;
       font-size: 18px;
       margin-bottom: 20px;
       text-align: center;
       flex-shrink: 0;
+    }
+
+    :root[data-theme="gas"] .selector-title {
+      color: #FF0066;
+      text-shadow: 0 0 15px rgba(255,0,102,0.5);
     }
 
     .selector-grid {
@@ -968,6 +1301,17 @@ animation: fruit 8s ease infinite;
       position: relative;
     }
 
+    :root[data-theme="gas"] .selector-item {
+      border: 3px solid rgba(255,0,102,0.3);
+      box-shadow: 0 0 15px rgba(255,0,102,0.2);
+    }
+
+    :root[data-theme="gas"] .selector-item.focused {
+      border-color: #FF0066;
+      box-shadow: 0 0 25px rgba(255,0,102,0.6);
+      transform: scale(1.08);
+    }
+
     .selector-item::after {
       content: attr(data-name);
       position: absolute;
@@ -978,6 +1322,11 @@ animation: fruit 8s ease infinite;
       font-weight: 700;
       color: #2D3748;
       white-space: nowrap;
+    }
+
+    :root[data-theme="gas"] .selector-item::after {
+      color: #FF0066;
+      text-shadow: 0 0 10px rgba(255,0,102,0.5);
     }
 
     .selector-item.focused {
@@ -998,6 +1347,10 @@ animation: fruit 8s ease infinite;
       justify-content: center;
       padding: 20px;
       z-index: 100;
+    }
+
+    :root[data-theme="gas"] .response-modal {
+      background: linear-gradient(145deg, rgba(255,0,102,0.95), rgba(255,142,83,0.95));
     }
 
     .response-modal.active {
@@ -1071,6 +1424,10 @@ animation: fruit 8s ease infinite;
       border-color: white;
     }
 
+    :root[data-theme="gas"] .response-action.focused {
+      color: #FF0066;
+    }
+
     .confirm-modal {
       position: absolute;
       top: 0;
@@ -1100,6 +1457,12 @@ animation: fruit 8s ease infinite;
       box-shadow: 0 10px 40px rgba(0,0,0,0.3);
     }
 
+    :root[data-theme="gas"] .confirm-box {
+      background: linear-gradient(145deg, #1e1e2e 0%, #252538 100%);
+      border: 2px solid rgba(255,0,102,0.3);
+      box-shadow: 0 0 40px rgba(255,0,102,0.3);
+    }
+
     .confirm-title {
       font-family: 'Fredoka One', cursive;
       font-size: 20px;
@@ -1107,11 +1470,20 @@ animation: fruit 8s ease infinite;
       margin-bottom: 12px;
     }
 
+    :root[data-theme="gas"] .confirm-title {
+      color: #FF0066;
+      text-shadow: 0 0 10px rgba(255,0,102,0.5);
+    }
+
     .confirm-text {
       font-size: 13px;
       color: #4A5568;
       margin-bottom: 20px;
       line-height: 1.5;
+    }
+
+    :root[data-theme="gas"] .confirm-text {
+      color: #a0a0b0;
     }
 
     .confirm-buttons {
@@ -1138,6 +1510,13 @@ animation: fruit 8s ease infinite;
       box-shadow: 0 3px 0 #CBD5E0;
     }
 
+    :root[data-theme="gas"] .confirm-btn.no {
+      background: linear-gradient(145deg, #2a2a3e 0%, #1e1e2e 100%);
+      color: #a0a0b0;
+      box-shadow: 0 4px 0 #0f0f1a;
+      border: 1px solid rgba(255,0,102,0.2);
+    }
+
     .confirm-btn.no:active {
       transform: translateY(3px);
       box-shadow: 0 0 0 #CBD5E0;
@@ -1149,6 +1528,11 @@ animation: fruit 8s ease infinite;
       box-shadow: 0 3px 0 #C53030;
     }
 
+    :root[data-theme="gas"] .confirm-btn.si {
+      background: linear-gradient(135deg, #FF0066 0%, #FF8E53 100%);
+      box-shadow: 0 4px 0 #CC4470;
+    }
+
     .confirm-btn.si:active {
       transform: translateY(3px);
       box-shadow: 0 0 0 #C53030;
@@ -1157,6 +1541,10 @@ animation: fruit 8s ease infinite;
     .confirm-btn.focused {
       transform: scale(1.03);
       box-shadow: 0 0 0 3px rgba(255,107,157,0.3);
+    }
+
+    :root[data-theme="gas"] .confirm-btn.focused {
+      box-shadow: 0 0 20px rgba(255,0,102,0.5);
     }
 
     .controls-wrapper {
@@ -1187,6 +1575,18 @@ animation: fruit 8s ease infinite;
       z-index: 10;
     }
 
+    :root[data-theme="gas"] .dpad-circle {
+      background: linear-gradient(145deg, 
+        rgba(255,0,102,0.2) 0%, 
+        rgba(255,0,102,0.05) 50%,
+        rgba(0,0,0,0.2) 100%);
+      box-shadow: 
+        0 4px 12px rgba(0,0,0,0.4),
+        inset 0 1px 3px rgba(255,0,102,0.3),
+        inset 0 -2px 4px rgba(0,0,0,0.2),
+        0 0 20px rgba(255,0,102,0.2);
+    }
+
     .nav-ring {
       width: 92px;
       height: 92px;
@@ -1205,6 +1605,16 @@ animation: fruit 8s ease infinite;
       overflow: hidden;
     }
 
+    :root[data-theme="gas"] .nav-ring {
+      background: linear-gradient(145deg, 
+        #FF3385 0%, 
+        #FF0066 60%, 
+        #CC0052 100%);
+      box-shadow: 
+        inset 0 2px 5px rgba(0,0,0,0.3),
+        0 0 15px rgba(255,0,102,0.4);
+    }
+
     .nav-sector {
       position: absolute;
       width: 50%;
@@ -1216,6 +1626,10 @@ animation: fruit 8s ease infinite;
 
     .nav-sector:active {
       background: rgba(0,0,0,0.15);
+    }
+
+    :root[data-theme="gas"] .nav-sector:active {
+      background: rgba(255,0,102,0.3);
     }
 
     .sector-up {
@@ -1318,6 +1732,15 @@ animation: fruit 8s ease infinite;
       position: relative;
     }
 
+    :root[data-theme="gas"] .ok-btn {
+      background: radial-gradient(circle at 30% 30%, #FF3385 0%, #FF0066 60%, #CC0052 100%);
+      box-shadow: 
+        0 3px 8px rgba(0,0,0,0.4),
+        inset 0 -2px 4px rgba(0,0,0,0.3),
+        inset 0 2px 4px rgba(255,255,255,0.2),
+        0 0 15px rgba(255,0,102,0.4);
+    }
+
     .ok-btn:active {
       transform: scale(0.9);
       box-shadow: 
@@ -1355,6 +1778,15 @@ animation: fruit 8s ease infinite;
       transition: all 0.05s ease;
     }
 
+    :root[data-theme="gas"] .back-c {
+      background: linear-gradient(145deg, #FF0066 0%, #CC0052 100%);
+      box-shadow: 
+        0 4px 8px rgba(0,0,0,0.3),
+        inset 0 -2px 4px rgba(0,0,0,0.3),
+        inset 0 1px 2px rgba(255,255,255,0.2),
+        0 0 15px rgba(255,0,102,0.3);
+    }
+
     .back-c:active {
       transform: translateY(2px);
       box-shadow: 
@@ -1379,6 +1811,11 @@ animation: fruit 8s ease infinite;
       z-index: 20;
     }
 
+    :root[data-theme="gas"] .msg-bar {
+      background: linear-gradient(135deg, #FF0066 0%, #FF8E53 100%);
+      box-shadow: 0 0 20px rgba(255,0,102,0.5);
+    }
+
     .msg-bar.show {
       transform: translateY(0);
     }
@@ -1386,6 +1823,8 @@ animation: fruit 8s ease infinite;
     ::-webkit-scrollbar { width: 3px; }
     ::-webkit-scrollbar-thumb { background: #F687B3; border-radius: 2px; }
     ::-webkit-scrollbar-track { background: transparent; }
+
+    :root[data-theme="gas"] ::-webkit-scrollbar-thumb { background: #FF0066; }
 
     .envio-info {
       background: #FFF5F7;
@@ -1399,9 +1838,21 @@ animation: fruit 8s ease infinite;
       font-weight: 700;
     }
 
+    :root[data-theme="gas"] .envio-info {
+      background: linear-gradient(145deg, #1e1e2e 0%, #252538 100%);
+      border: 2px solid #FF0066;
+      color: #e0e0e0;
+      box-shadow: 0 0 15px rgba(255,0,102,0.3);
+    }
+
     .envio-info strong {
       color: var(--device-color);
       font-size: 13px;
+    }
+
+    :root[data-theme="gas"] .envio-info strong {
+      color: #FF0066;
+      text-shadow: 0 0 10px rgba(255,0,102,0.5);
     }
 
     .envio-animacion {
@@ -1523,7 +1974,7 @@ animation: fruit 8s ease infinite;
     }
 
     .toque-recibido-header {
-      margin-bottom: 15px;
+      margin-bottom: 10px;
     }
 
     .toque-recibido-avatar {
@@ -1540,8 +1991,8 @@ animation: fruit 8s ease infinite;
     }
 
     .toque-recibido-emoji {
-      font-size: 80px;
-      margin: 10px 0;
+      font-size: 70px;
+      margin: 5px 0;
       animation: bounceIn 0.8s ease 0.2s both;
       filter: drop-shadow(0 10px 20px rgba(0,0,0,0.3));
     }
@@ -1555,7 +2006,7 @@ animation: fruit 8s ease infinite;
 
     .toque-recibido-mensaje {
       font-size: 14px;
-      margin-bottom: 20px;
+      margin-bottom: 15px;
       padding: 0 10px;
       font-weight: 600;
       line-height: 1.4;
@@ -1567,29 +2018,38 @@ animation: fruit 8s ease infinite;
       to { transform: translateY(0); opacity: 1; }
     }
 
+    /* BOTONES DE RESPUESTA MÁS PEQUEÑOS */
     .respuestas-container {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 10px;
+      gap: 8px;
       width: 100%;
-      max-width: 260px;
+      max-width: 240px;
       margin-top: auto;
       margin-bottom: 10px;
     }
 
     .respuesta-option {
       background: rgba(255,255,255,0.95);
-      border: 3px solid transparent;
-      border-radius: 12px;
-      padding: 12px 8px;
+      border: 2px solid transparent;
+      border-radius: 10px;
+      padding: 8px 6px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 4px;
+      gap: 3px;
       cursor: pointer;
       transition: all 0.2s ease;
-      box-shadow: 0 4px 0 rgba(0,0,0,0.1);
+      box-shadow: 0 3px 0 rgba(0,0,0,0.1);
       animation: fadeInUp 0.5s ease both;
+      min-height: 55px;
+      justify-content: center;
+    }
+
+    :root[data-theme="gas"] .respuesta-option {
+      background: linear-gradient(145deg, #1e1e2e 0%, #252538 100%);
+      border: 2px solid rgba(255,0,102,0.2);
+      box-shadow: 0 3px 0 #0f0f1a, 0 0 10px rgba(0,0,0,0.3);
     }
 
     .respuesta-option:nth-child(1) { animation-delay: 0.5s; }
@@ -1599,23 +2059,37 @@ animation: fruit 8s ease infinite;
 
     .respuesta-option.focused {
       border-color: #FFD93D;
-      transform: scale(1.05) translateY(-3px);
-      box-shadow: 0 6px 0 rgba(0,0,0,0.2), 0 0 15px rgba(255,217,61,0.5);
+      transform: scale(1.05) translateY(-2px);
+      box-shadow: 0 5px 0 rgba(0,0,0,0.2), 0 0 15px rgba(255,217,61,0.5);
+    }
+
+    :root[data-theme="gas"] .respuesta-option.focused {
+      border-color: #FF0066;
+      box-shadow: 0 0 20px rgba(255,0,102,0.6), 0 4px 0 #CC4470;
+      background: linear-gradient(145deg, #2a1a2e 0%, #3a1a3e 100%);
     }
 
     .respuesta-option .emoji-resp {
-      font-size: 28px;
+      font-size: 22px;
       transition: transform 0.2s;
     }
 
+    :root[data-theme="gas"] .respuesta-option .emoji-resp {
+      filter: drop-shadow(0 0 5px rgba(255,0,102,0.5));
+    }
+
     .respuesta-option.focused .emoji-resp {
-      transform: scale(1.2);
+      transform: scale(1.15);
     }
 
     .respuesta-option .texto-resp {
-      font-size: 11px;
+      font-size: 9px;
       font-weight: 800;
       color: #2D3748;
+    }
+
+    :root[data-theme="gas"] .respuesta-option .texto-resp {
+      color: #e0e0e0;
     }
 
     .respuesta-recibida-modal {
@@ -1634,6 +2108,10 @@ animation: fruit 8s ease infinite;
       text-align: center;
       color: white;
       animation: fadeIn 0.3s ease;
+    }
+
+    :root[data-theme="gas"] .respuesta-recibida-modal {
+      background: linear-gradient(145deg, #FF0066, #FF8E53);
     }
 
     .respuesta-recibida-modal.active {
@@ -1680,6 +2158,11 @@ animation: fruit 8s ease infinite;
       transition: all 0.2s ease;
     }
 
+    :root[data-theme="gas"] .respuesta-recibida-btn {
+      color: #FF0066;
+      background: linear-gradient(145deg, #ffffff 0%, #f0f0f0 100%);
+    }
+
     .respuesta-recibida-btn:active {
       transform: translateY(4px);
       box-shadow: 0 0 0 rgba(0,0,0,0.2);
@@ -1704,6 +2187,12 @@ animation: fruit 8s ease infinite;
       max-height: 320px;
     }
 
+    :root[data-theme="gas"] .nuevo-emoji-notificacion {
+      background: linear-gradient(145deg, #FF0066, #FF8E53);
+      border: 3px solid #FFD700;
+      box-shadow: 0 0 40px rgba(255,0,102,0.6);
+    }
+
     .nuevo-emoji-notificacion.active {
       display: block;
     }
@@ -1719,6 +2208,11 @@ animation: fruit 8s ease infinite;
       font-size: 16px;
       color: #744210;
       margin-bottom: 10px;
+    }
+
+    :root[data-theme="gas"] .nuevo-emoji-titulo {
+      color: white;
+      text-shadow: 0 0 10px rgba(0,0,0,0.3);
     }
 
     .nuevo-emoji-display {
@@ -1740,6 +2234,10 @@ animation: fruit 8s ease infinite;
       margin-bottom: 3px;
     }
 
+    :root[data-theme="gas"] .nuevo-emoji-numero {
+      color: white;
+    }
+
     .nuevo-emoji-rareza {
       font-size: 12px;
       font-weight: 700;
@@ -1751,6 +2249,12 @@ animation: fruit 8s ease infinite;
       display: inline-block;
     }
 
+    :root[data-theme="gas"] .nuevo-emoji-rareza {
+      color: #FFD700;
+      background: rgba(0,0,0,0.3);
+      text-shadow: 0 0 10px rgba(255,215,0,0.5);
+    }
+
     .nuevo-emoji-stats {
       font-size: 11px;
       color: #975A16;
@@ -1759,6 +2263,10 @@ animation: fruit 8s ease infinite;
       display: flex;
       justify-content: center;
       gap: 8px;
+    }
+
+    :root[data-theme="gas"] .nuevo-emoji-stats {
+      color: white;
     }
 
     .nuevo-emoji-btn {
@@ -1772,6 +2280,13 @@ animation: fruit 8s ease infinite;
       cursor: pointer;
       box-shadow: 0 4px 0 rgba(0,0,0,0.1);
       transition: all 0.2s ease;
+    }
+
+    :root[data-theme="gas"] .nuevo-emoji-btn {
+      background: linear-gradient(145deg, #1e1e2e 0%, #252538 100%);
+      color: #FF0066;
+      border: 2px solid #FF0066;
+      box-shadow: 0 0 15px rgba(255,0,102,0.3);
     }
 
     .nuevo-emoji-btn:active {
@@ -1810,11 +2325,25 @@ animation: fruit 8s ease infinite;
       animation: popIn 0.4s ease;
     }
 
+    :root[data-theme="gas"] .ficha-todex-content {
+      background: linear-gradient(145deg, #1e1e2e 0%, #252538 100%);
+      border: 3px solid;
+    }
+
     .ficha-todex-content.comun { border-color: #A0AEC0; background: linear-gradient(145deg, #F7FAFC, #EDF2F7); }
+    :root[data-theme="gas"] .ficha-todex-content.comun { border-color: #606070; background: linear-gradient(145deg, #1e1e2e, #252538); }
+    
     .ficha-todex-content.raro { border-color: #4299E1; background: linear-gradient(145deg, #EBF8FF, #BEE3F8); }
+    :root[data-theme="gas"] .ficha-todex-content.raro { border-color: #00CCFF; background: linear-gradient(145deg, #0a1a2e, #0a1e28); }
+    
     .ficha-todex-content.epico { border-color: #9F7AEA; background: linear-gradient(145deg, #FAF5FF, #E9D8FD); }
+    :root[data-theme="gas"] .ficha-todex-content.epico { border-color: #9F7AEA; background: linear-gradient(145deg, #1a0a2e, #1e0a3e); }
+    
     .ficha-todex-content.mitico { border-color: #ED64A6; background: linear-gradient(145deg, #FFF5F7, #FED7E2); }
+    :root[data-theme="gas"] .ficha-todex-content.mitico { border-color: #FF0066; background: linear-gradient(145deg, #2a0a1a, #1e0a1e); }
+    
     .ficha-todex-content.legendario { border-color: #ECC94B; background: linear-gradient(145deg, #FFFBEB, #FEFCBF); }
+    :root[data-theme="gas"] .ficha-todex-content.legendario { border-color: #FFD700; background: linear-gradient(145deg, #2a2a0a, #1e1e0a); }
 
     .ficha-todex-emoji {
       font-size: 70px;
@@ -1829,6 +2358,10 @@ animation: fruit 8s ease infinite;
       margin-bottom: 5px;
     }
 
+    :root[data-theme="gas"] .ficha-todex-numero {
+      color: white;
+    }
+
     .ficha-todex-rareza {
       font-size: 12px;
       font-weight: 800;
@@ -1841,10 +2374,17 @@ animation: fruit 8s ease infinite;
     }
 
     .ficha-todex-content.comun .ficha-todex-rareza { background: #A0AEC0; color: white; }
+    :root[data-theme="gas"] .ficha-todex-content.comun .ficha-todex-rareza { background: #606070; color: #e0e0e0; }
+    
     .ficha-todex-content.raro .ficha-todex-rareza { background: #4299E1; color: white; }
+    :root[data-theme="gas"] .ficha-todex-content.raro .ficha-todex-rareza { background: #00CCFF; color: #0a0a0f; }
+    
     .ficha-todex-content.epico .ficha-todex-rareza { background: #9F7AEA; color: white; }
     .ficha-todex-content.mitico .ficha-todex-rareza { background: #ED64A6; color: white; }
+    :root[data-theme="gas"] .ficha-todex-content.mitico .ficha-todex-rareza { background: #FF0066; color: white; text-shadow: 0 0 10px rgba(255,255,255,0.5); }
+    
     .ficha-todex-content.legendario .ficha-todex-rareza { background: #ECC94B; color: #744210; }
+    :root[data-theme="gas"] .ficha-todex-content.legendario .ficha-todex-rareza { background: #FFD700; color: #0a0a0f; }
 
     .ficha-todex-stats {
       display: flex;
@@ -1860,6 +2400,11 @@ animation: fruit 8s ease infinite;
       padding: 10px 5px;
     }
 
+    :root[data-theme="gas"] .ficha-stat {
+      background: rgba(255,0,102,0.1);
+      border: 1px solid rgba(255,0,102,0.2);
+    }
+
     .ficha-stat-label {
       font-size: 10px;
       color: #718096;
@@ -1867,10 +2412,19 @@ animation: fruit 8s ease infinite;
       font-weight: 700;
     }
 
+    :root[data-theme="gas"] .ficha-stat-label {
+      color: #a0a0b0;
+    }
+
     .ficha-stat-valor {
       font-size: 16px;
       font-weight: 800;
       color: #2D3748;
+    }
+
+    :root[data-theme="gas"] .ficha-stat-valor {
+      color: #FF0066;
+      text-shadow: 0 0 10px rgba(255,0,102,0.3);
     }
 
     .ficha-todex-btn {
@@ -1885,6 +2439,11 @@ animation: fruit 8s ease infinite;
       box-shadow: 0 4px 0 #38A169;
       transition: all 0.2s ease;
       width: 100%;
+    }
+
+    :root[data-theme="gas"] .ficha-todex-btn {
+      background: linear-gradient(135deg, #FF0066 0%, #FF8E53 100%);
+      box-shadow: 0 4px 0 #CC4470;
     }
 
     .ficha-todex-btn:active {
@@ -1926,6 +2485,10 @@ animation: fruit 8s ease infinite;
       padding: 20px;
     }
 
+    :root[data-theme="gas"] .combate-vs-screen {
+      background: linear-gradient(145deg, #0a0a0f, #1a1a2e);
+    }
+
     .combate-vs-screen.active {
       display: flex;
     }
@@ -1943,12 +2506,21 @@ animation: fruit 8s ease infinite;
       filter: drop-shadow(0 5px 15px rgba(0,0,0,0.5));
     }
 
+    :root[data-theme="gas"] .combate-vs-avatar {
+      filter: drop-shadow(0 0 20px rgba(255,0,102,0.6));
+    }
+
     .combate-vs-vs {
       font-family: 'Fredoka One', cursive;
       font-size: 40px;
       color: #FFD93D;
       text-shadow: 0 4px 8px rgba(0,0,0,0.5);
       animation: pulse 1s infinite;
+    }
+
+    :root[data-theme="gas"] .combate-vs-vs {
+      color: #FF0066;
+      text-shadow: 0 0 20px rgba(255,0,102,0.8);
     }
 
     @keyframes pulse {
@@ -1962,6 +2534,11 @@ animation: fruit 8s ease infinite;
       margin-top: 10px;
     }
 
+    :root[data-theme="gas"] .combate-vs-poder {
+      color: #FF0066;
+      text-shadow: 0 0 10px rgba(255,0,102,0.5);
+    }
+
     .combate-vs-barra {
       width: 200px;
       height: 20px;
@@ -1972,6 +2549,11 @@ animation: fruit 8s ease infinite;
       position: relative;
     }
 
+    :root[data-theme="gas"] .combate-vs-barra {
+      background: rgba(255,0,102,0.2);
+      box-shadow: 0 0 10px rgba(255,0,102,0.3);
+    }
+
     .combate-vs-progreso {
       height: 100%;
       background: linear-gradient(90deg, #48BB78, #FFD93D);
@@ -1979,11 +2561,20 @@ animation: fruit 8s ease infinite;
       transition: width 2s ease;
     }
 
+    :root[data-theme="gas"] .combate-vs-progreso {
+      background: linear-gradient(90deg, #FF0066, #FF8E53);
+      box-shadow: 0 0 10px rgba(255,0,102,0.5);
+    }
+
     .combate-resultado-final {
       font-family: 'Fredoka One', cursive;
       font-size: 32px;
       margin-top: 20px;
       text-shadow: 0 4px 8px rgba(0,0,0,0.5);
+    }
+
+    :root[data-theme="gas"] .combate-resultado-final {
+      text-shadow: 0 0 20px rgba(255,0,102,0.8);
     }
 
     /* NUEVO: Selector de amigo para combate dentro de la pantalla */
@@ -2001,6 +2592,10 @@ animation: fruit 8s ease infinite;
       padding: 30px 20px 20px 20px;
       z-index: 150;
       overflow-y: auto;
+    }
+
+    :root[data-theme="gas"] .selector-amigo-screen {
+      background: linear-gradient(180deg, #0a0a0f 0%, #1a1a2e 100%);
     }
 
     .selector-amigo-screen.active {
@@ -2022,6 +2617,10 @@ animation: fruit 8s ease infinite;
       padding: 30px 20px 20px 20px;
       z-index: 150;
       overflow-y: auto;
+    }
+
+    :root[data-theme="gas"] .selector-emoji-screen {
+      background: linear-gradient(180deg, #0a0a0f 0%, #1a1a2e 100%);
     }
 
     .selector-emoji-screen.active {
@@ -2047,6 +2646,19 @@ animation: fruit 8s ease infinite;
       gap: 8px;
     }
 
+    :root[data-theme="gas"] .qr-scan-btn {
+      background: linear-gradient(135deg, #FF0066 0%, #FF8E53 100%);
+      box-shadow: 0 4px 0 #CC4470, 0 0 20px rgba(255,0,102,0.3);
+      border-radius: 16px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    :root[data-theme="gas"] .qr-scan-btn.focused {
+      box-shadow: 0 0 25px rgba(255,0,102,0.6), 0 4px 0 #CC4470;
+      transform: scale(1.05);
+    }
+
     .qr-scan-btn:active {
       transform: translateY(3px);
       box-shadow: 0 0 0 #6B46C1;
@@ -2055,6 +2667,134 @@ animation: fruit 8s ease infinite;
     .qr-scan-btn.focused {
       transform: scale(1.05);
       box-shadow: 0 0 0 3px rgba(159,122,234,0.3), 0 3px 0 #6B46C1;
+    }
+
+    /* Selector de defensa */
+    #selector-defensa-screen {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: var(--screen-bg);
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 30px 20px 20px 20px;
+      z-index: 150;
+      overflow-y: auto;
+    }
+
+    :root[data-theme="gas"] #selector-defensa-screen {
+      background: linear-gradient(180deg, #0a0a0f 0%, #1a1a2e 100%);
+    }
+
+    #selector-defensa-screen.active {
+      display: flex;
+    }
+
+    /* Desafío recibido */
+    #desafio-recibido-screen {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(145deg, #805AD5, #6B46C1);
+      color: white;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 30px 20px 20px 20px;
+      z-index: 150;
+      text-align: center;
+    }
+
+    :root[data-theme="gas"] #desafio-recibido-screen {
+      background: linear-gradient(145deg, #FF0066, #FF8E53);
+      box-shadow: inset 0 0 50px rgba(255,0,102,0.3);
+    }
+
+    #desafio-recibido-screen.active {
+      display: flex;
+    }
+
+    /* Botones de desafío */
+    #desafio-recibido-screen button {
+      padding: 12px 25px;
+      border: none;
+      border-radius: 20px;
+      font-weight: 800;
+      font-family: 'Nunito';
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    #desafio-recibido-screen button:first-of-type {
+      background: #E53E3E;
+      color: white;
+      box-shadow: 0 4px 0 #C53030;
+    }
+
+    :root[data-theme="gas"] #desafio-recibido-screen button:first-of-type {
+      background: linear-gradient(145deg, #2a2a3e 0%, #1e1e2e 100%);
+      color: #a0a0b0;
+      border: 2px solid rgba(255,0,102,0.3);
+      box-shadow: 0 4px 0 #0f0f1a;
+    }
+
+    #desafio-recibido-screen button:last-of-type {
+      background: #48BB78;
+      color: white;
+      box-shadow: 0 4px 0 #38A169;
+    }
+
+    :root[data-theme="gas"] #desafio-recibido-screen button:last-of-type {
+      background: linear-gradient(135deg, #00FF88 0%, #00CC66 100%);
+      color: #0a0a0f;
+      box-shadow: 0 4px 0 #009944, 0 0 20px rgba(0,255,136,0.4);
+    }
+
+    /* Theme selector en settings */
+    .theme-selector {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .theme-option {
+      padding: 6px 12px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: 2px solid transparent;
+    }
+
+    .theme-option.pastel {
+      background: linear-gradient(135deg, #FFB8D0 0%, #FF6B9D 100%);
+      color: white;
+    }
+
+    .theme-option.gas {
+      background: linear-gradient(135deg, #FF0066 0%, #FF8E53 100%);
+      color: white;
+      text-shadow: 0 0 5px rgba(0,0,0,0.3);
+    }
+
+    .theme-option.focused {
+      transform: scale(1.1);
+      border-color: white;
+      box-shadow: 0 0 15px rgba(255,255,255,0.5);
+    }
+
+    :root[data-theme="gas"] .theme-option.focused {
+      box-shadow: 0 0 15px rgba(255,0,102,0.8);
     }
   </style>
 </head>
@@ -2222,8 +2962,11 @@ animation: fruit 8s ease infinite;
                 <div class="toggle-switch active" id="toggle-vibra"></div>
               </div>
               <div class="setting-item" data-index="2">
-                <span>🎨 Color</span>
-                <div id="color-preview" style="width: 24px; height: 24px; background: #FF6B9D; border-radius: 50%; border: 2px solid white; box-shadow: 0 2px 5px rgba(0,0,0,0.2);"></div>
+                <span>🎨 Tema</span>
+                <div class="theme-selector" id="theme-selector">
+                  <div class="theme-option pastel focused" data-theme="pastel">Pastel</div>
+                  <div class="theme-option gas" data-theme="gas">GAS</div>
+                </div>
               </div>
               <div class="setting-item" data-index="3">
                 <span>🟢 Estado</span>
@@ -2235,21 +2978,21 @@ animation: fruit 8s ease infinite;
             </div>
           </div>
 
-          <!-- NUEVO: Selector de amigo para combate (dentro de la pantalla) -->
+          <!-- Selector de amigo para combate (dentro de la pantalla) -->
           <div class="selector-amigo-screen" id="selector-amigo-screen">
             <div class="setup-title">⚔️ ¿A quién retar?</div>
             <div class="list-container" id="selector-amigo-list" style="max-height: 280px;"></div>
             <div style="margin-top: 15px; font-size: 11px; color: #718096;">OK para seleccionar, C para cancelar</div>
           </div>
 
-          <!-- NUEVO: Selector de emoji para combate (dentro de la pantalla) -->
+          <!-- Selector de emoji para combate (dentro de la pantalla) -->
           <div class="selector-emoji-screen" id="selector-emoji-screen">
             <div class="setup-title">🎯 Elige tu guerrero</div>
             <div class="todex-grid" id="selector-emoji-grid" style="grid-template-columns: repeat(4, 1fr); gap: 8px; max-height: 280px;"></div>
             <div style="margin-top: 10px; font-size: 11px; color: #718096;">Selecciona tu emoji más fuerte</div>
           </div>
 
-          <!-- NUEVO: Desafío recibido (dentro de la pantalla) -->
+          <!-- Desafío recibido (dentro de la pantalla) -->
           <div class="selector-modal" id="desafio-recibido-screen" style="background: linear-gradient(145deg, #805AD5, #6B46C1); color: white;">
             <div style="font-family: Fredoka One; font-size: 24px; margin-bottom: 15px;">⚔️ ¡DESAFÍO!</div>
             <div style="font-size: 50px; margin: 10px 0;" id="desafio-emoji">❓</div>
@@ -2261,8 +3004,8 @@ animation: fruit 8s ease infinite;
             </div>
           </div>
 
-          <!-- NUEVO: Selector de defensa (dentro de la pantalla) -->
-          <div class="selector-emoji-screen" id="selector-defensa-screen">
+          <!-- Selector de defensa (dentro de la pantalla) -->
+          <div id="selector-defensa-screen">
             <div class="setup-title">🛡️ Elige defensor</div>
             <div class="todex-grid" id="selector-defensa-grid" style="grid-template-columns: repeat(4, 1fr); gap: 8px; max-height: 280px;"></div>
             <div style="margin-top: 10px; font-size: 11px; color: #718096;">¿Qué emoji usarás para defenderte?</div>
@@ -2537,6 +3280,11 @@ const EMOJIS_LIST = ['😊','❤️','👍','🔥','💯','🤥','👾','💕','
 
 const AVATARES = ['🐱', '🐶', '🦊', '🐼', '🐨', '🐯', '🦁', '🐷', '🐸', '🐙', '🦄', '🐲'];
 
+const TEMAS = [
+  { id: 'pastel', nombre: 'Pastel', icono: '🌸' },
+  { id: 'gas', nombre: 'GAS', icono: '🔥' }
+];
+
 const app = {
   state: {
     currentPage: 'splash',
@@ -2551,7 +3299,8 @@ const app = {
       vibracion: true,
       color: 0,
       status: 'disponible',
-      avatar: '🐱'
+      avatar: '🐱',
+      tema: 'pastel'
     },
     inSelector: false,
     selectorType: null,
@@ -2569,7 +3318,7 @@ const app = {
     lastTouchTime: 0,
     touchDelay: 50,
     
-    // NUEVO: Sistema de combates
+    // Sistema de combates
     combate: {
       modo: null,
       oponenteId: null,
@@ -2603,7 +3352,7 @@ const app = {
   },
 
   init() {
-    this.debug('=== TOKEJI v17.0 CON COMBATES ===');
+    this.debug('=== TOKEJI v18.0 CON TEMAS ===');
     this.debug('Backend: ' + BACK);
     
     this.miID = localStorage.getItem("miid");
@@ -2622,6 +3371,7 @@ const app = {
       this.state.settings.color = parseInt(localStorage.getItem('colorIndex')) || 0;
       this.state.settings.status = localStorage.getItem('status') || 'disponible';
       this.state.settings.avatar = localStorage.getItem('avatar') || '🐱';
+      this.state.settings.tema = localStorage.getItem('tema') || 'pastel';
       this.state.toquesRestantes = parseInt(localStorage.getItem("toquesRestantes")) || 30;
     } catch(e) {
       this.debug('Error cargando datos: ' + e.message);
@@ -2635,6 +3385,7 @@ const app = {
       localStorage.setItem("ultimaFechaToques", hoy);
     }
     
+    this.applyTheme();
     this.applyColor();
     this.updateClock();
     setInterval(() => this.updateClock(), 60000);
@@ -2816,6 +3567,12 @@ const app = {
     const now = new Date();
     const el = document.getElementById('clock');
     if (el) el.textContent = String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0');
+  },
+
+  applyTheme() {
+    const tema = this.state.settings.tema;
+    document.documentElement.setAttribute('data-theme', tema);
+    this.debug('Tema aplicado: ' + tema);
   },
 
   applyColor() {
@@ -3035,16 +3792,11 @@ const app = {
     if (document.getElementById('selector-emoji-screen').classList.contains('active')) {
       document.getElementById('selector-emoji-screen').classList.remove('active');
       this.state.combate.enSelectorEmoji = false;
-      if (this.state.combate.modo === 'amigo') {
-        this.showPage('combates', false);
-      } else {
-        this.showPage('combates', false);
-      }
+      this.showPage('combates', false);
       return;
     }
     
     if (document.getElementById('desafio-recibido-screen').classList.contains('active')) {
-      // No cerrar, debe decidir
       return;
     }
     
@@ -3258,11 +4010,10 @@ const app = {
         this.showPage('enviar');
         break;
       case 'enviar':
+        // Solo amigos, sin escanear
         const amigosList = Object.entries(this.contactos);
-        if (focus.index === 0) {
-          this.scanQR();
-        } else if (amigosList[focus.index - 1]) {
-          const [id, nombre] = amigosList[focus.index - 1];
+        if (amigosList[focus.index]) {
+          const [id, nombre] = amigosList[focus.index];
           this.enviarToque(id, nombre);
         }
         break;
@@ -3526,7 +4277,7 @@ const app = {
         }
         break;
       case 'enviar':
-        const maxAmigos = Object.keys(this.contactos).length;
+        const maxAmigos = Object.keys(this.contactos).length - 1;
         if (index < maxAmigos) {
           this.state.focus.index++;
           this.updateEnviarFocus();
@@ -3534,7 +4285,7 @@ const app = {
         }
         break;
       case 'contacts':
-        const maxContacts = Object.keys(this.contactos).length;
+        const maxContacts = Object.keys(this.contactos).length - 1;
         if (index < maxContacts) {
           this.state.focus.index++;
           this.updateContactsFocus();
@@ -3646,6 +4397,14 @@ const app = {
           this.updateMenuFocus();
         }
         break;
+      case 'settings':
+        // Navegación en selector de tema
+        if (index === 2) {
+          const temaActual = this.state.settings.tema;
+          const nuevoTema = temaActual === 'pastel' ? 'gas' : 'pastel';
+          this.cambiarTema(nuevoTema);
+        }
+        break;
       case 'grid':
         if (index % 5 > 0) {
           this.state.focus.index--;
@@ -3742,6 +4501,14 @@ const app = {
           this.updateMenuFocus();
         }
         break;
+      case 'settings':
+        // Navegación en selector de tema
+        if (index === 2) {
+          const temaActual = this.state.settings.tema;
+          const nuevoTema = temaActual === 'pastel' ? 'gas' : 'pastel';
+          this.cambiarTema(nuevoTema);
+        }
+        break;
       case 'grid':
         if (index % 5 < 4 && index < 149) {
           this.state.focus.index++;
@@ -3749,6 +4516,14 @@ const app = {
         }
         break;
     }
+  },
+
+  cambiarTema(nuevoTema) {
+    this.state.settings.tema = nuevoTema;
+    localStorage.setItem('tema', nuevoTema);
+    this.applyTheme();
+    this.showMsg(nuevoTema === 'gas' ? '🔥 Tema GAS activado' : '🌸 Tema Pastel activado');
+    this.updateSettingsUI();
   },
 
   updateSelectorAmigoFocus() {
@@ -3839,6 +4614,12 @@ const app = {
     document.querySelectorAll('.setting-item').forEach((el, i) => {
       el.classList.toggle('focused', i === this.state.focus.index);
     });
+    
+    // Actualizar focus en selector de tema
+    const temaActual = this.state.settings.tema;
+    document.querySelectorAll('.theme-option').forEach(el => {
+      el.classList.toggle('focused', el.dataset.theme === temaActual);
+    });
   },
 
   updateResponseFocus() {
@@ -3914,21 +4695,13 @@ const app = {
     
     const amigos = Object.entries(this.contactos);
     
-    let html = `
-      <div class="list-item focused" data-index="0">
-        <span style="font-size: 26px;">📷</span>
-        <div style="flex: 1;">
-          <div style="font-weight: 800; color: #805AD5;">Escanear QR</div>
-          <div style="font-size: 10px; color: #A0AEC0;">Nuevo amigo</div>
-        </div>
-      </div>
-    `;
+    let html = '';
     
     if (amigos.length === 0) {
-      html += `<div style="text-align: center; color: #A0AEC0; padding: 25px; font-size: 12px;">No tienes amigos aún.<br>¡Escanea un QR!</div>`;
+      html = `<div style="text-align: center; color: #A0AEC0; padding: 25px; font-size: 12px;">No tienes amigos aún.<br>¡Ve a Mi QR y escanea códigos!</div>`;
     } else {
-      html += amigos.map(([id, nom], i) => `
-        <div class="list-item" data-index="${i + 1}">
+      html = amigos.map(([id, nom], i) => `
+        <div class="list-item ${i === 0 ? 'focused' : ''}" data-index="${i}">
           <span style="font-size: 26px;">👤</span>
           <div style="flex: 1;">
             <div style="font-weight: 800; color: #2D3748;">${nom}</div>
@@ -4037,20 +4810,21 @@ const app = {
   updateSettingsUI() {
     const sonidoEl = document.getElementById('toggle-sonido');
     const vibraEl = document.getElementById('toggle-vibra');
-    const colorEl = document.getElementById('color-preview');
     const statusEl = document.getElementById('status-text');
     
     if (sonidoEl) sonidoEl.classList.toggle('active', this.state.settings.sonido);
     if (vibraEl) vibraEl.classList.toggle('active', this.state.settings.vibracion);
-    
-    const c = COLORES[this.state.settings.color];
-    if (colorEl && c) colorEl.style.background = c.hex;
     
     const st = ESTADOS.find(e => e.id === this.state.settings.status);
     if (statusEl) {
       statusEl.textContent = st ? st.label : 'Disponible';
       statusEl.style.color = st ? st.color : '#48BB78';
     }
+    
+    // Actualizar UI de tema
+    document.querySelectorAll('.theme-option').forEach(el => {
+      el.classList.toggle('focused', el.dataset.theme === this.state.settings.tema);
+    });
   },
 
   activateSetting(index) {
@@ -4069,7 +4843,9 @@ const app = {
         this.updateSettingsUI();
         break;
       case 2:
-        this.showColorSelector();
+        // Toggle tema
+        const nuevoTema = this.state.settings.tema === 'pastel' ? 'gas' : 'pastel';
+        this.cambiarTema(nuevoTema);
         break;
       case 3:
         this.showStatusSelector();
@@ -5090,6 +5866,7 @@ const app = {
     const screen = document.getElementById('selector-emoji-screen');
     const grid = document.getElementById('selector-emoji-grid');
     
+    // Grid de 4 columnas como ToDox, emojis más pequeños
     grid.innerHTML = emojisDisponibles.map((id, i) => {
       const emoji = EMOJIS_LIST[id - 1] || '✨';
       const stats = this.todex.emojis_stats[id] || calcularStatsBase(id);
@@ -5097,9 +5874,9 @@ const app = {
         <div class="emoji-card captured ${i === 0 ? 'focused' : ''}" 
              data-id="${id}" 
              data-index="${i}"
-             style="aspect-ratio: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 24px; cursor: pointer; border: 3px solid ${i === 0 ? 'var(--device-color)' : 'transparent'};">
+             style="aspect-ratio: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 22px; cursor: pointer; border: 3px solid ${i === 0 ? 'var(--device-color)' : 'transparent'}; border-radius: 10px;">
           <div>${emoji}</div>
-          <div style="font-size: 8px; margin-top: 2px; color: #666;">⚡${stats.aura}</div>
+          <div style="font-size: 9px; margin-top: 2px; color: #666; font-weight: 700;">⚡${stats.aura}</div>
         </div>
       `;
     }).join('');
@@ -5239,6 +6016,7 @@ const app = {
     const screen = document.getElementById('selector-defensa-screen');
     const grid = document.getElementById('selector-defensa-grid');
     
+    // Grid de 4 columnas como ToDox
     grid.innerHTML = emojisDisponibles.map((id, i) => {
       const emoji = EMOJIS_LIST[id - 1] || '✨';
       const stats = this.todex.emojis_stats[id] || calcularStatsBase(id);
@@ -5246,9 +6024,9 @@ const app = {
         <div class="emoji-card captured ${i === 0 ? 'focused' : ''}" 
              data-id="${id}" 
              data-index="${i}"
-             style="aspect-ratio: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 24px; cursor: pointer; border: 3px solid ${i === 0 ? 'var(--device-color)' : 'transparent'};">
+             style="aspect-ratio: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 22px; cursor: pointer; border: 3px solid ${i === 0 ? 'var(--device-color)' : 'transparent'}; border-radius: 10px;">
           <div>${emoji}</div>
-          <div style="font-size: 8px; margin-top: 2px; color: #666;">⚡${stats.aura}</div>
+          <div style="font-size: 9px; margin-top: 2px; color: #666; font-weight: 700;">⚡${stats.aura}</div>
         </div>
       `;
     }).join('');
@@ -5452,7 +6230,7 @@ const app = {
 };
 
 window.addEventListener('load', () => {
-  console.log('Tokeji v17.0 con Combates iniciando...');
+  console.log('Tokeji v18.0 con Temas iniciando...');
   app.init();
 });
 </script>
