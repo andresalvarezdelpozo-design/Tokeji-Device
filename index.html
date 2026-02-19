@@ -2043,61 +2043,6 @@
       transform: scale(1.05);
       box-shadow: 0 0 0 3px rgba(159,122,234,0.3), 0 3px 0 #6B46C1;
     }
-        /* ESTILOS PANTALLA INSTITUTO */
-    .instituto-section {
-      background: white;
-      border: 3px solid #E2E8F0;
-      border-radius: 16px;
-      padding: 12px;
-      transition: all 0.3s ease;
-    }
-
-    .instituto-section.active {
-      border-color: var(--device-color);
-      box-shadow: 0 0 0 3px rgba(255,107,157,0.2);
-      opacity: 1 !important;
-    }
-
-    .instituto-label {
-      font-size: 11px;
-      color: #718096;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      margin-bottom: 8px;
-    }
-
-    .instituto-options {
-      display: flex;
-      gap: 8px;
-    }
-
-    .instituto-option {
-      flex: 1;
-      padding: 10px 8px;
-      background: #F7FAFC;
-      border: 2px solid transparent;
-      border-radius: 12px;
-      font-size: 12px;
-      font-weight: 700;
-      text-align: center;
-      color: #4A5568;
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-
-    .instituto-option.focused {
-      border-color: var(--device-color);
-      background: #FFF5F7;
-      color: var(--device-color);
-      transform: scale(1.05);
-    }
-
-    .instituto-option.selected {
-      background: var(--device-color);
-      color: white;
-      border-color: var(--device-dark);
-    }
   </style>
 </head>
 <body>
@@ -2146,35 +2091,6 @@
             <div class="setup-hint">Pulsa OK para continuar</div>
           </div>
 
-                    <!-- NUEVO: PANTALLA INSTITUTO -->
-          <div class="page" id="page-instituto">
-            <div class="setup-title">¿Dónde estudias?</div>
-            <div class="list-container" id="instituto-list" style="gap: 12px; padding-top: 10px;">
-              <div class="instituto-section" data-section="0">
-                <div class="instituto-label">Provincia</div>
-                <div class="instituto-options">
-                  <div class="instituto-option focused" data-index="0" data-value="andalucia">Andalucía</div>
-                  <div class="instituto-option" data-index="1" data-value="madrid">Madrid</div>
-                </div>
-              </div>
-              <div class="instituto-section" data-section="1" style="opacity: 0.4;">
-                <div class="instituto-label">Instituto</div>
-                <div class="instituto-options">
-                  <div class="instituto-option" data-index="0" data-value="ies_ejemplo1">IES Ejemplo 1</div>
-                  <div class="instituto-option" data-index="1" data-value="ies_ejemplo2">IES Ejemplo 2</div>
-                </div>
-              </div>
-              <div class="instituto-section" data-section="2" style="opacity: 0.4;">
-                <div class="instituto-label">Curso</div>
-                <div class="instituto-options">
-                  <div class="instituto-option" data-index="0" data-value="4eso">4º ESO</div>
-                  <div class="instituto-option" data-index="1" data-value="1bach">1º Bach</div>
-                </div>
-              </div>
-            </div>
-            <div class="setup-hint" style="margin-top: 15px;">Arriba/Abajo: cambiar campo · Derecha/Izq: cambiar opción · OK: confirmar</div>
-          </div>
-          
           <div class="page" id="page-avatar">
             <div class="setup-title">Elige tu avatar</div>
             <div class="avatar-grid" id="avatar-grid"></div>
@@ -2579,11 +2495,11 @@ const CONTEXTOS_TOKES = {
 };
 
 const COLORES = [
-  { hex: '#FF4C4C', name: 'Rojo', shadow: '#CC0000', gradient: ['#FF9999', '#FF4C4C', '#CC0000'] },
   { hex: '#FF6B9D', name: 'Rosa', shadow: '#FF4785', gradient: ['#FFB8D0', '#FF6B9D', '#FF4785'] },
   { hex: '#4299E1', name: 'Azul', shadow: '#2B6CB0', gradient: ['#90CDF4', '#4299E1', '#2B6CB0'] },
-  { hex: '#39FF14', name: 'Verde ácido', shadow: '#1FFF00', gradient: ['#7CFF5C', '#39FF14', '#1FFF00'] },
-  { hex: '#FFD700', name: 'Oro', shadow: '#B8860B', gradient: ['#FFE066', '#FFD700', '#B8860B'] },
+  { hex: '#48BB78', name: 'Verde', shadow: '#276749', gradient: ['#9AE6B4', '#48BB78', '#276749'] },
+  { hex: '#ECC94B', name: 'Amarillo', shadow: '#B7791F', gradient: ['#F6E05E', '#ECC94B', '#B7791F'] },
+  { hex: '#9F7AEA', name: 'Morado', shadow: '#6B46C1', gradient: ['#D6BCFA', '#9F7AEA', '#6B46C1'] },
   { hex: '#1A202C', name: 'Negro', shadow: '#000000', gradient: ['#4A5568', '#2D3748', '#1A202C'] },
   { hex: '#C0C0C0', name: 'Metal', shadow: '#808080', gradient: ['#E8E8E8', '#C0C0C0', '#808080'] },
   { hex: '#FF8C42', name: 'Naranja', shadow: '#CC6A2A', gradient: ['#FFB366', '#FF8C42', '#CC6A2A'] }
@@ -2959,10 +2875,6 @@ const app = {
         this.renderAvatarGrid();
         this.updateAvatarFocus();
         break;
-      case 'instituto':
-        this.state.focus = { type: 'instituto', section: 0, index: 0 };
-        this.renderInstitutoFocus();
-        break;
       case 'color':
         this.state.focus = { type: 'color', index: 0 };
         this.renderColorSetupGrid();
@@ -3305,22 +3217,9 @@ const app = {
           return;
         }
         localStorage.setItem('miNombre', nom);
-        this.showPage('instituto', false);
-        break;
-      case 'avatar':
-              case 'instituto':
-        // Guardar selecciones y pasar a avatar
-        const provincia = document.querySelector('.instituto-section[data-section="0"] .instituto-option.selected')?.dataset.value || 'andalucia';
-        const instituto = document.querySelector('.instituto-section[data-section="1"] .instituto-option.selected')?.dataset.value || 'ies_ejemplo1';
-        const curso = document.querySelector('.instituto-section[data-section="2"] .instituto-option.selected')?.dataset.value || '4eso';
-        
-        localStorage.setItem('provincia', provincia);
-        localStorage.setItem('instituto', instituto);
-        localStorage.setItem('curso', curso);
-        
-        this.showMsg(`📍 ${provincia} · ${instituto} · ${curso}`);
         this.showPage('avatar', false);
         break;
+      case 'avatar':
         const avatarSel = AVATARES[focus.index];
         this.state.settings.avatar = avatarSel;
         localStorage.setItem('avatar', avatarSel);
@@ -3415,17 +3314,6 @@ const app = {
     
     const confirmModal = document.getElementById('confirm-reiniciar');
     if (confirmModal && confirmModal.classList.contains('active')) return;
-    
-        // Navegación en pantalla instituto
-    if (this.state.currentPage === 'instituto') {
-      const { section } = this.state.focus;
-      if (section > 0) {
-        this.state.focus.section--;
-        this.state.focus.index = 0;
-        this.renderInstitutoFocus();
-      }
-      return;
-    }
     
     if (this.state.inSelector) {
       this.navigateSelector('up');
@@ -3560,17 +3448,6 @@ const app = {
     const confirmModal = document.getElementById('confirm-reiniciar');
     if (confirmModal && confirmModal.classList.contains('active')) return;
     
-        // Navegación en pantalla instituto
-    if (this.state.currentPage === 'instituto') {
-      const { section } = this.state.focus;
-      if (section < 2) {
-        this.state.focus.section++;
-        this.state.focus.index = 0;
-        this.renderInstitutoFocus();
-      }
-      return;
-    }
-    
     if (this.state.inSelector) {
       this.navigateSelector('down');
       return;
@@ -3703,16 +3580,6 @@ const app = {
       this.updateConfirmFocus();
       return;
     }
-
-        // Izquierda en instituto: cambiar opción dentro de la sección
-    if (this.state.currentPage === 'instituto') {
-      const { section, index } = this.state.focus;
-      if (index > 0) {
-        this.state.focus.index--;
-        this.renderInstitutoFocus();
-      }
-      return;
-    }
     
     if (this.state.inSelector) {
       this.navigateSelector('left');
@@ -3807,17 +3674,6 @@ const app = {
     if (confirmModal && confirmModal.classList.contains('active')) {
       this.state.confirmIndex = 1;
       this.updateConfirmFocus();
-      return;
-    }
-
-        // Derecha en instituto: cambiar opción dentro de la sección
-    if (this.state.currentPage === 'instituto') {
-      const { section, index } = this.state.focus;
-      const maxIndex = document.querySelectorAll(`.instituto-section[data-section="${section}"] .instituto-option`).length - 1;
-      if (index < maxIndex) {
-        this.state.focus.index++;
-        this.renderInstitutoFocus();
-      }
       return;
     }
     
@@ -5579,35 +5435,6 @@ const app = {
       defensaIndex: 0
     };
     this.showPage('home');
-  }
-
-    // NUEVO: Renderizar focus en pantalla instituto
-  renderInstitutoFocus() {
-    const { section, index } = this.state.focus;
-    
-    // Actualizar secciones activas
-    document.querySelectorAll('.instituto-section').forEach((sec, i) => {
-      sec.classList.toggle('active', i === section);
-      sec.style.opacity = i === section ? '1' : '0.4';
-    });
-    
-    // Actualizar opciones focused en cada sección
-    document.querySelectorAll('.instituto-section').forEach((sec, secIndex) => {
-      const options = sec.querySelectorAll('.instituto-option');
-      options.forEach((opt, optIndex) => {
-        opt.classList.toggle('focused', secIndex === section && optIndex === index);
-        // Mantener selected si ya fue seleccionado
-        if (secIndex < section || (secIndex === section && optIndex === index)) {
-          opt.classList.add('selected');
-        }
-      });
-    });
-    
-    // Auto-scroll
-    const activeSection = document.querySelector(`.instituto-section[data-section="${section}"]`);
-    if (activeSection) {
-      activeSection.scrollIntoView({ block: 'center', behavior: 'smooth' });
-    }
   }
 };
 
