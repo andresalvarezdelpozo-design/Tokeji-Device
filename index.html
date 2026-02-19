@@ -363,10 +363,18 @@
     #page-color {
       justify-content: flex-start;
       align-items: center;
-      background: var(--screen-bg);
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      background-size: 400% 400%;
+      animation: gradientShift 8s ease infinite;
       height: 100%;
       width: 100%;
       padding: 30px 20px 20px 20px;
+    }
+
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
     }
 
     .color-setup-grid {
@@ -388,10 +396,25 @@
       border: 4px solid white;
       border-radius: 16px;
       cursor: pointer;
-      transition: all 0.1s ease;
+      transition: all 0.3s ease;
       box-shadow: 0 4px 0 rgba(0,0,0,0.2);
       flex-shrink: 0;
       position: relative;
+      animation: colorPulse 2s ease-in-out infinite;
+    }
+
+    .color-setup-item:nth-child(1) { animation-delay: 0s; }
+    .color-setup-item:nth-child(2) { animation-delay: 0.2s; }
+    .color-setup-item:nth-child(3) { animation-delay: 0.4s; }
+    .color-setup-item:nth-child(4) { animation-delay: 0.6s; }
+    .color-setup-item:nth-child(5) { animation-delay: 0.8s; }
+    .color-setup-item:nth-child(6) { animation-delay: 1s; }
+    .color-setup-item:nth-child(7) { animation-delay: 1.2s; }
+    .color-setup-item:nth-child(8) { animation-delay: 1.4s; }
+
+    @keyframes colorPulse {
+      0%, 100% { transform: scale(1); box-shadow: 0 4px 0 rgba(0,0,0,0.2); }
+      50% { transform: scale(1.05); box-shadow: 0 8px 20px rgba(0,0,0,0.4); }
     }
 
     .color-setup-item::after {
@@ -402,18 +425,21 @@
       transform: translateX(-50%);
       font-size: 11px;
       font-weight: 700;
-      color: #2D3748;
+      color: white;
       white-space: nowrap;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.5);
     }
 
     .color-setup-item:active {
-      transform: translateY(4px);
+      transform: translateY(4px) scale(0.95);
       box-shadow: 0 0 0 rgba(0,0,0,0.2);
     }
 
     .color-setup-item.focused {
-      transform: scale(1.08);
-      box-shadow: 0 0 0 4px rgba(255,107,157,0.5), 0 4px 0 rgba(0,0,0,0.2);
+      transform: scale(1.15);
+      box-shadow: 0 0 0 6px rgba(255,255,255,0.8), 0 8px 25px rgba(0,0,0,0.5);
+      animation: none;
+      z-index: 10;
     }
 
     .home-main {
@@ -500,8 +526,8 @@
     }
 
     .menu-item {
-      background: #ffffff;
-      border: 3px solid #E2E8F0;
+      background: linear-gradient(145deg, #ffffff 0%, #f0f0f0 100%);
+      border: 3px solid transparent;
       border-radius: 16px;
       display: flex;
       flex-direction: column;
@@ -511,32 +537,61 @@
       font-size: 12px;
       font-weight: 800;
       color: #4A5568;
-      transition: all 0.1s ease;
+      transition: all 0.3s ease;
       cursor: pointer;
-      box-shadow: 0 3px 0 #CBD5E0;
+      box-shadow: 0 4px 0 #CBD5E0, 0 6px 15px rgba(0,0,0,0.1);
       min-height: 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .menu-item::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
+      transition: left 0.5s;
+    }
+
+    .menu-item:hover::before {
+      left: 100%;
     }
 
     .menu-item:active {
       transform: translateY(3px) scale(0.98);
-      box-shadow: 0 0 0 #CBD5E0;
+      box-shadow: 0 1px 0 #CBD5E0, 0 2px 8px rgba(0,0,0,0.1);
     }
 
     .menu-item.focused {
       border-color: var(--device-color);
-      background: #FFF5F7;
-      transform: scale(1.02);
-      box-shadow: 0 0 0 3px rgba(255,107,157,0.3);
+      background: linear-gradient(145deg, #FFF5F7 0%, #FFE4EC 100%);
+      transform: scale(1.05) translateY(-2px);
+      box-shadow: 0 6px 0 var(--device-dark), 0 10px 25px rgba(255,107,157,0.4);
       z-index: 10;
+      animation: menuGlow 1.5s ease-in-out infinite;
+    }
+
+    @keyframes menuGlow {
+      0%, 100% { box-shadow: 0 6px 0 var(--device-dark), 0 10px 25px rgba(255,107,157,0.4); }
+      50% { box-shadow: 0 6px 0 var(--device-dark), 0 15px 35px rgba(255,107,157,0.6); }
     }
 
     .menu-item .icon {
       font-size: 32px;
-      transition: transform 0.2s;
+      transition: transform 0.3s;
     }
 
     .menu-item.focused .icon {
-      transform: scale(1.1);
+      transform: scale(1.2) rotate(5deg);
+      animation: iconBounce 0.5s ease;
+    }
+
+    @keyframes iconBounce {
+      0%, 100% { transform: scale(1.2) rotate(5deg); }
+      50% { transform: scale(1.3) rotate(-5deg); }
     }
 
     .list-container {
@@ -701,7 +756,7 @@
     }
 
     .combate-card {
-      background: #805AD5;
+      background: linear-gradient(145deg, #805AD5 0%, #6B46C1 100%);
       border: 3px solid transparent;
       border-radius: 16px;
       padding: 20px;
@@ -717,6 +772,24 @@
       justify-content: center;
       max-height: 120px;
       cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .combate-card::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .combate-card:hover::before {
+      opacity: 1;
     }
 
     .combate-card:active {
@@ -731,7 +804,7 @@
     }
 
     .combate-card.vs-amigo {
-      background: #DD6B20;
+      background: linear-gradient(145deg, #DD6B20 0%, #C05621 100%);
       box-shadow: 0 3px 0 #C05621;
     }
 
@@ -1899,6 +1972,77 @@
       margin-top: 20px;
       text-shadow: 0 4px 8px rgba(0,0,0,0.5);
     }
+
+    /* NUEVO: Selector de amigo para combate dentro de la pantalla */
+    .selector-amigo-screen {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: var(--screen-bg);
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 30px 20px 20px 20px;
+      z-index: 150;
+      overflow-y: auto;
+    }
+
+    .selector-amigo-screen.active {
+      display: flex;
+    }
+
+    /* NUEVO: Selector de emoji para combate dentro de la pantalla */
+    .selector-emoji-screen {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: var(--screen-bg);
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 30px 20px 20px 20px;
+      z-index: 150;
+      overflow-y: auto;
+    }
+
+    .selector-emoji-screen.active {
+      display: flex;
+    }
+
+    /* NUEVO: Botón de escanear QR en página QR */
+    .qr-scan-btn {
+      background: linear-gradient(145deg, #805AD5, #6B46C1);
+      color: white;
+      border: none;
+      border-radius: 14px;
+      padding: 12px 24px;
+      font-size: 13px;
+      font-weight: 800;
+      margin-top: 15px;
+      box-shadow: 0 3px 0 #6B46C1;
+      transition: all 0.1s ease;
+      cursor: pointer;
+      -webkit-appearance: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .qr-scan-btn:active {
+      transform: translateY(3px);
+      box-shadow: 0 0 0 #6B46C1;
+    }
+
+    .qr-scan-btn.focused {
+      transform: scale(1.05);
+      box-shadow: 0 0 0 3px rgba(159,122,234,0.3), 0 3px 0 #6B46C1;
+    }
   </style>
 </head>
 <body>
@@ -2016,7 +2160,6 @@
 
           <div class="page" id="page-contacts">
             <div class="setup-title">Amigos</div>
-            <button class="scan-btn focused" id="scan-btn">📷 Escanear QR</button>
             <div class="list-container" id="contacts-list"></div>
           </div>
 
@@ -2027,6 +2170,9 @@
               <div style="font-size: 11px; color: #718096; margin-top: 10px; text-align: center;">
                 Escanea para agregar
               </div>
+              <button class="qr-scan-btn focused" id="qr-scan-btn" onclick="app.scanQR()">
+                📷 Escanear QR de amigo
+              </button>
             </div>
           </div>
 
@@ -2074,6 +2220,39 @@
                 <span>🗑️ Reiniciar</span>
               </div>
             </div>
+          </div>
+
+          <!-- NUEVO: Selector de amigo para combate (dentro de la pantalla) -->
+          <div class="selector-amigo-screen" id="selector-amigo-screen">
+            <div class="setup-title">⚔️ ¿A quién retar?</div>
+            <div class="list-container" id="selector-amigo-list" style="max-height: 280px;"></div>
+            <div style="margin-top: 15px; font-size: 11px; color: #718096;">OK para seleccionar, C para cancelar</div>
+          </div>
+
+          <!-- NUEVO: Selector de emoji para combate (dentro de la pantalla) -->
+          <div class="selector-emoji-screen" id="selector-emoji-screen">
+            <div class="setup-title">🎯 Elige tu guerrero</div>
+            <div class="todex-grid" id="selector-emoji-grid" style="grid-template-columns: repeat(4, 1fr); gap: 8px; max-height: 280px;"></div>
+            <div style="margin-top: 10px; font-size: 11px; color: #718096;">Selecciona tu emoji más fuerte</div>
+          </div>
+
+          <!-- NUEVO: Desafío recibido (dentro de la pantalla) -->
+          <div class="selector-modal" id="desafio-recibido-screen" style="background: linear-gradient(145deg, #805AD5, #6B46C1); color: white;">
+            <div style="font-family: Fredoka One; font-size: 24px; margin-bottom: 15px;">⚔️ ¡DESAFÍO!</div>
+            <div style="font-size: 50px; margin: 10px 0;" id="desafio-emoji">❓</div>
+            <div style="font-size: 16px; font-weight: 700; margin-bottom: 5px;" id="desafio-nombre">Alguien</div>
+            <div style="font-size: 12px; opacity: 0.9; margin-bottom: 20px;">te reta a un combate</div>
+            <div style="display: flex; gap: 15px;">
+              <button onclick="app.rechazarDesafio()" style="padding: 12px 25px; background: #E53E3E; color: white; border: none; border-radius: 20px; font-weight: 800; font-family: Nunito; cursor: pointer; box-shadow: 0 4px 0 #C53030;">Rechazar</button>
+              <button onclick="app.aceptarDesafio()" style="padding: 12px 25px; background: #48BB78; color: white; border: none; border-radius: 20px; font-weight: 800; font-family: Nunito; cursor: pointer; box-shadow: 0 4px 0 #38A169;">⚔️ Aceptar</button>
+            </div>
+          </div>
+
+          <!-- NUEVO: Selector de defensa (dentro de la pantalla) -->
+          <div class="selector-emoji-screen" id="selector-defensa-screen">
+            <div class="setup-title">🛡️ Elige defensor</div>
+            <div class="todex-grid" id="selector-defensa-grid" style="grid-template-columns: repeat(4, 1fr); gap: 8px; max-height: 280px;"></div>
+            <div style="margin-top: 10px; font-size: 11px; color: #718096;">¿Qué emoji usarás para defenderte?</div>
           </div>
 
           <div class="selector-modal" id="color-selector">
@@ -2387,7 +2566,9 @@ const app = {
       selectorAmigoIndex: 0,
       enSelectorAmigo: false,
       selectorEmojiIndex: 0,
-      enSelectorEmoji: false
+      enSelectorEmoji: false,
+      enSelectorDefensa: false,
+      defensaIndex: 0
     },
     pollingCombates: null
   },
@@ -2409,7 +2590,7 @@ const app = {
   },
 
   init() {
-    this.debug('=== TOKEJI v16.0 CON COMBATES ===');
+    this.debug('=== TOKEJI v17.0 CON COMBATES ===');
     this.debug('Backend: ' + BACK);
     
     this.miID = localStorage.getItem("miid");
@@ -2450,7 +2631,7 @@ const app = {
     
     // Iniciar verificación de desafíos pendientes cada 5 segundos
     setInterval(() => {
-      if (!this.state.combate.desafioPendiente && !document.getElementById('desafio-recibido-modal')) {
+      if (!this.state.combate.desafioPendiente && !document.getElementById('desafio-recibido-screen').classList.contains('active')) {
         this.verificarDesafiosPendientes();
       }
     }, 5000);
@@ -2663,6 +2844,13 @@ const app = {
     this.state.currentPage = page;
     this.state.inSelector = false;
     
+    // Ocultar pantallas de combate
+    document.getElementById('selector-amigo-screen').classList.remove('active');
+    document.getElementById('selector-emoji-screen').classList.remove('active');
+    document.getElementById('desafio-recibido-screen').classList.remove('active');
+    document.getElementById('selector-defensa-screen').classList.remove('active');
+    document.getElementById('combate-vs-screen').classList.remove('active');
+    
     if (page === 'home') {
       this.updateColaBadge();
     }
@@ -2785,20 +2973,9 @@ const app = {
            style="background: ${c.hex};" 
            data-color="${i}" 
            data-index="${i}"
-           data-name="${c.name}"
-           onclick="app.selectColorSetup(${i})"
-           ontouchstart="app.handleTouchColorSetup(event, ${i})">
+           data-name="${c.name}">
       </div>
     `).join('');
-  },
-
-  handleTouchColorSetup(event, index) {
-    event.preventDefault();
-    const now = Date.now();
-    if (now - this.state.lastTouchTime < this.state.touchDelay) return;
-    this.state.lastTouchTime = now;
-    
-    this.selectColorSetup(index);
   },
 
   selectColorSetup(index) {
@@ -2834,26 +3011,38 @@ const app = {
       return;
     }
     
-    // Cerrar modales de combate
-    if (document.getElementById('selector-amigo-combate')) {
-      document.getElementById('selector-amigo-combate').remove();
+    // Cerrar pantallas de combate
+    if (document.getElementById('selector-amigo-screen').classList.contains('active')) {
+      document.getElementById('selector-amigo-screen').classList.remove('active');
       this.state.combate.enSelectorAmigo = false;
+      this.showPage('combates', false);
       return;
     }
     
-    if (document.getElementById('selector-emoji-combate')) {
-      document.getElementById('selector-emoji-combate').remove();
+    if (document.getElementById('selector-emoji-screen').classList.contains('active')) {
+      document.getElementById('selector-emoji-screen').classList.remove('active');
       this.state.combate.enSelectorEmoji = false;
+      if (this.state.combate.modo === 'amigo') {
+        this.showPage('combates', false);
+      } else {
+        this.showPage('combates', false);
+      }
       return;
     }
     
-    if (document.getElementById('desafio-recibido-modal')) {
+    if (document.getElementById('desafio-recibido-screen').classList.contains('active')) {
       // No cerrar, debe decidir
       return;
     }
     
-    if (document.getElementById('selector-defensa')) {
-      document.getElementById('selector-defensa').remove();
+    if (document.getElementById('selector-defensa-screen').classList.contains('active')) {
+      document.getElementById('selector-defensa-screen').classList.remove('active');
+      this.state.combate.enSelectorDefensa = false;
+      return;
+    }
+    
+    if (document.getElementById('combate-vs-screen').classList.contains('active')) {
+      this.cerrarPantallaVS();
       return;
     }
     
@@ -2936,7 +3125,7 @@ const app = {
     
     // Verificar si estamos en selector de amigo para combate
     if (this.state.combate.enSelectorAmigo) {
-      const items = document.querySelectorAll('#selector-amigo-combate .list-item');
+      const items = document.querySelectorAll('#selector-amigo-list .list-item');
       if (items[this.state.combate.selectorAmigoIndex]) {
         const amigoId = items[this.state.combate.selectorAmigoIndex].dataset.id;
         const amigoNombre = this.contactos[amigoId];
@@ -2947,10 +3136,20 @@ const app = {
     
     // Verificar si estamos en selector de emoji para combate
     if (this.state.combate.enSelectorEmoji) {
-      const cards = document.querySelectorAll('#selector-emoji-combate .emoji-card');
+      const cards = document.querySelectorAll('#selector-emoji-grid .emoji-card');
       if (cards[this.state.combate.selectorEmojiIndex]) {
         const emojiId = parseInt(cards[this.state.combate.selectorEmojiIndex].dataset.id);
         this.seleccionarEmojiCombate(emojiId);
+      }
+      return;
+    }
+
+    // Verificar si estamos en selector de defensa
+    if (this.state.combate.enSelectorDefensa) {
+      const cards = document.querySelectorAll('#selector-defensa-grid .emoji-card');
+      if (cards[this.state.combate.defensaIndex]) {
+        const emojiId = parseInt(cards[this.state.combate.defensaIndex].dataset.id);
+        this.responderDesafio(emojiId);
       }
       return;
     }
@@ -3027,6 +3226,7 @@ const app = {
         this.showPage('color', false);
         break;
       case 'color':
+        this.selectColorSetup(focus.index);
         break;
       case 'home':
         this.showPage('menu');
@@ -3054,7 +3254,11 @@ const app = {
         }
         break;
       case 'contacts':
-        if (focus.index === 0) {
+        // Ya no hay botón de escanear aquí
+        break;
+      case 'qr':
+        // El botón de escanear ahora está aquí
+        if (document.getElementById('qr-scan-btn').classList.contains('focused')) {
           this.scanQR();
         }
         break;
@@ -3083,6 +3287,7 @@ const app = {
       if (this.state.combate.selectorAmigoIndex > 0) {
         this.state.combate.selectorAmigoIndex--;
         this.updateSelectorAmigoFocus();
+        this.scrollToFocused('selector-amigo-list');
       }
       return;
     }
@@ -3092,6 +3297,17 @@ const app = {
       if (this.state.combate.selectorEmojiIndex >= 4) {
         this.state.combate.selectorEmojiIndex -= 4;
         this.updateSelectorEmojiFocus();
+        this.scrollToFocused('selector-emoji-grid');
+      }
+      return;
+    }
+
+    // Navegación en selector de defensa
+    if (this.state.combate.enSelectorDefensa) {
+      if (this.state.combate.defensaIndex >= 4) {
+        this.state.combate.defensaIndex -= 4;
+        this.updateSelectorDefensaFocus();
+        this.scrollToFocused('selector-defensa-grid');
       }
       return;
     }
@@ -3200,6 +3416,7 @@ const app = {
       if (this.state.combate.selectorAmigoIndex < max) {
         this.state.combate.selectorAmigoIndex++;
         this.updateSelectorAmigoFocus();
+        this.scrollToFocused('selector-amigo-list');
       }
       return;
     }
@@ -3211,6 +3428,19 @@ const app = {
         this.state.combate.selectorEmojiIndex += 4;
         if (this.state.combate.selectorEmojiIndex > max) this.state.combate.selectorEmojiIndex = max;
         this.updateSelectorEmojiFocus();
+        this.scrollToFocused('selector-emoji-grid');
+      }
+      return;
+    }
+
+    // Navegación en selector de defensa
+    if (this.state.combate.enSelectorDefensa) {
+      const max = this.todex.captured.length - 1;
+      if (this.state.combate.defensaIndex < max - 3) {
+        this.state.combate.defensaIndex += 4;
+        if (this.state.combate.defensaIndex > max) this.state.combate.defensaIndex = max;
+        this.updateSelectorDefensaFocus();
+        this.scrollToFocused('selector-defensa-grid');
       }
       return;
     }
@@ -3334,6 +3564,15 @@ const app = {
       }
       return;
     }
+
+    // Navegación en selector de defensa
+    if (this.state.combate.enSelectorDefensa) {
+      if (this.state.combate.defensaIndex % 4 > 0) {
+        this.state.combate.defensaIndex--;
+        this.updateSelectorDefensaFocus();
+      }
+      return;
+    }
     
     const confirmModal = document.getElementById('confirm-reiniciar');
     if (confirmModal && confirmModal.classList.contains('active')) {
@@ -3418,6 +3657,18 @@ const app = {
       }
       return;
     }
+
+    // Navegación en selector de defensa
+    if (this.state.combate.enSelectorDefensa) {
+      if (this.state.combate.defensaIndex % 4 < 3) {
+        const max = this.todex.captured.length - 1;
+        if (this.state.combate.defensaIndex < max) {
+          this.state.combate.defensaIndex++;
+          this.updateSelectorDefensaFocus();
+        }
+      }
+      return;
+    }
     
     const confirmModal = document.getElementById('confirm-reiniciar');
     if (confirmModal && confirmModal.classList.contains('active')) {
@@ -3488,17 +3739,25 @@ const app = {
   },
 
   updateSelectorAmigoFocus() {
-    const items = document.querySelectorAll('#selector-amigo-combate .list-item');
+    const items = document.querySelectorAll('#selector-amigo-list .list-item');
     items.forEach((el, i) => {
       el.classList.toggle('focused', i === this.state.combate.selectorAmigoIndex);
     });
   },
 
   updateSelectorEmojiFocus() {
-    const cards = document.querySelectorAll('#selector-emoji-combate .emoji-card, #selector-defensa .emoji-card');
+    const cards = document.querySelectorAll('#selector-emoji-grid .emoji-card');
     cards.forEach((el, i) => {
       el.classList.toggle('focused', i === this.state.combate.selectorEmojiIndex);
       el.style.border = i === this.state.combate.selectorEmojiIndex ? '3px solid var(--device-color)' : '3px solid transparent';
+    });
+  },
+
+  updateSelectorDefensaFocus() {
+    const cards = document.querySelectorAll('#selector-defensa-grid .emoji-card');
+    cards.forEach((el, i) => {
+      el.classList.toggle('focused', i === this.state.combate.defensaIndex);
+      el.style.border = i === this.state.combate.defensaIndex ? '3px solid var(--device-color)' : '3px solid transparent';
     });
   },
 
@@ -3544,12 +3803,10 @@ const app = {
   },
 
   updateContactsFocus() {
-    const scanBtn = document.getElementById('scan-btn');
     const items = document.querySelectorAll('#contacts-list .list-item');
     
-    if (scanBtn) scanBtn.classList.toggle('focused', this.state.focus.index === 0);
     items.forEach((el, i) => {
-      el.classList.toggle('focused', i === this.state.focus.index - 1);
+      el.classList.toggle('focused', i === this.state.focus.index);
     });
   },
 
@@ -3689,10 +3946,10 @@ const app = {
     const lista = Object.entries(this.contactos);
     
     if (lista.length === 0) {
-      container.innerHTML = '<div style="text-align: center; color: #A0AEC0; padding: 35px; font-size: 12px;">No tienes amigos.<br>¡Escanea un QR!</div>';
+      container.innerHTML = '<div style="text-align: center; color: #A0AEC0; padding: 35px; font-size: 12px;">No tienes amigos.<br>¡Ve a Mi QR y escanea códigos!</div>';
     } else {
       container.innerHTML = lista.map(([id, nom], i) => `
-        <div class="list-item" data-index="${i}">
+        <div class="list-item ${i === 0 ? 'focused' : ''}" data-index="${i}">
           <span style="font-size: 26px;">👤</span>
           <div style="flex: 1;">
             <div style="font-weight: 800; color: #2D3748;">${nom}</div>
@@ -4782,42 +5039,26 @@ const app = {
     const amigos = Object.entries(this.contactos);
     if (amigos.length === 0) return;
     
-    const modal = document.createElement('div');
-    modal.className = 'selector-modal active';
-    modal.id = 'selector-amigo-combate';
-    modal.style.zIndex = '150';
-    modal.innerHTML = `
-      <div class="selector-title">⚔️ ¿A quién retar?</div>
-      <div class="list-container" id="lista-amigos-combate" style="max-height: 250px;">
-        ${amigos.map(([id, nombre], i) => `
-          <div class="list-item ${i === 0 ? 'focused' : ''}" data-id="${id}" data-index="${i}" style="margin-bottom: 8px;">
-            <span style="font-size: 28px;">👤</span>
-            <div style="flex: 1;">
-              <div style="font-weight: 800; color: #2D3748;">${nombre}</div>
-            </div>
-          </div>
-        `).join('')}
-      </div>
-      <div style="margin-top: 15px; font-size: 11px; color: #718096;">OK para seleccionar, C para cancelar</div>
-    `;
+    const screen = document.getElementById('selector-amigo-screen');
+    const list = document.getElementById('selector-amigo-list');
     
-    document.body.appendChild(modal);
+    list.innerHTML = amigos.map(([id, nombre], i) => `
+      <div class="list-item ${i === 0 ? 'focused' : ''}" data-id="${id}" data-index="${i}" style="margin-bottom: 8px;">
+        <span style="font-size: 28px;">👤</span>
+        <div style="flex: 1;">
+          <div style="font-weight: 800; color: #2D3748;">${nombre}</div>
+        </div>
+      </div>
+    `).join('');
+    
+    screen.classList.add('active');
     
     this.state.combate.selectorAmigoIndex = 0;
     this.state.combate.enSelectorAmigo = true;
-    
-    const items = modal.querySelectorAll('.list-item');
-    items.forEach((item, idx) => {
-      item.onclick = () => {
-        const amigoId = item.dataset.id;
-        const amigoNombre = this.contactos[amigoId];
-        this.seleccionarAmigoCombate(amigoId, amigoNombre);
-      };
-    });
   },
 
   seleccionarAmigoCombate(amigoId, amigoNombre) {
-    document.getElementById('selector-amigo-combate')?.remove();
+    document.getElementById('selector-amigo-screen').classList.remove('active');
     this.state.combate.enSelectorAmigo = false;
     this.state.combate.modo = 'amigo';
     this.state.combate.oponenteId = amigoId;
@@ -4833,12 +5074,10 @@ const app = {
       return;
     }
     
-    const modal = document.createElement('div');
-    modal.className = 'selector-modal active';
-    modal.id = 'selector-emoji-combate';
-    modal.style.zIndex = '150';
+    const screen = document.getElementById('selector-emoji-screen');
+    const grid = document.getElementById('selector-emoji-grid');
     
-    const gridEmojis = emojisDisponibles.map((id, i) => {
+    grid.innerHTML = emojisDisponibles.map((id, i) => {
       const emoji = EMOJIS_LIST[id - 1] || '✨';
       const stats = this.todex.emojis_stats[id] || calcularStatsBase(id);
       return `
@@ -4852,31 +5091,14 @@ const app = {
       `;
     }).join('');
     
-    modal.innerHTML = `
-      <div class="selector-title">🎯 Elige tu guerrero</div>
-      <div class="todex-grid" style="grid-template-columns: repeat(4, 1fr); gap: 8px; max-height: 280px; overflow-y: auto;">
-        ${gridEmojis}
-      </div>
-      <div style="margin-top: 10px; font-size: 11px; color: #718096;">Selecciona tu emoji más fuerte</div>
-    `;
-    
-    document.body.appendChild(modal);
+    screen.classList.add('active');
     
     this.state.combate.selectorEmojiIndex = 0;
     this.state.combate.enSelectorEmoji = true;
-    
-    const cards = modal.querySelectorAll('.emoji-card');
-    cards.forEach((card, idx) => {
-      card.onclick = () => {
-        const emojiId = parseInt(card.dataset.id);
-        this.seleccionarEmojiCombate(emojiId);
-      };
-    });
   },
 
   seleccionarEmojiCombate(emojiId) {
-    document.getElementById('selector-emoji-combate')?.remove();
-    document.getElementById('selector-defensa')?.remove();
+    document.getElementById('selector-emoji-screen').classList.remove('active');
     this.state.combate.enSelectorEmoji = false;
     this.state.combate.miEmojiSeleccionado = emojiId;
     
@@ -4969,25 +5191,10 @@ const app = {
     
     this.state.combate.desafioPendiente = desafio;
     
-    const modal = document.createElement('div');
-    modal.className = 'selector-modal active';
-    modal.id = 'desafio-recibido-modal';
-    modal.style.zIndex = '200';
-    modal.style.background = 'linear-gradient(145deg, #805AD5, #6B46C1)';
-    modal.style.color = 'white';
+    document.getElementById('desafio-emoji').textContent = emojiRival;
+    document.getElementById('desafio-nombre').textContent = nombreRival;
+    document.getElementById('desafio-recibido-screen').classList.add('active');
     
-    modal.innerHTML = `
-      <div style="font-family: Fredoka One; font-size: 24px; margin-bottom: 15px;">⚔️ ¡DESAFÍO!</div>
-      <div style="font-size: 50px; margin: 10px 0;">${emojiRival}</div>
-      <div style="font-size: 16px; font-weight: 700; margin-bottom: 5px;">${nombreRival}</div>
-      <div style="font-size: 12px; opacity: 0.9; margin-bottom: 20px;">te reta a un combate</div>
-      <div style="display: flex; gap: 15px;">
-        <button onclick="app.rechazarDesafio()" style="padding: 12px 25px; background: #E53E3E; color: white; border: none; border-radius: 20px; font-weight: 800; font-family: Nunito; cursor: pointer; box-shadow: 0 4px 0 #C53030;">Rechazar</button>
-        <button onclick="app.aceptarDesafio()" style="padding: 12px 25px; background: #48BB78; color: white; border: none; border-radius: 20px; font-weight: 800; font-family: Nunito; cursor: pointer; box-shadow: 0 4px 0 #38A169;">⚔️ Aceptar</button>
-      </div>
-    `;
-    
-    document.body.appendChild(modal);
     this.playSound('success');
     
     if (this.state.settings.vibracion && navigator.vibrate) {
@@ -4996,13 +5203,13 @@ const app = {
   },
 
   rechazarDesafio() {
-    document.getElementById('desafio-recibido-modal')?.remove();
+    document.getElementById('desafio-recibido-screen').classList.remove('active');
     this.state.combate.desafioPendiente = null;
     this.showMsg('Desafío rechazado');
   },
 
   aceptarDesafio() {
-    document.getElementById('desafio-recibido-modal')?.remove();
+    document.getElementById('desafio-recibido-screen').classList.remove('active');
     this.mostrarSelectorEmojiParaDefender();
   },
 
@@ -5016,17 +5223,16 @@ const app = {
       return;
     }
     
-    const modal = document.createElement('div');
-    modal.className = 'selector-modal active';
-    modal.id = 'selector-defensa';
-    modal.style.zIndex = '150';
+    const screen = document.getElementById('selector-defensa-screen');
+    const grid = document.getElementById('selector-defensa-grid');
     
-    const gridEmojis = emojisDisponibles.map((id, i) => {
+    grid.innerHTML = emojisDisponibles.map((id, i) => {
       const emoji = EMOJIS_LIST[id - 1] || '✨';
       const stats = this.todex.emojis_stats[id] || calcularStatsBase(id);
       return `
         <div class="emoji-card captured ${i === 0 ? 'focused' : ''}" 
              data-id="${id}" 
+             data-index="${i}"
              style="aspect-ratio: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 24px; cursor: pointer; border: 3px solid ${i === 0 ? 'var(--device-color)' : 'transparent'};">
           <div>${emoji}</div>
           <div style="font-size: 8px; margin-top: 2px; color: #666;">⚡${stats.aura}</div>
@@ -5034,31 +5240,15 @@ const app = {
       `;
     }).join('');
     
-    modal.innerHTML = `
-      <div class="selector-title">🛡️ Elige defensor</div>
-      <div class="todex-grid" style="grid-template-columns: repeat(4, 1fr); gap: 8px; max-height: 280px;">
-        ${gridEmojis}
-      </div>
-      <div style="margin-top: 10px; font-size: 11px; color: #718096;">¿Qué emoji usarás para defenderte?</div>
-    `;
+    screen.classList.add('active');
     
-    document.body.appendChild(modal);
-    
-    this.state.combate.selectorEmojiIndex = 0;
-    this.state.combate.enSelectorEmoji = true;
-    
-    const cards = modal.querySelectorAll('.emoji-card');
-    cards.forEach(card => {
-      card.onclick = () => {
-        const emojiId = parseInt(card.dataset.id);
-        this.responderDesafio(emojiId);
-      };
-    });
+    this.state.combate.defensaIndex = 0;
+    this.state.combate.enSelectorDefensa = true;
   },
 
   async responderDesafio(miEmojiId) {
-    document.getElementById('selector-defensa')?.remove();
-    this.state.combate.enSelectorEmoji = false;
+    document.getElementById('selector-defensa-screen').classList.remove('active');
+    this.state.combate.enSelectorDefensa = false;
     
     const desafio = this.state.combate.desafioPendiente;
     if (!desafio) return;
@@ -5240,14 +5430,16 @@ const app = {
       selectorAmigoIndex: 0,
       enSelectorAmigo: false,
       selectorEmojiIndex: 0,
-      enSelectorEmoji: false
+      enSelectorEmoji: false,
+      enSelectorDefensa: false,
+      defensaIndex: 0
     };
     this.showPage('home');
   }
 };
 
 window.addEventListener('load', () => {
-  console.log('Tokeji v16.0 con Combates iniciando...');
+  console.log('Tokeji v17.0 con Combates iniciando...');
   app.init();
 });
 </script>
