@@ -20,7 +20,8 @@ def cargar_datos():
             "toques_recibidos": {},
             "respuestas_recibidas": {},
             "desafios_pendientes": {},
-            "combates_finalizados": []
+            "combates_finalizados": [],
+            "perfiles": {}
         }
 
 def guardar_datos():
@@ -30,7 +31,8 @@ def guardar_datos():
             "toques_recibidos": toques_recibidos,
             "respuestas_recibidas": respuestas_recibidas,
             "desafios_pendientes": desafios_pendientes,
-            "combates_finalizados": combates_finalizados
+            "combates_finalizados": combates_finalizados,
+            "perfiles": perfiles
         }, f)
 
 datos = cargar_datos()
@@ -39,6 +41,7 @@ toques_recibidos = datos["toques_recibidos"]
 respuestas_recibidas = datos.get("respuestas_recibidas", {})
 desafios_pendientes = datos["desafios_pendientes"]
 combates_finalizados = datos.get("combates_finalizados", [])
+perfiles = datos.get("perfiles", {})
 
 EMOJIS_DATABASE = [
     {"id": i, "rarity": r} for i, r in enumerate([
@@ -79,6 +82,8 @@ def toque():
         contexto = data.get("contexto")
         avatar_remitente = data.get("avatarRemitente", "👤")
         nombre_remitente = data.get("nombreRemitente", "Alguien")
+        tipo = data.get("tipo")
+        instituto_destino = data.get("instituto_destino")
 
         if not all([de, para, num]):
             return jsonify(ok=False, error="Faltan datos requeridos"), 400
@@ -100,7 +105,9 @@ def toque():
             "contexto": contexto,
             "avatarRemitente": avatar_remitente,
             "nombreRemitente": nombre_remitente,
-            "hora": int(time.time())
+            "hora": int(time.time()),
+            "tipo": tipo,
+            "instituto_destino": instituto_destino
         })
         
         guardar_datos()
@@ -324,6 +331,69 @@ def obtener_combates_finalizados():
         
         return jsonify(ok=True, combates=combates_usuario)
         
+    except Exception as e:
+        return jsonify(ok=False, error=str(e)), 500
+
+@app.route("/registro-instituto", methods=["POST"])
+def registro_instituto():
+    try:
+        data = request.get_json() or {}
+        user_id = data.get("userId", "").strip()
+        provincia = data.get("provincia", "").strip()
+        instituto = data.get("instituto", "").strip()
+        curso = data.get("curso", "").strip()
+        nombre = data.get("nombre", "Alumno")
+        avatar = data.get("avatar", "👤")
+
+        if not all([user_id, provincia, instituto, curso]):
+            return jsonify(ok=False, error="Faltan datos requeridos"), 400
+
+        perfiles[user_id] = {
+            "provincia": provincia,
+            "instituto": instituto,
+            "curso": curso,
+            "nombre": nombre,
+            "avatar": avatar,
+            "fecha_registro": int(time.time()),
+            "todox_visitados": perfiles.get(user_id, {}).get("todox_visitados", [])
+        }
+
+        guardar_datos()
+        return jsonify(ok=True)
+    except Exception as e:
+        return jsonify(ok=False, error=str(e)), 500
+
+@app.route("/lista-instituto", methods=["GET"])
+def lista_instituto():
+    try:
+        user_id = request.args.get("userId", "").strip()
+        curso = request.args.get("curso", "").strip()
+
+        if not user_id:
+            return jsonify(ok=False, error="Falta userId"), 400
+
+        perfil = perfiles.get(user_id, {})
+        instituto_usuario = perfil.get("instituto")
+        if not instituto_usuario:
+            return jsonify(ok=True, companeros=[])
+
+        companeros = []
+        for uid, p in perfiles.items():
+            if uid == user_id:
+                continue
+            if p.get("instituto") != instituto_usuario:
+                continue
+            if curso and p.get("curso") != curso:
+                continue
+
+            companeros.append({
+                "id": uid,
+                "nombre": p.get("nombre", "Alumno"),
+                "avatar": p.get("avatar", "👤"),
+                "curso": p.get("curso", "")
+            })
+
+        return jsonify(ok=True, companeros=companeros)
     except Exception as e:
         return jsonify(ok=False, error=str(e)), 500
 
