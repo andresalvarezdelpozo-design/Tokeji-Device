@@ -2275,12 +2275,12 @@
             <div class="combate-container">
               <div class="combate-card focused" data-index="0">
                 <div style="font-size: 32px; margin-bottom: 6px;">🤖</div>
-                <div style="font-size: 14px;">VS IA</div>
+                <div style="font-size: 14px;">Combate IA</div>
                 <div style="font-size: 10px; opacity: 0.9; margin-top: 3px;">Práctica</div>
               </div>
               <div class="combate-card vs-amigo" data-index="1">
                 <div style="font-size: 32px; margin-bottom: 6px;">⚔️</div>
-                <div style="font-size: 14px;">VS Amigo</div>
+                <div style="font-size: 14px;">Combate amigo</div>
                 <div style="font-size: 10px; opacity: 0.9; margin-top: 3px;">Retar</div>
               </div>
               <div class="combate-card" data-index="2">
@@ -2620,10 +2620,76 @@ const EMOJIS_LIST = ['😊','❤️','👍','🔥','💯','🤥','👾','💕','
 
 const AVATARES = ['🐱', '🐶', '🦊', '🐼', '🐨', '🐯', '🦁', '🐷', '🐸', '🐙', '🦄', '🐲'];
 
+const PROVINCIAS_ESPANA = [
+  'a_coruna','alava','albacete','alicante','almeria','asturias','avila','badajoz','barcelona','burgos','caceres','cadiz','cantabria','castellon','ciudad_real','cordoba','cuenca','girona','granada','guadalajara','guipuzcoa','huelva','huesca','islas_baleares','jaen','la_rioja','las_palmas','leon','lleida','lugo','madrid','malaga','murcia','navarra','ourense','palencia','pontevedra','salamanca','santa_cruz_tenerife','segovia','sevilla','soria','tarragona','teruel','toledo','valencia','valladolid','vizcaya','zamora','zaragoza'
+];
+
+const INSTITUTOS_POR_PROVINCIA = {
+  a_coruna: [{ value: 'ies_rafael_dieste', label: 'IES Rafael Dieste' }],
+  alava: [{ value: 'ies_koldo_mitxelena', label: 'IES Koldo Mitxelena' }],
+  albacete: [{ value: 'ies_bachiller_sabuco', label: 'IES Bachiller Sabuco' }],
+  alicante: [{ value: 'ies_jorge_juan', label: 'IES Jorge Juan' }],
+  almeria: [{ value: 'ies_al_andalus', label: 'IES Al-Ándalus' }],
+  asturias: [{ value: 'ies_aramo', label: 'IES Aramo' }],
+  avila: [{ value: 'ies_alonso_madrigal', label: 'IES Alonso de Madrigal' }],
+  badajoz: [{ value: 'ies_zurbaran', label: 'IES Zurbarán' }],
+  barcelona: [{ value: 'institut_verdaguer', label: 'Institut Verdaguer' }],
+  burgos: [{ value: 'ies_cardenal_lopez', label: 'IES Cardenal López de Mendoza' }],
+  caceres: [{ value: 'ies_el_brocense', label: 'IES El Brocense' }],
+  cadiz: [{ value: 'ies_columela', label: 'IES Columela' }],
+  cantabria: [{ value: 'ies_santa_clara', label: 'IES Santa Clara' }],
+  castellon: [{ value: 'ies_ribalta', label: 'IES Francesc Ribalta' }],
+  ciudad_real: [{ value: 'ies_maestre_calatrava', label: 'IES Maestre de Calatrava' }],
+  cordoba: [{ value: 'ies_gongora', label: 'IES Luis de Góngora' }],
+  cuenca: [{ value: 'ies_alfonso_viii', label: 'IES Alfonso VIII' }],
+  girona: [{ value: 'institut_sobreques', label: 'Institut Sobrequés' }],
+  granada: [{ value: 'ies_padre_suarez', label: 'IES Padre Suárez' }],
+  guadalajara: [{ value: 'ies_brianda_mendoza', label: 'IES Brianda de Mendoza' }],
+  guipuzcoa: [{ value: 'ies_peine_del_viento', label: 'IES Peine del Viento' }],
+  huelva: [{ value: 'ies_la_rabida', label: 'IES La Rábida' }],
+  huesca: [{ value: 'ies_ramon_cajal', label: 'IES Ramón y Cajal' }],
+  islas_baleares: [{ value: 'ies_joan_alcover', label: 'IES Joan Alcover' }],
+  jaen: [{ value: 'ies_santa_catalina', label: 'IES Santa Catalina de Alejandría' }],
+  la_rioja: [{ value: 'ies_praxedes_mateo', label: 'IES Práxedes Mateo Sagasta' }],
+  las_palmas: [{ value: 'ies_perez_galdos', label: 'IES Pérez Galdós' }],
+  leon: [{ value: 'ies_legio_vii', label: 'IES Legio VII' }],
+  lleida: [{ value: 'institut_marius_torres', label: 'Institut Màrius Torres' }],
+  lugo: [{ value: 'ies_lucus_augusti', label: 'IES Lucus Augusti' }],
+  madrid: [{ value: 'ies_san_isidro', label: 'IES San Isidro' }],
+  malaga: [{ value: 'ies_vicente_espinel', label: 'IES Vicente Espinel' }],
+  murcia: [{ value: 'ies_alfonso_x', label: 'IES Alfonso X El Sabio' }],
+  navarra: [{ value: 'ies_plaza_cruz', label: 'IES Plaza de la Cruz' }],
+  ourense: [{ value: 'ies_outero_pedrayo', label: 'IES Otero Pedrayo' }],
+  palencia: [{ value: 'ies_jorge_manrique', label: 'IES Jorge Manrique' }],
+  pontevedra: [{ value: 'ies_valle_inclan', label: 'IES Valle-Inclán' }],
+  salamanca: [{ value: 'ies_fray_luis', label: 'IES Fray Luis de León' }],
+  santa_cruz_tenerife: [{ value: 'ies_cabrera_pinto', label: 'IES Cabrera Pinto' }],
+  segovia: [{ value: 'ies_andres_laguna', label: 'IES Andrés Laguna' }],
+  sevilla: [{ value: 'ies_san_isidoro', label: 'IES San Isidoro' }],
+  soria: [{ value: 'ies_antonio_machado', label: 'IES Antonio Machado' }],
+  tarragona: [{ value: 'institut_marti_franques', label: 'Institut Martí i Franquès' }],
+  teruel: [{ value: 'ies_vega_turia', label: 'IES Vega del Turia' }],
+  toledo: [{ value: 'ies_el_greco', label: 'IES El Greco' }],
+  valencia: [{ value: 'ies_lluis_vives', label: 'IES Lluís Vives' }],
+  valladolid: [{ value: 'ies_zorrilla', label: 'IES Zorrilla' }],
+  vizcaya: [{ value: 'ies_unamuno', label: 'IES Miguel de Unamuno' }],
+  zamora: [{ value: 'ies_claudio_moyano', label: 'IES Claudio Moyano' }],
+  zaragoza: [{ value: 'ies_goya', label: 'IES Goya' }]
+};
+
+const CURSOS_MVP = [
+  { value: '1eso', label: '1º ESO' },
+  { value: '2eso', label: '2º ESO' },
+  { value: '3eso', label: '3º ESO' },
+  { value: '4eso', label: '4º ESO' },
+  { value: '1bach', label: '1º Bach' },
+  { value: '2bach', label: '2º Bach' }
+];
+
 const INSTITUTO_FIELDS = [
-  { key: 'provincia', label: 'Provincia', options: [{ value: 'andalucia', label: 'Andalucía' }, { value: 'madrid', label: 'Madrid' }] },
-  { key: 'instituto', label: 'Instituto', options: [{ value: 'ies_ejemplo', label: 'IES Ejemplo' }, { value: 'otro', label: 'Otro' }] },
-  { key: 'curso', label: 'Curso', options: [{ value: '4eso', label: '4º ESO' }, { value: '1bach', label: '1º Bach' }] }
+  { key: 'provincia', label: 'Provincia' },
+  { key: 'instituto', label: 'Instituto' },
+  { key: 'curso', label: 'Curso' }
 ];
 
 const app = {
@@ -2636,7 +2702,7 @@ const app = {
     selectedCategoria: null,
     selectedVariante: null,
     selectedDestinoEspecial: null,
-    institutoDraft: { provincia: 'andalucia', instituto: 'ies_ejemplo', curso: '4eso' },
+    institutoDraft: { provincia: 'madrid', instituto: 'ies_san_isidro', curso: '1eso' },
     settings: {
       sonido: true,
       vibracion: true,
@@ -2753,6 +2819,8 @@ const app = {
     
     setTimeout(() => this.reintentarRespuestasPendientes(), 10000);
     
+    this.setupControls();
+    this.bindClickNavigation();
     this.showPage('splash', false);
   },
 
@@ -2779,6 +2847,21 @@ const app = {
     document.addEventListener('dblclick', (e) => {
       e.preventDefault();
     }, { passive: false });
+  },
+
+  setupControls() {
+    document.addEventListener('keydown', (event) => {
+      const key = event.key;
+      if (['ArrowUp','ArrowDown','ArrowLeft','ArrowRight','Enter','Escape','Backspace','c','C'].includes(key)) {
+        event.preventDefault();
+      }
+      if (key === 'ArrowUp') this.handleUp();
+      else if (key === 'ArrowDown') this.handleDown();
+      else if (key === 'ArrowLeft') this.handleLeft();
+      else if (key === 'ArrowRight') this.handleRight();
+      else if (key === 'Enter') this.handleOK();
+      else if (key === 'Escape' || key === 'Backspace' || key === 'c' || key === 'C') this.handleBack();
+    });
   },
 
   handleTouchStart(event, direction) {
@@ -3063,6 +3146,53 @@ const app = {
   updateConsentFocus() {
     document.querySelectorAll('.consent-btn').forEach((btn, i) => {
       btn.classList.toggle('focused', i === this.state.focus.index);
+    });
+  },
+
+  bindClickNavigation() {
+    document.addEventListener('click', (event) => {
+      const menuItem = event.target.closest('.menu-item');
+      if (menuItem && this.state.currentPage === 'menu') {
+        this.state.focus = { type: 'menu', index: Number(menuItem.dataset.index || 0) };
+        this.handleOK();
+        return;
+      }
+
+      const tokeItem = event.target.closest('.toke-item');
+      if (tokeItem && this.state.currentPage === 'tokes') {
+        this.state.focus = { type: 'tokes', index: Number(tokeItem.dataset.index || 0) };
+        this.handleOK();
+        return;
+      }
+
+      const varianteItem = event.target.closest('.variante-item');
+      if (varianteItem && this.state.currentPage === 'variantes') {
+        this.state.focus = { type: 'variantes', index: Number(varianteItem.dataset.index || 0) };
+        this.handleOK();
+        return;
+      }
+
+      const institutoOption = event.target.closest('.instituto-option');
+      if (institutoOption && this.state.currentPage === 'instituto') {
+        this.state.focus = { type: 'instituto', index: INSTITUTO_FIELDS.findIndex(f => f.key === institutoOption.dataset.key) };
+        this.cambiarInstitutoSeleccion('right');
+        return;
+      }
+
+      const institutoRow = event.target.closest('#instituto-filter-list .list-item');
+      if (institutoRow && this.state.currentPage === 'instituto-filter') {
+        this.state.focus = { type: 'institutoFilter', index: Number(institutoRow.dataset.index || 0) };
+        this.updateInstitutoFilterFocus();
+        this.handleOK();
+        return;
+      }
+
+      const combateCard = event.target.closest('.combate-card');
+      if (combateCard && this.state.currentPage === 'combates') {
+        this.state.focus = { type: 'combates', index: Number(combateCard.dataset.index || 0) };
+        this.updateCombatesFocus();
+        this.handleOK();
+      }
     });
   },
 
@@ -3381,10 +3511,8 @@ const app = {
         break;
       case 'enviar':
         const amigosList = Object.entries(this.contactos);
-        if (focus.index === 0) {
-          this.scanQR();
-        } else if (amigosList[focus.index - 1]) {
-          const [id, nombre] = amigosList[focus.index - 1];
+        if (amigosList[focus.index]) {
+          const [id, nombre] = amigosList[focus.index];
           this.enviarToque(id, nombre);
         }
         break;
@@ -3687,7 +3815,7 @@ const app = {
         break;
       case 'enviar':
         const maxAmigos = Object.keys(this.contactos).length;
-        if (index < maxAmigos) {
+        if (index < maxAmigos - 1) {
           this.state.focus.index++;
           this.updateEnviarFocus();
           this.scrollToFocused('enviar-list');
@@ -4032,32 +4160,69 @@ const app = {
 
   getContextoInstituto() {
     return {
-      provincia: localStorage.getItem('provincia') || 'andalucia',
-      instituto: localStorage.getItem('instituto') || 'ies_ejemplo',
-      curso: localStorage.getItem('curso') || '4eso'
+      provincia: localStorage.getItem('provincia') || 'madrid',
+      instituto: localStorage.getItem('instituto') || 'ies_san_isidro',
+      curso: localStorage.getItem('curso') || '1eso'
     };
+  },
+
+  getInstitutosProvincia(provincia) {
+    return INSTITUTOS_POR_PROVINCIA[provincia] || [{ value: 'ies_local', label: 'IES Local' }];
+  },
+
+  getOpcionesCampoInstituto(key) {
+    if (key === 'provincia') {
+      return PROVINCIAS_ESPANA.map((prov) => ({
+        value: prov,
+        label: prov.replaceAll('_', ' ').replace(/\b\w/g, (l) => l.toUpperCase())
+      }));
+    }
+    if (key === 'instituto') {
+      return this.getInstitutosProvincia(this.state.institutoDraft.provincia);
+    }
+    if (key === 'curso') {
+      return CURSOS_MVP;
+    }
+    return [];
   },
 
   renderInstituto() {
     const container = document.getElementById('instituto-list');
     if (!container) return;
+
+    const institutos = this.getInstitutosProvincia(this.state.institutoDraft.provincia);
+    if (!institutos.some((opt) => opt.value === this.state.institutoDraft.instituto)) {
+      this.state.institutoDraft.instituto = institutos[0].value;
+    }
+
     container.innerHTML = INSTITUTO_FIELDS.map((field, fieldIndex) => {
-      const selected = this.state.institutoDraft[field.key] || field.options[0].value;
-      const options = field.options.map((opt) => `
-        <div class="instituto-option ${opt.value === selected ? 'selected' : ''} ${fieldIndex === this.state.focus.index && opt.value === selected ? 'focused' : ''}" data-key="${field.key}" data-value="${opt.value}">${opt.label}</div>
-      `).join('');
-      return `<div class="instituto-block"><div class="instituto-label">${field.label}</div>${options}</div>`;
+      const options = this.getOpcionesCampoInstituto(field.key);
+      const selected = this.state.institutoDraft[field.key] || options[0]?.value;
+      const selectedOption = options.find((opt) => opt.value === selected) || options[0];
+      return `
+        <div class="instituto-block">
+          <div class="instituto-label">${field.label}</div>
+          <div class="instituto-option ${fieldIndex === this.state.focus.index ? 'focused' : ''}" data-key="${field.key}" data-value="${selectedOption?.value || ''}">
+            ${selectedOption?.label || 'Selecciona'}
+          </div>
+        </div>
+      `;
     }).join('');
   },
 
   cambiarInstitutoSeleccion(direction) {
     const field = INSTITUTO_FIELDS[this.state.focus.index];
     if (!field) return;
-    const current = this.state.institutoDraft[field.key] || field.options[0].value;
-    let idx = field.options.findIndex(o => o.value === current);
+    const options = this.getOpcionesCampoInstituto(field.key);
+    const current = this.state.institutoDraft[field.key] || options[0]?.value;
+    let idx = options.findIndex(o => o.value === current);
     if (idx < 0) idx = 0;
-    idx = direction === 'right' ? Math.min(field.options.length - 1, idx + 1) : Math.max(0, idx - 1);
-    this.state.institutoDraft[field.key] = field.options[idx].value;
+    idx = direction === 'right' ? Math.min(options.length - 1, idx + 1) : Math.max(0, idx - 1);
+    this.state.institutoDraft[field.key] = options[idx].value;
+    if (field.key === 'provincia') {
+      const lista = this.getInstitutosProvincia(this.state.institutoDraft.provincia);
+      this.state.institutoDraft.instituto = lista[0].value;
+    }
     this.renderInstituto();
   },
 
@@ -4075,15 +4240,27 @@ const app = {
     let usuarios = [];
     try {
       const q = new URLSearchParams({ ...contexto, exclude_me: this.miID });
-      const res = await fetch(`${BACK}/usuarios-instituto?${q.toString()}`);
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 1500);
+      const res = await fetch(`${BACK}/usuarios-instituto?${q.toString()}`, { signal: controller.signal });
+      clearTimeout(timeoutId);
       if (res.ok) usuarios = await res.json();
     } catch (e) {
       this.debug('usuarios-instituto no disponible: ' + e.message);
     }
-    this.state.usuariosInstituto = Array.isArray(usuarios) ? usuarios : [];
+
+    if (!Array.isArray(usuarios) || usuarios.length === 0) {
+      usuarios = [
+        { id: 'u1', nombre: 'María', avatar: '👤', curso: contexto.curso },
+        { id: 'u2', nombre: 'Carlos', avatar: '👤', curso: contexto.curso },
+        { id: 'u3', nombre: 'Ana', avatar: '👤', curso: contexto.curso }
+      ];
+    }
+
+    this.state.usuariosInstituto = usuarios;
     const rows = [
       `<div class="list-item focused" data-index="0" data-all="1">📍 <div style="font-weight:800;">Todo el instituto</div></div>`,
-      ...this.state.usuariosInstituto.map((u, i) => `<div class="list-item" data-index="${i+1}" data-id="${u.id}" data-name="${u.nombre || 'Alumno'}"><span style="font-size:24px;">${u.avatar || '👤'}</span><div style="flex:1;"><div style="font-weight:800;">${u.nombre || 'Alumno'}</div><div style="font-size:10px;color:#718096;">${u.curso || contexto.curso}</div></div></div>`)
+      ...this.state.usuariosInstituto.map((u, i) => `<div class="list-item" data-index="${i+1}" data-id="${u.id}" data-name="${u.nombre || 'Alumno'}"><span style="font-size:24px;">${u.avatar || '👤'}</span><div style="flex:1;"><div style="font-weight:800;">${u.nombre || 'Alumno'}</div><div style="font-size:10px;color:#718096;">${(u.curso || contexto.curso).toUpperCase()}</div></div></div>`)
     ];
     container.innerHTML = rows.join('');
   },
@@ -4127,19 +4304,22 @@ const app = {
     const content = document.getElementById('murmullo-content');
     if (!subtitle || !content) return;
     const ctx = this.getContextoInstituto();
-    subtitle.textContent = `${ctx.instituto.replace('_', ' ')} - ${ctx.curso.toUpperCase()}`;
+    subtitle.textContent = `${(INSTITUTOS_POR_PROVINCIA[ctx.provincia] || [{label: ctx.instituto}])[0].label} - ${ctx.curso.toUpperCase()}`;
     let data = null;
     try {
       const q = new URLSearchParams(ctx);
-      const res = await fetch(`${BACK}/murmullo?${q.toString()}`);
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 1500);
+      const res = await fetch(`${BACK}/murmullo?${q.toString()}`, { signal: controller.signal });
+      clearTimeout(timeoutId);
       if (res.ok) data = await res.json();
     } catch (e) {
       this.debug('murmullo no disponible: ' + e.message);
     }
-    data = data || { tokes_hoy: 0, anonimos_hoy: 0, crushes_activos: 0, rachas_activas: 0, toke_mas_usado: { tipo: 'crush', count: 0 }, usuario_top: '—', hora_pico: '--:--' };
+    data = data || { tokes_hoy: 47, anonimos_hoy: 12, crushes_activos: 8, rachas_activas: 3, toke_mas_usado: { tipo: 'Crush', count: 23 }, usuario_top: 'María', hora_pico: '11:30' };
     content.innerHTML = `
       <div class="murmullo-card">📊 Hoy en tu instituto<br>🔥 ${data.tokes_hoy} tokes enviados<br>💜 ${data.anonimos_hoy} anónimos<br>💘 ${data.crushes_activos} crushes activos<br>🔥 ${data.rachas_activas} rachas en curso</div>
-      <div class="murmullo-card">📈 Lo más hot<br>${data.toke_mas_usado?.tipo || 'crush'} (${data.toke_mas_usado?.count || 0} usos)<br>👑 ${data.usuario_top} lidera<br>⏰ Pico: ${data.hora_pico}</div>
+      <div class="murmullo-card">📈 Lo más hot<br>${(typeof data.toke_mas_usado === 'object' ? data.toke_mas_usado?.tipo : data.toke_mas_usado) || 'Crush'} (${typeof data.toke_mas_usado === 'object' ? (data.toke_mas_usado?.count || 0) : (data.toke_mas_usado_count || 0)} usos)<br>👑 ${data.usuario_top} lidera<br>⏰ Pico: ${data.hora_pico}</div>
       <div class="list-item focused" onclick="app.renderMurmullo()">🔄 Actualizar</div>
     `;
   },
@@ -4200,22 +4380,13 @@ const app = {
     }
     
     const amigos = Object.entries(this.contactos);
-    
-    let html = `
-      <div class="list-item focused" data-index="0">
-        <span style="font-size: 26px;">📷</span>
-        <div style="flex: 1;">
-          <div style="font-weight: 800; color: #805AD5;">Escanear QR</div>
-          <div style="font-size: 10px; color: #A0AEC0;">Nuevo amigo</div>
-        </div>
-      </div>
-    `;
+    let html = ``;
     
     if (amigos.length === 0) {
-      html += `<div style="text-align: center; color: #A0AEC0; padding: 25px; font-size: 12px;">No tienes amigos aún.<br>¡Escanea un QR!</div>`;
+      html += `<div style="text-align: center; color: #A0AEC0; padding: 25px; font-size: 12px;">No tienes amigos aún.<br>Agrega amigos desde Mi QR</div>`;
     } else {
       html += amigos.map(([id, nom], i) => `
-        <div class="list-item" data-index="${i + 1}">
+        <div class="list-item ${i === 0 ? 'focused' : ''}" data-index="${i}">
           <span style="font-size: 26px;">👤</span>
           <div style="flex: 1;">
             <div style="font-weight: 800; color: #2D3748; display:flex; justify-content:space-between; align-items:center;"><span>${nom}</span>${this.getStreakBadge(id)}</div>
