@@ -138,6 +138,104 @@
       flex-direction: column;
     }
 
+
+
+    .screen.theme-gas {
+      background: linear-gradient(135deg, #ff6b35 0%, #f7931e 35%, #ff00a0 70%, #ff0000 100%);
+      background-size: 220% 220%;
+      animation: gasGradient 8s ease infinite;
+    }
+
+    @keyframes gasGradient {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .screen.theme-gas .setup-title,
+    .screen.theme-gas .status-bar {
+      color: #fff;
+      text-shadow: 0 0 10px rgba(255,255,255,0.9);
+    }
+
+    .screen.theme-gas .menu-item,
+    .screen.theme-gas .setting-item,
+    .screen.theme-gas .list-item,
+    .screen.theme-gas .toke-item,
+    .screen.theme-gas .variante-item {
+      background: rgba(255,255,255,0.15);
+      border: 2px solid rgba(255,255,255,0.55);
+      color: #fff;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 0 20px rgba(255,0,160,0.35);
+    }
+
+    .screen.theme-gas .menu-item span,
+    .screen.theme-gas .setting-item span,
+    .screen.theme-gas .list-item div,
+    .screen.theme-gas .variante-item div {
+      color: #fff !important;
+      text-shadow: 0 0 6px rgba(255,255,255,0.7);
+    }
+
+    .screen.theme-gas .setting-item.focused,
+    .screen.theme-gas .menu-item.focused,
+    .screen.theme-gas .list-item.focused,
+    .screen.theme-gas .toke-item.focused,
+    .screen.theme-gas .variante-item.focused {
+      border-color: #00ffff !important;
+      box-shadow: 0 0 0 3px rgba(0,255,255,0.45), 0 0 25px rgba(255,0,160,0.6);
+      transform: scale(1.04);
+    }
+
+    .screen.theme-neon {
+      background: linear-gradient(145deg, #090b2d 0%, #121a4a 40%, #192d73 75%, #0f7b8f 100%);
+      background-size: 220% 220%;
+      animation: neonGradient 9s ease infinite;
+    }
+
+    @keyframes neonGradient {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .screen.theme-neon .setup-title,
+    .screen.theme-neon .status-bar {
+      color: #D6F7FF;
+      text-shadow: 0 0 10px rgba(77, 242, 255, 0.7);
+    }
+
+    .screen.theme-neon .menu-item,
+    .screen.theme-neon .setting-item,
+    .screen.theme-neon .list-item,
+    .screen.theme-neon .toke-item,
+    .screen.theme-neon .variante-item {
+      background: rgba(14, 24, 66, 0.6);
+      border: 2px solid rgba(98, 225, 255, 0.75);
+      color: #E7F9FF;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 0 18px rgba(32, 220, 255, 0.3);
+    }
+
+    .screen.theme-neon .menu-item span,
+    .screen.theme-neon .setting-item span,
+    .screen.theme-neon .list-item div,
+    .screen.theme-neon .variante-item div {
+      color: #E7F9FF !important;
+      text-shadow: 0 0 5px rgba(111, 236, 255, 0.55);
+    }
+
+    .screen.theme-neon .setting-item.focused,
+    .screen.theme-neon .menu-item.focused,
+    .screen.theme-neon .list-item.focused,
+    .screen.theme-neon .toke-item.focused,
+    .screen.theme-neon .variante-item.focused {
+      border-color: #66FCF1 !important;
+      box-shadow: 0 0 0 3px rgba(102,252,241,0.35), 0 0 24px rgba(102,252,241,0.5);
+      transform: scale(1.03);
+    }
+
     .status-bar {
       position: absolute;
       top: 8px;
@@ -2279,7 +2377,11 @@
                 <span>🟢 Estado</span>
                 <span id="status-text" style="font-size: 11px; color: #48BB78; font-weight: 800;">Disponible</span>
               </div>
-              <div class="setting-item" data-index="4" style="color: #E53E3E;">
+              <div class="setting-item" data-index="4">
+                <span>🎭 Tema</span>
+                <span id="theme-text" style="font-size: 11px; color: #805AD5; font-weight: 800;">Pastel</span>
+              </div>
+              <div class="setting-item" data-index="5" style="color: #E53E3E;">
                 <span>🗑️ Reiniciar</span>
               </div>
             </div>
@@ -2326,6 +2428,11 @@
           <div class="selector-modal" id="status-selector">
             <div class="selector-title">🟢 Estado</div>
             <div class="selector-grid" id="status-grid"></div>
+          </div>
+
+          <div class="selector-modal" id="theme-selector">
+            <div class="selector-title">🎭 Tema</div>
+            <div class="selector-grid" id="theme-grid"></div>
           </div>
 
           <div class="selector-modal" id="option-selector">
@@ -2590,6 +2697,12 @@ const TOKES_TYPES = [
   { id: 7, emoji: '💘', name: 'CRUSH', desc: 'Crush secreto', color: '#E53E8C' }
 ];
 
+const TEMAS = [
+  { id: 'pastel', label: 'Pastel', color: '#D4A5E6', emoji: '🎨', msg: '🎨 Pastel' },
+  { id: 'gas', label: 'GAS Caos', color: '#FF00A0', emoji: '🔥', msg: '🔥 GAS Caos' },
+  { id: 'neon', label: 'Neón Night', color: '#1F6FEB', emoji: '💠', msg: '💠 Neón Night' }
+];
+
 const PROVINCIAS = ['Valencia', 'Madrid', 'Barcelona', 'Sevilla', 'Málaga', 'Alicante'];
 const INSTITUTOS_POR_PROVINCIA = {
   'Valencia': ['IES Moncada', 'IES Benimaclet', 'IES Campanar', 'IES Patraix'],
@@ -2619,7 +2732,8 @@ const app = {
       vibracion: true,
       color: 0,
       status: 'disponible',
-      avatar: '🐱'
+      avatar: '🐱',
+      tema: 'pastel'
     },
     inSelector: false,
     selectorType: null,
@@ -2701,6 +2815,7 @@ const app = {
       this.state.settings.color = parseInt(localStorage.getItem('colorIndex')) || 0;
       this.state.settings.status = localStorage.getItem('status') || 'disponible';
       this.state.settings.avatar = localStorage.getItem('avatar') || '🐱';
+      this.state.settings.tema = localStorage.getItem('tema') || 'pastel';
       this.state.toquesRestantes = parseInt(localStorage.getItem("toquesRestantes")) || 30;
       this.state.registroInstituto.provincia = localStorage.getItem('provincia') || '';
       this.state.registroInstituto.instituto = localStorage.getItem('instituto') || '';
@@ -2718,6 +2833,7 @@ const app = {
     }
     
     this.applyColor();
+    this.applyTheme();
     this.updateClock();
     setInterval(() => this.updateClock(), 60000);
     
@@ -2912,6 +3028,14 @@ const app = {
     }
   },
 
+  applyTheme() {
+    const screen = document.querySelector('.screen');
+    if (!screen) return;
+    screen.classList.toggle('theme-gas', this.state.settings.tema === 'gas');
+    screen.classList.toggle('theme-neon', this.state.settings.tema === 'neon');
+    screen.classList.toggle('theme-pastel', this.state.settings.tema === 'pastel');
+  },
+
   updateColaBadge() {
     const badge = document.getElementById('cola-badge');
     const count = document.getElementById('cola-count');
@@ -3095,6 +3219,7 @@ const app = {
     this.state.settings.color = index;
     localStorage.setItem('colorIndex', index);
     this.applyColor();
+    this.applyTheme();
     
     const c = COLORES[index];
     this.showMsg(c ? `🎨 ${c.name}` : 'Color cambiado');
@@ -4293,10 +4418,9 @@ const app = {
     
     container.innerHTML = TOKES_TYPES.map((t, i) => `
       <div class="toke-item t${t.id} ${i === 0 ? 'focused' : ''}" data-index="${i}">
-        <span style="font-size: 26px;">${t.emoji}</span>
         <div style="flex: 1;">
-          <div style="font-weight: 800; color: ${t.color}; font-size: 14px;">${t.name}</div>
-          <div style="font-size: 11px; color: #718096;">${t.desc}</div>
+          <div style="font-weight: 800; color: ${t.color}; font-size: 14px; text-align:center;">${t.emoji} ${t.name}</div>
+          <div style="font-size: 11px; color: #718096; text-align:center;">${t.desc}</div>
         </div>
         <span style="font-size: 10px; background: #EDF2F7; padding: 2px 6px; border-radius: 10px; color: #4A5568;">4</span>
       </div>
@@ -4462,6 +4586,7 @@ const app = {
     const vibraEl = document.getElementById('toggle-vibra');
     const colorEl = document.getElementById('color-preview');
     const statusEl = document.getElementById('status-text');
+    const themeEl = document.getElementById('theme-text');
     
     if (sonidoEl) sonidoEl.classList.toggle('active', this.state.settings.sonido);
     if (vibraEl) vibraEl.classList.toggle('active', this.state.settings.vibracion);
@@ -4473,6 +4598,12 @@ const app = {
     if (statusEl) {
       statusEl.textContent = st ? st.label : 'Disponible';
       statusEl.style.color = st ? st.color : '#48BB78';
+    }
+
+    if (themeEl) {
+      const temaActual = TEMAS.find(t => t.id === this.state.settings.tema) || TEMAS[0];
+      themeEl.textContent = temaActual.label;
+      themeEl.style.color = temaActual.id === 'gas' ? '#FF00A0' : (temaActual.id === 'neon' ? '#1F6FEB' : '#805AD5');
     }
   },
 
@@ -4498,6 +4629,9 @@ const app = {
         this.showStatusSelector();
         break;
       case 4:
+        this.showThemeSelector();
+        break;
+      case 5:
         this.mostrarConfirmReinicio();
         break;
     }
@@ -4575,6 +4709,35 @@ const app = {
     modal.classList.add('active');
   },
 
+
+
+  showThemeSelector() {
+    this.state.inSelector = true;
+    this.state.selectorType = 'theme';
+    const currentIndex = TEMAS.findIndex(t => t.id === this.state.settings.tema);
+    this.state.selectorIndex = currentIndex >= 0 ? currentIndex : 0;
+
+    const modal = document.getElementById('theme-selector');
+    const grid = document.getElementById('theme-grid');
+    if (!modal || !grid) return;
+
+    grid.innerHTML = TEMAS.map((t, i) => `
+      <div class="selector-item ${i === this.state.selectorIndex ? 'focused' : ''}" 
+           style="background: ${t.color};" 
+           data-index="${i}"
+           data-name="${t.label}"
+           onclick="app.selectThemeDirect(${i})">
+        <div style="font-size: 30px;">${t.emoji}</div>
+      </div>
+    `).join('');
+
+    modal.classList.add('active');
+  },
+
+  selectThemeDirect(index) {
+    this.state.selectorIndex = index;
+    this.selectFromSelector();
+  },
   handleTouchStatus(event, index) {
     event.preventDefault();
     const now = Date.now();
@@ -4616,6 +4779,10 @@ const app = {
       else if (dir === 'left' && this.state.selectorIndex % cols === 1) this.state.selectorIndex--;
       else if (dir === 'down' && this.state.selectorIndex < 2) this.state.selectorIndex += 2;
       else if (dir === 'up' && this.state.selectorIndex >= 2) this.state.selectorIndex -= 2;
+    } else if (this.state.selectorType === 'theme') {
+      const last = TEMAS.length - 1;
+      if ((dir === 'right' || dir === 'down') && this.state.selectorIndex < last) this.state.selectorIndex++;
+      else if ((dir === 'left' || dir === 'up') && this.state.selectorIndex > 0) this.state.selectorIndex--;
     } else if (this.state.selectorType === 'options') {
       if (dir === 'down' && this.state.selectorIndex < this.state.optionItems.length - 1) this.state.selectorIndex++;
       else if (dir === 'up' && this.state.selectorIndex > 0) this.state.selectorIndex--;
@@ -4633,6 +4800,7 @@ const app = {
       this.state.settings.color = this.state.selectorIndex;
       localStorage.setItem('colorIndex', this.state.selectorIndex);
       this.applyColor();
+    this.applyTheme();
       const c = COLORES[this.state.selectorIndex];
       this.showMsg(c ? `🎨 ${c.name}` : 'Color cambiado');
       this.updateSettingsUI();
@@ -4644,6 +4812,13 @@ const app = {
         this.showMsg(`${s.emoji} ${s.label}`);
         this.updateHome();
       }
+      this.updateSettingsUI();
+    } else if (this.state.selectorType === 'theme') {
+      const selectedTheme = TEMAS[this.state.selectorIndex] || TEMAS[0];
+      this.state.settings.tema = selectedTheme.id;
+      localStorage.setItem('tema', this.state.settings.tema);
+      this.applyTheme();
+      this.showMsg(selectedTheme.msg);
       this.updateSettingsUI();
     } else if (this.state.selectorType === 'options') {
       const value = this.state.optionItems[this.state.selectorIndex];
