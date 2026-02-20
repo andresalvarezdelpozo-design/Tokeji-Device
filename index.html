@@ -222,7 +222,7 @@
       background: var(--screen-bg);
       height: 100%;
       width: 100%;
-      padding: 20px;
+      padding: 12px;
     }
 
     .consent-title {
@@ -628,13 +628,14 @@
     }
 
     #page-tokes .list-container {
-      gap: 6px;
-      padding: 0 4px 4px;
+      gap: 4px;
+      padding: 0 4px 2px;
+      overflow: hidden;
     }
 
     #page-tokes .toke-item {
-      min-height: 42px;
-      padding: 6px 8px;
+      min-height: 38px;
+      padding: 4px 8px;
       border-radius: 10px;
     }
 
@@ -791,7 +792,7 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      max-height: 120px;
+      max-height: 94px;
       cursor: pointer;
       position: relative;
       overflow: hidden;
@@ -1032,8 +1033,8 @@
       background: rgba(255,255,255,0.95);
       border: 3px solid transparent;
       border-radius: 16px;
-      padding: 10px 6px;
-      font-size: 24px;
+      padding: 8px 4px;
+      font-size: 20px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -2515,7 +2516,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
 <script>
-const BACK = "https://tokeji-device.onrender.com";
+const BACK = window.__BACKEND_URL__ || "";
 
 const RAREZAS_TODEX = {
   1: 'comun', 2: 'mitico', 3: 'raro', 4: 'comun', 5: 'raro', 6: 'epico', 7: 'legendario', 8: 'mitico', 9: 'mitico', 10: 'raro',
@@ -2703,6 +2704,9 @@ const app = {
     selectedVariante: null,
     selectedDestinoEspecial: null,
     institutoDraft: { provincia: 'madrid', instituto: 'ies_san_isidro', curso: '1eso' },
+    rachas: {},
+    loadingRachas: false,
+    lastRachasKey: '',
     settings: {
       sonido: true,
       vibracion: true,
@@ -4281,6 +4285,8 @@ const app = {
       tipo,
       de: tipo === 'anonimo' ? null : this.miID,
       para: all ? null : user?.id,
+      emisor: tipo === 'anonimo' ? null : this.miID,
+      receptor: all ? null : user?.id,
       para_instituto: all,
       avatarRemitente: this.state.settings.avatar,
       nombreRemitente: localStorage.getItem('miNombre') || 'Amigo',
@@ -4293,6 +4299,8 @@ const app = {
       });
       if (!response.ok) throw new Error('No se pudo enviar');
       this.showMsg('✅ Enviado');
+      this.state.lastRachasKey = '';
+      if (this.state.currentPage === 'murmullo') this.renderMurmullo();
       this.showPage('home');
     } catch (e) {
       this.showMsg('❌ ' + e.message);
@@ -4324,11 +4332,33 @@ const app = {
     `;
   },
 
+  ensureRachas(ids) {
+    const key = ids.join(',');
+    if (!key || key === this.state.lastRachasKey || this.state.loadingRachas) return;
+    this.state.loadingRachas = true;
+    this.state.lastRachasKey = key;
+    fetch(`${BACK}/rachas?userId=${this.miID}&ids=${encodeURIComponent(key)}`)
+      .then((r) => r.json())
+      .then((data) => {
+        if (data && data.ok && data.rachas) {
+          this.state.rachas = data.rachas;
+          if (['contacts', 'enviar'].includes(this.state.currentPage)) {
+            if (this.state.currentPage === 'contacts') this.renderContacts();
+            if (this.state.currentPage === 'enviar') this.renderEnviarList();
+          }
+        }
+      })
+      .catch(() => {})
+      .finally(() => { this.state.loadingRachas = false; });
+  },
+
   getStreakBadge(id) {
-    const seed = id.length % 5;
-    if (seed >= 3) return '<span class="streak-badge" style="background:#C6F6D5;color:#276749;">🔥3</span>';
-    if (seed === 2) return '<span class="streak-badge" style="background:#FEEBC8;color:#C05621;">🟡2</span>';
-    if (seed === 1) return '<span class="streak-badge" style="background:#EDF2F7;color:#718096;">💔</span>';
+    const info = this.state.rachas[id];
+    if (!info) return '<span class="streak-badge" style="background:#E6FFFA;color:#2C7A7B;">🌱</span>';
+    if (info.estado === 'rota') return '<span class="streak-badge" style="background:#EDF2F7;color:#718096;">💔</span>';
+    const c = info.contador || 1;
+    if (c >= 3) return `<span class="streak-badge" style="background:#C6F6D5;color:#276749;">🔥${c}</span>`;
+    if (c >= 2) return `<span class="streak-badge" style="background:#FEEBC8;color:#C05621;">🟡${c}</span>`;
     return '<span class="streak-badge" style="background:#E6FFFA;color:#2C7A7B;">🌱</span>';
   },
 
@@ -4380,6 +4410,7 @@ const app = {
     }
     
     const amigos = Object.entries(this.contactos);
+    this.ensureRachas(amigos.map(([id]) => id));
     let html = ``;
     
     if (amigos.length === 0) {
@@ -4415,6 +4446,7 @@ const app = {
     if (!container) return;
     
     const lista = Object.entries(this.contactos);
+    this.ensureRachas(lista.map(([id]) => id));
     
     if (lista.length === 0) {
       container.innerHTML = '<div style="text-align: center; color: #A0AEC0; padding: 35px; font-size: 12px;">No tienes amigos.<br>¡Ve a Mi QR y escanea códigos!</div>';
@@ -4883,8 +4915,11 @@ const app = {
     const payload = {
       de: this.miID,
       para: paraId,
+      emisor: this.miID,
+      receptor: paraId,
       num: this.state.selectedCategoria,
       contexto: contextoIndex,
+      tipo: 'toque',
       avatarRemitente: this.state.settings.avatar,
       nombreRemitente: localStorage.getItem('miNombre') || 'Amigo',
       ...this.getContextoInstituto()
@@ -4933,6 +4968,8 @@ const app = {
         
         this.state.selectedCategoria = null;
         this.state.selectedVariante = null;
+        this.state.lastRachasKey = '';
+        if (this.state.currentPage === 'murmullo') this.renderMurmullo();
         
         setTimeout(() => {
           this.ocultarAnimacionEnvio();
