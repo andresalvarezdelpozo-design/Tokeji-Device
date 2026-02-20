@@ -363,12 +363,10 @@
     #page-color {
       justify-content: flex-start;
       align-items: center;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      background-size: 400% 400%;
-      animation: gradientShift 8s ease infinite;
+      background: linear-gradient(180deg, #F7E9F6 0%, #E8F2FF 100%);
       height: 100%;
       width: 100%;
-      padding: 30px 20px 20px 20px;
+      padding: 24px 16px 16px 16px;
     }
 
     @keyframes gradientShift {
@@ -380,20 +378,21 @@
     .color-setup-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 15px;
+      gap: 10px;
       width: 100%;
-      max-width: 220px;
-      max-height: 320px;
+      max-width: 190px;
+      max-height: 280px;
       overflow-y: auto;
-      margin-top: 10px;
-      padding: 10px;
+      margin-top: 8px;
+      padding: 6px;
       -webkit-overflow-scrolling: touch;
+      justify-items: center;
     }
 
     .color-setup-item {
-      width: 85px;
-      height: 85px;
-      border: 4px solid white;
+      width: 68px;
+      height: 68px;
+      border: 3px solid white;
       border-radius: 16px;
       cursor: pointer;
       transition: all 0.3s ease;
@@ -972,6 +971,27 @@
       box-shadow: 0 0 0 4px rgba(255,107,157,0.5), 0 4px 0 rgba(0,0,0,0.2);
     }
 
+    #page-curso-secreto .selector-grid {
+      max-width: 190px;
+      gap: 8px;
+      padding: 4px;
+      justify-items: center;
+      margin: 6px auto 0;
+    }
+
+    #page-curso-secreto .selector-item {
+      width: 72px;
+      height: 54px;
+      border-width: 2px;
+      border-radius: 12px;
+      box-shadow: 0 2px 0 rgba(0,0,0,0.15);
+      padding: 6px;
+    }
+
+    #page-curso-secreto .selector-item::after {
+      content: '';
+    }
+
     .response-modal {
       position: absolute;
       top: 0;
@@ -1002,17 +1022,17 @@
     .response-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
+      gap: 8px;
       width: 100%;
-      max-width: 200px;
+      max-width: 176px;
     }
 
     .response-btn {
       background: rgba(255,255,255,0.95);
-      border: 3px solid transparent;
-      border-radius: 16px;
-      padding: 15px;
-      font-size: 32px;
+      border: 2px solid transparent;
+      border-radius: 12px;
+      padding: 8px 6px;
+      font-size: 23px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -1028,7 +1048,7 @@
     }
 
     .response-btn .label {
-      font-size: 10px;
+      font-size: 9px;
       font-weight: 800;
       color: #2D3748;
       margin-top: 5px;
@@ -1557,18 +1577,18 @@
     .respuestas-container {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 10px;
+      gap: 8px;
       width: 100%;
-      max-width: 260px;
+      max-width: 220px;
       margin-top: auto;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
 
     .respuesta-option {
       background: rgba(255,255,255,0.95);
-      border: 3px solid transparent;
-      border-radius: 12px;
-      padding: 12px 8px;
+      border: 2px solid transparent;
+      border-radius: 10px;
+      padding: 7px 6px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -1591,7 +1611,7 @@
     }
 
     .respuesta-option .emoji-resp {
-      font-size: 28px;
+      font-size: 20px;
       transition: transform 0.2s;
     }
 
@@ -1600,7 +1620,7 @@
     }
 
     .respuesta-option .texto-resp {
-      font-size: 11px;
+      font-size: 9px;
       font-weight: 800;
       color: #2D3748;
     }
@@ -3442,6 +3462,23 @@ const app = {
     }
 
     const { type, index } = this.state.focus;
+
+    if (this.state.currentPage === 'settings') {
+      if (this.state.focus.index > 0) {
+        this.state.focus.index--;
+        this.updateSettingsFocus();
+        this.scrollToFocused('settings-list');
+      }
+      this.vibrar();
+      return;
+    }
+
+    if (this.state.currentPage === 'combates') {
+      this.state.focus.index = this.state.focus.index === 0 ? 1 : 0;
+      this.updateCombatesFocus();
+      this.vibrar();
+      return;
+    }
     
     switch(type) {
       case 'avatar':
@@ -3595,6 +3632,24 @@ const app = {
     }
 
     const { type, index } = this.state.focus;
+
+    if (this.state.currentPage === 'settings') {
+      const maxSettings = document.querySelectorAll('#settings-list .setting-item').length - 1;
+      if (this.state.focus.index < maxSettings) {
+        this.state.focus.index++;
+        this.updateSettingsFocus();
+        this.scrollToFocused('settings-list');
+      }
+      this.vibrar();
+      return;
+    }
+
+    if (this.state.currentPage === 'combates') {
+      this.state.focus.index = this.state.focus.index === 0 ? 1 : 0;
+      this.updateCombatesFocus();
+      this.vibrar();
+      return;
+    }
     
     switch(type) {
       case 'avatar':
