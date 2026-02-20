@@ -2753,6 +2753,8 @@ const app = {
     
     setTimeout(() => this.reintentarRespuestasPendientes(), 10000);
     
+    this.setupControls();
+    this.bindClickNavigation();
     this.showPage('splash', false);
   },
 
@@ -2779,6 +2781,21 @@ const app = {
     document.addEventListener('dblclick', (e) => {
       e.preventDefault();
     }, { passive: false });
+  },
+
+  setupControls() {
+    document.addEventListener('keydown', (event) => {
+      const key = event.key;
+      if (['ArrowUp','ArrowDown','ArrowLeft','ArrowRight','Enter','Escape','Backspace','c','C'].includes(key)) {
+        event.preventDefault();
+      }
+      if (key === 'ArrowUp') this.handleUp();
+      else if (key === 'ArrowDown') this.handleDown();
+      else if (key === 'ArrowLeft') this.handleLeft();
+      else if (key === 'ArrowRight') this.handleRight();
+      else if (key === 'Enter') this.handleOK();
+      else if (key === 'Escape' || key === 'Backspace' || key === 'c' || key === 'C') this.handleBack();
+    });
   },
 
   handleTouchStart(event, direction) {
@@ -3063,6 +3080,54 @@ const app = {
   updateConsentFocus() {
     document.querySelectorAll('.consent-btn').forEach((btn, i) => {
       btn.classList.toggle('focused', i === this.state.focus.index);
+    });
+  },
+
+  bindClickNavigation() {
+    document.addEventListener('click', (event) => {
+      const menuItem = event.target.closest('.menu-item');
+      if (menuItem && this.state.currentPage === 'menu') {
+        this.state.focus = { type: 'menu', index: Number(menuItem.dataset.index || 0) };
+        this.handleOK();
+        return;
+      }
+
+      const tokeItem = event.target.closest('.toke-item');
+      if (tokeItem && this.state.currentPage === 'tokes') {
+        this.state.focus = { type: 'tokes', index: Number(tokeItem.dataset.index || 0) };
+        this.handleOK();
+        return;
+      }
+
+      const varianteItem = event.target.closest('.variante-item');
+      if (varianteItem && this.state.currentPage === 'variantes') {
+        this.state.focus = { type: 'variantes', index: Number(varianteItem.dataset.index || 0) };
+        this.handleOK();
+        return;
+      }
+
+      const institutoOption = event.target.closest('.instituto-option');
+      if (institutoOption && this.state.currentPage === 'instituto') {
+        this.state.focus = { type: 'instituto', index: INSTITUTO_FIELDS.findIndex(f => f.key === institutoOption.dataset.key) };
+        this.state.institutoDraft[institutoOption.dataset.key] = institutoOption.dataset.value;
+        this.renderInstituto();
+        return;
+      }
+
+      const institutoRow = event.target.closest('#instituto-filter-list .list-item');
+      if (institutoRow && this.state.currentPage === 'instituto-filter') {
+        this.state.focus = { type: 'institutoFilter', index: Number(institutoRow.dataset.index || 0) };
+        this.updateInstitutoFilterFocus();
+        this.handleOK();
+        return;
+      }
+
+      const combateCard = event.target.closest('.combate-card');
+      if (combateCard && this.state.currentPage === 'combates') {
+        this.state.focus = { type: 'combates', index: Number(combateCard.dataset.index || 0) };
+        this.updateCombatesFocus();
+        this.handleOK();
+      }
     });
   },
 
