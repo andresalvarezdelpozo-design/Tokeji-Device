@@ -25,10 +25,6 @@
       --device-dark: #FF4785;
       --device-light: #FFB8D0;
       --screen-bg: #FFF5F7;
-      --screen-text: #5A4A6A;
-      --surface-bg: rgba(255,255,255,0.72);
-      --surface-border: 1px solid rgba(255,255,255,0.5);
-      --focus-ring: 0 0 0 3px rgba(212,165,230,0.55);
     }
 
     html, body {
@@ -49,57 +45,6 @@
       position: fixed;
       width: 100%;
       height: 100%;
-    }
-
-
-
-    body.theme-pastel .screen {
-      background: linear-gradient(180deg, #E8D5F2 0%, #F2D5E8 100%);
-    }
-
-    body.theme-gas-caos {
-      font-family: 'Fredoka One', cursive;
-      letter-spacing: 0.5px;
-    }
-
-    body.theme-gas-caos .screen {
-      background: linear-gradient(180deg, #FF6B35 0%, #F7931E 50%, #FF0000 100%);
-      color: #fff;
-    }
-
-    body.theme-gas-caos .setup-title,
-    body.theme-gas-caos .home-name,
-    body.theme-gas-caos .status-bar,
-    body.theme-gas-caos .list-item,
-    body.theme-gas-caos .toke-item,
-    body.theme-gas-caos .setting-item,
-    body.theme-gas-caos .menu-item,
-    body.theme-gas-caos .combate-card {
-      color: #fff !important;
-      text-shadow: 0 0 10px rgba(255,255,255,0.75);
-    }
-
-    body.theme-gas-caos .menu-item,
-    body.theme-gas-caos .list-item,
-    body.theme-gas-caos .setting-item,
-    body.theme-gas-caos .combate-card,
-    body.theme-gas-caos .toke-item {
-      border: 3px solid rgba(255,0,160,0.8) !important;
-      border-radius: 15px;
-      background: rgba(0,0,0,0.18) !important;
-      box-shadow: 0 0 20px rgba(255,0,160,0.5);
-      transition: all 0.35s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-    }
-
-    body.theme-gas-caos .focused {
-      transform: scale(1.08) !important;
-      box-shadow: 0 0 24px #00ffff !important;
-      animation: caosPulse 1s ease-in-out infinite;
-    }
-
-    @keyframes caosPulse {
-      0%,100% { filter: brightness(1); }
-      50% { filter: brightness(1.25); }
     }
 
     .device {
@@ -434,7 +379,7 @@
 
     .color-setup-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(2, 1fr);
       gap: 15px;
       width: 100%;
       max-width: 220px;
@@ -2168,15 +2113,30 @@
           <div class="page" id="page-menu">
             <div class="setup-title">Menú</div>
             <div class="menu-grid" id="menu-grid">
-              <div class="menu-item focused" data-index="0"><span class="icon">💌</span><span>Tokes</span></div>
-              <div class="menu-item" data-index="1"><span class="icon">🏫</span><span>Inst.</span></div>
-              <div class="menu-item" data-index="2"><span class="icon">👥</span><span>Amigos</span></div>
-              <div class="menu-item" data-index="3"><span class="icon">📖</span><span>ToDox</span></div>
-              <div class="menu-item" data-index="4"><span class="icon">🔮</span><span>Murm.</span></div>
-              <div class="menu-item" data-index="5"><span class="icon">📱</span><span>QR</span></div>
-              <div class="menu-item" data-index="6"><span class="icon">⚔️</span><span>Combate</span></div>
-              <div class="menu-item" data-index="7"><span class="icon">🛒</span><span>Tienda</span></div>
-              <div class="menu-item" data-index="8"><span class="icon">⚙️</span><span>Ajustes</span></div>
+              <div class="menu-item focused" data-index="0">
+                <span class="icon">💌</span>
+                <span>Tokes</span>
+              </div>
+              <div class="menu-item" data-index="1">
+                <span class="icon">👥</span>
+                <span>Amigos</span>
+              </div>
+              <div class="menu-item" data-index="2">
+                <span class="icon">📱</span>
+                <span>Mi QR</span>
+              </div>
+              <div class="menu-item" data-index="3">
+                <span class="icon">📖</span>
+                <span>ToDox</span>
+              </div>
+              <div class="menu-item" data-index="4">
+                <span class="icon">⚔️</span>
+                <span>Combates</span>
+              </div>
+              <div class="menu-item" data-index="5">
+                <span class="icon">⚙️</span>
+                <span>Ajustes</span>
+              </div>
             </div>
           </div>
 
@@ -2201,21 +2161,6 @@
           <div class="page" id="page-contacts">
             <div class="setup-title">Amigos</div>
             <div class="list-container" id="contacts-list"></div>
-          </div>
-
-          <div class="page" id="page-instituto">
-            <div class="setup-title">🏫 Instituto</div>
-            <div class="list-container" id="instituto-list"><div class="list-item focused">Cargando...</div></div>
-          </div>
-
-          <div class="page" id="page-murmullo">
-            <div class="setup-title">🔮 Murmullo</div>
-            <div class="list-container" id="murmullo-list">
-              <div class="list-item focused"><span>💜 Sobres hoy</span><strong id="murm-sobres">0</strong></div>
-              <div class="list-item"><span>🔥 Rachas activas</span><strong id="murm-rachas">0</strong></div>
-              <div class="list-item"><span>👀 ToDox visitados</span><strong id="murm-todox">0</strong></div>
-              <div class="list-item"><span>🆕 Nuevos hoy</span><strong id="murm-nuevos">0</strong></div>
-            </div>
           </div>
 
           <div class="page" id="page-qr">
@@ -2268,14 +2213,10 @@
                 <div id="color-preview" style="width: 24px; height: 24px; background: #FF6B9D; border-radius: 50%; border: 2px solid white; box-shadow: 0 2px 5px rgba(0,0,0,0.2);"></div>
               </div>
               <div class="setting-item" data-index="3">
-                <span>🎭 Tema</span>
-                <span id="theme-text" style="font-size: 11px; color: #805AD5; font-weight: 800;">Pastel</span>
-              </div>
-              <div class="setting-item" data-index="4">
                 <span>🟢 Estado</span>
                 <span id="status-text" style="font-size: 11px; color: #48BB78; font-weight: 800;">Disponible</span>
               </div>
-              <div class="setting-item" data-index="5" style="color: #E53E3E;">
+              <div class="setting-item" data-index="4" style="color: #E53E3E;">
                 <span>🗑️ Reiniciar</span>
               </div>
             </div>
@@ -2291,7 +2232,7 @@
           <!-- NUEVO: Selector de emoji para combate (dentro de la pantalla) -->
           <div class="selector-emoji-screen" id="selector-emoji-screen">
             <div class="setup-title">🎯 Elige tu guerrero</div>
-            <div class="todex-grid" id="selector-emoji-grid" style="grid-template-columns: repeat(5, 1fr); gap: 8px; max-height: 240px;"></div>
+            <div class="todex-grid" id="selector-emoji-grid" style="grid-template-columns: repeat(4, 1fr); gap: 8px; max-height: 280px;"></div>
             <div style="margin-top: 10px; font-size: 11px; color: #718096;">Selecciona tu emoji más fuerte</div>
           </div>
 
@@ -2310,7 +2251,7 @@
           <!-- NUEVO: Selector de defensa (dentro de la pantalla) -->
           <div class="selector-emoji-screen" id="selector-defensa-screen">
             <div class="setup-title">🛡️ Elige defensor</div>
-            <div class="todex-grid" id="selector-defensa-grid" style="grid-template-columns: repeat(5, 1fr); gap: 8px; max-height: 240px;"></div>
+            <div class="todex-grid" id="selector-defensa-grid" style="grid-template-columns: repeat(4, 1fr); gap: 8px; max-height: 280px;"></div>
             <div style="margin-top: 10px; font-size: 11px; color: #718096;">¿Qué emoji usarás para defenderte?</div>
           </div>
 
@@ -2322,11 +2263,6 @@
           <div class="selector-modal" id="status-selector">
             <div class="selector-title">🟢 Estado</div>
             <div class="selector-grid" id="status-grid"></div>
-          </div>
-
-          <div class="selector-modal" id="theme-selector">
-            <div class="selector-title">🎭 Tema</div>
-            <div class="selector-grid" id="theme-grid"></div>
           </div>
 
           <div class="response-modal" id="response-modal">
@@ -2577,13 +2513,11 @@ const ESTADOS = [
 ];
 
 const TOKES_TYPES = [
-  { id: 1, emoji: '🔥', name: 'Fire', desc: '3/4', color: '#E53E3E' },
-  { id: 2, emoji: '💕', name: 'Amor', desc: '2/4', color: '#D53F8C' },
-  { id: 3, emoji: '💪', name: 'Ánimo', desc: '4/4', color: '#38A169' },
-  { id: 4, emoji: '📅', name: 'Planes', desc: '1/4', color: '#D69E2E' },
-  { id: 5, emoji: '🚨', name: 'Urgente', desc: '2/4', color: '#3182CE' },
-  { id: 6, emoji: '💜', name: 'Anónimo', desc: '∞', color: '#805AD5' },
-  { id: 7, emoji: '💘', name: 'CRUSH', desc: '1/día', color: '#D69E2E' }
+  { id: 1, emoji: '🔥', name: 'On Fire', desc: '¡Estás imparable!', color: '#E53E3E' },
+  { id: 2, emoji: '💕', name: 'Crush', desc: 'Pienso en ti', color: '#D53F8C' },
+  { id: 3, emoji: '💪', name: 'Ánimo', desc: '¡Tú puedes!', color: '#38A169' },
+  { id: 4, emoji: '📅', name: 'Planes', desc: '¿Quedamos?', color: '#D69E2E' },
+  { id: 5, emoji: '🚨', name: 'Urgente', desc: '¡Ayuda!', color: '#3182CE' }
 ];
 
 const EMOJIS_LIST = ['😊','❤️','👍','🔥','💯','🤥','👾','💕','🚀','🎯','🦾','🙌','👏','💋','🐻','🐝','🌈','☀️','🌙','⭐','🌸','📸','🚗','🌷','🍀','🍕','👅','🍟','🌮','🍰','🎂','🍫','☕','🥤','🏀','⚽','🎾','🏆','🎮','🎲','🎸','🎺','🎨','📚','💡','🔧','😱','📱','💻','🛸','🥷','😇','🧟‍♂️','👽','🎩','🧙','🧚','🧜','💃🏻','🦋','🦅','🦈','🐅','🐘','🦒','🦏','🌍','📦','🏴‍☠️','✨','🚨','👑','🦄','🦁','🧌','🦉','🐣','🐉','🐲','🦕','🦖','🌋','🗿','🪄','⚡','💀','👻','🤢','🤡','🎪','🍾','🎆','🎇','🫶','🏃‍♂️','🧟‍♀️','🤖','🧊','😈','🔫','💅','🎐','🎀','🎁','🎰','✈️','🥵','🥶','⌚️','⚓️','🛁','🪒','🪤','💣','🏍️','🍒','🌪️','👙','🧩','🍪','🏎️','🎓','🧸','✂️','🕳️','❤️‍🔥','🥳','⚰️','🎈','🎉','👩🏻‍❤️‍👨','🦊','💦','🚪','🎎','⚠️','🛌','🤮','🫡','💎','🛹','💸','💵','💊','💶','🎟️','⚜️','💳','💿','📀'];
@@ -2604,8 +2538,7 @@ const app = {
       vibracion: true,
       color: 0,
       status: 'disponible',
-      avatar: '🐱',
-      theme: 'pastel'
+      avatar: '🐱'
     },
     inSelector: false,
     selectorType: null,
@@ -2637,8 +2570,7 @@ const app = {
       enSelectorDefensa: false,
       defensaIndex: 0
     },
-    pollingCombates: null,
-    combateAnimTimer: null
+    pollingCombates: null
   },
   
   contactos: {},
@@ -2677,7 +2609,6 @@ const app = {
       this.state.settings.color = parseInt(localStorage.getItem('colorIndex')) || 0;
       this.state.settings.status = localStorage.getItem('status') || 'disponible';
       this.state.settings.avatar = localStorage.getItem('avatar') || '🐱';
-      this.state.settings.theme = localStorage.getItem('theme') || 'pastel';
       this.state.toquesRestantes = parseInt(localStorage.getItem("toquesRestantes")) || 30;
     } catch(e) {
       this.debug('Error cargando datos: ' + e.message);
@@ -2692,7 +2623,6 @@ const app = {
     }
     
     this.applyColor();
-    this.applyTheme();
     this.updateClock();
     setInterval(() => this.updateClock(), 60000);
     
@@ -2887,12 +2817,6 @@ const app = {
     }
   },
 
-  applyTheme() {
-    const t = this.state.settings.theme === 'gas_caos' ? 'theme-gas-caos' : 'theme-pastel';
-    document.body.classList.remove('theme-pastel', 'theme-gas-caos');
-    document.body.classList.add(t);
-  },
-
   updateColaBadge() {
     const badge = document.getElementById('cola-badge');
     const count = document.getElementById('cola-count');
@@ -2926,7 +2850,6 @@ const app = {
     document.getElementById('desafio-recibido-screen').classList.remove('active');
     document.getElementById('selector-defensa-screen').classList.remove('active');
     document.getElementById('combate-vs-screen').classList.remove('active');
-    if (this.state.combateAnimTimer) { clearTimeout(this.state.combateAnimTimer); this.state.combateAnimTimer = null; }
     
     if (page === 'home') {
       this.updateColaBadge();
@@ -2980,14 +2903,6 @@ const app = {
         this.renderContacts();
         this.state.focus = { type: 'contacts', index: 0 };
         this.updateContactsFocus();
-        break;
-      case 'instituto':
-        this.renderInstituto();
-        this.state.focus = { type: 'contacts', index: 0 };
-        break;
-      case 'murmullo':
-        this.renderMurmullo();
-        this.state.focus = { type: 'contacts', index: 0 };
         break;
       case 'todox':
         this.renderTodex();
@@ -3070,7 +2985,6 @@ const app = {
     this.state.settings.color = index;
     localStorage.setItem('colorIndex', index);
     this.applyColor();
-    this.applyTheme();
     
     const c = COLORES[index];
     this.showMsg(c ? `🎨 ${c.name}` : 'Color cambiado');
@@ -3318,17 +3232,12 @@ const app = {
         this.showPage('menu');
         break;
       case 'menu':
-        const items = ['tokes', 'instituto', 'contacts', 'todox', 'murmullo', 'qr', 'combates', 'home', 'settings'];
-        this.showPage(items[focus.index] || 'home');
+        const items = ['tokes', 'contacts', 'qr', 'todox', 'combates', 'settings'];
+        this.showPage(items[focus.index]);
         break;
       case 'tokes':
         this.state.selectedCategoria = TOKES_TYPES[focus.index].id;
-        if (this.state.selectedCategoria === 6 || this.state.selectedCategoria === 7) {
-          this.showMsg(this.state.selectedCategoria === 6 ? '💜 Modo anónimo activo' : '💘 Modo CRUSH activo');
-          this.showPage('enviar');
-        } else {
-          this.showPage('variantes');
-        }
+        this.showPage('variantes');
         break;
       case 'variantes':
         const variantes = CONTEXTOS_TOKES[this.state.selectedCategoria];
@@ -3385,8 +3294,8 @@ const app = {
     
     // Navegación en selector de emoji para combate
     if (this.state.combate.enSelectorEmoji) {
-      if (this.state.combate.selectorEmojiIndex >= 5) {
-        this.state.combate.selectorEmojiIndex -= 5;
+      if (this.state.combate.selectorEmojiIndex >= 4) {
+        this.state.combate.selectorEmojiIndex -= 4;
         this.updateSelectorEmojiFocus();
         this.scrollToFocused('selector-emoji-grid');
       }
@@ -3395,8 +3304,8 @@ const app = {
 
     // Navegación en selector de defensa
     if (this.state.combate.enSelectorDefensa) {
-      if (this.state.combate.defensaIndex >= 5) {
-        this.state.combate.defensaIndex -= 5;
+      if (this.state.combate.defensaIndex >= 4) {
+        this.state.combate.defensaIndex -= 4;
         this.updateSelectorDefensaFocus();
         this.scrollToFocused('selector-defensa-grid');
       }
@@ -3445,8 +3354,8 @@ const app = {
         }
         break;
       case 'menu':
-        if (index >= 3) {
-          this.state.focus.index -= 3;
+        if (index >= 2) {
+          this.state.focus.index -= 2;
           this.state.menuIndex = this.state.focus.index;
           this.updateMenuFocus();
         }
@@ -3486,10 +3395,6 @@ const app = {
           this.scrollToFocused('todex-grid');
         }
         break;
-      case 'combates':
-        this.state.focus.index = index === 0 ? 1 : 0;
-        this.updateCombatesFocus();
-        break;
       case 'settings':
         if (index > 0) {
           this.state.focus.index--;
@@ -3519,8 +3424,8 @@ const app = {
     // Navegación en selector de emoji para combate
     if (this.state.combate.enSelectorEmoji) {
       const max = this.todex.captured.length - 1;
-      if (this.state.combate.selectorEmojiIndex < max - 4) {
-        this.state.combate.selectorEmojiIndex += 5;
+      if (this.state.combate.selectorEmojiIndex < max - 3) {
+        this.state.combate.selectorEmojiIndex += 4;
         if (this.state.combate.selectorEmojiIndex > max) this.state.combate.selectorEmojiIndex = max;
         this.updateSelectorEmojiFocus();
         this.scrollToFocused('selector-emoji-grid');
@@ -3531,8 +3436,8 @@ const app = {
     // Navegación en selector de defensa
     if (this.state.combate.enSelectorDefensa) {
       const max = this.todex.captured.length - 1;
-      if (this.state.combate.defensaIndex < max - 4) {
-        this.state.combate.defensaIndex += 5;
+      if (this.state.combate.defensaIndex < max - 3) {
+        this.state.combate.defensaIndex += 4;
         if (this.state.combate.defensaIndex > max) this.state.combate.defensaIndex = max;
         this.updateSelectorDefensaFocus();
         this.scrollToFocused('selector-defensa-grid');
@@ -3585,9 +3490,9 @@ const app = {
         }
         break;
       case 'menu':
-        if (index < 6) {
-          this.state.focus.index += 3;
-          if (this.state.focus.index > 8) this.state.focus.index = 8;
+        if (index < 4) {
+          this.state.focus.index += 2;
+          if (this.state.focus.index > 5) this.state.focus.index = 5;
           this.state.menuIndex = this.state.focus.index;
           this.updateMenuFocus();
         }
@@ -3631,11 +3536,13 @@ const app = {
         }
         break;
       case 'combates':
-        this.state.focus.index = index === 1 ? 0 : 1;
-        this.updateCombatesFocus();
+        if (index === 0) {
+          this.state.focus.index = 1;
+          this.updateCombatesFocus();
+        }
         break;
       case 'settings':
-        if (index < 5) {
+        if (index < 4) {
           this.state.focus.index++;
           this.updateSettingsFocus();
           this.scrollToFocused('settings-list');
@@ -3651,7 +3558,7 @@ const app = {
     
     // Navegación en selector de emoji para combate
     if (this.state.combate.enSelectorEmoji) {
-      if (this.state.combate.selectorEmojiIndex % 5 > 0) {
+      if (this.state.combate.selectorEmojiIndex % 4 > 0) {
         this.state.combate.selectorEmojiIndex--;
         this.updateSelectorEmojiFocus();
       }
@@ -3660,7 +3567,7 @@ const app = {
 
     // Navegación en selector de defensa
     if (this.state.combate.enSelectorDefensa) {
-      if (this.state.combate.defensaIndex % 5 > 0) {
+      if (this.state.combate.defensaIndex % 4 > 0) {
         this.state.combate.defensaIndex--;
         this.updateSelectorDefensaFocus();
       }
@@ -3720,7 +3627,7 @@ const app = {
         }
         break;
       case 'menu':
-        if (index % 3 !== 0) {
+        if (index % 2 !== 0) {
           this.state.focus.index--;
           this.state.menuIndex = this.state.focus.index;
           this.updateMenuFocus();
@@ -3741,7 +3648,7 @@ const app = {
     
     // Navegación en selector de emoji para combate
     if (this.state.combate.enSelectorEmoji) {
-      if (this.state.combate.selectorEmojiIndex % 5 < 4) {
+      if (this.state.combate.selectorEmojiIndex % 4 < 3) {
         const max = this.todex.captured.length - 1;
         if (this.state.combate.selectorEmojiIndex < max) {
           this.state.combate.selectorEmojiIndex++;
@@ -3753,7 +3660,7 @@ const app = {
 
     // Navegación en selector de defensa
     if (this.state.combate.enSelectorDefensa) {
-      if (this.state.combate.defensaIndex % 5 < 4) {
+      if (this.state.combate.defensaIndex % 4 < 3) {
         const max = this.todex.captured.length - 1;
         if (this.state.combate.defensaIndex < max) {
           this.state.combate.defensaIndex++;
@@ -3816,7 +3723,7 @@ const app = {
         }
         break;
       case 'menu':
-        if (index % 3 < 2 && index < 8) {
+        if (index % 2 === 0 && index < 5) {
           this.state.focus.index++;
           this.state.menuIndex = this.state.focus.index;
           this.updateMenuFocus();
@@ -3949,12 +3856,13 @@ const app = {
     if (!container) return;
     
     container.innerHTML = TOKES_TYPES.map((t, i) => `
-      <div class="toke-item t${Math.min(t.id,5)} ${i === 0 ? 'focused' : ''} ${t.id === 7 ? 'crush-row' : ''}" data-index="${i}" style="min-height:${t.id===7?52:42}px; margin-bottom:3px;">
-        <span style="font-size: 18px;">${t.emoji}</span>
+      <div class="toke-item t${t.id} ${i === 0 ? 'focused' : ''}" data-index="${i}">
+        <span style="font-size: 26px;">${t.emoji}</span>
         <div style="flex: 1;">
-          <div style="font-weight: 800; color: ${t.color}; font-size: 12px;">${t.name.toUpperCase()}</div>
+          <div style="font-weight: 800; color: ${t.color}; font-size: 14px;">${t.name}</div>
+          <div style="font-size: 11px; color: #718096;">${t.desc}</div>
         </div>
-        <span style="font-size: 10px; background: rgba(255,255,255,0.7); padding: 2px 6px; border-radius: 10px; color: #4A5568;">${t.desc}</span>
+        <span style="font-size: 10px; background: #EDF2F7; padding: 2px 6px; border-radius: 10px; color: #4A5568;">4</span>
       </div>
     `).join('');
   },
@@ -4029,39 +3937,6 @@ const app = {
       this.renderContacts();
       this.showMsg('✅ Amigo eliminado');
     }
-  },
-
-  async renderInstituto() {
-    const container = document.getElementById('instituto-list');
-    if (!container) return;
-    container.innerHTML = '<div class="list-item focused">Cargando instituto...</div>';
-    try {
-      const r = await fetch(`${BACK}/lista-instituto?userId=${this.miID}`);
-      const data = await r.json();
-      const comps = data.compañeros || [];
-      if (!comps.length) {
-        container.innerHTML = '<div class="list-item focused">Sin compañeros aún</div>';
-        return;
-      }
-      container.innerHTML = comps.map((c, i) => `<div class="list-item ${i===0?'focused':''}"><span style="font-size:24px;">${c.avatar||'👤'}</span><div style="flex:1;"><div style="font-weight:800;">${c.nombre}</div><div style="font-size:10px;opacity:0.8;">${c.curso||''}</div></div></div>`).join('');
-    } catch(e) {
-      container.innerHTML = '<div class="list-item focused">Error cargando instituto</div>';
-    }
-  },
-
-  async renderMurmullo() {
-    try {
-      const perfil = JSON.parse(localStorage.getItem('perfilInstituto') || '{}');
-      if (!perfil.instituto) return;
-      const r = await fetch(`${BACK}/estadisticas-instituto?instituto=${encodeURIComponent(perfil.instituto)}`);
-      const data = await r.json();
-      const st = data.estadisticas || {};
-      const set = (id,v) => { const el=document.getElementById(id); if (el) el.textContent = v ?? 0; };
-      set('murm-sobres', st.sobres_secretos_hoy);
-      set('murm-rachas', st.rachas_activas);
-      set('murm-todox', st.todox_visitados_hoy);
-      set('murm-nuevos', st.nuevos_hoy);
-    } catch(e) {}
   },
 
   renderContacts() {
@@ -4151,7 +4026,6 @@ const app = {
     const vibraEl = document.getElementById('toggle-vibra');
     const colorEl = document.getElementById('color-preview');
     const statusEl = document.getElementById('status-text');
-    const themeEl = document.getElementById('theme-text');
     
     if (sonidoEl) sonidoEl.classList.toggle('active', this.state.settings.sonido);
     if (vibraEl) vibraEl.classList.toggle('active', this.state.settings.vibracion);
@@ -4164,7 +4038,6 @@ const app = {
       statusEl.textContent = st ? st.label : 'Disponible';
       statusEl.style.color = st ? st.color : '#48BB78';
     }
-    if (themeEl) themeEl.textContent = this.state.settings.theme === 'gas_caos' ? 'GAS Caos' : 'Pastel';
   },
 
   activateSetting(index) {
@@ -4186,12 +4059,9 @@ const app = {
         this.showColorSelector();
         break;
       case 3:
-        this.showThemeSelector();
-        break;
-      case 4:
         this.showStatusSelector();
         break;
-      case 5:
+      case 4:
         this.mostrarConfirmReinicio();
         break;
     }
@@ -4245,30 +4115,6 @@ const app = {
     this.selectFromSelector();
   },
 
-  showThemeSelector() {
-    this.state.inSelector = true;
-    this.state.selectorType = 'theme';
-    this.state.selectorIndex = this.state.settings.theme === 'gas_caos' ? 1 : 0;
-
-    const modal = document.getElementById('theme-selector');
-    const grid = document.getElementById('theme-grid');
-    if (!modal || !grid) return;
-
-    const themes = [
-      { id: 'pastel', label: 'Pastel', emoji: '🌸', color: '#D4A5E6' },
-      { id: 'gas_caos', label: 'GAS Caos', emoji: '🔥', color: '#FF00A0' }
-    ];
-
-    grid.innerHTML = themes.map((t, i) => `
-      <div class="selector-item ${i === this.state.selectorIndex ? 'focused' : ''}" style="background:${t.color};" data-index="${i}">
-        <div style="font-size:28px;">${t.emoji}</div>
-        <div style="font-size:11px;color:#fff;font-weight:800;">${t.label}</div>
-      </div>
-    `).join('');
-
-    modal.classList.add('active');
-  },
-
   showStatusSelector() {
     this.state.inSelector = true;
     this.state.selectorType = 'status';
@@ -4319,21 +4165,23 @@ const app = {
   navigateSelector(dir) {
     const items = document.querySelectorAll('.selector-modal.active .selector-item');
     if (!items.length) return;
-
+    
     items[this.state.selectorIndex].classList.remove('focused');
-
-    if (this.state.selectorType === 'color' || this.state.selectorType === 'status') {
+    
+    if (this.state.selectorType === 'color') {
       const cols = 2;
-      const max = items.length - 1;
-      if (dir === 'right' && this.state.selectorIndex % cols === 0 && this.state.selectorIndex < max) this.state.selectorIndex++;
+      if (dir === 'right' && this.state.selectorIndex % cols === 0 && this.state.selectorIndex < 7) this.state.selectorIndex++;
       else if (dir === 'left' && this.state.selectorIndex % cols === 1) this.state.selectorIndex--;
-      else if (dir === 'down' && this.state.selectorIndex + cols <= max) this.state.selectorIndex += cols;
-      else if (dir === 'up' && this.state.selectorIndex >= cols) this.state.selectorIndex -= cols;
+      else if (dir === 'down' && this.state.selectorIndex < 6) this.state.selectorIndex += 2;
+      else if (dir === 'up' && this.state.selectorIndex >= 2) this.state.selectorIndex -= 2;
     } else {
-      if (dir === 'down' || dir === 'right') this.state.selectorIndex = 1;
-      if (dir === 'up' || dir === 'left') this.state.selectorIndex = 0;
+      const cols = 2;
+      if (dir === 'right' && this.state.selectorIndex % cols === 0 && this.state.selectorIndex < 3) this.state.selectorIndex++;
+      else if (dir === 'left' && this.state.selectorIndex % cols === 1) this.state.selectorIndex--;
+      else if (dir === 'down' && this.state.selectorIndex < 2) this.state.selectorIndex += 2;
+      else if (dir === 'up' && this.state.selectorIndex >= 2) this.state.selectorIndex -= 2;
     }
-
+    
     if (items[this.state.selectorIndex]) {
       items[this.state.selectorIndex].classList.add('focused');
       items[this.state.selectorIndex].scrollIntoView({ block: 'nearest', behavior: 'smooth' });
@@ -4346,10 +4194,9 @@ const app = {
       this.state.settings.color = this.state.selectorIndex;
       localStorage.setItem('colorIndex', this.state.selectorIndex);
       this.applyColor();
-    this.applyTheme();
       const c = COLORES[this.state.selectorIndex];
       this.showMsg(c ? `🎨 ${c.name}` : 'Color cambiado');
-    } else if (this.state.selectorType === 'status') {
+    } else {
       const s = ESTADOS[this.state.selectorIndex];
       if (s) {
         this.state.settings.status = s.id;
@@ -4357,14 +4204,8 @@ const app = {
         this.showMsg(`${s.emoji} ${s.label}`);
         this.updateHome();
       }
-    } else {
-      const theme = this.state.selectorIndex === 1 ? 'gas_caos' : 'pastel';
-      this.state.settings.theme = theme;
-      localStorage.setItem('theme', theme);
-      this.applyTheme();
-      this.showMsg(theme === 'gas_caos' ? '🎭 GAS Caos' : '🎨 Pastel');
     }
-
+    
     document.querySelectorAll('.selector-modal').forEach(m => m.classList.remove('active'));
     this.state.inSelector = false;
     this.updateSettingsUI();
@@ -5490,8 +5331,15 @@ const app = {
     const gane = resultado.ganador === this.miID;
     const nombreOponente = this.contactos[oponenteId] || (resultado.modo === 'ia' ? 'IA' : 'Rival');
     
-    if (gane) {
-      const emojiGanado = Math.floor(Math.random() * 150) + 1;
+    // Si perdí, transferir emoji al ganador
+    if (!gane && resultado.modo !== 'ia') {
+      const emojiPerdido = parseInt(resultado.de === this.miID ? resultado.miEmoji : resultado.suEmoji);
+      this.transferirEmojiPerdido(emojiPerdido, resultado.ganador);
+    }
+    
+    // Si gané, recibir emoji del perdedor (si no es IA)
+    if (gane && resultado.modo !== 'ia') {
+      const emojiGanado = parseInt(resultado.de === this.miID ? resultado.suEmoji : resultado.miEmoji);
       this.recibirEmojiGanado(emojiGanado);
     }
     
@@ -5560,7 +5408,7 @@ const app = {
       progreso.style.width = '100%';
     }, 100);
     
-    this.state.combateAnimTimer = setTimeout(() => {
+    setTimeout(() => {
       resultado.textContent = gane ? '🏆 ¡VICTORIA!' : '💔 DERROTA';
       resultado.style.color = gane ? '#48BB78' : '#F56565';
       this.playSound(gane ? 'unlock' : 'back');
@@ -5573,7 +5421,6 @@ const app = {
 
   cerrarPantallaVS() {
     document.getElementById('combate-vs-screen').classList.remove('active');
-    if (this.state.combateAnimTimer) { clearTimeout(this.state.combateAnimTimer); this.state.combateAnimTimer = null; }
     this.state.combate = {
       modo: null,
       oponenteId: null,

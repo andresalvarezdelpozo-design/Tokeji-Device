@@ -20,8 +20,7 @@ def cargar_datos():
             "toques_recibidos": {},
             "respuestas_recibidas": {},
             "desafios_pendientes": {},
-            "combates_finalizados": [],
-            "perfiles": {}
+            "combates_finalizados": []
         }
 
 def guardar_datos():
@@ -31,8 +30,7 @@ def guardar_datos():
             "toques_recibidos": toques_recibidos,
             "respuestas_recibidas": respuestas_recibidas,
             "desafios_pendientes": desafios_pendientes,
-            "combates_finalizados": combates_finalizados,
-            "perfiles": perfiles
+            "combates_finalizados": combates_finalizados
         }, f)
 
 datos = cargar_datos()
@@ -41,7 +39,6 @@ toques_recibidos = datos["toques_recibidos"]
 respuestas_recibidas = datos.get("respuestas_recibidas", {})
 desafios_pendientes = datos["desafios_pendientes"]
 combates_finalizados = datos.get("combates_finalizados", [])
-perfiles = datos.get("perfiles", {})
 
 EMOJIS_DATABASE = [
     {"id": i, "rarity": r} for i, r in enumerate([
@@ -82,8 +79,6 @@ def toque():
         contexto = data.get("contexto")
         avatar_remitente = data.get("avatarRemitente", "👤")
         nombre_remitente = data.get("nombreRemitente", "Alguien")
-        tipo = data.get("tipo")
-        instituto_destino = data.get("instituto_destino")
 
         if not all([de, para, num]):
             return jsonify(ok=False, error="Faltan datos requeridos"), 400
@@ -99,21 +94,14 @@ def toque():
         if para not in toques_recibidos:
             toques_recibidos[para] = []
         
-        nuevo_toque = {
+        toques_recibidos[para].append({
             "de": de,
             "num": num,
             "contexto": contexto,
             "avatarRemitente": avatar_remitente,
             "nombreRemitente": nombre_remitente,
             "hora": int(time.time())
-        }
-
-        if tipo is not None:
-            nuevo_toque["tipo"] = tipo
-        if instituto_destino is not None:
-            nuevo_toque["instituto_destino"] = instituto_destino
-
-        toques_recibidos[para].append(nuevo_toque)
+        })
         
         guardar_datos()
         
@@ -336,126 +324,6 @@ def obtener_combates_finalizados():
         
         return jsonify(ok=True, combates=combates_usuario)
         
-    except Exception as e:
-        return jsonify(ok=False, error=str(e)), 500
-
-@app.route("/registro-instituto", methods=["POST"])
-def registro_instituto():
-    try:
-        data = request.get_json() or {}
-        user_id = data.get("userId")
-        provincia = data.get("provincia")
-        instituto = data.get("instituto")
-        curso = data.get("curso")
-
-        if not user_id:
-            return jsonify(ok=False, error="Falta userId"), 400
-
-        perfiles[user_id] = {
-            **perfiles.get(user_id, {}),
-            "provincia": provincia,
-            "instituto": instituto,
-            "curso": curso,
-            "nombre": data.get("nombre") or perfiles.get(user_id, {}).get("nombre") or "Alumno",
-            "avatar": data.get("avatar") or perfiles.get(user_id, {}).get("avatar") or "👤",
-            "fecha_registro": int(time.time()),
-            "todox_visitados": perfiles.get(user_id, {}).get("todox_visitados", [])
-        }
-
-        guardar_datos()
-        return jsonify(ok=True)
-    except Exception as e:
-        return jsonify(ok=False, error=str(e)), 500
-
-@app.route("/lista-instituto", methods=["GET"])
-def lista_instituto():
-    try:
-        user_id = request.args.get("userId")
-        curso = request.args.get("curso")
-
-        if not user_id:
-            return jsonify(ok=False, error="Falta userId"), 400
-
-        instituto_usuario = perfiles.get(user_id, {}).get("instituto")
-        if not instituto_usuario:
-            return jsonify(ok=True, compañeros=[])
-
-        companeros = []
-        for uid, perfil in perfiles.items():
-            if uid == user_id:
-                continue
-            if perfil.get("instituto") != instituto_usuario:
-                continue
-            if curso and perfil.get("curso") != curso:
-                continue
-            companeros.append({
-                "id": uid,
-                "nombre": perfil.get("nombre", "Alumno"),
-                "avatar": perfil.get("avatar", "👤"),
-                "curso": perfil.get("curso")
-            })
-
-        return jsonify(ok=True, compañeros=companeros)
-    except Exception as e:
-        return jsonify(ok=False, error=str(e)), 500
-
-@app.route("/estadisticas-instituto", methods=["GET"])
-def estadisticas_instituto():
-    try:
-        instituto = request.args.get("instituto")
-        if not instituto:
-            return jsonify(ok=False, error="Falta instituto"), 400
-
-        ahora = int(time.time())
-        hoy_inicio = ahora - (ahora % 86400)
-        usuarios_insti = [u for u, p in perfiles.items() if p.get("instituto") == instituto]
-
-        sobres_hoy = 0
-        for uid in usuarios_insti:
-            for toque in toques_recibidos.get(uid, []):
-                if toque.get("tipo") == "anonimo" and toque.get("hora", 0) > hoy_inicio:
-                    sobres_hoy += 1
-
-        todox_hoy = 0
-        for uid in usuarios_insti:
-            visitas = perfiles.get(uid, {}).get("todox_visitados", [])
-            todox_hoy += sum(1 for visita in visitas if visita.get("hora", 0) > hoy_inicio)
-
-        nuevos_hoy = sum(1 for uid in usuarios_insti if perfiles.get(uid, {}).get("fecha_registro", 0) > hoy_inicio)
-
-        return jsonify(ok=True, estadisticas={
-            "sobres_secretos_hoy": sobres_hoy,
-            "rachas_activas": len(usuarios_insti) * 2,
-            "todox_visitados_hoy": todox_hoy,
-            "nuevos_hoy": nuevos_hoy,
-            "curso_mas_rachas": "2º Bach",
-            "sobre_mas_usado": "💜 Morado",
-            "hora_pico": "21:15"
-        })
-    except Exception as e:
-        return jsonify(ok=False, error=str(e)), 500
-
-@app.route("/visitar-todox", methods=["POST"])
-def visitar_todox():
-    try:
-        data = request.get_json() or {}
-        user_id = data.get("userId")
-        visitado_id = data.get("visitadoId")
-        if not user_id or not visitado_id:
-            return jsonify(ok=False, error="Faltan userId o visitadoId"), 400
-
-        if user_id not in perfiles:
-            perfiles[user_id] = {}
-        if "todox_visitados" not in perfiles[user_id]:
-            perfiles[user_id]["todox_visitados"] = []
-
-        perfiles[user_id]["todox_visitados"].append({
-            "userId": visitado_id,
-            "hora": int(time.time())
-        })
-
-        guardar_datos()
-        return jsonify(ok=True)
     except Exception as e:
         return jsonify(ok=False, error=str(e)), 500
 
