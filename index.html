@@ -2091,6 +2091,28 @@
             <div class="setup-hint">Pulsa OK para continuar</div>
           </div>
 
+          <div class="page" id="page-instituto-setup">
+            <div class="setup-title">🏫 Tu instituto</div>
+            <div class="settings-list" id="instituto-setup-list">
+              <div class="setting-item focused" data-index="0">
+                <span>Provincia</span>
+                <span id="instituto-provincia-value" style="font-size: 11px; color: #4A5568;">Sin elegir</span>
+              </div>
+              <div class="setting-item" data-index="1">
+                <span>Instituto</span>
+                <span id="instituto-centro-value" style="font-size: 11px; color: #4A5568;">Sin elegir</span>
+              </div>
+              <div class="setting-item" data-index="2">
+                <span>Curso</span>
+                <span id="instituto-curso-value" style="font-size: 11px; color: #4A5568;">Sin elegir</span>
+              </div>
+              <div class="setting-item" data-index="3" style="color: #2F855A;">
+                <span>✅ Confirmar</span>
+                <span style="font-size: 11px; color: #2F855A; font-weight: 800;">OK</span>
+              </div>
+            </div>
+          </div>
+
           <div class="page" id="page-avatar">
             <div class="setup-title">Elige tu avatar</div>
             <div class="avatar-grid" id="avatar-grid"></div>
@@ -2156,6 +2178,16 @@
               Enviando: <strong id="toke-seleccionado">-</strong>
             </div>
             <div class="list-container" id="enviar-list"></div>
+          </div>
+
+          <div class="page" id="page-curso-secreto">
+            <div class="setup-title" id="curso-secreto-title">💜 ANÓNIMO · Curso</div>
+            <div class="selector-grid" id="curso-secreto-grid"></div>
+          </div>
+
+          <div class="page" id="page-lista-instituto">
+            <div class="setup-title" id="lista-instituto-title">Compañeros</div>
+            <div class="list-container" id="lista-instituto-list"></div>
           </div>
 
           <div class="page" id="page-contacts">
@@ -2263,6 +2295,11 @@
           <div class="selector-modal" id="status-selector">
             <div class="selector-title">🟢 Estado</div>
             <div class="selector-grid" id="status-grid"></div>
+          </div>
+
+          <div class="selector-modal" id="option-selector">
+            <div class="selector-title" id="option-selector-title">Selecciona</div>
+            <div class="list-container" id="option-selector-list" style="max-height: 260px;"></div>
           </div>
 
           <div class="response-modal" id="response-modal">
@@ -2517,8 +2554,21 @@ const TOKES_TYPES = [
   { id: 2, emoji: '💕', name: 'Crush', desc: 'Pienso en ti', color: '#D53F8C' },
   { id: 3, emoji: '💪', name: 'Ánimo', desc: '¡Tú puedes!', color: '#38A169' },
   { id: 4, emoji: '📅', name: 'Planes', desc: '¿Quedamos?', color: '#D69E2E' },
-  { id: 5, emoji: '🚨', name: 'Urgente', desc: '¡Ayuda!', color: '#3182CE' }
+  { id: 5, emoji: '🚨', name: 'Urgente', desc: '¡Ayuda!', color: '#3182CE' },
+  { id: 6, emoji: '💜', name: 'Anónimo', desc: 'Sobre secreto', color: '#805AD5' },
+  { id: 7, emoji: '💘', name: 'CRUSH', desc: 'Crush secreto', color: '#E53E8C' }
 ];
+
+const PROVINCIAS = ['Valencia', 'Madrid', 'Barcelona', 'Sevilla', 'Málaga', 'Alicante'];
+const INSTITUTOS_POR_PROVINCIA = {
+  'Valencia': ['IES Moncada', 'IES Benimaclet', 'IES Campanar', 'IES Patraix'],
+  'Madrid': ['IES Cervantes', 'IES Ramiro', 'IES Vallecas', 'IES San Blas'],
+  'Barcelona': ['IES Gràcia', 'IES Sants', 'IES Poblenou', 'IES Eixample'],
+  'Sevilla': ['IES Triana', 'IES Nervión', 'IES Macarena', 'IES Heliópolis'],
+  'Málaga': ['IES Larios', 'IES La Rosaleda', 'IES Teatinos', 'IES Pedregalejo'],
+  'Alicante': ['IES Playa San Juan', 'IES Babel', 'IES Gran Vía', 'IES Benalúa']
+};
+const CURSOS_INSTITUTO = ['1º ESO', '2º ESO', '3º ESO', '4º ESO', '1º Bach', '2º Bach'];
 
 const EMOJIS_LIST = ['😊','❤️','👍','🔥','💯','🤥','👾','💕','🚀','🎯','🦾','🙌','👏','💋','🐻','🐝','🌈','☀️','🌙','⭐','🌸','📸','🚗','🌷','🍀','🍕','👅','🍟','🌮','🍰','🎂','🍫','☕','🥤','🏀','⚽','🎾','🏆','🎮','🎲','🎸','🎺','🎨','📚','💡','🔧','😱','📱','💻','🛸','🥷','😇','🧟‍♂️','👽','🎩','🧙','🧚','🧜','💃🏻','🦋','🦅','🦈','🐅','🐘','🦒','🦏','🌍','📦','🏴‍☠️','✨','🚨','👑','🦄','🦁','🧌','🦉','🐣','🐉','🐲','🦕','🦖','🌋','🗿','🪄','⚡','💀','👻','🤢','🤡','🎪','🍾','🎆','🎇','🫶','🏃‍♂️','🧟‍♀️','🤖','🧊','😈','🔫','💅','🎐','🎀','🎁','🎰','✈️','🥵','🥶','⌚️','⚓️','🛁','🪒','🪤','💣','🏍️','🍒','🌪️','👙','🧩','🍪','🏎️','🎓','🧸','✂️','🕳️','❤️‍🔥','🥳','⚰️','🎈','🎉','👩🏻‍❤️‍👨','🦊','💦','🚪','🎎','⚠️','🛌','🤮','🫡','💎','🛹','💸','💵','💊','💶','🎟️','⚜️','💳','💿','📀'];
 
@@ -2543,7 +2593,18 @@ const app = {
     inSelector: false,
     selectorType: null,
     selectorIndex: 0,
+    optionItems: [],
     pendingToque: null,
+    registroInstituto: {
+      provincia: '',
+      instituto: '',
+      curso: ''
+    },
+    secretFlow: {
+      tipo: null,
+      curso: null,
+      companeros: []
+    },
     audioInitialized: false,
     confirmIndex: 0,
     toquesMostrados: new Set(),
@@ -2610,6 +2671,9 @@ const app = {
       this.state.settings.status = localStorage.getItem('status') || 'disponible';
       this.state.settings.avatar = localStorage.getItem('avatar') || '🐱';
       this.state.toquesRestantes = parseInt(localStorage.getItem("toquesRestantes")) || 30;
+      this.state.registroInstituto.provincia = localStorage.getItem('provincia') || '';
+      this.state.registroInstituto.instituto = localStorage.getItem('instituto') || '';
+      this.state.registroInstituto.curso = localStorage.getItem('curso') || '';
     } catch(e) {
       this.debug('Error cargando datos: ' + e.message);
     }
@@ -2870,6 +2934,11 @@ const app = {
           if (input) input.focus();
         }, 100);
         break;
+      case 'instituto-setup':
+        this.state.focus = { type: 'institutoSetup', index: 0 };
+        this.renderInstitutoSetup();
+        this.updateInstitutoSetupFocus();
+        break;
       case 'avatar':
         this.state.focus = { type: 'avatar', index: 0 };
         this.renderAvatarGrid();
@@ -2898,6 +2967,16 @@ const app = {
         this.renderEnviarList();
         this.state.focus = { type: 'enviar', index: 0 };
         this.updateEnviarFocus();
+        break;
+      case 'curso-secreto':
+        this.renderCursoSecreto();
+        this.state.focus = { type: 'cursoSecreto', index: 0 };
+        this.updateCursoSecretoFocus();
+        break;
+      case 'lista-instituto':
+        this.renderListaInstituto();
+        this.state.focus = { type: 'listaInstituto', index: 0 };
+        this.updateListaInstitutoFocus();
         break;
       case 'contacts':
         this.renderContacts();
@@ -3075,7 +3154,7 @@ const app = {
       return;
     }
 
-    if (['consent', 'setup', 'avatar', 'color'].includes(this.state.currentPage)) {
+    if (['consent', 'setup', 'instituto-setup', 'avatar', 'color'].includes(this.state.currentPage)) {
       return;
     }
     
@@ -3102,6 +3181,14 @@ const app = {
         case 'enviar':
           this.state.focus = { type: 'enviar', index: 0 };
           this.updateEnviarFocus();
+          break;
+        case 'curso-secreto':
+          this.state.focus = { type: 'cursoSecreto', index: 0 };
+          this.updateCursoSecretoFocus();
+          break;
+        case 'lista-instituto':
+          this.state.focus = { type: 'listaInstituto', index: 0 };
+          this.updateListaInstitutoFocus();
           break;
         case 'contacts':
           this.state.focus = { type: 'contacts', index: 0 };
@@ -3217,7 +3304,10 @@ const app = {
           return;
         }
         localStorage.setItem('miNombre', nom);
-        this.showPage('avatar', false);
+        this.showPage('instituto-setup', false);
+        break;
+      case 'instituto-setup':
+        this.handleInstitutoSetupSelect();
         break;
       case 'avatar':
         const avatarSel = AVATARES[focus.index];
@@ -3237,7 +3327,14 @@ const app = {
         break;
       case 'tokes':
         this.state.selectedCategoria = TOKES_TYPES[focus.index].id;
-        this.showPage('variantes');
+        if (this.state.selectedCategoria === 6 || this.state.selectedCategoria === 7) {
+          this.state.secretFlow.tipo = this.state.selectedCategoria === 6 ? 'anonimo' : 'crush';
+          this.state.secretFlow.curso = null;
+          this.state.secretFlow.companeros = [];
+          this.showPage('curso-secreto');
+        } else {
+          this.showPage('variantes');
+        }
         break;
       case 'variantes':
         const variantes = CONTEXTOS_TOKES[this.state.selectedCategoria];
@@ -3252,6 +3349,12 @@ const app = {
           const [id, nombre] = amigosList[focus.index - 1];
           this.enviarToque(id, nombre);
         }
+        break;
+      case 'curso-secreto':
+        this.selectCursoSecreto();
+        break;
+      case 'lista-instituto':
+        this.selectCompaneroInstituto();
         break;
       case 'contacts':
         // Ya no hay botón de escanear aquí
@@ -3365,6 +3468,25 @@ const app = {
           this.state.focus.index--;
           this.updateTokesFocus();
           this.scrollToFocused('tokes-list');
+        }
+        break;
+      case 'institutoSetup':
+        if (index > 0) {
+          this.state.focus.index--;
+          this.updateInstitutoSetupFocus();
+        }
+        break;
+      case 'cursoSecreto':
+        if (index >= 2) {
+          this.state.focus.index -= 2;
+          this.updateCursoSecretoFocus();
+        }
+        break;
+      case 'listaInstituto':
+        if (index > 0) {
+          this.state.focus.index--;
+          this.updateListaInstitutoFocus();
+          this.scrollToFocused('lista-instituto-list');
         }
         break;
       case 'variantes':
@@ -3504,6 +3626,26 @@ const app = {
           this.scrollToFocused('tokes-list');
         }
         break;
+      case 'institutoSetup':
+        if (index < 3) {
+          this.state.focus.index++;
+          this.updateInstitutoSetupFocus();
+        }
+        break;
+      case 'cursoSecreto':
+        if (index < CURSOS_INSTITUTO.length - 2) {
+          this.state.focus.index += 2;
+          if (this.state.focus.index > CURSOS_INSTITUTO.length - 1) this.state.focus.index = CURSOS_INSTITUTO.length - 1;
+          this.updateCursoSecretoFocus();
+        }
+        break;
+      case 'listaInstituto':
+        if (index < this.state.secretFlow.companeros.length - 1) {
+          this.state.focus.index++;
+          this.updateListaInstitutoFocus();
+          this.scrollToFocused('lista-instituto-list');
+        }
+        break;
       case 'variantes':
         const variantes = CONTEXTOS_TOKES[this.state.selectedCategoria] || [];
         if (index < variantes.length - 1) {
@@ -3633,6 +3775,12 @@ const app = {
           this.updateMenuFocus();
         }
         break;
+      case 'cursoSecreto':
+        if (index % 2 === 1) {
+          this.state.focus.index--;
+          this.updateCursoSecretoFocus();
+        }
+        break;
       case 'grid':
         if (index % 5 > 0) {
           this.state.focus.index--;
@@ -3729,6 +3877,12 @@ const app = {
           this.updateMenuFocus();
         }
         break;
+      case 'cursoSecreto':
+        if (index % 2 === 0 && index < CURSOS_INSTITUTO.length - 1) {
+          this.state.focus.index++;
+          this.updateCursoSecretoFocus();
+        }
+        break;
       case 'grid':
         if (index % 5 < 4 && index < 149) {
           this.state.focus.index++;
@@ -3802,6 +3956,24 @@ const app = {
     });
   },
 
+  updateInstitutoSetupFocus() {
+    document.querySelectorAll('#instituto-setup-list .setting-item').forEach((el, i) => {
+      el.classList.toggle('focused', i === this.state.focus.index);
+    });
+  },
+
+  updateCursoSecretoFocus() {
+    document.querySelectorAll('#curso-secreto-grid .selector-item').forEach((el, i) => {
+      el.classList.toggle('focused', i === this.state.focus.index);
+    });
+  },
+
+  updateListaInstitutoFocus() {
+    document.querySelectorAll('#lista-instituto-list .list-item').forEach((el, i) => {
+      el.classList.toggle('focused', i === this.state.focus.index);
+    });
+  },
+
   updateContactsFocus() {
     const items = document.querySelectorAll('#contacts-list .list-item');
     
@@ -3849,6 +4021,204 @@ const app = {
     if (!container) return;
     const focused = container.querySelector('.focused');
     if (focused) focused.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+  },
+
+  renderInstitutoSetup() {
+    const p = this.state.registroInstituto.provincia || 'Sin elegir';
+    const i = this.state.registroInstituto.instituto || 'Sin elegir';
+    const c = this.state.registroInstituto.curso || 'Sin elegir';
+    const pv = document.getElementById('instituto-provincia-value');
+    const iv = document.getElementById('instituto-centro-value');
+    const cv = document.getElementById('instituto-curso-value');
+    if (pv) pv.textContent = p;
+    if (iv) iv.textContent = i;
+    if (cv) cv.textContent = c;
+  },
+
+  handleInstitutoSetupSelect() {
+    const idx = this.state.focus.index;
+    if (idx === 0) {
+      this.showOptionSelector('Provincia', PROVINCIAS, (value) => {
+        this.state.registroInstituto.provincia = value;
+        if (!INSTITUTOS_POR_PROVINCIA[value]?.includes(this.state.registroInstituto.instituto)) {
+          this.state.registroInstituto.instituto = '';
+        }
+        this.renderInstitutoSetup();
+      });
+      return;
+    }
+    if (idx === 1) {
+      if (!this.state.registroInstituto.provincia) {
+        this.showMsg('Elige provincia primero');
+        return;
+      }
+      const centros = INSTITUTOS_POR_PROVINCIA[this.state.registroInstituto.provincia] || [];
+      this.showOptionSelector('Instituto', centros, (value) => {
+        this.state.registroInstituto.instituto = value;
+        this.renderInstitutoSetup();
+      });
+      return;
+    }
+    if (idx === 2) {
+      this.showOptionSelector('Curso', CURSOS_INSTITUTO, (value) => {
+        this.state.registroInstituto.curso = value;
+        this.renderInstitutoSetup();
+      });
+      return;
+    }
+    this.confirmarRegistroInstituto();
+  },
+
+  showOptionSelector(title, items, onSelect) {
+    if (!items || !items.length) {
+      this.showMsg('No hay opciones');
+      return;
+    }
+    this.state.inSelector = true;
+    this.state.selectorType = 'options';
+    this.state.optionItems = items;
+    this.state.optionOnSelect = onSelect;
+    this.state.selectorIndex = 0;
+
+    const modal = document.getElementById('option-selector');
+    const list = document.getElementById('option-selector-list');
+    const titleEl = document.getElementById('option-selector-title');
+    if (!modal || !list || !titleEl) return;
+
+    titleEl.textContent = `▼ ${title}`;
+    list.innerHTML = items.map((item, i) => `
+      <div class="selector-item ${i === 0 ? 'focused' : ''}" data-index="${i}" style="height: auto; min-height: 48px; width: 100%; border-radius: 12px; padding: 10px 12px; justify-content: flex-start;">
+        <div style="font-size: 12px; font-weight: 800;">${item}</div>
+      </div>
+    `).join('');
+
+    modal.classList.add('active');
+  },
+
+  confirmarRegistroInstituto() {
+    const { provincia, instituto, curso } = this.state.registroInstituto;
+    if (!provincia || !instituto || !curso) {
+      this.showMsg('Completa provincia, instituto y curso');
+      return;
+    }
+
+    localStorage.setItem('provincia', provincia);
+    localStorage.setItem('instituto', instituto);
+    localStorage.setItem('curso', curso);
+
+    const payload = {
+      userId: this.miID,
+      provincia,
+      instituto,
+      curso,
+      nombre: localStorage.getItem('miNombre') || 'Alumno',
+      avatar: this.state.settings.avatar || '👤'
+    };
+
+    fetch(`${BACK}/registro-instituto`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    }).catch(() => {});
+
+    this.showPage('avatar', false);
+  },
+
+  renderCursoSecreto() {
+    const titulo = document.getElementById('curso-secreto-title');
+    if (titulo) {
+      titulo.textContent = this.state.secretFlow.tipo === 'crush' ? '💘 CRUSH · Curso' : '💜 ANÓNIMO · Curso';
+    }
+    const grid = document.getElementById('curso-secreto-grid');
+    if (!grid) return;
+    grid.innerHTML = CURSOS_INSTITUTO.map((c, i) => `
+      <div class="selector-item ${i === 0 ? 'focused' : ''}" data-index="${i}" style="background:#fff; color:#2D3748;">
+        <div style="font-size:12px; font-weight:800;">${c}</div>
+      </div>
+    `).join('');
+  },
+
+  async selectCursoSecreto() {
+    const curso = CURSOS_INSTITUTO[this.state.focus.index];
+    if (!curso) return;
+    this.state.secretFlow.curso = curso;
+
+    try {
+      const response = await fetch(`${BACK}/lista-instituto?userId=${encodeURIComponent(this.miID)}&curso=${encodeURIComponent(curso)}`);
+      const data = await response.json();
+      this.state.secretFlow.companeros = data.companeros || [];
+    } catch (e) {
+      this.state.secretFlow.companeros = [];
+    }
+
+    if (!this.state.secretFlow.companeros.length) {
+      this.showMsg('No hay compañeros en ese curso');
+      return;
+    }
+
+    this.showPage('lista-instituto');
+  },
+
+  renderListaInstituto() {
+    const titulo = document.getElementById('lista-instituto-title');
+    if (titulo) {
+      const tipo = this.state.secretFlow.tipo === 'crush' ? '💘 CRUSH' : '💜 ANÓNIMO';
+      titulo.textContent = `${tipo} · ${this.state.secretFlow.curso || ''}`;
+    }
+
+    const list = document.getElementById('lista-instituto-list');
+    if (!list) return;
+
+    const rows = this.state.secretFlow.companeros;
+    list.innerHTML = rows.map((c, i) => `
+      <div class="list-item ${i === 0 ? 'focused' : ''}" data-index="${i}" data-id="${c.id}">
+        <span style="font-size: 24px;">${c.avatar || '👤'}</span>
+        <div style="flex:1;">
+          <div style="font-weight:800; color:#2D3748;">${c.nombre || 'Alumno'}</div>
+          <div style="font-size:10px; color:#718096;">${c.curso || ''}</div>
+        </div>
+      </div>
+    `).join('');
+  },
+
+  async selectCompaneroInstituto() {
+    const target = this.state.secretFlow.companeros[this.state.focus.index];
+    if (!target) return;
+
+    if (this.state.toquesRestantes <= 0) {
+      this.showMsg('❌ No te quedan tokes hoy');
+      return;
+    }
+
+    const esCrush = this.state.secretFlow.tipo === 'crush';
+    const payload = {
+      de: this.miID,
+      para: target.id,
+      num: esCrush ? 7 : 6,
+      tipo: esCrush ? 'crush' : 'anonimo',
+      contexto: esCrush ? 'Eres el crush de alguien' : 'Alguien ha pensado en ti',
+      nombreRemitente: 'Alguien',
+      avatarRemitente: this.state.settings.avatar,
+      instituto_destino: localStorage.getItem('instituto') || ''
+    };
+
+    try {
+      const response = await fetch(`${BACK}/toque`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const data = await response.json();
+      if (!response.ok || !data.ok) throw new Error(data.error || 'Error al enviar');
+
+      this.state.toquesRestantes = data.toques_restantes || (this.state.toquesRestantes - 1);
+      localStorage.setItem('toquesRestantes', this.state.toquesRestantes);
+      this.updateHome();
+      this.showMsg(esCrush ? '💘 Crush enviado' : '💜 Sobre secreto enviado');
+      this.showPage('home');
+    } catch (e) {
+      this.showMsg('❌ ' + e.message);
+    }
   },
 
   renderTokes() {
@@ -4174,12 +4544,15 @@ const app = {
       else if (dir === 'left' && this.state.selectorIndex % cols === 1) this.state.selectorIndex--;
       else if (dir === 'down' && this.state.selectorIndex < 6) this.state.selectorIndex += 2;
       else if (dir === 'up' && this.state.selectorIndex >= 2) this.state.selectorIndex -= 2;
-    } else {
+    } else if (this.state.selectorType === 'status') {
       const cols = 2;
       if (dir === 'right' && this.state.selectorIndex % cols === 0 && this.state.selectorIndex < 3) this.state.selectorIndex++;
       else if (dir === 'left' && this.state.selectorIndex % cols === 1) this.state.selectorIndex--;
       else if (dir === 'down' && this.state.selectorIndex < 2) this.state.selectorIndex += 2;
       else if (dir === 'up' && this.state.selectorIndex >= 2) this.state.selectorIndex -= 2;
+    } else if (this.state.selectorType === 'options') {
+      if (dir === 'down' && this.state.selectorIndex < this.state.optionItems.length - 1) this.state.selectorIndex++;
+      else if (dir === 'up' && this.state.selectorIndex > 0) this.state.selectorIndex--;
     }
     
     if (items[this.state.selectorIndex]) {
@@ -4196,7 +4569,8 @@ const app = {
       this.applyColor();
       const c = COLORES[this.state.selectorIndex];
       this.showMsg(c ? `🎨 ${c.name}` : 'Color cambiado');
-    } else {
+      this.updateSettingsUI();
+    } else if (this.state.selectorType === 'status') {
       const s = ESTADOS[this.state.selectorIndex];
       if (s) {
         this.state.settings.status = s.id;
@@ -4204,11 +4578,16 @@ const app = {
         this.showMsg(`${s.emoji} ${s.label}`);
         this.updateHome();
       }
+      this.updateSettingsUI();
+    } else if (this.state.selectorType === 'options') {
+      const value = this.state.optionItems[this.state.selectorIndex];
+      if (value && typeof this.state.optionOnSelect === 'function') {
+        this.state.optionOnSelect(value);
+      }
     }
     
     document.querySelectorAll('.selector-modal').forEach(m => m.classList.remove('active'));
     this.state.inSelector = false;
-    this.updateSettingsUI();
   },
 
   generarQR() {
