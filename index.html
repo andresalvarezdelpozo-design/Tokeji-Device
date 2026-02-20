@@ -835,9 +835,10 @@
     }
 
     .setting-item.focused {
-      border-color: var(--device-color);
+      border-color: #FF4FA3;
       background: #FFF5F7;
-      transform: scale(1.01);
+      transform: scale(1.02);
+      box-shadow: 0 0 0 3px rgba(255,79,163,0.35), 0 3px 0 #F687B3;
     }
 
     .toggle-switch {
@@ -982,10 +983,16 @@
     #page-curso-secreto .selector-item {
       width: 72px;
       height: 54px;
-      border-width: 2px;
+      border: 2px solid #D6BCFA;
       border-radius: 12px;
       box-shadow: 0 2px 0 rgba(0,0,0,0.15);
       padding: 6px;
+    }
+
+    #page-curso-secreto .selector-item.focused {
+      border-color: #FF4FA3;
+      box-shadow: 0 0 0 3px rgba(255,79,163,0.35), 0 2px 0 rgba(0,0,0,0.15);
+      transform: scale(1.06);
     }
 
     #page-curso-secreto .selector-item::after {
@@ -994,17 +1001,19 @@
 
     .response-modal {
       position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
+      top: 8px;
+      left: 8px;
+      right: 8px;
+      bottom: 8px;
       background: linear-gradient(145deg, rgba(255,107,157,0.95), rgba(255,71,133,0.95));
+      border-radius: 14px;
       display: none;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 20px;
+      padding: 12px;
       z-index: 100;
+      overflow: hidden;
     }
 
     .response-modal.active {
@@ -1014,8 +1023,8 @@
     .response-title {
       color: white;
       font-family: 'Fredoka One', cursive;
-      font-size: 18px;
-      margin-bottom: 25px;
+      font-size: 15px;
+      margin-bottom: 12px;
       text-align: center;
     }
 
@@ -1024,15 +1033,15 @@
       grid-template-columns: repeat(2, 1fr);
       gap: 8px;
       width: 100%;
-      max-width: 176px;
+      max-width: 160px;
     }
 
     .response-btn {
       background: rgba(255,255,255,0.95);
       border: 2px solid transparent;
       border-radius: 12px;
-      padding: 8px 6px;
-      font-size: 23px;
+      padding: 6px 4px;
+      font-size: 19px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -1056,12 +1065,12 @@
 
     .response-actions {
       display: flex;
-      gap: 15px;
-      margin-top: 25px;
+      gap: 8px;
+      margin-top: 10px;
     }
 
     .response-action {
-      padding: 12px 24px;
+      padding: 8px 12px;
       border-radius: 20px;
       font-size: 12px;
       font-weight: 800;
@@ -1505,19 +1514,21 @@
 
     .toque-recibido-modal {
       position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
+      top: 8px;
+      left: 8px;
+      right: 8px;
+      bottom: 8px;
+      border-radius: 14px;
       display: none;
       flex-direction: column;
       align-items: center;
       justify-content: flex-start;
-      padding: 20px 15px 15px 15px;
+      padding: 10px 10px 8px 10px;
       z-index: 150;
       text-align: center;
       color: white;
-      animation: slideUp 0.5s ease;
+      animation: slideUp 0.35s ease;
+      overflow: hidden;
     }
 
     @keyframes slideUp {
@@ -1534,7 +1545,7 @@
     }
 
     .toque-recibido-avatar {
-      font-size: 50px;
+      font-size: 38px;
       margin-bottom: 5px;
       animation: bounceIn 0.8s ease;
       filter: drop-shadow(0 5px 10px rgba(0,0,0,0.2));
@@ -1547,7 +1558,7 @@
     }
 
     .toque-recibido-emoji {
-      font-size: 80px;
+      font-size: 54px;
       margin: 10px 0;
       animation: bounceIn 0.8s ease 0.2s both;
       filter: drop-shadow(0 10px 20px rgba(0,0,0,0.3));
@@ -1561,8 +1572,8 @@
     }
 
     .toque-recibido-mensaje {
-      font-size: 14px;
-      margin-bottom: 20px;
+      font-size: 12px;
+      margin-bottom: 8px;
       padding: 0 10px;
       font-weight: 600;
       line-height: 1.4;
