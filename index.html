@@ -475,7 +475,7 @@
 
     .color-setup-grid {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(3, 1fr);
       gap: 10px;
       width: 100%;
       max-width: 190px;
@@ -614,7 +614,7 @@
 
     .menu-grid {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(3, 1fr);
       grid-template-rows: repeat(3, 1fr);
       gap: 10px;
       width: 100%;
@@ -2269,22 +2269,34 @@
                 <span>Tokes</span>
               </div>
               <div class="menu-item" data-index="1">
-                <span class="icon">👥</span>
-                <span>Amigos</span>
+                <span class="icon">🏫</span>
+                <span>Inst.</span>
               </div>
               <div class="menu-item" data-index="2">
-                <span class="icon">📱</span>
-                <span>Mi QR</span>
+                <span class="icon">👥</span>
+                <span>Amigos</span>
               </div>
               <div class="menu-item" data-index="3">
                 <span class="icon">📖</span>
                 <span>ToDox</span>
               </div>
               <div class="menu-item" data-index="4">
-                <span class="icon">⚔️</span>
-                <span>Combates</span>
+                <span class="icon">🔮</span>
+                <span>Murm.</span>
               </div>
               <div class="menu-item" data-index="5">
+                <span class="icon">📱</span>
+                <span>QR</span>
+              </div>
+              <div class="menu-item" data-index="6">
+                <span class="icon">⚔️</span>
+                <span>Combate</span>
+              </div>
+              <div class="menu-item" data-index="7">
+                <span class="icon">🛒</span>
+                <span>Tienda</span>
+              </div>
+              <div class="menu-item" data-index="8">
                 <span class="icon">⚙️</span>
                 <span>Ajustes</span>
               </div>
@@ -2317,6 +2329,26 @@
           <div class="page" id="page-lista-instituto">
             <div class="setup-title" id="lista-instituto-title">Compañeros</div>
             <div class="list-container" id="lista-instituto-list"></div>
+          </div>
+
+          <div class="page" id="page-murmullo">
+            <div class="setup-title">🔮 Murmullo</div>
+            <div style="text-align:center; color:#4A5568; font-size:12px; line-height:1.5; padding: 8px 10px;">
+              Entra para ver qué está pasando en tu instituto.
+            </div>
+            <div class="list-container" style="gap:6px;">
+              <div class="list-item"><div style="flex:1; text-align:center;"><strong>💜 12</strong> sobres secretos hoy</div></div>
+              <div class="list-item"><div style="flex:1; text-align:center;"><strong>🔥 89</strong> rachas activas</div></div>
+              <div class="list-item"><div style="flex:1; text-align:center;"><strong>👀 34</strong> ToDox visitados</div></div>
+              <div class="list-item"><div style="flex:1; text-align:center;"><strong>🆕 3</strong> nuevos hoy</div></div>
+            </div>
+          </div>
+
+          <div class="page" id="page-tienda">
+            <div class="setup-title">🛒 Tienda</div>
+            <div style="text-align:center; color:#4A5568; font-size:12px; line-height:1.5; padding: 12px;">
+              Próximamente: temas, efectos y packs para tu perfil.
+            </div>
           </div>
 
           <div class="page" id="page-contacts">
@@ -3478,7 +3510,7 @@ const app = {
         this.showPage('menu');
         break;
       case 'menu':
-        const items = ['tokes', 'contacts', 'qr', 'todox', 'combates', 'settings'];
+        const items = ['tokes', 'lista-instituto', 'contacts', 'todox', 'murmullo', 'qr', 'combates', 'tienda', 'settings'];
         this.showPage(items[focus.index]);
         break;
       case 'tokes':
@@ -3630,8 +3662,8 @@ const app = {
         }
         break;
       case 'menu':
-        if (index >= 2) {
-          this.state.focus.index -= 2;
+        if (index >= 3) {
+          this.state.focus.index -= 3;
           this.state.menuIndex = this.state.focus.index;
           this.updateMenuFocus();
         }
@@ -3803,9 +3835,9 @@ const app = {
         }
         break;
       case 'menu':
-        if (index < 4) {
-          this.state.focus.index += 2;
-          if (this.state.focus.index > 5) this.state.focus.index = 5;
+        if (index < 6) {
+          this.state.focus.index += 3;
+          if (this.state.focus.index > 8) this.state.focus.index = 8;
           this.state.menuIndex = this.state.focus.index;
           this.updateMenuFocus();
         }
@@ -3960,7 +3992,7 @@ const app = {
         }
         break;
       case 'menu':
-        if (index % 2 !== 0) {
+        if (index % 3 !== 0) {
           this.state.focus.index--;
           this.state.menuIndex = this.state.focus.index;
           this.updateMenuFocus();
@@ -4062,7 +4094,7 @@ const app = {
         }
         break;
       case 'menu':
-        if (index % 2 === 0 && index < 5) {
+        if (index % 3 < 2 && index < 8) {
           this.state.focus.index++;
           this.state.menuIndex = this.state.focus.index;
           this.updateMenuFocus();
