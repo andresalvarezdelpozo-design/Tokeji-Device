@@ -4186,7 +4186,7 @@ const app = {
   },
 
   updateSettingsFocus() {
-    document.querySelectorAll('.setting-item').forEach((el, i) => {
+    document.querySelectorAll('#settings-list .setting-item').forEach((el, i) => {
       el.classList.toggle('focused', i === this.state.focus.index);
     });
   },
