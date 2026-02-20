@@ -905,6 +905,106 @@
       box-shadow: 0 3px 0 #C05621;
     }
 
+
+    #page-lista-instituto .setup-title {
+      animation: titlePulse 1.4s ease-in-out infinite;
+    }
+
+    .instituto-subtitle {
+      text-align: center;
+      font-size: 11px;
+      font-weight: 800;
+      color: #4A5568;
+      margin-bottom: 6px;
+      animation: titlePulse 1.8s ease-in-out infinite;
+    }
+
+    .murmullo-header {
+      text-align: center;
+      margin-bottom: 8px;
+    }
+
+    .murmullo-title {
+      font-family: 'Fredoka One', cursive;
+      color: #fff;
+      text-shadow: 0 0 14px rgba(255,255,255,0.85);
+      letter-spacing: 1px;
+      animation: titlePulse 1.2s ease-in-out infinite;
+    }
+
+    .murmullo-insti {
+      color: #F8E8FF;
+      font-size: 11px;
+      font-weight: 800;
+      margin-top: 2px;
+    }
+
+    .murmullo-conectados {
+      color: #D6F7FF;
+      font-size: 10px;
+      font-weight: 700;
+      margin-top: 2px;
+      animation: beatSmall 1.4s ease-in-out infinite;
+    }
+
+    .murmullo-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      width: 100%;
+      position: relative;
+      z-index: 2;
+    }
+
+    .murmullo-card {
+      background: rgba(255,255,255,0.18);
+      border: 2px solid rgba(255,255,255,0.45);
+      border-radius: 12px;
+      min-height: 62px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      color: white;
+      font-size: 10px;
+      text-align: center;
+      box-shadow: 0 0 14px rgba(0,0,0,0.15);
+      animation: beatSmall 1.8s ease-in-out infinite;
+    }
+
+    .murmullo-card .emoji {
+      font-size: 20px;
+      animation: floatEmoji 1.2s ease-in-out infinite;
+    }
+
+    .murmullo-card strong {
+      font-size: 14px;
+      display: block;
+      line-height: 1;
+    }
+
+    .murmullo-floating {
+      position: absolute;
+      font-size: 18px;
+      filter: drop-shadow(0 0 6px rgba(255,255,255,0.7));
+      animation: floatEmoji 2s ease-in-out infinite;
+      z-index: 1;
+    }
+
+    .murmullo-floating.f1 { left: 6px; top: 80px; }
+    .murmullo-floating.f2 { right: 8px; top: 112px; animation-delay: .4s; }
+    .murmullo-floating.f3 { right: 18px; top: 168px; animation-delay: .8s; }
+
+    @keyframes titlePulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.04); opacity: 0.9; }
+    }
+
+    @keyframes beatSmall {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.03); }
+    }
+
     .settings-list {
       width: 100%;
       flex: 1;
@@ -2327,21 +2427,26 @@
           </div>
 
           <div class="page" id="page-lista-instituto">
-            <div class="setup-title" id="lista-instituto-title">Compañeros</div>
+            <div class="setup-title" id="lista-instituto-title">🏫 INSTITUTO</div>
+            <div class="instituto-subtitle" id="lista-instituto-subtitle">Sin instituto configurado</div>
             <div class="list-container" id="lista-instituto-list"></div>
           </div>
 
           <div class="page" id="page-murmullo">
-            <div class="setup-title">🔮 Murmullo</div>
-            <div style="text-align:center; color:#4A5568; font-size:12px; line-height:1.5; padding: 8px 10px;">
-              Entra para ver qué está pasando en tu instituto.
+            <div class="murmullo-header">
+              <div class="murmullo-title">🔮 MURMULLO</div>
+              <div class="murmullo-insti" id="murmullo-insti">IES MONCADA</div>
+              <div class="murmullo-conectados"><span id="murmullo-conectados">0</span> conectados</div>
             </div>
-            <div class="list-container" style="gap:6px;">
-              <div class="list-item"><div style="flex:1; text-align:center;"><strong>💜 12</strong> sobres secretos hoy</div></div>
-              <div class="list-item"><div style="flex:1; text-align:center;"><strong>🔥 89</strong> rachas activas</div></div>
-              <div class="list-item"><div style="flex:1; text-align:center;"><strong>👀 34</strong> ToDox visitados</div></div>
-              <div class="list-item"><div style="flex:1; text-align:center;"><strong>🆕 3</strong> nuevos hoy</div></div>
+            <div class="murmullo-grid">
+              <div class="murmullo-card secretos"><div class="emoji">💜</div><div><strong id="murmullo-secretos">0</strong><span> sobres secretos</span></div></div>
+              <div class="murmullo-card rachas"><div class="emoji">🔥</div><div><strong id="murmullo-rachas">0</strong><span> rachas activas</span></div></div>
+              <div class="murmullo-card todox"><div class="emoji">👀</div><div><strong id="murmullo-todox">0</strong><span> ToDox visitados</span></div></div>
+              <div class="murmullo-card nuevos"><div class="emoji">🆕</div><div><strong id="murmullo-nuevos">0</strong><span> nuevos hoy</span></div></div>
             </div>
+            <div class="murmullo-floating f1">💜</div>
+            <div class="murmullo-floating f2">🔥</div>
+            <div class="murmullo-floating f3">✨</div>
           </div>
 
           <div class="page" id="page-tienda">
@@ -2782,6 +2887,18 @@ const app = {
       curso: null,
       companeros: []
     },
+    institutoView: {
+      active: false,
+      cursoFiltro: 'todos',
+      companeros: []
+    },
+    murmulloStats: {
+      conectados: 0,
+      secretos: 0,
+      rachas: 0,
+      todox: 0,
+      nuevos: 0
+    },
     audioInitialized: false,
     confirmIndex: 0,
     toquesMostrados: new Set(),
@@ -3165,6 +3282,10 @@ const app = {
         this.state.focus = { type: 'listaInstituto', index: 0 };
         this.updateListaInstitutoFocus();
         break;
+      case 'murmullo':
+        this.renderMurmullo();
+        this.state.focus = { type: 'murmullo', index: 0 };
+        break;
       case 'contacts':
         this.renderContacts();
         this.state.focus = { type: 'contacts', index: 0 };
@@ -3510,8 +3631,13 @@ const app = {
         this.showPage('menu');
         break;
       case 'menu':
-        const items = ['tokes', 'lista-instituto', 'contacts', 'todox', 'murmullo', 'qr', 'combates', 'tienda', 'settings'];
-        this.showPage(items[focus.index]);
+        if (focus.index === 1) {
+          this.openInstitutoDesdeMenu();
+        } else {
+          const items = ['tokes', null, 'contacts', 'todox', 'murmullo', 'qr', 'combates', 'tienda', 'settings'];
+          const target = items[focus.index];
+          if (target) this.showPage(target);
+        }
         break;
       case 'tokes':
         this.state.selectedCategoria = TOKES_TYPES[focus.index].id;
@@ -3542,7 +3668,11 @@ const app = {
         this.selectCursoSecreto();
         break;
       case 'lista-instituto':
-        this.selectCompaneroInstituto();
+        if (this.state.institutoView.active) {
+          this.handleInstitutoListaSelect();
+        } else {
+          this.selectCompaneroInstituto();
+        }
         break;
       case 'contacts':
         // Ya no hay botón de escanear aquí
@@ -3863,7 +3993,10 @@ const app = {
         }
         break;
       case 'listaInstituto':
-        if (index < this.state.secretFlow.companeros.length - 1) {
+        const maxInstituto = this.state.institutoView.active
+          ? document.querySelectorAll('#lista-instituto-list .list-item').length - 1
+          : this.state.secretFlow.companeros.length - 1;
+        if (index < maxInstituto) {
           this.state.focus.index++;
           this.updateListaInstitutoFocus();
           this.scrollToFocused('lista-instituto-list');
@@ -4263,8 +4396,10 @@ const app = {
     if (idx === 0) {
       this.showOptionSelector('Provincia', PROVINCIAS, (value) => {
         this.state.registroInstituto.provincia = value;
+        localStorage.setItem('provincia', value);
         if (!INSTITUTOS_POR_PROVINCIA[value]?.includes(this.state.registroInstituto.instituto)) {
           this.state.registroInstituto.instituto = '';
+          localStorage.removeItem('instituto');
         }
         this.renderInstitutoSetup();
       });
@@ -4278,6 +4413,7 @@ const app = {
       const centros = INSTITUTOS_POR_PROVINCIA[this.state.registroInstituto.provincia] || [];
       this.showOptionSelector('Instituto', centros, (value) => {
         this.state.registroInstituto.instituto = value;
+        localStorage.setItem('instituto', value);
         this.renderInstitutoSetup();
       });
       return;
@@ -4285,6 +4421,7 @@ const app = {
     if (idx === 2) {
       this.showOptionSelector('Curso', CURSOS_INSTITUTO, (value) => {
         this.state.registroInstituto.curso = value;
+        localStorage.setItem('curso', value);
         this.renderInstitutoSetup();
       });
       return;
@@ -4379,18 +4516,50 @@ const app = {
       return;
     }
 
+    this.state.institutoView.active = false;
     this.showPage('lista-instituto');
   },
 
   renderListaInstituto() {
     const titulo = document.getElementById('lista-instituto-title');
+    const subtitle = document.getElementById('lista-instituto-subtitle');
+    const list = document.getElementById('lista-instituto-list');
+    if (!list) return;
+
+    if (this.state.institutoView.active) {
+      const instituto = this.state.registroInstituto.instituto || localStorage.getItem('instituto') || 'Sin instituto';
+      const filtro = this.state.institutoView.cursoFiltro || 'todos';
+      const rows = this.state.institutoView.companeros || [];
+      if (titulo) titulo.textContent = '🏫 INSTITUTO';
+      if (subtitle) subtitle.textContent = `${instituto} · Filtro: ${filtro === 'todos' ? 'Todos los cursos' : filtro}`;
+
+      const dataRows = filtro === 'todos' ? rows : rows.filter(r => r.curso === filtro);
+      const header = `
+        <div class="list-item focused" data-index="0" data-type="filtro" style="border-style:dashed;">
+          <span style="font-size: 20px;">🎓</span>
+          <div style="flex:1;">
+            <div style="font-weight:800; color:#2D3748;">Filtrar curso</div>
+            <div style="font-size:10px; color:#718096;">${filtro === 'todos' ? 'Todos los cursos' : filtro}</div>
+          </div>
+        </div>`;
+      const users = dataRows.map((c, i) => `
+        <div class="list-item" data-index="${i + 1}" data-id="${c.id}">
+          <span style="font-size: 24px;">${c.avatar || '👤'}</span>
+          <div style="flex:1;">
+            <div style="font-weight:800; color:#2D3748;">${c.nombre || 'Alumno'}</div>
+            <div style="font-size:10px; color:#718096;">${c.curso || ''}</div>
+          </div>
+        </div>
+      `).join('');
+      list.innerHTML = header + users;
+      return;
+    }
+
     if (titulo) {
       const tipo = this.state.secretFlow.tipo === 'crush' ? '💘 CRUSH' : '💜 ANÓNIMO';
       titulo.textContent = `${tipo} · ${this.state.secretFlow.curso || ''}`;
     }
-
-    const list = document.getElementById('lista-instituto-list');
-    if (!list) return;
+    if (subtitle) subtitle.textContent = 'Elige compañero de tu curso';
 
     const rows = this.state.secretFlow.companeros;
     list.innerHTML = rows.map((c, i) => `
@@ -4402,6 +4571,58 @@ const app = {
         </div>
       </div>
     `).join('');
+  },
+
+  async openInstitutoDesdeMenu() {
+    this.state.institutoView.active = true;
+    this.state.institutoView.cursoFiltro = this.state.institutoView.cursoFiltro || 'todos';
+    try {
+      const response = await fetch(`${BACK}/lista-instituto?userId=${encodeURIComponent(this.miID)}`);
+      const data = await response.json();
+      this.state.institutoView.companeros = data.companeros || [];
+    } catch (e) {
+      this.state.institutoView.companeros = [];
+    }
+    this.showPage('lista-instituto');
+  },
+
+  handleInstitutoListaSelect() {
+    const idx = this.state.focus.index;
+    if (idx === 0) {
+      this.showOptionSelector('Curso (filtro)', ['todos', ...CURSOS_INSTITUTO], (value) => {
+        this.state.institutoView.cursoFiltro = value;
+        this.renderListaInstituto();
+        this.state.focus = { type: 'listaInstituto', index: 0 };
+        this.updateListaInstitutoFocus();
+      });
+      return;
+    }
+    const items = document.querySelectorAll('#lista-instituto-list .list-item');
+    const selected = items[idx];
+    if (!selected) return;
+    const nombre = selected.querySelector('div div')?.textContent || 'Alumno';
+    this.showMsg(`👋 ${nombre}`);
+  },
+
+  renderMurmullo() {
+    const instituto = this.state.registroInstituto.instituto || localStorage.getItem('instituto') || 'Tu Instituto';
+    const secretCount = this.state.secretFlow.tipo ? this.state.secretFlow.companeros.length : Math.max(3, Math.floor((this.state.toquesRestantes || 30) / 2));
+    this.state.murmulloStats = {
+      conectados: 90 + Math.floor(Math.random() * 50),
+      secretos: secretCount,
+      rachas: 40 + Math.floor(Math.random() * 70),
+      todox: Math.max(0, (this.todex?.captured?.length || 0) * 2 + 10),
+      nuevos: 1 + Math.floor(Math.random() * 6)
+    };
+
+    const set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = String(val); };
+    const instiEl = document.getElementById('murmullo-insti');
+    if (instiEl) instiEl.textContent = instituto;
+    set('murmullo-conectados', this.state.murmulloStats.conectados);
+    set('murmullo-secretos', this.state.murmulloStats.secretos);
+    set('murmullo-rachas', this.state.murmulloStats.rachas);
+    set('murmullo-todox', this.state.murmulloStats.todox);
+    set('murmullo-nuevos', this.state.murmulloStats.nuevos);
   },
 
   async selectCompaneroInstituto() {
