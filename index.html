@@ -25,6 +25,10 @@
       --device-dark: #FF4785;
       --device-light: #FFB8D0;
       --screen-bg: #FFF5F7;
+      --screen-text: #5A4A6A;
+      --surface-bg: rgba(255,255,255,0.72);
+      --surface-border: 1px solid rgba(255,255,255,0.5);
+      --focus-ring: 0 0 0 3px rgba(212,165,230,0.55);
     }
 
     html, body {
@@ -45,6 +49,57 @@
       position: fixed;
       width: 100%;
       height: 100%;
+    }
+
+
+
+    body.theme-pastel .screen {
+      background: linear-gradient(180deg, #E8D5F2 0%, #F2D5E8 100%);
+    }
+
+    body.theme-gas-caos {
+      font-family: 'Fredoka One', cursive;
+      letter-spacing: 0.5px;
+    }
+
+    body.theme-gas-caos .screen {
+      background: linear-gradient(180deg, #FF6B35 0%, #F7931E 50%, #FF0000 100%);
+      color: #fff;
+    }
+
+    body.theme-gas-caos .setup-title,
+    body.theme-gas-caos .home-name,
+    body.theme-gas-caos .status-bar,
+    body.theme-gas-caos .list-item,
+    body.theme-gas-caos .toke-item,
+    body.theme-gas-caos .setting-item,
+    body.theme-gas-caos .menu-item,
+    body.theme-gas-caos .combate-card {
+      color: #fff !important;
+      text-shadow: 0 0 10px rgba(255,255,255,0.75);
+    }
+
+    body.theme-gas-caos .menu-item,
+    body.theme-gas-caos .list-item,
+    body.theme-gas-caos .setting-item,
+    body.theme-gas-caos .combate-card,
+    body.theme-gas-caos .toke-item {
+      border: 3px solid rgba(255,0,160,0.8) !important;
+      border-radius: 15px;
+      background: rgba(0,0,0,0.18) !important;
+      box-shadow: 0 0 20px rgba(255,0,160,0.5);
+      transition: all 0.35s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    }
+
+    body.theme-gas-caos .focused {
+      transform: scale(1.08) !important;
+      box-shadow: 0 0 24px #00ffff !important;
+      animation: caosPulse 1s ease-in-out infinite;
+    }
+
+    @keyframes caosPulse {
+      0%,100% { filter: brightness(1); }
+      50% { filter: brightness(1.25); }
     }
 
     .device {
@@ -136,104 +191,6 @@
       border: 4px solid #2D3748;
       display: flex;
       flex-direction: column;
-    }
-
-
-
-    .screen.theme-gas {
-      background: linear-gradient(135deg, #ff6b35 0%, #f7931e 35%, #ff00a0 70%, #ff0000 100%);
-      background-size: 220% 220%;
-      animation: gasGradient 8s ease infinite;
-    }
-
-    @keyframes gasGradient {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
-
-    .screen.theme-gas .setup-title,
-    .screen.theme-gas .status-bar {
-      color: #fff;
-      text-shadow: 0 0 10px rgba(255,255,255,0.9);
-    }
-
-    .screen.theme-gas .menu-item,
-    .screen.theme-gas .setting-item,
-    .screen.theme-gas .list-item,
-    .screen.theme-gas .toke-item,
-    .screen.theme-gas .variante-item {
-      background: rgba(255,255,255,0.15);
-      border: 2px solid rgba(255,255,255,0.55);
-      color: #fff;
-      backdrop-filter: blur(10px);
-      box-shadow: 0 0 20px rgba(255,0,160,0.35);
-    }
-
-    .screen.theme-gas .menu-item span,
-    .screen.theme-gas .setting-item span,
-    .screen.theme-gas .list-item div,
-    .screen.theme-gas .variante-item div {
-      color: #fff !important;
-      text-shadow: 0 0 6px rgba(255,255,255,0.7);
-    }
-
-    .screen.theme-gas .setting-item.focused,
-    .screen.theme-gas .menu-item.focused,
-    .screen.theme-gas .list-item.focused,
-    .screen.theme-gas .toke-item.focused,
-    .screen.theme-gas .variante-item.focused {
-      border-color: #00ffff !important;
-      box-shadow: 0 0 0 3px rgba(0,255,255,0.45), 0 0 25px rgba(255,0,160,0.6);
-      transform: scale(1.04);
-    }
-
-    .screen.theme-neon {
-      background: linear-gradient(145deg, #090b2d 0%, #121a4a 40%, #192d73 75%, #0f7b8f 100%);
-      background-size: 220% 220%;
-      animation: neonGradient 9s ease infinite;
-    }
-
-    @keyframes neonGradient {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
-
-    .screen.theme-neon .setup-title,
-    .screen.theme-neon .status-bar {
-      color: #D6F7FF;
-      text-shadow: 0 0 10px rgba(77, 242, 255, 0.7);
-    }
-
-    .screen.theme-neon .menu-item,
-    .screen.theme-neon .setting-item,
-    .screen.theme-neon .list-item,
-    .screen.theme-neon .toke-item,
-    .screen.theme-neon .variante-item {
-      background: rgba(14, 24, 66, 0.6);
-      border: 2px solid rgba(98, 225, 255, 0.75);
-      color: #E7F9FF;
-      backdrop-filter: blur(8px);
-      box-shadow: 0 0 18px rgba(32, 220, 255, 0.3);
-    }
-
-    .screen.theme-neon .menu-item span,
-    .screen.theme-neon .setting-item span,
-    .screen.theme-neon .list-item div,
-    .screen.theme-neon .variante-item div {
-      color: #E7F9FF !important;
-      text-shadow: 0 0 5px rgba(111, 236, 255, 0.55);
-    }
-
-    .screen.theme-neon .setting-item.focused,
-    .screen.theme-neon .menu-item.focused,
-    .screen.theme-neon .list-item.focused,
-    .screen.theme-neon .toke-item.focused,
-    .screen.theme-neon .variante-item.focused {
-      border-color: #66FCF1 !important;
-      box-shadow: 0 0 0 3px rgba(102,252,241,0.35), 0 0 24px rgba(102,252,241,0.5);
-      transform: scale(1.03);
     }
 
     .status-bar {
@@ -415,7 +372,7 @@
     }
 
     #page-avatar {
-      justify-content: flex-start;
+      justify-content: center;
       align-items: center;
       background: var(--screen-bg);
       height: 100%;
@@ -459,12 +416,14 @@
     }
 
     #page-color {
-      justify-content: flex-start;
+      justify-content: center;
       align-items: center;
-      background: linear-gradient(180deg, #F7E9F6 0%, #E8F2FF 100%);
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      background-size: 400% 400%;
+      animation: gradientShift 8s ease infinite;
       height: 100%;
       width: 100%;
-      padding: 24px 16px 16px 16px;
+      padding: 30px 20px 20px 20px;
     }
 
     @keyframes gradientShift {
@@ -476,21 +435,20 @@
     .color-setup-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
+      gap: 15px;
       width: 100%;
-      max-width: 190px;
-      max-height: 280px;
+      max-width: 220px;
+      max-height: 320px;
       overflow-y: auto;
-      margin-top: 8px;
-      padding: 6px;
+      margin-top: 10px;
+      padding: 10px;
       -webkit-overflow-scrolling: touch;
-      justify-items: center;
     }
 
     .color-setup-item {
-      width: 68px;
-      height: 68px;
-      border: 3px solid white;
+      width: 85px;
+      height: 85px;
+      border: 4px solid white;
       border-radius: 16px;
       cursor: pointer;
       transition: all 0.3s ease;
@@ -614,7 +572,7 @@
 
     .menu-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(2, 1fr);
       grid-template-rows: repeat(3, 1fr);
       gap: 10px;
       width: 100%;
@@ -813,7 +771,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 16px;
+      font-size: 13px;
       transition: all 0.1s ease;
       cursor: pointer;
     }
@@ -905,106 +863,6 @@
       box-shadow: 0 3px 0 #C05621;
     }
 
-
-    #page-lista-instituto .setup-title {
-      animation: titlePulse 1.4s ease-in-out infinite;
-    }
-
-    .instituto-subtitle {
-      text-align: center;
-      font-size: 11px;
-      font-weight: 800;
-      color: #4A5568;
-      margin-bottom: 6px;
-      animation: titlePulse 1.8s ease-in-out infinite;
-    }
-
-    .murmullo-header {
-      text-align: center;
-      margin-bottom: 8px;
-    }
-
-    .murmullo-title {
-      font-family: 'Fredoka One', cursive;
-      color: #fff;
-      text-shadow: 0 0 14px rgba(255,255,255,0.85);
-      letter-spacing: 1px;
-      animation: titlePulse 1.2s ease-in-out infinite;
-    }
-
-    .murmullo-insti {
-      color: #F8E8FF;
-      font-size: 11px;
-      font-weight: 800;
-      margin-top: 2px;
-    }
-
-    .murmullo-conectados {
-      color: #D6F7FF;
-      font-size: 10px;
-      font-weight: 700;
-      margin-top: 2px;
-      animation: beatSmall 1.4s ease-in-out infinite;
-    }
-
-    .murmullo-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
-      width: 100%;
-      position: relative;
-      z-index: 2;
-    }
-
-    .murmullo-card {
-      background: rgba(255,255,255,0.18);
-      border: 2px solid rgba(255,255,255,0.45);
-      border-radius: 12px;
-      min-height: 62px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      color: white;
-      font-size: 10px;
-      text-align: center;
-      box-shadow: 0 0 14px rgba(0,0,0,0.15);
-      animation: beatSmall 1.8s ease-in-out infinite;
-    }
-
-    .murmullo-card .emoji {
-      font-size: 20px;
-      animation: floatEmoji 1.2s ease-in-out infinite;
-    }
-
-    .murmullo-card strong {
-      font-size: 14px;
-      display: block;
-      line-height: 1;
-    }
-
-    .murmullo-floating {
-      position: absolute;
-      font-size: 18px;
-      filter: drop-shadow(0 0 6px rgba(255,255,255,0.7));
-      animation: floatEmoji 2s ease-in-out infinite;
-      z-index: 1;
-    }
-
-    .murmullo-floating.f1 { left: 6px; top: 80px; }
-    .murmullo-floating.f2 { right: 8px; top: 112px; animation-delay: .4s; }
-    .murmullo-floating.f3 { right: 18px; top: 168px; animation-delay: .8s; }
-
-    @keyframes titlePulse {
-      0%, 100% { transform: scale(1); opacity: 1; }
-      50% { transform: scale(1.04); opacity: 0.9; }
-    }
-
-    @keyframes beatSmall {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.03); }
-    }
-
     .settings-list {
       width: 100%;
       flex: 1;
@@ -1033,10 +891,9 @@
     }
 
     .setting-item.focused {
-      border-color: #FF4FA3;
+      border-color: var(--device-color);
       background: #FFF5F7;
-      transform: scale(1.02);
-      box-shadow: 0 0 0 3px rgba(255,79,163,0.35), 0 3px 0 #F687B3;
+      transform: scale(1.01);
     }
 
     .toggle-switch {
@@ -1102,7 +959,7 @@
       display: none;
       flex-direction: column;
       align-items: center;
-      justify-content: flex-start;
+      justify-content: center;
       padding: 30px 20px 20px 20px;
       z-index: 100;
       overflow-y: auto;
@@ -1170,48 +1027,19 @@
       box-shadow: 0 0 0 4px rgba(255,107,157,0.5), 0 4px 0 rgba(0,0,0,0.2);
     }
 
-    #page-curso-secreto .selector-grid {
-      max-width: 190px;
-      gap: 8px;
-      padding: 4px;
-      justify-items: center;
-      margin: 6px auto 0;
-    }
-
-    #page-curso-secreto .selector-item {
-      width: 72px;
-      height: 54px;
-      border: 2px solid #D6BCFA;
-      border-radius: 12px;
-      box-shadow: 0 2px 0 rgba(0,0,0,0.15);
-      padding: 6px;
-    }
-
-    #page-curso-secreto .selector-item.focused {
-      border-color: #FF4FA3;
-      box-shadow: 0 0 0 3px rgba(255,79,163,0.35), 0 2px 0 rgba(0,0,0,0.15);
-      transform: scale(1.06);
-    }
-
-    #page-curso-secreto .selector-item::after {
-      content: '';
-    }
-
     .response-modal {
       position: absolute;
-      top: 8px;
-      left: 8px;
-      right: 8px;
-      bottom: 8px;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
       background: linear-gradient(145deg, rgba(255,107,157,0.95), rgba(255,71,133,0.95));
-      border-radius: 14px;
       display: none;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 12px;
+      padding: 20px;
       z-index: 100;
-      overflow: hidden;
     }
 
     .response-modal.active {
@@ -1221,25 +1049,25 @@
     .response-title {
       color: white;
       font-family: 'Fredoka One', cursive;
-      font-size: 15px;
-      margin-bottom: 12px;
+      font-size: 18px;
+      margin-bottom: 25px;
       text-align: center;
     }
 
     .response-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 8px;
+      gap: 12px;
       width: 100%;
-      max-width: 160px;
+      max-width: 200px;
     }
 
     .response-btn {
       background: rgba(255,255,255,0.95);
-      border: 2px solid transparent;
-      border-radius: 12px;
-      padding: 6px 4px;
-      font-size: 19px;
+      border: 3px solid transparent;
+      border-radius: 16px;
+      padding: 15px;
+      font-size: 32px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -1255,7 +1083,7 @@
     }
 
     .response-btn .label {
-      font-size: 9px;
+      font-size: 10px;
       font-weight: 800;
       color: #2D3748;
       margin-top: 5px;
@@ -1263,12 +1091,12 @@
 
     .response-actions {
       display: flex;
-      gap: 8px;
-      margin-top: 10px;
+      gap: 15px;
+      margin-top: 25px;
     }
 
     .response-action {
-      padding: 8px 12px;
+      padding: 12px 24px;
       border-radius: 20px;
       font-size: 12px;
       font-weight: 800;
@@ -1620,16 +1448,16 @@
 
     .envio-animacion {
       position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
+      inset: 0;
       display: none;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       z-index: 150;
       animation: fadeIn 0.3s ease;
+      padding: 16px;
+      background: radial-gradient(circle at 50% 35%, rgba(255,255,255,0.25) 0%, rgba(0,0,0,0.55) 70%);
+      backdrop-filter: blur(6px);
     }
 
     .envio-animacion.active {
@@ -1643,14 +1471,21 @@
 
     .envio-avatar-container {
       position: relative;
-      width: 120px;
-      height: 120px;
-      margin-bottom: 20px;
+      width: 100px;
+      height: 100px;
+      margin-bottom: 14px;
+      background: rgba(255,255,255,0.14);
+      border: 1px solid rgba(255,255,255,0.35);
+      border-radius: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 10px 24px rgba(0,0,0,0.32), inset 0 1px 0 rgba(255,255,255,0.3);
     }
 
     .envio-avatar {
       position: absolute;
-      font-size: 80px;
+      font-size: 60px;
       animation: enviarAnim 1.5s ease-in-out;
       filter: drop-shadow(0 10px 20px rgba(0,0,0,0.3));
       top: 0;
@@ -1659,9 +1494,9 @@
 
     .envio-emoji-toke {
       position: absolute;
-      font-size: 50px;
-      bottom: -10px;
-      right: -10px;
+      font-size: 34px;
+      bottom: -4px;
+      right: -4px;
       animation: enviarAnim 1.5s ease-in-out 0.2s both;
       filter: drop-shadow(0 5px 10px rgba(0,0,0,0.3));
     }
@@ -1677,8 +1512,8 @@
     .envio-texto {
       color: white;
       font-family: 'Fredoka One', cursive;
-      font-size: 24px;
-      margin-top: 20px;
+      font-size: 20px;
+      margin-top: 8px;
       text-shadow: 0 4px 8px rgba(0,0,0,0.3);
       animation: textoPop 0.5s ease 0.3s both;
     }
@@ -1712,21 +1547,19 @@
 
     .toque-recibido-modal {
       position: absolute;
-      top: 8px;
-      left: 8px;
-      right: 8px;
-      bottom: 8px;
-      border-radius: 14px;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
       display: none;
       flex-direction: column;
       align-items: center;
-      justify-content: flex-start;
-      padding: 10px 10px 8px 10px;
+      justify-content: center;
+      padding: 12px 10px; gap: 8px;
       z-index: 150;
       text-align: center;
       color: white;
-      animation: slideUp 0.35s ease;
-      overflow: hidden;
+      animation: slideUp 0.5s ease;
     }
 
     @keyframes slideUp {
@@ -1743,7 +1576,7 @@
     }
 
     .toque-recibido-avatar {
-      font-size: 38px;
+      font-size: 34px;
       margin-bottom: 5px;
       animation: bounceIn 0.8s ease;
       filter: drop-shadow(0 5px 10px rgba(0,0,0,0.2));
@@ -1756,7 +1589,7 @@
     }
 
     .toque-recibido-emoji {
-      font-size: 54px;
+      font-size: 60px;
       margin: 10px 0;
       animation: bounceIn 0.8s ease 0.2s both;
       filter: drop-shadow(0 10px 20px rgba(0,0,0,0.3));
@@ -1770,8 +1603,8 @@
     }
 
     .toque-recibido-mensaje {
-      font-size: 12px;
-      margin-bottom: 8px;
+      font-size: 14px;
+      margin-bottom: 20px;
       padding: 0 10px;
       font-weight: 600;
       line-height: 1.4;
@@ -1783,55 +1616,97 @@
       to { transform: translateY(0); opacity: 1; }
     }
 
-    .respuestas-container {
+    .popup-respuestas-grid {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(2, 72px);
+      grid-template-rows: repeat(2, 56px);
       gap: 8px;
-      width: 100%;
-      max-width: 220px;
-      margin-top: auto;
-      margin-bottom: 8px;
+      justify-content: center;
+      margin: 8px 0 2px;
+      max-width: 180px;
     }
 
-    .respuesta-option {
-      background: rgba(255,255,255,0.95);
-      border: 2px solid transparent;
-      border-radius: 10px;
-      padding: 7px 6px;
+    .respuesta-btn {
+      width: 72px;
+      height: 56px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 4px;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      box-shadow: 0 4px 0 rgba(0,0,0,0.1);
-      animation: fadeInUp 0.5s ease both;
-    }
-
-    .respuesta-option:nth-child(1) { animation-delay: 0.5s; }
-    .respuesta-option:nth-child(2) { animation-delay: 0.6s; }
-    .respuesta-option:nth-child(3) { animation-delay: 0.7s; }
-    .respuesta-option:nth-child(4) { animation-delay: 0.8s; }
-
-    .respuesta-option.focused {
-      border-color: #FFD93D;
-      transform: scale(1.05) translateY(-3px);
-      box-shadow: 0 6px 0 rgba(0,0,0,0.2), 0 0 15px rgba(255,217,61,0.5);
-    }
-
-    .respuesta-option .emoji-resp {
-      font-size: 20px;
-      transition: transform 0.2s;
-    }
-
-    .respuesta-option.focused .emoji-resp {
-      transform: scale(1.2);
-    }
-
-    .respuesta-option .texto-resp {
+      justify-content: center;
+      border-radius: 10px;
+      background: rgba(255,255,255,0.22);
+      border: 1px solid rgba(255,255,255,0.38);
       font-size: 9px;
-      font-weight: 800;
-      color: #2D3748;
+      text-align: center;
+      padding: 3px 2px;
+      transition: all 0.2s ease;
+      overflow: visible;
+    }
+
+    .respuesta-btn .emoji {
+      display: block;
+      font-size: 24px;
+      line-height: 1;
+      margin-bottom: 3px;
+      width: 100%;
+    }
+
+    .respuesta-btn .texto {
+      font-size: 9px;
+      line-height: 1.1;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      max-width: 100%;
+    }
+
+    .theme-pastel .respuesta-btn.focused {
+      background: #fff;
+      color: #5A4A6A;
+      transform: scale(1.1);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    }
+
+    .theme-gas-caos .respuesta-btn.focused {
+      background: #FF00A0;
+      border-color: #fff;
+      transform: scale(1.15) rotate(2deg);
+      box-shadow: 0 0 20px #FF00A0;
+      animation: respuesta-pulse 0.3s ease-in-out infinite alternate;
+    }
+
+
+    .popup-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      justify-content: center;
+      font-family: 'Fredoka One', cursive;
+      font-size: 15px;
+      color: #fff;
+      text-shadow: 0 0 12px rgba(255,255,255,0.65);
+    }
+
+    .popup-icon { font-size: 20px; }
+    .popup-mensaje {
+      font-size: 13px;
+      line-height: 1.35;
+      color: #fff;
+      text-align: center;
+      padding: 0 8px;
+    }
+
+    .popup-pista {
+      font-size: 10px;
+      color: #c8f7ff;
+      text-shadow: 0 0 8px rgba(0,255,255,0.45);
+      text-align: center;
+      min-height: 14px;
+    }
+
+    @keyframes respuesta-pulse {
+      from { transform: scale(1.1); }
+      to { transform: scale(1.2); }
     }
 
     .respuesta-recibida-modal {
@@ -1876,7 +1751,7 @@
     }
 
     .respuesta-recibida-emoji {
-      font-size: 50px;
+      font-size: 34px;
       margin: 10px 0;
       animation: bounceIn 0.6s ease 0.2s both;
       filter: drop-shadow(0 5px 15px rgba(0,0,0,0.3));
@@ -2213,7 +2088,7 @@
       display: none;
       flex-direction: column;
       align-items: center;
-      justify-content: flex-start;
+      justify-content: center;
       padding: 30px 20px 20px 20px;
       z-index: 150;
       overflow-y: auto;
@@ -2234,7 +2109,7 @@
       display: none;
       flex-direction: column;
       align-items: center;
-      justify-content: flex-start;
+      justify-content: center;
       padding: 30px 20px 20px 20px;
       z-index: 150;
       overflow-y: auto;
@@ -2320,28 +2195,6 @@
             <div class="setup-hint">Pulsa OK para continuar</div>
           </div>
 
-          <div class="page" id="page-instituto-setup">
-            <div class="setup-title">🏫 Tu instituto</div>
-            <div class="settings-list" id="instituto-setup-list">
-              <div class="setting-item focused" data-index="0">
-                <span>Provincia</span>
-                <span id="instituto-provincia-value" style="font-size: 11px; color: #4A5568;">Sin elegir</span>
-              </div>
-              <div class="setting-item" data-index="1">
-                <span>Instituto</span>
-                <span id="instituto-centro-value" style="font-size: 11px; color: #4A5568;">Sin elegir</span>
-              </div>
-              <div class="setting-item" data-index="2">
-                <span>Curso</span>
-                <span id="instituto-curso-value" style="font-size: 11px; color: #4A5568;">Sin elegir</span>
-              </div>
-              <div class="setting-item" data-index="3" style="color: #2F855A;">
-                <span>✅ Confirmar</span>
-                <span style="font-size: 11px; color: #2F855A; font-weight: 800;">OK</span>
-              </div>
-            </div>
-          </div>
-
           <div class="page" id="page-avatar">
             <div class="setup-title">Elige tu avatar</div>
             <div class="avatar-grid" id="avatar-grid"></div>
@@ -2364,42 +2217,15 @@
           <div class="page" id="page-menu">
             <div class="setup-title">Menú</div>
             <div class="menu-grid" id="menu-grid">
-              <div class="menu-item focused" data-index="0">
-                <span class="icon">💌</span>
-                <span>Tokes</span>
-              </div>
-              <div class="menu-item" data-index="1">
-                <span class="icon">🏫</span>
-                <span>Inst.</span>
-              </div>
-              <div class="menu-item" data-index="2">
-                <span class="icon">👥</span>
-                <span>Amigos</span>
-              </div>
-              <div class="menu-item" data-index="3">
-                <span class="icon">📖</span>
-                <span>ToDox</span>
-              </div>
-              <div class="menu-item" data-index="4">
-                <span class="icon">🔮</span>
-                <span>Murm.</span>
-              </div>
-              <div class="menu-item" data-index="5">
-                <span class="icon">📱</span>
-                <span>QR</span>
-              </div>
-              <div class="menu-item" data-index="6">
-                <span class="icon">⚔️</span>
-                <span>Combate</span>
-              </div>
-              <div class="menu-item" data-index="7">
-                <span class="icon">🛒</span>
-                <span>Tienda</span>
-              </div>
-              <div class="menu-item" data-index="8">
-                <span class="icon">⚙️</span>
-                <span>Ajustes</span>
-              </div>
+              <div class="menu-item focused" data-index="0"><span class="icon">💌</span><span>Tokes</span></div>
+              <div class="menu-item" data-index="1"><span class="icon">🏫</span><span>Inst.</span></div>
+              <div class="menu-item" data-index="2"><span class="icon">👥</span><span>Amigos</span></div>
+              <div class="menu-item" data-index="3"><span class="icon">📖</span><span>ToDox</span></div>
+              <div class="menu-item" data-index="4"><span class="icon">🔮</span><span>Murm.</span></div>
+              <div class="menu-item" data-index="5"><span class="icon">📱</span><span>QR</span></div>
+              <div class="menu-item" data-index="6"><span class="icon">⚔️</span><span>Combate</span></div>
+              <div class="menu-item" data-index="7"><span class="icon">🛒</span><span>Tienda</span></div>
+              <div class="menu-item" data-index="8"><span class="icon">⚙️</span><span>Ajustes</span></div>
             </div>
           </div>
 
@@ -2421,44 +2247,42 @@
             <div class="list-container" id="enviar-list"></div>
           </div>
 
-          <div class="page" id="page-curso-secreto">
-            <div class="setup-title" id="curso-secreto-title">💜 ANÓNIMO · Curso</div>
-            <div class="selector-grid" id="curso-secreto-grid"></div>
+          <div class="page" id="page-contacts">
+            <div id="view-amigos" class="view">
+              <div class="screen-header">AMIGOS <span id="amigos-contador">0/50</span></div>
+              <div class="amigos-lista list-container" id="amigos-lista-container"></div>
+              <div class="amigos-leyenda">🔥 Activa | 🔶 Pendiente | 💔 Rota | ○ Nueva</div>
+            </div>
           </div>
 
-          <div class="page" id="page-lista-instituto">
-            <div class="setup-title" id="lista-instituto-title">🏫 INSTITUTO</div>
-            <div class="instituto-subtitle" id="lista-instituto-subtitle">Sin instituto configurado</div>
-            <div class="list-container" id="lista-instituto-list"></div>
+          <div class="page" id="page-instituto">
+            <div class="setup-title">🏫 Instituto</div>
+            <div class="list-container" id="instituto-list"><div class="list-item focused">Cargando...</div></div>
           </div>
 
           <div class="page" id="page-murmullo">
-            <div class="murmullo-header">
-              <div class="murmullo-title">🔮 MURMULLO</div>
-              <div class="murmullo-insti" id="murmullo-insti">IES MONCADA</div>
-              <div class="murmullo-conectados"><span id="murmullo-conectados">0</span> conectados</div>
-            </div>
-            <div class="murmullo-grid">
-              <div class="murmullo-card secretos"><div class="emoji">💜</div><div><strong id="murmullo-secretos">0</strong><span> sobres secretos</span></div></div>
-              <div class="murmullo-card rachas"><div class="emoji">🔥</div><div><strong id="murmullo-rachas">0</strong><span> rachas activas</span></div></div>
-              <div class="murmullo-card todox"><div class="emoji">👀</div><div><strong id="murmullo-todox">0</strong><span> ToDox visitados</span></div></div>
-              <div class="murmullo-card nuevos"><div class="emoji">🆕</div><div><strong id="murmullo-nuevos">0</strong><span> nuevos hoy</span></div></div>
-            </div>
-            <div class="murmullo-floating f1">💜</div>
-            <div class="murmullo-floating f2">🔥</div>
-            <div class="murmullo-floating f3">✨</div>
-          </div>
+            <div id="view-murmullos" class="view">
+              <div class="screen-header">🔮 MURMULLO</div>
+              <div class="murmullo-instituto" id="murmullo-nombre-instituto">Cargando...</div>
+              <div class="murmullo-alumnos" id="murmullo-total-alumnos">0 alumnos</div>
 
-          <div class="page" id="page-tienda">
-            <div class="setup-title">🛒 Tienda</div>
-            <div style="text-align:center; color:#4A5568; font-size:12px; line-height:1.5; padding: 12px;">
-              Próximamente: temas, efectos y packs para tu perfil.
-            </div>
-          </div>
+              <div class="murmullo-seccion">
+                <div class="murmullo-titulo">HOY EN TU INSTITUTO</div>
+                <div class="murmullo-stat"><span class="stat-icon">💜</span><span class="stat-numero" id="stat-sobres">0</span><span class="stat-label">sobres secretos</span></div>
+                <div class="murmullo-stat"><span class="stat-icon">🔥</span><span class="stat-numero" id="stat-rachas">0</span><span class="stat-label">rachas activas</span></div>
+                <div class="murmullo-stat"><span class="stat-icon">👀</span><span class="stat-numero" id="stat-todox">0</span><span class="stat-label">ToDox visitados</span></div>
+                <div class="murmullo-stat"><span class="stat-icon">🆕</span><span class="stat-numero" id="stat-nuevos">0</span><span class="stat-label">nuevos hoy</span></div>
+              </div>
 
-          <div class="page" id="page-contacts">
-            <div class="setup-title">Amigos</div>
-            <div class="list-container" id="contacts-list"></div>
+              <div class="murmullo-seccion">
+                <div class="murmullo-titulo">TENDENCIAS</div>
+                <div class="murmullo-tendencia" id="tendencia-curso">• Curso + rachas: --</div>
+                <div class="murmullo-tendencia" id="tendencia-sobre">• Sobre + usado: --</div>
+                <div class="murmullo-tendencia" id="tendencia-hora">• Hora pico: --</div>
+              </div>
+
+              <button class="btn-actualizar" onclick="app.cargarMurmullos()">🔄 Actualizar</button>
+            </div>
           </div>
 
           <div class="page" id="page-qr">
@@ -2511,12 +2335,12 @@
                 <div id="color-preview" style="width: 24px; height: 24px; background: #FF6B9D; border-radius: 50%; border: 2px solid white; box-shadow: 0 2px 5px rgba(0,0,0,0.2);"></div>
               </div>
               <div class="setting-item" data-index="3">
-                <span>🟢 Estado</span>
-                <span id="status-text" style="font-size: 11px; color: #48BB78; font-weight: 800;">Disponible</span>
-              </div>
-              <div class="setting-item" data-index="4">
                 <span>🎭 Tema</span>
                 <span id="theme-text" style="font-size: 11px; color: #805AD5; font-weight: 800;">Pastel</span>
+              </div>
+              <div class="setting-item" data-index="4">
+                <span>🟢 Estado</span>
+                <span id="status-text" style="font-size: 11px; color: #48BB78; font-weight: 800;">Disponible</span>
               </div>
               <div class="setting-item" data-index="5" style="color: #E53E3E;">
                 <span>🗑️ Reiniciar</span>
@@ -2534,14 +2358,14 @@
           <!-- NUEVO: Selector de emoji para combate (dentro de la pantalla) -->
           <div class="selector-emoji-screen" id="selector-emoji-screen">
             <div class="setup-title">🎯 Elige tu guerrero</div>
-            <div class="todex-grid" id="selector-emoji-grid" style="grid-template-columns: repeat(4, 1fr); gap: 8px; max-height: 280px;"></div>
+            <div class="todex-grid" id="selector-emoji-grid" style="grid-template-columns: repeat(5, 1fr); gap: 8px; max-height: 240px;"></div>
             <div style="margin-top: 10px; font-size: 11px; color: #718096;">Selecciona tu emoji más fuerte</div>
           </div>
 
           <!-- NUEVO: Desafío recibido (dentro de la pantalla) -->
           <div class="selector-modal" id="desafio-recibido-screen" style="background: linear-gradient(145deg, #805AD5, #6B46C1); color: white;">
             <div style="font-family: Fredoka One; font-size: 24px; margin-bottom: 15px;">⚔️ ¡DESAFÍO!</div>
-            <div style="font-size: 50px; margin: 10px 0;" id="desafio-emoji">❓</div>
+            <div style="font-size: 34px; margin: 10px 0;" id="desafio-emoji">❓</div>
             <div style="font-size: 16px; font-weight: 700; margin-bottom: 5px;" id="desafio-nombre">Alguien</div>
             <div style="font-size: 12px; opacity: 0.9; margin-bottom: 20px;">te reta a un combate</div>
             <div style="display: flex; gap: 15px;">
@@ -2553,7 +2377,7 @@
           <!-- NUEVO: Selector de defensa (dentro de la pantalla) -->
           <div class="selector-emoji-screen" id="selector-defensa-screen">
             <div class="setup-title">🛡️ Elige defensor</div>
-            <div class="todex-grid" id="selector-defensa-grid" style="grid-template-columns: repeat(4, 1fr); gap: 8px; max-height: 280px;"></div>
+            <div class="todex-grid" id="selector-defensa-grid" style="grid-template-columns: repeat(5, 1fr); gap: 8px; max-height: 240px;"></div>
             <div style="margin-top: 10px; font-size: 11px; color: #718096;">¿Qué emoji usarás para defenderte?</div>
           </div>
 
@@ -2570,11 +2394,6 @@
           <div class="selector-modal" id="theme-selector">
             <div class="selector-title">🎭 Tema</div>
             <div class="selector-grid" id="theme-grid"></div>
-          </div>
-
-          <div class="selector-modal" id="option-selector">
-            <div class="selector-title" id="option-selector-title">Selecciona</div>
-            <div class="list-container" id="option-selector-list" style="max-height: 260px;"></div>
           </div>
 
           <div class="response-modal" id="response-modal">
@@ -2601,31 +2420,18 @@
             <div class="envio-check">✅</div>
           </div>
 
-          <div class="toque-recibido-modal" id="toque-recibido-modal">
-            <div class="toque-recibido-header">
-              <div class="toque-recibido-avatar" id="toque-avatar">👤</div>
-              <div class="toque-recibido-nombre" id="toque-nombre">Alguien</div>
+          <div id="popup-recepcion" class="toque-recibido-modal popup">
+            <div class="popup-header">
+              <span class="popup-icon">💜</span>
+              <span class="popup-titulo">SOBRE SECRETO</span>
             </div>
-            <div class="toque-recibido-emoji" id="toque-emoji">🎉</div>
-            <div class="toque-recibido-mensaje" id="toque-mensaje">Te envió un toque</div>
-            
-            <div class="respuestas-container" id="respuestas-container">
-              <div class="respuesta-option focused" data-index="0" data-emoji="👍" data-texto="OK">
-                <span class="emoji-resp">👍</span>
-                <span class="texto-resp">OK</span>
-              </div>
-              <div class="respuesta-option" data-index="1" data-emoji="❤️" data-texto="Gracias">
-                <span class="emoji-resp">❤️</span>
-                <span class="texto-resp">Gracias</span>
-              </div>
-              <div class="respuesta-option" data-index="2" data-emoji="😊" data-texto="Igualmente">
-                <span class="emoji-resp">😊</span>
-                <span class="texto-resp">Igualmente</span>
-              </div>
-              <div class="respuesta-option" data-index="3" data-emoji="🤔" data-texto="Ahora no">
-                <span class="emoji-resp">🤔</span>
-                <span class="texto-resp">Ahora no</span>
-              </div>
+            <div class="popup-mensaje" id="popup-mensaje">"Alguien ha pensado en ti"</div>
+            <div class="popup-pista" id="pista-container" style="display:none;">Pista: <span id="pista-texto"></span></div>
+            <div class="popup-respuestas-grid">
+              <div class="respuesta-btn focused" data-resp="gracias"><span class="emoji">😊</span><span class="texto">Gracias</span></div>
+              <div class="respuesta-btn" data-resp="misterioso"><span class="emoji">😎</span><span class="texto">Misterioso</span></div>
+              <div class="respuesta-btn" data-resp="quien"><span class="emoji">🤔</span><span class="texto">¿Quién?</span></div>
+              <div class="respuesta-btn" data-resp="hablamos"><span class="emoji">😍</span><span class="texto">¿Hablamos?</span></div>
             </div>
           </div>
 
@@ -2825,31 +2631,14 @@ const ESTADOS = [
 ];
 
 const TOKES_TYPES = [
-  { id: 1, emoji: '🔥', name: 'On Fire', desc: '¡Estás imparable!', color: '#E53E3E' },
-  { id: 2, emoji: '💕', name: 'Crush', desc: 'Pienso en ti', color: '#D53F8C' },
-  { id: 3, emoji: '💪', name: 'Ánimo', desc: '¡Tú puedes!', color: '#38A169' },
-  { id: 4, emoji: '📅', name: 'Planes', desc: '¿Quedamos?', color: '#D69E2E' },
-  { id: 5, emoji: '🚨', name: 'Urgente', desc: '¡Ayuda!', color: '#3182CE' },
-  { id: 6, emoji: '💜', name: 'Anónimo', desc: 'Sobre secreto', color: '#805AD5' },
-  { id: 7, emoji: '💘', name: 'CRUSH', desc: 'Crush secreto', color: '#E53E8C' }
+  { id: 1, emoji: '🔥', name: 'Fire', desc: '3/4', color: '#E53E3E' },
+  { id: 2, emoji: '💕', name: 'Amor', desc: '2/4', color: '#D53F8C' },
+  { id: 3, emoji: '💪', name: 'Ánimo', desc: '4/4', color: '#38A169' },
+  { id: 4, emoji: '📅', name: 'Planes', desc: '1/4', color: '#D69E2E' },
+  { id: 5, emoji: '🚨', name: 'Urgente', desc: '2/4', color: '#3182CE' },
+  { id: 6, emoji: '💜', name: 'Anónimo', desc: '∞', color: '#805AD5' },
+  { id: 7, emoji: '💘', name: 'CRUSH', desc: '1/día', color: '#D69E2E' }
 ];
-
-const TEMAS = [
-  { id: 'pastel', label: 'Pastel', color: '#D4A5E6', emoji: '🎨', msg: '🎨 Pastel' },
-  { id: 'gas', label: 'GAS Caos', color: '#FF00A0', emoji: '🔥', msg: '🔥 GAS Caos' },
-  { id: 'neon', label: 'Neón Night', color: '#1F6FEB', emoji: '💠', msg: '💠 Neón Night' }
-];
-
-const PROVINCIAS = ['Valencia', 'Madrid', 'Barcelona', 'Sevilla', 'Málaga', 'Alicante'];
-const INSTITUTOS_POR_PROVINCIA = {
-  'Valencia': ['IES Moncada', 'IES Benimaclet', 'IES Campanar', 'IES Patraix'],
-  'Madrid': ['IES Cervantes', 'IES Ramiro', 'IES Vallecas', 'IES San Blas'],
-  'Barcelona': ['IES Gràcia', 'IES Sants', 'IES Poblenou', 'IES Eixample'],
-  'Sevilla': ['IES Triana', 'IES Nervión', 'IES Macarena', 'IES Heliópolis'],
-  'Málaga': ['IES Larios', 'IES La Rosaleda', 'IES Teatinos', 'IES Pedregalejo'],
-  'Alicante': ['IES Playa San Juan', 'IES Babel', 'IES Gran Vía', 'IES Benalúa']
-};
-const CURSOS_INSTITUTO = ['1º ESO', '2º ESO', '3º ESO', '4º ESO', '1º Bach', '2º Bach'];
 
 const EMOJIS_LIST = ['😊','❤️','👍','🔥','💯','🤥','👾','💕','🚀','🎯','🦾','🙌','👏','💋','🐻','🐝','🌈','☀️','🌙','⭐','🌸','📸','🚗','🌷','🍀','🍕','👅','🍟','🌮','🍰','🎂','🍫','☕','🥤','🏀','⚽','🎾','🏆','🎮','🎲','🎸','🎺','🎨','📚','💡','🔧','😱','📱','💻','🛸','🥷','😇','🧟‍♂️','👽','🎩','🧙','🧚','🧜','💃🏻','🦋','🦅','🦈','🐅','🐘','🦒','🦏','🌍','📦','🏴‍☠️','✨','🚨','👑','🦄','🦁','🧌','🦉','🐣','🐉','🐲','🦕','🦖','🌋','🗿','🪄','⚡','💀','👻','🤢','🤡','🎪','🍾','🎆','🎇','🫶','🏃‍♂️','🧟‍♀️','🤖','🧊','😈','🔫','💅','🎐','🎀','🎁','🎰','✈️','🥵','🥶','⌚️','⚓️','🛁','🪒','🪤','💣','🏍️','🍒','🌪️','👙','🧩','🍪','🏎️','🎓','🧸','✂️','🕳️','❤️‍🔥','🥳','⚰️','🎈','🎉','👩🏻‍❤️‍👨','🦊','💦','🚪','🎎','⚠️','🛌','🤮','🫡','💎','🛹','💸','💵','💊','💶','🎟️','⚜️','💳','💿','📀'];
 
@@ -2870,35 +2659,12 @@ const app = {
       color: 0,
       status: 'disponible',
       avatar: '🐱',
-      tema: 'pastel'
+      theme: 'pastel'
     },
     inSelector: false,
     selectorType: null,
     selectorIndex: 0,
-    optionItems: [],
     pendingToque: null,
-    registroInstituto: {
-      provincia: '',
-      instituto: '',
-      curso: ''
-    },
-    secretFlow: {
-      tipo: null,
-      curso: null,
-      companeros: []
-    },
-    institutoView: {
-      active: false,
-      cursoFiltro: 'todos',
-      companeros: []
-    },
-    murmulloStats: {
-      conectados: 0,
-      secretos: 0,
-      rachas: 0,
-      todox: 0,
-      nuevos: 0
-    },
     audioInitialized: false,
     confirmIndex: 0,
     toquesMostrados: new Set(),
@@ -2925,7 +2691,9 @@ const app = {
       enSelectorDefensa: false,
       defensaIndex: 0
     },
-    pollingCombates: null
+    pollingCombates: null,
+    combateAnimTimer: null,
+    amigosData: []
   },
   
   contactos: {},
@@ -2964,11 +2732,8 @@ const app = {
       this.state.settings.color = parseInt(localStorage.getItem('colorIndex')) || 0;
       this.state.settings.status = localStorage.getItem('status') || 'disponible';
       this.state.settings.avatar = localStorage.getItem('avatar') || '🐱';
-      this.state.settings.tema = localStorage.getItem('tema') || 'pastel';
+      this.state.settings.theme = localStorage.getItem('theme') || 'pastel';
       this.state.toquesRestantes = parseInt(localStorage.getItem("toquesRestantes")) || 30;
-      this.state.registroInstituto.provincia = localStorage.getItem('provincia') || '';
-      this.state.registroInstituto.instituto = localStorage.getItem('instituto') || '';
-      this.state.registroInstituto.curso = localStorage.getItem('curso') || '';
     } catch(e) {
       this.debug('Error cargando datos: ' + e.message);
     }
@@ -3008,6 +2773,9 @@ const app = {
     
     setTimeout(() => this.reintentarRespuestasPendientes(), 10000);
     
+    const mur = document.getElementById('view-murmullos');
+    if (mur) mur.addEventListener('show', () => this.cargarMurmullos());
+
     this.showPage('splash', false);
   },
 
@@ -3178,11 +2946,9 @@ const app = {
   },
 
   applyTheme() {
-    const screen = document.querySelector('.screen');
-    if (!screen) return;
-    screen.classList.toggle('theme-gas', this.state.settings.tema === 'gas');
-    screen.classList.toggle('theme-neon', this.state.settings.tema === 'neon');
-    screen.classList.toggle('theme-pastel', this.state.settings.tema === 'pastel');
+    const t = this.state.settings.theme === 'gas_caos' ? 'theme-gas-caos' : 'theme-pastel';
+    document.body.classList.remove('theme-pastel', 'theme-gas-caos');
+    document.body.classList.add(t);
   },
 
   updateColaBadge() {
@@ -3218,6 +2984,7 @@ const app = {
     document.getElementById('desafio-recibido-screen').classList.remove('active');
     document.getElementById('selector-defensa-screen').classList.remove('active');
     document.getElementById('combate-vs-screen').classList.remove('active');
+    if (this.state.combateAnimTimer) { clearTimeout(this.state.combateAnimTimer); this.state.combateAnimTimer = null; }
     
     if (page === 'home') {
       this.updateColaBadge();
@@ -3237,11 +3004,6 @@ const app = {
           const input = document.getElementById('miNombre');
           if (input) input.focus();
         }, 100);
-        break;
-      case 'instituto-setup':
-        this.state.focus = { type: 'institutoSetup', index: 0 };
-        this.renderInstitutoSetup();
-        this.updateInstitutoSetupFocus();
         break;
       case 'avatar':
         this.state.focus = { type: 'avatar', index: 0 };
@@ -3272,24 +3034,20 @@ const app = {
         this.state.focus = { type: 'enviar', index: 0 };
         this.updateEnviarFocus();
         break;
-      case 'curso-secreto':
-        this.renderCursoSecreto();
-        this.state.focus = { type: 'cursoSecreto', index: 0 };
-        this.updateCursoSecretoFocus();
-        break;
-      case 'lista-instituto':
-        this.renderListaInstituto();
-        this.state.focus = { type: 'listaInstituto', index: 0 };
-        this.updateListaInstitutoFocus();
-        break;
-      case 'murmullo':
-        this.renderMurmullo();
-        this.state.focus = { type: 'murmullo', index: 0 };
-        break;
       case 'contacts':
         this.renderContacts();
         this.state.focus = { type: 'contacts', index: 0 };
         this.updateContactsFocus();
+        break;
+      case 'instituto':
+        this.renderInstituto();
+        this.state.focus = { type: 'contacts', index: 0 };
+        break;
+      case 'murmullo':
+        this.cargarMurmullos();
+        const murEvt = document.getElementById('view-murmullos');
+        if (murEvt) murEvt.dispatchEvent(new Event('show'));
+        this.state.focus = { type: 'contacts', index: 0 };
         break;
       case 'todox':
         this.renderTodex();
@@ -3446,8 +3204,11 @@ const app = {
       return;
     }
 
-    const toqueModal = document.getElementById('toque-recibido-modal');
+    const toqueModal = document.getElementById('popup-recepcion');
     if (toqueModal && toqueModal.classList.contains('active')) {
+      toqueModal.classList.remove('active');
+      window.tokePendiente = null;
+      setTimeout(() => this.procesarColaMensajes(), 250);
       return;
     }
 
@@ -3463,7 +3224,7 @@ const app = {
       return;
     }
 
-    if (['consent', 'setup', 'instituto-setup', 'avatar', 'color'].includes(this.state.currentPage)) {
+    if (['consent', 'setup', 'avatar', 'color'].includes(this.state.currentPage)) {
       return;
     }
     
@@ -3490,14 +3251,6 @@ const app = {
         case 'enviar':
           this.state.focus = { type: 'enviar', index: 0 };
           this.updateEnviarFocus();
-          break;
-        case 'curso-secreto':
-          this.state.focus = { type: 'cursoSecreto', index: 0 };
-          this.updateCursoSecretoFocus();
-          break;
-        case 'lista-instituto':
-          this.state.focus = { type: 'listaInstituto', index: 0 };
-          this.updateListaInstitutoFocus();
           break;
         case 'contacts':
           this.state.focus = { type: 'contacts', index: 0 };
@@ -3573,7 +3326,7 @@ const app = {
       return;
     }
 
-    const toqueModal = document.getElementById('toque-recibido-modal');
+    const toqueModal = document.getElementById('popup-recepcion');
     if (toqueModal && toqueModal.classList.contains('active')) {
       this.enviarRespuestaToque();
       return;
@@ -3613,10 +3366,7 @@ const app = {
           return;
         }
         localStorage.setItem('miNombre', nom);
-        this.showPage('instituto-setup', false);
-        break;
-      case 'instituto-setup':
-        this.handleInstitutoSetupSelect();
+        this.showPage('avatar', false);
         break;
       case 'avatar':
         const avatarSel = AVATARES[focus.index];
@@ -3631,21 +3381,14 @@ const app = {
         this.showPage('menu');
         break;
       case 'menu':
-        if (focus.index === 1) {
-          this.openInstitutoDesdeMenu();
-        } else {
-          const items = ['tokes', null, 'contacts', 'todox', 'murmullo', 'qr', 'combates', 'tienda', 'settings'];
-          const target = items[focus.index];
-          if (target) this.showPage(target);
-        }
+        const items = ['tokes', 'instituto', 'contacts', 'todox', 'murmullo', 'qr', 'combates', 'home', 'settings'];
+        this.showPage(items[focus.index] || 'home');
         break;
       case 'tokes':
         this.state.selectedCategoria = TOKES_TYPES[focus.index].id;
         if (this.state.selectedCategoria === 6 || this.state.selectedCategoria === 7) {
-          this.state.secretFlow.tipo = this.state.selectedCategoria === 6 ? 'anonimo' : 'crush';
-          this.state.secretFlow.curso = null;
-          this.state.secretFlow.companeros = [];
-          this.showPage('curso-secreto');
+          this.showMsg(this.state.selectedCategoria === 6 ? '💜 Modo anónimo activo' : '💘 Modo CRUSH activo');
+          this.showPage('enviar');
         } else {
           this.showPage('variantes');
         }
@@ -3657,21 +3400,11 @@ const app = {
         break;
       case 'enviar':
         const amigosList = Object.entries(this.contactos);
-        if (focus.index === 0) {
-          this.scanQR();
-        } else if (amigosList[focus.index - 1]) {
-          const [id, nombre] = amigosList[focus.index - 1];
+        if (amigosList.length === 0) {
+          this.showMsg('No tienes amigos. Ve a Mi QR');
+        } else if (amigosList[focus.index]) {
+          const [id, nombre] = amigosList[focus.index];
           this.enviarToque(id, nombre);
-        }
-        break;
-      case 'curso-secreto':
-        this.selectCursoSecreto();
-        break;
-      case 'lista-instituto':
-        if (this.state.institutoView.active) {
-          this.handleInstitutoListaSelect();
-        } else {
-          this.selectCompaneroInstituto();
         }
         break;
       case 'contacts':
@@ -3715,8 +3448,8 @@ const app = {
     
     // Navegación en selector de emoji para combate
     if (this.state.combate.enSelectorEmoji) {
-      if (this.state.combate.selectorEmojiIndex >= 4) {
-        this.state.combate.selectorEmojiIndex -= 4;
+      if (this.state.combate.selectorEmojiIndex >= 5) {
+        this.state.combate.selectorEmojiIndex -= 5;
         this.updateSelectorEmojiFocus();
         this.scrollToFocused('selector-emoji-grid');
       }
@@ -3725,8 +3458,8 @@ const app = {
 
     // Navegación en selector de defensa
     if (this.state.combate.enSelectorDefensa) {
-      if (this.state.combate.defensaIndex >= 4) {
-        this.state.combate.defensaIndex -= 4;
+      if (this.state.combate.defensaIndex >= 5) {
+        this.state.combate.defensaIndex -= 5;
         this.updateSelectorDefensaFocus();
         this.scrollToFocused('selector-defensa-grid');
       }
@@ -3750,7 +3483,7 @@ const app = {
       return;
     }
 
-    const toqueModal = document.getElementById('toque-recibido-modal');
+    const toqueModal = document.getElementById('popup-recepcion');
     if (toqueModal && toqueModal.classList.contains('active')) {
       if (this.state.respuestaToqueIndex >= 2) {
         this.state.respuestaToqueIndex -= 2;
@@ -3760,23 +3493,6 @@ const app = {
     }
 
     const { type, index } = this.state.focus;
-
-    if (this.state.currentPage === 'settings') {
-      if (this.state.focus.index > 0) {
-        this.state.focus.index--;
-        this.updateSettingsFocus();
-        this.scrollToFocused('settings-list');
-      }
-      this.vibrar();
-      return;
-    }
-
-    if (this.state.currentPage === 'combates') {
-      this.state.focus.index = this.state.focus.index === 0 ? 1 : 0;
-      this.updateCombatesFocus();
-      this.vibrar();
-      return;
-    }
     
     switch(type) {
       case 'avatar':
@@ -3805,25 +3521,6 @@ const app = {
           this.scrollToFocused('tokes-list');
         }
         break;
-      case 'institutoSetup':
-        if (index > 0) {
-          this.state.focus.index--;
-          this.updateInstitutoSetupFocus();
-        }
-        break;
-      case 'cursoSecreto':
-        if (index >= 2) {
-          this.state.focus.index -= 2;
-          this.updateCursoSecretoFocus();
-        }
-        break;
-      case 'listaInstituto':
-        if (index > 0) {
-          this.state.focus.index--;
-          this.updateListaInstitutoFocus();
-          this.scrollToFocused('lista-instituto-list');
-        }
-        break;
       case 'variantes':
         if (index > 0) {
           this.state.focus.index--;
@@ -3842,7 +3539,7 @@ const app = {
         if (index > 0) {
           this.state.focus.index--;
           this.updateContactsFocus();
-          this.scrollToFocused('contacts-list');
+          this.scrollToFocused('amigos-lista-container');
         }
         break;
       case 'grid':
@@ -3851,6 +3548,10 @@ const app = {
           this.updateGridFocus();
           this.scrollToFocused('todex-grid');
         }
+        break;
+      case 'combates':
+        this.state.focus.index = index === 0 ? 1 : 0;
+        this.updateCombatesFocus();
         break;
       case 'settings':
         if (index > 0) {
@@ -3881,8 +3582,8 @@ const app = {
     // Navegación en selector de emoji para combate
     if (this.state.combate.enSelectorEmoji) {
       const max = this.todex.captured.length - 1;
-      if (this.state.combate.selectorEmojiIndex < max - 3) {
-        this.state.combate.selectorEmojiIndex += 4;
+      if (this.state.combate.selectorEmojiIndex < max - 4) {
+        this.state.combate.selectorEmojiIndex += 5;
         if (this.state.combate.selectorEmojiIndex > max) this.state.combate.selectorEmojiIndex = max;
         this.updateSelectorEmojiFocus();
         this.scrollToFocused('selector-emoji-grid');
@@ -3893,8 +3594,8 @@ const app = {
     // Navegación en selector de defensa
     if (this.state.combate.enSelectorDefensa) {
       const max = this.todex.captured.length - 1;
-      if (this.state.combate.defensaIndex < max - 3) {
-        this.state.combate.defensaIndex += 4;
+      if (this.state.combate.defensaIndex < max - 4) {
+        this.state.combate.defensaIndex += 5;
         if (this.state.combate.defensaIndex > max) this.state.combate.defensaIndex = max;
         this.updateSelectorDefensaFocus();
         this.scrollToFocused('selector-defensa-grid');
@@ -3920,7 +3621,7 @@ const app = {
       return;
     }
 
-    const toqueModal = document.getElementById('toque-recibido-modal');
+    const toqueModal = document.getElementById('popup-recepcion');
     if (toqueModal && toqueModal.classList.contains('active')) {
       if (this.state.respuestaToqueIndex < 2) {
         this.state.respuestaToqueIndex += 2;
@@ -3930,24 +3631,6 @@ const app = {
     }
 
     const { type, index } = this.state.focus;
-
-    if (this.state.currentPage === 'settings') {
-      const maxSettings = document.querySelectorAll('#settings-list .setting-item').length - 1;
-      if (this.state.focus.index < maxSettings) {
-        this.state.focus.index++;
-        this.updateSettingsFocus();
-        this.scrollToFocused('settings-list');
-      }
-      this.vibrar();
-      return;
-    }
-
-    if (this.state.currentPage === 'combates') {
-      this.state.focus.index = this.state.focus.index === 0 ? 1 : 0;
-      this.updateCombatesFocus();
-      this.vibrar();
-      return;
-    }
     
     switch(type) {
       case 'avatar':
@@ -3979,29 +3662,6 @@ const app = {
           this.scrollToFocused('tokes-list');
         }
         break;
-      case 'institutoSetup':
-        if (index < 3) {
-          this.state.focus.index++;
-          this.updateInstitutoSetupFocus();
-        }
-        break;
-      case 'cursoSecreto':
-        if (index < CURSOS_INSTITUTO.length - 2) {
-          this.state.focus.index += 2;
-          if (this.state.focus.index > CURSOS_INSTITUTO.length - 1) this.state.focus.index = CURSOS_INSTITUTO.length - 1;
-          this.updateCursoSecretoFocus();
-        }
-        break;
-      case 'listaInstituto':
-        const maxInstituto = this.state.institutoView.active
-          ? document.querySelectorAll('#lista-instituto-list .list-item').length - 1
-          : this.state.secretFlow.companeros.length - 1;
-        if (index < maxInstituto) {
-          this.state.focus.index++;
-          this.updateListaInstitutoFocus();
-          this.scrollToFocused('lista-instituto-list');
-        }
-        break;
       case 'variantes':
         const variantes = CONTEXTOS_TOKES[this.state.selectedCategoria] || [];
         if (index < variantes.length - 1) {
@@ -4011,7 +3671,7 @@ const app = {
         }
         break;
       case 'enviar':
-        const maxAmigos = Object.keys(this.contactos).length;
+        const maxAmigos = Object.keys(this.contactos).length - 1;
         if (index < maxAmigos) {
           this.state.focus.index++;
           this.updateEnviarFocus();
@@ -4019,11 +3679,11 @@ const app = {
         }
         break;
       case 'contacts':
-        const maxContacts = Object.keys(this.contactos).length;
+        const maxContacts = Math.max((this.state.amigosData || []).length - 1, 0);
         if (index < maxContacts) {
           this.state.focus.index++;
           this.updateContactsFocus();
-          this.scrollToFocused('contacts-list');
+          this.scrollToFocused('amigos-lista-container');
         }
         break;
       case 'grid':
@@ -4034,13 +3694,11 @@ const app = {
         }
         break;
       case 'combates':
-        if (index === 0) {
-          this.state.focus.index = 1;
-          this.updateCombatesFocus();
-        }
+        this.state.focus.index = index === 1 ? 0 : 1;
+        this.updateCombatesFocus();
         break;
       case 'settings':
-        if (index < 4) {
+        if (index < 5) {
           this.state.focus.index++;
           this.updateSettingsFocus();
           this.scrollToFocused('settings-list');
@@ -4056,7 +3714,7 @@ const app = {
     
     // Navegación en selector de emoji para combate
     if (this.state.combate.enSelectorEmoji) {
-      if (this.state.combate.selectorEmojiIndex % 4 > 0) {
+      if (this.state.combate.selectorEmojiIndex % 5 > 0) {
         this.state.combate.selectorEmojiIndex--;
         this.updateSelectorEmojiFocus();
       }
@@ -4065,7 +3723,7 @@ const app = {
 
     // Navegación en selector de defensa
     if (this.state.combate.enSelectorDefensa) {
-      if (this.state.combate.defensaIndex % 4 > 0) {
+      if (this.state.combate.defensaIndex % 5 > 0) {
         this.state.combate.defensaIndex--;
         this.updateSelectorDefensaFocus();
       }
@@ -4096,7 +3754,7 @@ const app = {
       return;
     }
 
-    const toqueModal = document.getElementById('toque-recibido-modal');
+    const toqueModal = document.getElementById('popup-recepcion');
     if (toqueModal && toqueModal.classList.contains('active')) {
       if (this.state.respuestaToqueIndex % 2 === 1) {
         this.state.respuestaToqueIndex--;
@@ -4131,12 +3789,6 @@ const app = {
           this.updateMenuFocus();
         }
         break;
-      case 'cursoSecreto':
-        if (index % 2 === 1) {
-          this.state.focus.index--;
-          this.updateCursoSecretoFocus();
-        }
-        break;
       case 'grid':
         if (index % 5 > 0) {
           this.state.focus.index--;
@@ -4152,7 +3804,7 @@ const app = {
     
     // Navegación en selector de emoji para combate
     if (this.state.combate.enSelectorEmoji) {
-      if (this.state.combate.selectorEmojiIndex % 4 < 3) {
+      if (this.state.combate.selectorEmojiIndex % 5 < 4) {
         const max = this.todex.captured.length - 1;
         if (this.state.combate.selectorEmojiIndex < max) {
           this.state.combate.selectorEmojiIndex++;
@@ -4164,7 +3816,7 @@ const app = {
 
     // Navegación en selector de defensa
     if (this.state.combate.enSelectorDefensa) {
-      if (this.state.combate.defensaIndex % 4 < 3) {
+      if (this.state.combate.defensaIndex % 5 < 4) {
         const max = this.todex.captured.length - 1;
         if (this.state.combate.defensaIndex < max) {
           this.state.combate.defensaIndex++;
@@ -4198,7 +3850,7 @@ const app = {
       return;
     }
 
-    const toqueModal = document.getElementById('toque-recibido-modal');
+    const toqueModal = document.getElementById('popup-recepcion');
     if (toqueModal && toqueModal.classList.contains('active')) {
       if (this.state.respuestaToqueIndex % 2 === 0 && this.state.respuestaToqueIndex < 3) {
         this.state.respuestaToqueIndex++;
@@ -4231,12 +3883,6 @@ const app = {
           this.state.focus.index++;
           this.state.menuIndex = this.state.focus.index;
           this.updateMenuFocus();
-        }
-        break;
-      case 'cursoSecreto':
-        if (index % 2 === 0 && index < CURSOS_INSTITUTO.length - 1) {
-          this.state.focus.index++;
-          this.updateCursoSecretoFocus();
         }
         break;
       case 'grid':
@@ -4312,26 +3958,8 @@ const app = {
     });
   },
 
-  updateInstitutoSetupFocus() {
-    document.querySelectorAll('#instituto-setup-list .setting-item').forEach((el, i) => {
-      el.classList.toggle('focused', i === this.state.focus.index);
-    });
-  },
-
-  updateCursoSecretoFocus() {
-    document.querySelectorAll('#curso-secreto-grid .selector-item').forEach((el, i) => {
-      el.classList.toggle('focused', i === this.state.focus.index);
-    });
-  },
-
-  updateListaInstitutoFocus() {
-    document.querySelectorAll('#lista-instituto-list .list-item').forEach((el, i) => {
-      el.classList.toggle('focused', i === this.state.focus.index);
-    });
-  },
-
   updateContactsFocus() {
-    const items = document.querySelectorAll('#contacts-list .list-item');
+    const items = document.querySelectorAll('#amigos-lista-container .amigo-item');
     
     items.forEach((el, i) => {
       el.classList.toggle('focused', i === this.state.focus.index);
@@ -4351,7 +3979,7 @@ const app = {
   },
 
   updateSettingsFocus() {
-    document.querySelectorAll('#settings-list .setting-item').forEach((el, i) => {
+    document.querySelectorAll('.setting-item').forEach((el, i) => {
       el.classList.toggle('focused', i === this.state.focus.index);
     });
   },
@@ -4367,7 +3995,7 @@ const app = {
   },
 
   updateRespuestasFocus() {
-    document.querySelectorAll('.respuesta-option').forEach((el, i) => {
+    document.querySelectorAll('.popup-respuestas-grid .respuesta-btn').forEach((el, i) => {
       el.classList.toggle('focused', i === this.state.respuestaToqueIndex);
     });
   },
@@ -4379,303 +4007,17 @@ const app = {
     if (focused) focused.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
   },
 
-  renderInstitutoSetup() {
-    const p = this.state.registroInstituto.provincia || 'Sin elegir';
-    const i = this.state.registroInstituto.instituto || 'Sin elegir';
-    const c = this.state.registroInstituto.curso || 'Sin elegir';
-    const pv = document.getElementById('instituto-provincia-value');
-    const iv = document.getElementById('instituto-centro-value');
-    const cv = document.getElementById('instituto-curso-value');
-    if (pv) pv.textContent = p;
-    if (iv) iv.textContent = i;
-    if (cv) cv.textContent = c;
-  },
-
-  handleInstitutoSetupSelect() {
-    const idx = this.state.focus.index;
-    if (idx === 0) {
-      this.showOptionSelector('Provincia', PROVINCIAS, (value) => {
-        this.state.registroInstituto.provincia = value;
-        localStorage.setItem('provincia', value);
-        if (!INSTITUTOS_POR_PROVINCIA[value]?.includes(this.state.registroInstituto.instituto)) {
-          this.state.registroInstituto.instituto = '';
-          localStorage.removeItem('instituto');
-        }
-        this.renderInstitutoSetup();
-      });
-      return;
-    }
-    if (idx === 1) {
-      if (!this.state.registroInstituto.provincia) {
-        this.showMsg('Elige provincia primero');
-        return;
-      }
-      const centros = INSTITUTOS_POR_PROVINCIA[this.state.registroInstituto.provincia] || [];
-      this.showOptionSelector('Instituto', centros, (value) => {
-        this.state.registroInstituto.instituto = value;
-        localStorage.setItem('instituto', value);
-        this.renderInstitutoSetup();
-      });
-      return;
-    }
-    if (idx === 2) {
-      this.showOptionSelector('Curso', CURSOS_INSTITUTO, (value) => {
-        this.state.registroInstituto.curso = value;
-        localStorage.setItem('curso', value);
-        this.renderInstitutoSetup();
-      });
-      return;
-    }
-    this.confirmarRegistroInstituto();
-  },
-
-  showOptionSelector(title, items, onSelect) {
-    if (!items || !items.length) {
-      this.showMsg('No hay opciones');
-      return;
-    }
-    this.state.inSelector = true;
-    this.state.selectorType = 'options';
-    this.state.optionItems = items;
-    this.state.optionOnSelect = onSelect;
-    this.state.selectorIndex = 0;
-
-    const modal = document.getElementById('option-selector');
-    const list = document.getElementById('option-selector-list');
-    const titleEl = document.getElementById('option-selector-title');
-    if (!modal || !list || !titleEl) return;
-
-    titleEl.textContent = `▼ ${title}`;
-    list.innerHTML = items.map((item, i) => `
-      <div class="selector-item ${i === 0 ? 'focused' : ''}" data-index="${i}" style="height: auto; min-height: 48px; width: 100%; border-radius: 12px; padding: 10px 12px; justify-content: flex-start;">
-        <div style="font-size: 12px; font-weight: 800;">${item}</div>
-      </div>
-    `).join('');
-
-    modal.classList.add('active');
-  },
-
-  confirmarRegistroInstituto() {
-    const { provincia, instituto, curso } = this.state.registroInstituto;
-    if (!provincia || !instituto || !curso) {
-      this.showMsg('Completa provincia, instituto y curso');
-      return;
-    }
-
-    localStorage.setItem('provincia', provincia);
-    localStorage.setItem('instituto', instituto);
-    localStorage.setItem('curso', curso);
-
-    const payload = {
-      userId: this.miID,
-      provincia,
-      instituto,
-      curso,
-      nombre: localStorage.getItem('miNombre') || 'Alumno',
-      avatar: this.state.settings.avatar || '👤'
-    };
-
-    fetch(`${BACK}/registro-instituto`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
-    }).catch(() => {});
-
-    this.showPage('avatar', false);
-  },
-
-  renderCursoSecreto() {
-    const titulo = document.getElementById('curso-secreto-title');
-    if (titulo) {
-      titulo.textContent = this.state.secretFlow.tipo === 'crush' ? '💘 CRUSH · Curso' : '💜 ANÓNIMO · Curso';
-    }
-    const grid = document.getElementById('curso-secreto-grid');
-    if (!grid) return;
-    grid.innerHTML = CURSOS_INSTITUTO.map((c, i) => `
-      <div class="selector-item ${i === 0 ? 'focused' : ''}" data-index="${i}" style="background:#fff; color:#2D3748;">
-        <div style="font-size:12px; font-weight:800;">${c}</div>
-      </div>
-    `).join('');
-  },
-
-  async selectCursoSecreto() {
-    const curso = CURSOS_INSTITUTO[this.state.focus.index];
-    if (!curso) return;
-    this.state.secretFlow.curso = curso;
-
-    try {
-      const response = await fetch(`${BACK}/lista-instituto?userId=${encodeURIComponent(this.miID)}&curso=${encodeURIComponent(curso)}`);
-      const data = await response.json();
-      this.state.secretFlow.companeros = data.companeros || [];
-    } catch (e) {
-      this.state.secretFlow.companeros = [];
-    }
-
-    if (!this.state.secretFlow.companeros.length) {
-      this.showMsg('No hay compañeros en ese curso');
-      return;
-    }
-
-    this.state.institutoView.active = false;
-    this.showPage('lista-instituto');
-  },
-
-  renderListaInstituto() {
-    const titulo = document.getElementById('lista-instituto-title');
-    const subtitle = document.getElementById('lista-instituto-subtitle');
-    const list = document.getElementById('lista-instituto-list');
-    if (!list) return;
-
-    if (this.state.institutoView.active) {
-      const instituto = this.state.registroInstituto.instituto || localStorage.getItem('instituto') || 'Sin instituto';
-      const filtro = this.state.institutoView.cursoFiltro || 'todos';
-      const rows = this.state.institutoView.companeros || [];
-      if (titulo) titulo.textContent = '🏫 INSTITUTO';
-      if (subtitle) subtitle.textContent = `${instituto} · Filtro: ${filtro === 'todos' ? 'Todos los cursos' : filtro}`;
-
-      const dataRows = filtro === 'todos' ? rows : rows.filter(r => r.curso === filtro);
-      const header = `
-        <div class="list-item focused" data-index="0" data-type="filtro" style="border-style:dashed;">
-          <span style="font-size: 20px;">🎓</span>
-          <div style="flex:1;">
-            <div style="font-weight:800; color:#2D3748;">Filtrar curso</div>
-            <div style="font-size:10px; color:#718096;">${filtro === 'todos' ? 'Todos los cursos' : filtro}</div>
-          </div>
-        </div>`;
-      const users = dataRows.map((c, i) => `
-        <div class="list-item" data-index="${i + 1}" data-id="${c.id}">
-          <span style="font-size: 24px;">${c.avatar || '👤'}</span>
-          <div style="flex:1;">
-            <div style="font-weight:800; color:#2D3748;">${c.nombre || 'Alumno'}</div>
-            <div style="font-size:10px; color:#718096;">${c.curso || ''}</div>
-          </div>
-        </div>
-      `).join('');
-      list.innerHTML = header + users;
-      return;
-    }
-
-    if (titulo) {
-      const tipo = this.state.secretFlow.tipo === 'crush' ? '💘 CRUSH' : '💜 ANÓNIMO';
-      titulo.textContent = `${tipo} · ${this.state.secretFlow.curso || ''}`;
-    }
-    if (subtitle) subtitle.textContent = 'Elige compañero de tu curso';
-
-    const rows = this.state.secretFlow.companeros;
-    list.innerHTML = rows.map((c, i) => `
-      <div class="list-item ${i === 0 ? 'focused' : ''}" data-index="${i}" data-id="${c.id}">
-        <span style="font-size: 24px;">${c.avatar || '👤'}</span>
-        <div style="flex:1;">
-          <div style="font-weight:800; color:#2D3748;">${c.nombre || 'Alumno'}</div>
-          <div style="font-size:10px; color:#718096;">${c.curso || ''}</div>
-        </div>
-      </div>
-    `).join('');
-  },
-
-  async openInstitutoDesdeMenu() {
-    this.state.institutoView.active = true;
-    this.state.institutoView.cursoFiltro = this.state.institutoView.cursoFiltro || 'todos';
-    try {
-      const response = await fetch(`${BACK}/lista-instituto?userId=${encodeURIComponent(this.miID)}`);
-      const data = await response.json();
-      this.state.institutoView.companeros = data.companeros || [];
-    } catch (e) {
-      this.state.institutoView.companeros = [];
-    }
-    this.showPage('lista-instituto');
-  },
-
-  handleInstitutoListaSelect() {
-    const idx = this.state.focus.index;
-    if (idx === 0) {
-      this.showOptionSelector('Curso (filtro)', ['todos', ...CURSOS_INSTITUTO], (value) => {
-        this.state.institutoView.cursoFiltro = value;
-        this.renderListaInstituto();
-        this.state.focus = { type: 'listaInstituto', index: 0 };
-        this.updateListaInstitutoFocus();
-      });
-      return;
-    }
-    const items = document.querySelectorAll('#lista-instituto-list .list-item');
-    const selected = items[idx];
-    if (!selected) return;
-    const nombre = selected.querySelector('div div')?.textContent || 'Alumno';
-    this.showMsg(`👋 ${nombre}`);
-  },
-
-  renderMurmullo() {
-    const instituto = this.state.registroInstituto.instituto || localStorage.getItem('instituto') || 'Tu Instituto';
-    const secretCount = this.state.secretFlow.tipo ? this.state.secretFlow.companeros.length : Math.max(3, Math.floor((this.state.toquesRestantes || 30) / 2));
-    this.state.murmulloStats = {
-      conectados: 90 + Math.floor(Math.random() * 50),
-      secretos: secretCount,
-      rachas: 40 + Math.floor(Math.random() * 70),
-      todox: Math.max(0, (this.todex?.captured?.length || 0) * 2 + 10),
-      nuevos: 1 + Math.floor(Math.random() * 6)
-    };
-
-    const set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = String(val); };
-    const instiEl = document.getElementById('murmullo-insti');
-    if (instiEl) instiEl.textContent = instituto;
-    set('murmullo-conectados', this.state.murmulloStats.conectados);
-    set('murmullo-secretos', this.state.murmulloStats.secretos);
-    set('murmullo-rachas', this.state.murmulloStats.rachas);
-    set('murmullo-todox', this.state.murmulloStats.todox);
-    set('murmullo-nuevos', this.state.murmulloStats.nuevos);
-  },
-
-  async selectCompaneroInstituto() {
-    const target = this.state.secretFlow.companeros[this.state.focus.index];
-    if (!target) return;
-
-    if (this.state.toquesRestantes <= 0) {
-      this.showMsg('❌ No te quedan tokes hoy');
-      return;
-    }
-
-    const esCrush = this.state.secretFlow.tipo === 'crush';
-    const payload = {
-      de: this.miID,
-      para: target.id,
-      num: esCrush ? 7 : 6,
-      tipo: esCrush ? 'crush' : 'anonimo',
-      contexto: esCrush ? 'Eres el crush de alguien' : 'Alguien ha pensado en ti',
-      nombreRemitente: 'Alguien',
-      avatarRemitente: this.state.settings.avatar,
-      instituto_destino: localStorage.getItem('instituto') || ''
-    };
-
-    try {
-      const response = await fetch(`${BACK}/toque`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      });
-      const data = await response.json();
-      if (!response.ok || !data.ok) throw new Error(data.error || 'Error al enviar');
-
-      this.state.toquesRestantes = data.toques_restantes || (this.state.toquesRestantes - 1);
-      localStorage.setItem('toquesRestantes', this.state.toquesRestantes);
-      this.updateHome();
-      this.showMsg(esCrush ? '💘 Crush enviado' : '💜 Sobre secreto enviado');
-      this.showPage('home');
-    } catch (e) {
-      this.showMsg('❌ ' + e.message);
-    }
-  },
-
   renderTokes() {
     const container = document.getElementById('tokes-list');
     if (!container) return;
     
     container.innerHTML = TOKES_TYPES.map((t, i) => `
-      <div class="toke-item t${t.id} ${i === 0 ? 'focused' : ''}" data-index="${i}">
+      <div class="toke-item t${Math.min(t.id,5)} ${i === 0 ? 'focused' : ''} ${t.id === 7 ? 'crush-row' : ''}" data-index="${i}" style="min-height:${t.id===7?52:42}px; margin-bottom:3px;">
+        <span style="font-size: 18px;">${t.emoji}</span>
         <div style="flex: 1;">
-          <div style="font-weight: 800; color: ${t.color}; font-size: 14px; text-align:center;">${t.emoji} ${t.name}</div>
-          <div style="font-size: 11px; color: #718096; text-align:center;">${t.desc}</div>
+          <div style="font-weight: 800; color: ${t.color}; font-size: 12px;">${t.name.toUpperCase()}</div>
         </div>
-        <span style="font-size: 10px; background: #EDF2F7; padding: 2px 6px; border-radius: 10px; color: #4A5568;">4</span>
+        <span style="font-size: 10px; background: rgba(255,255,255,0.7); padding: 2px 6px; border-radius: 10px; color: #4A5568;">${t.desc}</span>
       </div>
     `).join('');
   },
@@ -4714,21 +4056,13 @@ const app = {
     
     const amigos = Object.entries(this.contactos);
     
-    let html = `
-      <div class="list-item focused" data-index="0">
-        <span style="font-size: 26px;">📷</span>
-        <div style="flex: 1;">
-          <div style="font-weight: 800; color: #805AD5;">Escanear QR</div>
-          <div style="font-size: 10px; color: #A0AEC0;">Nuevo amigo</div>
-        </div>
-      </div>
-    `;
-    
+    let html = ``;
+
     if (amigos.length === 0) {
-      html += `<div style="text-align: center; color: #A0AEC0; padding: 25px; font-size: 12px;">No tienes amigos aún.<br>¡Escanea un QR!</div>`;
+      html += `<div class="list-item focused" data-index="0" style="justify-content:center; text-align:center; color:#A0AEC0; padding: 22px; font-size: 12px;">No tienes amigos aún.<br>Ve a 📱 Mi QR para escanear.</div>`;
     } else {
       html += amigos.map(([id, nom], i) => `
-        <div class="list-item" data-index="${i + 1}">
+        <div class="list-item ${i === 0 ? 'focused' : ''}" data-index="${i}">
           <span style="font-size: 26px;">👤</span>
           <div style="flex: 1;">
             <div style="font-weight: 800; color: #2D3748;">${nom}</div>
@@ -4752,25 +4086,90 @@ const app = {
     }
   },
 
-  renderContacts() {
-    const container = document.getElementById('contacts-list');
+  async renderInstituto() {
+    const container = document.getElementById('instituto-list');
     if (!container) return;
-    
-    const lista = Object.entries(this.contactos);
-    
-    if (lista.length === 0) {
-      container.innerHTML = '<div style="text-align: center; color: #A0AEC0; padding: 35px; font-size: 12px;">No tienes amigos.<br>¡Ve a Mi QR y escanea códigos!</div>';
-    } else {
-      container.innerHTML = lista.map(([id, nom], i) => `
-        <div class="list-item ${i === 0 ? 'focused' : ''}" data-index="${i}">
-          <span style="font-size: 26px;">👤</span>
-          <div style="flex: 1;">
-            <div style="font-weight: 800; color: #2D3748;">${nom}</div>
-            <div style="font-size: 9px; color: #A0AEC0;">${id.substring(0, 10)}...</div>
-          </div>
-          <button class="btn-eliminar" onclick="event.stopPropagation(); app.eliminarAmigo('${id}')">✕</button>
-        </div>
-      `).join('');
+    container.innerHTML = '<div class="list-item focused">Cargando instituto...</div>';
+    try {
+      const r = await fetch(`${BACK}/lista-instituto?userId=${this.miID}`);
+      const data = await r.json();
+      const comps = data.compañeros || [];
+      if (!comps.length) {
+        container.innerHTML = '<div class="list-item focused">Sin compañeros aún</div>';
+        return;
+      }
+      container.innerHTML = comps.map((c, i) => `<div class="list-item ${i===0?'focused':''}"><span style="font-size:24px;">${c.avatar||'👤'}</span><div style="flex:1;"><div style="font-weight:800;">${c.nombre}</div><div style="font-size:10px;opacity:0.8;">${c.curso||''}</div></div></div>`).join('');
+    } catch(e) {
+      container.innerHTML = '<div class="list-item focused">Error cargando instituto</div>';
+    }
+  },
+
+  async cargarMurmullos() {
+    const userId = this.miID;
+    const perfilResp = await fetch(`${BACK}/perfil?userId=${userId}`);
+    const perfil = await perfilResp.json();
+    const instituto = perfil.instituto;
+
+    if (!instituto) {
+      this.showMsg('Primero registra tu instituto');
+      return;
+    }
+
+    document.getElementById('murmullo-nombre-instituto').textContent = instituto;
+
+    const stats = await fetch(`${BACK}/estadisticas-instituto?instituto=${encodeURIComponent(instituto)}`).then(r => r.json());
+
+    document.getElementById('murmullo-total-alumnos').textContent = (stats.total_alumnos || 0) + ' alumnos conectados';
+    document.getElementById('stat-sobres').textContent = stats.sobres_secretos_hoy || 0;
+    document.getElementById('stat-rachas').textContent = stats.rachas_activas || 0;
+    document.getElementById('stat-todox').textContent = stats.todox_visitados_hoy || 0;
+    document.getElementById('stat-nuevos').textContent = stats.nuevos_hoy || 0;
+
+    document.getElementById('tendencia-curso').textContent = '• Curso + rachas: ' + (stats.curso_mas_rachas || '--');
+    document.getElementById('tendencia-sobre').textContent = '• Sobre + usado: ' + (stats.sobre_mas_usado || '--');
+    document.getElementById('tendencia-hora').textContent = '• Hora pico: ' + (stats.hora_pico || '--');
+  },
+
+  getRachaIcono(estado) {
+    const iconos = { activa: '🔥', pendiente: '🔶', rota: '💔', nueva: '○' };
+    return iconos[estado] || '○';
+  },
+
+  async renderContacts() {
+    const userId = this.miID;
+    const container = document.getElementById('amigos-lista-container');
+    if (!container) return;
+
+    try {
+      const res = await fetch(`${BACK}/amigos?userId=${userId}`);
+      const data = await res.json();
+      const amigos = data.amigos || [];
+      this.state.amigosData = amigos;
+
+      const contador = document.getElementById('amigos-contador');
+      if (contador) contador.textContent = `${amigos.length}/50`;
+
+      container.innerHTML = '';
+      amigos.forEach((amigo, index) => {
+        const icono = this.getRachaIcono(amigo.racha_estado);
+        const div = document.createElement('div');
+        div.className = `amigo-item list-item ${index === 0 ? 'focused' : ''}`;
+        div.dataset.index = index;
+        div.dataset.userid = amigo.id;
+        div.innerHTML = `
+          <span class="amigo-racha">${icono} ${amigo.racha_dias}</span>
+          <span class="amigo-nombre">${amigo.nombre}</span>
+          <span class="amigo-avatar">${amigo.avatar}</span>
+        `;
+        container.appendChild(div);
+      });
+
+      if (!amigos.length) {
+        container.innerHTML = '<div class="amigo-item list-item focused" data-index="0">Sin amigos en backend</div>';
+      }
+    } catch (e) {
+      container.innerHTML = '<div class="amigo-item list-item focused" data-index="0">Error cargando amigos</div>';
+      this.state.amigosData = [];
     }
   },
 
@@ -4852,12 +4251,7 @@ const app = {
       statusEl.textContent = st ? st.label : 'Disponible';
       statusEl.style.color = st ? st.color : '#48BB78';
     }
-
-    if (themeEl) {
-      const temaActual = TEMAS.find(t => t.id === this.state.settings.tema) || TEMAS[0];
-      themeEl.textContent = temaActual.label;
-      themeEl.style.color = temaActual.id === 'gas' ? '#FF00A0' : (temaActual.id === 'neon' ? '#1F6FEB' : '#805AD5');
-    }
+    if (themeEl) themeEl.textContent = this.state.settings.theme === 'gas_caos' ? 'GAS Caos' : 'Pastel';
   },
 
   activateSetting(index) {
@@ -4879,10 +4273,10 @@ const app = {
         this.showColorSelector();
         break;
       case 3:
-        this.showStatusSelector();
+        this.showThemeSelector();
         break;
       case 4:
-        this.showThemeSelector();
+        this.showStatusSelector();
         break;
       case 5:
         this.mostrarConfirmReinicio();
@@ -4938,6 +4332,30 @@ const app = {
     this.selectFromSelector();
   },
 
+  showThemeSelector() {
+    this.state.inSelector = true;
+    this.state.selectorType = 'theme';
+    this.state.selectorIndex = this.state.settings.theme === 'gas_caos' ? 1 : 0;
+
+    const modal = document.getElementById('theme-selector');
+    const grid = document.getElementById('theme-grid');
+    if (!modal || !grid) return;
+
+    const themes = [
+      { id: 'pastel', label: 'Pastel', emoji: '🌸', color: '#D4A5E6' },
+      { id: 'gas_caos', label: 'GAS Caos', emoji: '🔥', color: '#FF00A0' }
+    ];
+
+    grid.innerHTML = themes.map((t, i) => `
+      <div class="selector-item ${i === this.state.selectorIndex ? 'focused' : ''}" style="background:${t.color};" data-index="${i}">
+        <div style="font-size:28px;">${t.emoji}</div>
+        <div style="font-size:11px;color:#fff;font-weight:800;">${t.label}</div>
+      </div>
+    `).join('');
+
+    modal.classList.add('active');
+  },
+
   showStatusSelector() {
     this.state.inSelector = true;
     this.state.selectorType = 'status';
@@ -4962,35 +4380,6 @@ const app = {
     modal.classList.add('active');
   },
 
-
-
-  showThemeSelector() {
-    this.state.inSelector = true;
-    this.state.selectorType = 'theme';
-    const currentIndex = TEMAS.findIndex(t => t.id === this.state.settings.tema);
-    this.state.selectorIndex = currentIndex >= 0 ? currentIndex : 0;
-
-    const modal = document.getElementById('theme-selector');
-    const grid = document.getElementById('theme-grid');
-    if (!modal || !grid) return;
-
-    grid.innerHTML = TEMAS.map((t, i) => `
-      <div class="selector-item ${i === this.state.selectorIndex ? 'focused' : ''}" 
-           style="background: ${t.color};" 
-           data-index="${i}"
-           data-name="${t.label}"
-           onclick="app.selectThemeDirect(${i})">
-        <div style="font-size: 30px;">${t.emoji}</div>
-      </div>
-    `).join('');
-
-    modal.classList.add('active');
-  },
-
-  selectThemeDirect(index) {
-    this.state.selectorIndex = index;
-    this.selectFromSelector();
-  },
   handleTouchStatus(event, index) {
     event.preventDefault();
     const now = Date.now();
@@ -5017,30 +4406,21 @@ const app = {
   navigateSelector(dir) {
     const items = document.querySelectorAll('.selector-modal.active .selector-item');
     if (!items.length) return;
-    
+
     items[this.state.selectorIndex].classList.remove('focused');
-    
-    if (this.state.selectorType === 'color') {
+
+    if (this.state.selectorType === 'color' || this.state.selectorType === 'status') {
       const cols = 2;
-      if (dir === 'right' && this.state.selectorIndex % cols === 0 && this.state.selectorIndex < 7) this.state.selectorIndex++;
+      const max = items.length - 1;
+      if (dir === 'right' && this.state.selectorIndex % cols === 0 && this.state.selectorIndex < max) this.state.selectorIndex++;
       else if (dir === 'left' && this.state.selectorIndex % cols === 1) this.state.selectorIndex--;
-      else if (dir === 'down' && this.state.selectorIndex < 6) this.state.selectorIndex += 2;
-      else if (dir === 'up' && this.state.selectorIndex >= 2) this.state.selectorIndex -= 2;
-    } else if (this.state.selectorType === 'status') {
-      const cols = 2;
-      if (dir === 'right' && this.state.selectorIndex % cols === 0 && this.state.selectorIndex < 3) this.state.selectorIndex++;
-      else if (dir === 'left' && this.state.selectorIndex % cols === 1) this.state.selectorIndex--;
-      else if (dir === 'down' && this.state.selectorIndex < 2) this.state.selectorIndex += 2;
-      else if (dir === 'up' && this.state.selectorIndex >= 2) this.state.selectorIndex -= 2;
-    } else if (this.state.selectorType === 'theme') {
-      const last = TEMAS.length - 1;
-      if ((dir === 'right' || dir === 'down') && this.state.selectorIndex < last) this.state.selectorIndex++;
-      else if ((dir === 'left' || dir === 'up') && this.state.selectorIndex > 0) this.state.selectorIndex--;
-    } else if (this.state.selectorType === 'options') {
-      if (dir === 'down' && this.state.selectorIndex < this.state.optionItems.length - 1) this.state.selectorIndex++;
-      else if (dir === 'up' && this.state.selectorIndex > 0) this.state.selectorIndex--;
+      else if (dir === 'down' && this.state.selectorIndex + cols <= max) this.state.selectorIndex += cols;
+      else if (dir === 'up' && this.state.selectorIndex >= cols) this.state.selectorIndex -= cols;
+    } else {
+      if (dir === 'down' || dir === 'right') this.state.selectorIndex = 1;
+      if (dir === 'up' || dir === 'left') this.state.selectorIndex = 0;
     }
-    
+
     if (items[this.state.selectorIndex]) {
       items[this.state.selectorIndex].classList.add('focused');
       items[this.state.selectorIndex].scrollIntoView({ block: 'nearest', behavior: 'smooth' });
@@ -5056,7 +4436,6 @@ const app = {
     this.applyTheme();
       const c = COLORES[this.state.selectorIndex];
       this.showMsg(c ? `🎨 ${c.name}` : 'Color cambiado');
-      this.updateSettingsUI();
     } else if (this.state.selectorType === 'status') {
       const s = ESTADOS[this.state.selectorIndex];
       if (s) {
@@ -5065,23 +4444,17 @@ const app = {
         this.showMsg(`${s.emoji} ${s.label}`);
         this.updateHome();
       }
-      this.updateSettingsUI();
-    } else if (this.state.selectorType === 'theme') {
-      const selectedTheme = TEMAS[this.state.selectorIndex] || TEMAS[0];
-      this.state.settings.tema = selectedTheme.id;
-      localStorage.setItem('tema', this.state.settings.tema);
+    } else {
+      const theme = this.state.selectorIndex === 1 ? 'gas_caos' : 'pastel';
+      this.state.settings.theme = theme;
+      localStorage.setItem('theme', theme);
       this.applyTheme();
-      this.showMsg(selectedTheme.msg);
-      this.updateSettingsUI();
-    } else if (this.state.selectorType === 'options') {
-      const value = this.state.optionItems[this.state.selectorIndex];
-      if (value && typeof this.state.optionOnSelect === 'function') {
-        this.state.optionOnSelect(value);
-      }
+      this.showMsg(theme === 'gas_caos' ? '🎭 GAS Caos' : '🎨 Pastel');
     }
-    
+
     document.querySelectorAll('.selector-modal').forEach(m => m.classList.remove('active'));
     this.state.inSelector = false;
+    this.updateSettingsUI();
   },
 
   generarQR() {
@@ -5467,7 +4840,7 @@ const app = {
     
     if (this.state.procesandoCola) return;
     
-    const toqueModal = document.getElementById('toque-recibido-modal');
+    const toqueModal = document.getElementById('popup-recepcion');
     const respuestaModal = document.getElementById('respuesta-recibida-modal');
     if ((toqueModal && toqueModal.classList.contains('active')) ||
         (respuestaModal && respuestaModal.classList.contains('active'))) {
@@ -5527,7 +4900,7 @@ const app = {
     
     if (this.state.procesandoCola) return;
     
-    const toqueModal = document.getElementById('toque-recibido-modal');
+    const toqueModal = document.getElementById('popup-recepcion');
     const respuestaModal = document.getElementById('respuesta-recibida-modal');
     if ((toqueModal && toqueModal.classList.contains('active')) ||
         (respuestaModal && respuestaModal.classList.contains('active'))) {
@@ -5625,137 +4998,80 @@ const app = {
     }
   },
 
-  mostrarToqueRecibido(msg) {
-    const nombre = this.contactos[msg.de] || msg.nombreRemitente || 'Alguien';
-    const avatar = msg.avatarRemitente || localStorage.getItem('avatar_' + msg.de) || '👤';
-    const categoria = TOKES_TYPES.find(t => t.id === msg.num) || TOKES_TYPES[0];
-    
-    this.state.lastToqueSender = msg.de;
-    this.state.respuestaToqueIndex = 0;
-    
-    let mensajeTexto = `¡${nombre} te envió un Toque!`;
-    if (msg.contexto && CONTEXTOS_TOKES[msg.num]) {
-      const ctx = CONTEXTOS_TOKES[msg.num][parseInt(msg.contexto) - 1];
-      if (ctx) mensajeTexto = `¡${nombre} dice ${ctx.texto}!`;
+  mostrarRecepcion(toke) {
+    const pistas = [
+      null,
+      null,
+      {tipo: 'color', texto: 'Su dispositivo es 🔴 ROJO'},
+      {tipo: 'avatar', texto: 'Su avatar es 🐱'},
+      {tipo: 'curso', texto: 'Es de 2º Bach'}
+    ];
+
+    const pista = pistas[Math.floor(Math.random() * pistas.length)];
+    const pistaContainer = document.getElementById('pista-container');
+    const pistaTexto = document.getElementById('pista-texto');
+
+    if (pista && Math.random() < 0.6) {
+      pistaContainer.style.display = 'block';
+      pistaTexto.textContent = pista.texto;
+    } else {
+      pistaContainer.style.display = 'none';
     }
-    
-    const modal = document.getElementById('toque-recibido-modal');
-    const avatarEl = document.getElementById('toque-avatar');
-    const nombreEl = document.getElementById('toque-nombre');
-    const emojiEl = document.getElementById('toque-emoji');
-    const mensajeEl = document.getElementById('toque-mensaje');
-    
-    modal.style.background = categoria.color;
-    
-    if (modal && avatarEl && nombreEl && emojiEl && mensajeEl) {
-      avatarEl.textContent = avatar;
-      nombreEl.textContent = nombre;
-      emojiEl.textContent = categoria.emoji;
-      mensajeEl.textContent = mensajeTexto;
-      
-      this.updateRespuestasFocus();
-      
-      modal.classList.add('active');
-      
-      this.playSound('success');
-      if (this.state.settings.vibracion && navigator.vibrate) {
-        navigator.vibrate([200, 100, 200]);
-      }
-    }
+
+    window.tokePendiente = toke;
+    document.getElementById('popup-recepcion').classList.add('active');
   },
 
-   async enviarRespuestaToque() {
-    const opciones = document.querySelectorAll('.respuesta-option');
+  mostrarToqueRecibido(msg) {
+    this.state.respuestaToqueIndex = 0;
+    const modal = document.getElementById('popup-recepcion');
+    const categoria = TOKES_TYPES.find(t => t.id === msg.num) || TOKES_TYPES[0];
+    const popupMensaje = document.getElementById('popup-mensaje');
+    if (popupMensaje) {
+      popupMensaje.textContent = categoria.id === 7 ? '"Eres el crush de alguien"' : '"Alguien ha pensado en ti"';
+    }
+    if (modal) {
+      modal.style.background = this.state.settings.theme === 'gas_caos'
+        ? 'linear-gradient(145deg, #FF00A0, #99005F)'
+        : 'linear-gradient(145deg, #805AD5, #6B46C1)';
+    }
+    this.updateRespuestasFocus();
+    this.mostrarRecepcion({ ...msg, para: this.miID });
+  },
+
+  async enviarRespuestaToque() {
+    const opciones = document.querySelectorAll('.popup-respuestas-grid .respuesta-btn');
     const seleccionada = opciones[this.state.respuestaToqueIndex];
     if (!seleccionada) return;
-    
-    const emoji = seleccionada.dataset.emoji;
-    const texto = seleccionada.dataset.texto;
-    
-    this.debug('=== ENVIANDO RESPUESTA ===');
-    this.debug('Emoji: ' + emoji);
-    this.debug('Texto: ' + texto);
-    this.debug('Para: ' + this.state.lastToqueSender);
-    
-    document.getElementById('toque-recibido-modal').classList.remove('active');
-    
-    if (!this.state.lastToqueSender) {
-      this.debug('Error: No hay lastToqueSender');
-      this.showMsg('❌ Error: No se pudo identificar al destinatario');
-      setTimeout(() => this.procesarColaMensajes(), 500);
-      return;
-    }
-    
-    const payload = {
-      de: this.miID,
-      para: this.state.lastToqueSender,
-      respuesta: emoji,
-      texto: texto,
-      avatarRemitente: this.state.settings.avatar || '🐱',
-      nombreRemitente: localStorage.getItem('miNombre') || 'Amigo'
+
+    const tipoRespuesta = seleccionada.dataset.resp;
+    const toke = window.tokePendiente;
+    if (!toke) return;
+
+    const textos = {
+      gracias: 'Gracias',
+      misterioso: 'Misterioso',
+      quien: '¿Quién?',
+      hablamos: '¿Hablamos?'
     };
-    
-    this.debug('Payload: ' + JSON.stringify(payload));
-    
-    const endpoints = [
-      `${BACK}/respuesta`,
-      `${BACK}/respuestas`,
-      `${BACK}/responder`
-    ];
-    
-    let enviado = false;
-    let ultimoError = '';
-    
-    for (const url of endpoints) {
-      try {
-        this.debug('Intentando: ' + url);
-        
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 10000);
-        
-        const response = await fetch(url, {
-          method: 'POST',
-          headers: { 
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-          },
-          body: JSON.stringify(payload),
-          signal: controller.signal,
-          mode: 'cors'
-        });
-        
-        clearTimeout(timeoutId);
-        
-        this.debug('Status: ' + response.status);
-        
-        if (response.ok) {
-          const data = await response.json();
-          this.debug('Respuesta OK: ' + JSON.stringify(data));
-          this.showMsg(`Respondiste ${emoji}`);
-          enviado = true;
-          break;
-        } else {
-          const errorText = await response.text();
-          this.debug('Error en ' + url + ': ' + response.status + ' - ' + errorText);
-          ultimoError = `HTTP ${response.status}`;
-        }
-      } catch(e) {
-        this.debug('Error fetch ' + url + ': ' + e.message);
-        ultimoError = e.message;
-      }
-    }
-    
-    if (!enviado) {
-      this.debug('Fallaron todos los endpoints. Error: ' + ultimoError);
-      this.showMsg('❌ Error al enviar. Guardado localmente.');
-      this.guardarRespuestaPendiente(payload);
-    }
-    
-    this.state.lastToqueSender = null;
-    
-    setTimeout(() => {
-      this.procesarColaMensajes();
-    }, 800);
+
+    document.getElementById('popup-recepcion').classList.remove('active');
+
+    await fetch(`${BACK}/respuesta`, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        de: toke.para,
+        para: toke.de,
+        respuesta: tipoRespuesta,
+        texto: textos[tipoRespuesta],
+        avatarRemitente: this.state.settings.avatar,
+        nombreRemitente: localStorage.getItem('miNombre') || 'Amigo'
+      })
+    }).catch(() => {});
+
+    window.tokePendiente = null;
+    setTimeout(() => this.procesarColaMensajes(), 500);
   },
 
   guardarRespuestaPendiente(payload) {
@@ -5959,7 +5275,7 @@ const app = {
              data-index="${i}"
              style="aspect-ratio: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 24px; cursor: pointer; border: 3px solid ${i === 0 ? 'var(--device-color)' : 'transparent'};">
           <div>${emoji}</div>
-          <div style="font-size: 8px; margin-top: 2px; color: #666;">⚡${stats.aura}</div>
+          <div style="font-size: 9px; margin-top: 2px; color: #666;">⚡${stats.aura}</div>
         </div>
       `;
     }).join('');
@@ -6108,7 +5424,7 @@ const app = {
              data-index="${i}"
              style="aspect-ratio: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 24px; cursor: pointer; border: 3px solid ${i === 0 ? 'var(--device-color)' : 'transparent'};">
           <div>${emoji}</div>
-          <div style="font-size: 8px; margin-top: 2px; color: #666;">⚡${stats.aura}</div>
+          <div style="font-size: 9px; margin-top: 2px; color: #666;">⚡${stats.aura}</div>
         </div>
       `;
     }).join('');
@@ -6204,15 +5520,8 @@ const app = {
     const gane = resultado.ganador === this.miID;
     const nombreOponente = this.contactos[oponenteId] || (resultado.modo === 'ia' ? 'IA' : 'Rival');
     
-    // Si perdí, transferir emoji al ganador
-    if (!gane && resultado.modo !== 'ia') {
-      const emojiPerdido = parseInt(resultado.de === this.miID ? resultado.miEmoji : resultado.suEmoji);
-      this.transferirEmojiPerdido(emojiPerdido, resultado.ganador);
-    }
-    
-    // Si gané, recibir emoji del perdedor (si no es IA)
-    if (gane && resultado.modo !== 'ia') {
-      const emojiGanado = parseInt(resultado.de === this.miID ? resultado.suEmoji : resultado.miEmoji);
+    if (gane) {
+      const emojiGanado = Math.floor(Math.random() * 150) + 1;
       this.recibirEmojiGanado(emojiGanado);
     }
     
@@ -6281,7 +5590,7 @@ const app = {
       progreso.style.width = '100%';
     }, 100);
     
-    setTimeout(() => {
+    this.state.combateAnimTimer = setTimeout(() => {
       resultado.textContent = gane ? '🏆 ¡VICTORIA!' : '💔 DERROTA';
       resultado.style.color = gane ? '#48BB78' : '#F56565';
       this.playSound(gane ? 'unlock' : 'back');
@@ -6294,6 +5603,7 @@ const app = {
 
   cerrarPantallaVS() {
     document.getElementById('combate-vs-screen').classList.remove('active');
+    if (this.state.combateAnimTimer) { clearTimeout(this.state.combateAnimTimer); this.state.combateAnimTimer = null; }
     this.state.combate = {
       modo: null,
       oponenteId: null,

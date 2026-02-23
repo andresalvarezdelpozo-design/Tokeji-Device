@@ -21,7 +21,8 @@ def cargar_datos():
             "respuestas_recibidas": {},
             "desafios_pendientes": {},
             "combates_finalizados": [],
-            "perfiles": {}
+            "perfiles": {},
+            "amigos": {}
         }
 
 def guardar_datos():
@@ -32,7 +33,8 @@ def guardar_datos():
             "respuestas_recibidas": respuestas_recibidas,
             "desafios_pendientes": desafios_pendientes,
             "combates_finalizados": combates_finalizados,
-            "perfiles": perfiles
+            "perfiles": perfiles,
+            "amigos": amigos
         }, f)
 
 datos = cargar_datos()
@@ -42,6 +44,7 @@ respuestas_recibidas = datos.get("respuestas_recibidas", {})
 desafios_pendientes = datos["desafios_pendientes"]
 combates_finalizados = datos.get("combates_finalizados", [])
 perfiles = datos.get("perfiles", {})
+amigos = datos.get("amigos", {})
 
 EMOJIS_DATABASE = [
     {"id": i, "rarity": r} for i, r in enumerate([
@@ -99,16 +102,21 @@ def toque():
         if para not in toques_recibidos:
             toques_recibidos[para] = []
         
-        toques_recibidos[para].append({
+        nuevo_toque = {
             "de": de,
             "num": num,
             "contexto": contexto,
             "avatarRemitente": avatar_remitente,
             "nombreRemitente": nombre_remitente,
-            "hora": int(time.time()),
-            "tipo": tipo,
-            "instituto_destino": instituto_destino
-        })
+            "hora": int(time.time())
+        }
+
+        if tipo is not None:
+            nuevo_toque["tipo"] = tipo
+        if instituto_destino is not None:
+            nuevo_toque["instituto_destino"] = instituto_destino
+
+        toques_recibidos[para].append(nuevo_toque)
         
         guardar_datos()
         
@@ -338,22 +346,21 @@ def obtener_combates_finalizados():
 def registro_instituto():
     try:
         data = request.get_json() or {}
-        user_id = data.get("userId", "").strip()
-        provincia = data.get("provincia", "").strip()
-        instituto = data.get("instituto", "").strip()
-        curso = data.get("curso", "").strip()
-        nombre = data.get("nombre", "Alumno")
-        avatar = data.get("avatar", "👤")
+        user_id = data.get("userId")
+        provincia = data.get("provincia")
+        instituto = data.get("instituto")
+        curso = data.get("curso")
 
-        if not all([user_id, provincia, instituto, curso]):
-            return jsonify(ok=False, error="Faltan datos requeridos"), 400
+        if not user_id:
+            return jsonify(ok=False, error="Falta userId"), 400
 
         perfiles[user_id] = {
+            **perfiles.get(user_id, {}),
             "provincia": provincia,
             "instituto": instituto,
             "curso": curso,
-            "nombre": nombre,
-            "avatar": avatar,
+            "nombre": data.get("nombre") or perfiles.get(user_id, {}).get("nombre") or "Alumno",
+            "avatar": data.get("avatar") or perfiles.get(user_id, {}).get("avatar") or "👤",
             "fecha_registro": int(time.time()),
             "todox_visitados": perfiles.get(user_id, {}).get("todox_visitados", [])
         }
@@ -366,37 +373,211 @@ def registro_instituto():
 @app.route("/lista-instituto", methods=["GET"])
 def lista_instituto():
     try:
-        user_id = request.args.get("userId", "").strip()
-        curso = request.args.get("curso", "").strip()
+        user_id = request.args.get("userId")
+        curso = request.args.get("curso")
 
         if not user_id:
             return jsonify(ok=False, error="Falta userId"), 400
 
-        perfil = perfiles.get(user_id, {})
-        instituto_usuario = perfil.get("instituto")
+        instituto_usuario = perfiles.get(user_id, {}).get("instituto")
         if not instituto_usuario:
-            return jsonify(ok=True, companeros=[])
+            return jsonify(ok=True, compañeros=[])
 
         companeros = []
-        for uid, p in perfiles.items():
+        for uid, perfil in perfiles.items():
             if uid == user_id:
                 continue
-            if p.get("instituto") != instituto_usuario:
+            if perfil.get("instituto") != instituto_usuario:
                 continue
-            if curso and p.get("curso") != curso:
+            if curso and perfil.get("curso") != curso:
                 continue
-
             companeros.append({
                 "id": uid,
-                "nombre": p.get("nombre", "Alumno"),
-                "avatar": p.get("avatar", "👤"),
-                "curso": p.get("curso", "")
+                "nombre": perfil.get("nombre", "Alumno"),
+                "avatar": perfil.get("avatar", "👤"),
+                "curso": perfil.get("curso")
             })
 
-        return jsonify(ok=True, companeros=companeros)
+        return jsonify(ok=True, compañeros=companeros)
     except Exception as e:
         return jsonify(ok=False, error=str(e)), 500
 
+@app.route("/estadisticas-instituto", methods=["GET"])
+def estadisticas_instituto():
+    try:
+        instituto = request.args.get("instituto")
+        if not instituto:
+            return jsonify(ok=False, error="Falta instituto"), 400
+
+        ahora = int(time.time())
+        hoy_inicio = ahora - (ahora % 86400)
+
+        usuarios_insti = [u for u, p in perfiles.items() if p.get("instituto") == instituto]
+        total_alumnos = len(usuarios_insti)
+
+        sobres_hoy = 0
+        cursos = {}
+        sobres_tipos = {}
+        horas = {}
+
+        for uid in usuarios_insti:
+            perfil = perfiles.get(uid, {})
+            curso = perfil.get("curso", "Desconocido")
+            cursos[curso] = cursos.get(curso, 0) + 1
+
+            for toque in toques_recibidos.get(uid, []):
+                if toque.get("hora", 0) > hoy_inicio:
+                    if toque.get("tipo") in ["anonimo", "crush"]:
+                        sobres_hoy += 1
+                    tipo = toque.get("tipo", "normal")
+                    sobres_tipos[tipo] = sobres_tipos.get(tipo, 0) + 1
+                    hora = time.strftime("%H:%M", time.localtime(toque.get("hora", 0)))
+                    horas[hora] = horas.get(hora, 0) + 1
+
+        rachas_activas = sum(random.randint(0, 3) for _ in usuarios_insti)
+
+        todox_hoy = 0
+        for uid in usuarios_insti:
+            visitas = perfiles.get(uid, {}).get("todox_visitados", [])
+            todox_hoy += sum(1 for visita in visitas if visita.get("hora", 0) > hoy_inicio)
+
+        nuevos_hoy = sum(1 for uid in usuarios_insti if perfiles.get(uid, {}).get("fecha_registro", 0) > hoy_inicio)
+
+        curso_mas_rachas = max(cursos, key=cursos.get) if cursos else "2º Bach"
+        sobre_mas_usado = max(sobres_tipos, key=sobres_tipos.get) if sobres_tipos else "💜 Morado"
+        hora_pico = max(horas, key=horas.get) if horas else "21:15"
+
+        return jsonify(
+            ok=True,
+            total_alumnos=total_alumnos,
+            sobres_secretos_hoy=sobres_hoy,
+            rachas_activas=rachas_activas,
+            todox_visitados_hoy=todox_hoy,
+            nuevos_hoy=nuevos_hoy,
+            curso_mas_rachas=curso_mas_rachas,
+            sobre_mas_usado=sobre_mas_usado,
+            hora_pico=hora_pico,
+            estadisticas={
+                "total_alumnos": total_alumnos,
+                "sobres_secretos_hoy": sobres_hoy,
+                "rachas_activas": rachas_activas,
+                "todox_visitados_hoy": todox_hoy,
+                "nuevos_hoy": nuevos_hoy,
+                "curso_mas_rachas": curso_mas_rachas,
+                "sobre_mas_usado": sobre_mas_usado,
+                "hora_pico": hora_pico
+            }
+        )
+    except Exception as e:
+        return jsonify(ok=False, error=str(e)), 500
+
+@app.route("/visitar-todox", methods=["POST"])
+def visitar_todox():
+    try:
+        data = request.get_json() or {}
+        user_id = data.get("userId")
+        visitado_id = data.get("visitadoId")
+        if not user_id or not visitado_id:
+            return jsonify(ok=False, error="Faltan userId o visitadoId"), 400
+
+        if user_id not in perfiles:
+            perfiles[user_id] = {}
+        if "todox_visitados" not in perfiles[user_id]:
+            perfiles[user_id]["todox_visitados"] = []
+
+        perfiles[user_id]["todox_visitados"].append({
+            "userId": visitado_id,
+            "hora": int(time.time())
+        })
+
+        guardar_datos()
+        return jsonify(ok=True)
+    except Exception as e:
+        return jsonify(ok=False, error=str(e)), 500
+
+
+
+def calcular_dias_racha(user_id, amigo_id, hoy_inicio):
+    historial = []
+    for t in toques_recibidos.get(user_id, []):
+        if t.get("de") == amigo_id:
+            historial.append(t.get("hora", 0))
+    for t in toques_recibidos.get(amigo_id, []):
+        if t.get("de") == user_id:
+            historial.append(t.get("hora", 0))
+
+    dias = sorted({(ts // 86400) for ts in historial if ts})
+    if not dias:
+        return 0
+
+    dia = dias[-1]
+    hoy = hoy_inicio // 86400
+    if dia < hoy - 1:
+        return 0
+
+    racha = 1
+    for i in range(len(dias) - 2, -1, -1):
+        if dias[i] == dia - 1:
+            racha += 1
+            dia = dias[i]
+        else:
+            break
+    return racha
+
+
+@app.route("/perfil", methods=["GET"])
+def obtener_perfil():
+    user_id = request.args.get("userId")
+    if not user_id:
+        return jsonify(ok=False, error="Falta userId"), 400
+    perfil = perfiles.get(user_id, {})
+    return jsonify(ok=True, **perfil)
+
+
+@app.route("/amigos", methods=["GET"])
+def obtener_amigos():
+    user_id = request.args.get("userId")
+    if not user_id:
+        return jsonify(ok=False, error="Falta userId"), 400
+
+    ahora = int(time.time())
+    hoy_inicio = ahora - (ahora % 86400)
+    amigos_ids = amigos.get(user_id, [])
+
+    amigos_completo = []
+    for amigo_id in amigos_ids:
+        perfil = perfiles.get(amigo_id, {})
+        ultimo_toque = 0
+
+        for t in toques_recibidos.get(user_id, []):
+            if t.get("de") == amigo_id:
+                ultimo_toque = max(ultimo_toque, t.get("hora", 0))
+        for t in toques_recibidos.get(amigo_id, []):
+            if t.get("de") == user_id:
+                ultimo_toque = max(ultimo_toque, t.get("hora", 0))
+
+        if ultimo_toque > hoy_inicio:
+            estado = "activa"
+            dias_racha = calcular_dias_racha(user_id, amigo_id, hoy_inicio)
+        elif ultimo_toque > hoy_inicio - 86400:
+            estado = "pendiente"
+            dias_racha = calcular_dias_racha(user_id, amigo_id, hoy_inicio)
+        elif ultimo_toque > 0:
+            estado = "rota"
+            dias_racha = 0
+        else:
+            estado = "nueva"
+            dias_racha = 0
+
+        amigos_completo.append({
+            "id": amigo_id,
+            "nombre": perfil.get("nombre", "Amigo"),
+            "avatar": perfil.get("avatar", "👤"),
+            "racha_dias": dias_racha,
+            "racha_estado": estado
+        })
+
+    return jsonify(ok=True, amigos=amigos_completo)
 @app.route("/health", methods=["GET"])
 def health_check():
     return jsonify(ok=True, status="running", version="1.1.0")
