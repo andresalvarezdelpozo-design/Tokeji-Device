@@ -546,6 +546,18 @@
       align-items: center;
       justify-content: center;
       gap: 10px;
+      padding: 18px 10px 12px;
+      background: linear-gradient(135deg, rgba(255,0,160,.16), rgba(255,140,0,.14), rgba(66,153,225,.12));
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,.35);
+      backdrop-filter: blur(8px);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.45), 0 10px 24px rgba(0,0,0,.12);
+      animation: homeGlow 4s ease-in-out infinite;
+    }
+
+    @keyframes homeGlow {
+      0%, 100% { box-shadow: inset 0 1px 0 rgba(255,255,255,.45), 0 10px 24px rgba(0,0,0,.12); }
+      50% { box-shadow: inset 0 1px 0 rgba(255,255,255,.65), 0 14px 30px rgba(255,79,163,.2); }
     }
 
     .home-avatar {
@@ -600,8 +612,8 @@
     }
 
     .home-popup {
-      background: rgba(18, 22, 34, 0.88);
-      border: 1px solid rgba(255,255,255,0.18);
+      background: linear-gradient(135deg, rgba(255,0,160,.28), rgba(255,145,0,.28), rgba(66,153,225,.28));
+      border: 1px solid rgba(255,255,255,0.5);
       color: #fff;
       border-radius: 14px;
       padding: 10px 12px;
@@ -652,6 +664,52 @@
       font-weight: 800;
       text-align: center;
       text-shadow: 0 0 10px rgba(255,255,255,0.35);
+    }
+
+
+    .home-chaos-title {
+      font-family: 'Fredoka One', cursive;
+      font-size: 13px;
+      letter-spacing: 1px;
+      color: #6B46C1;
+      text-transform: uppercase;
+      text-align: center;
+    }
+
+    .home-chaos-sub {
+      font-size: 11px;
+      color: #2D3748;
+      font-weight: 800;
+      background: rgba(255,255,255,.65);
+      padding: 6px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.7);
+      text-align: center;
+    }
+
+    .home-live-row {
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 6px;
+    }
+
+    .home-live-pill {
+      background: rgba(255,255,255,.45);
+      border: 1px solid rgba(255,255,255,.7);
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: 800;
+      color: #2D3748;
+      padding: 8px;
+      text-align: center;
+      animation: pulsePill 2s ease-in-out infinite;
+    }
+
+    @keyframes pulsePill {
+      0%,100% { transform: scale(1); }
+      50% { transform: scale(1.03); }
     }
 
     .cola-badge {
@@ -1270,7 +1328,7 @@
       left: 8px;
       right: 8px;
       bottom: 8px;
-      background: linear-gradient(145deg, rgba(255,107,157,0.95), rgba(255,71,133,0.95));
+      background: linear-gradient(145deg, rgba(255,0,160,.62), rgba(255,140,0,.52), rgba(66,153,225,.48));
       border-radius: 14px;
       display: none;
       flex-direction: column;
@@ -2422,9 +2480,15 @@
           <div class="page" id="page-home">
             <div class="home-popup-stack" id="home-popup-stack"></div>
             <div class="home-main">
+              <div class="home-chaos-title">🔥 Recreo en directo</div>
+              <div class="home-chaos-sub" id="home-chaos-sub">Tu curso se está moviendo fuerte</div>
               <div class="home-avatar" id="home-avatar">🐱</div>
               <div class="home-name" id="home-name">Amigo</div>
               <div class="home-status" id="home-status">🟢 Disponible</div>
+              <div class="home-live-row">
+                <div class="home-live-pill" id="home-live-crush">💘 0 crush</div>
+                <div class="home-live-pill" id="home-live-live">⚡ 0 online</div>
+              </div>
               <div class="tokes-badge" id="tokes-badge">🎯 30/30</div>
             </div>
           </div>
@@ -3744,18 +3808,7 @@ const app = {
         this.selectColorSetup(focus.index);
         break;
       case 'home':
-        if (this.state.homePopups.length > 0) {
-          const popup = this.state.homePopups[this.state.popupFocusIndex];
-          if (popup?.tipo === 'encuesta') {
-            this.abrirEncuesta();
-          } else if (popup?.tipo === 'murmullo') {
-            this.showPage('murmullo');
-          } else {
-            this.showPage('menu');
-          }
-        } else {
-          this.showPage('menu');
-        }
+        this.showPage('menu');
         break;
       case 'menu':
         if (focus.index === 1) {
@@ -3784,10 +3837,10 @@ const app = {
         break;
       case 'enviar':
         const amigosList = Object.entries(this.contactos);
-        if (focus.index === 0) {
-          this.scanQR();
-        } else if (amigosList[focus.index - 1]) {
-          const [id, nombre] = amigosList[focus.index - 1];
+        if (amigosList.length === 0) {
+          this.showMsg('Agrega amigos desde Mi QR');
+        } else if (amigosList[focus.index]) {
+          const [id, nombre] = amigosList[focus.index];
           this.enviarToque(id, nombre);
         }
         break;
@@ -3912,13 +3965,6 @@ const app = {
       return;
     }
 
-    if (this.state.currentPage === 'home' && this.state.homePopups.length > 0) {
-      if (this.state.popupFocusIndex < this.state.homePopups.length - 1) {
-        this.state.popupFocusIndex++;
-        this.updateHomePopups();
-      }
-      return;
-    }
 
     if (this.state.currentPage === 'encuesta') {
       if (this.state.encuestaActiva && this.state.encuestaIndex < (this.state.encuestaActiva.opciones || []).length - 1) {
@@ -3928,13 +3974,6 @@ const app = {
       return;
     }
 
-    if (this.state.currentPage === 'home' && this.state.homePopups.length > 0) {
-      if (this.state.popupFocusIndex > 0) {
-        this.state.popupFocusIndex--;
-        this.updateHomePopups();
-      }
-      return;
-    }
 
     if (this.state.currentPage === 'encuesta') {
       if (this.state.encuestaIndex > 0) {
@@ -4419,12 +4458,6 @@ const app = {
         break;
     }
 
-    if (this.state.currentPage === 'home' && this.state.homePopups.length > 0) {
-      if (this.state.popupFocusIndex < this.state.homePopups.length - 1) {
-        this.state.popupFocusIndex++;
-        this.updateHomePopups();
-      }
-    }
   },
 
   updateSelectorAmigoFocus() {
@@ -5029,21 +5062,13 @@ const app = {
     
     const amigos = Object.entries(this.contactos);
     
-    let html = `
-      <div class="list-item focused" data-index="0">
-        <span style="font-size: 26px;">📷</span>
-        <div style="flex: 1;">
-          <div style="font-weight: 800; color: #805AD5;">Escanear QR</div>
-          <div style="font-size: 10px; color: #A0AEC0;">Nuevo amigo</div>
-        </div>
-      </div>
-    `;
+    let html = ``;
     
     if (amigos.length === 0) {
-      html += `<div style="text-align: center; color: #A0AEC0; padding: 25px; font-size: 12px;">No tienes amigos aún.<br>¡Escanea un QR!</div>`;
+      html += `<div style="text-align: center; color: #A0AEC0; padding: 25px; font-size: 12px;">No tienes amigos aún.<br>Ve a Mi QR para escanear.</div>`;
     } else {
       html += amigos.map(([id, nom], i) => `
-        <div class="list-item" data-index="${i + 1}">
+        <div class="list-item ${i === 0 ? 'focused' : ''}" data-index="${i}">
           <span style="font-size: 26px;">👤</span>
           <div style="flex: 1;">
             <div style="font-weight: 800; color: #2D3748;">${nom}</div>
@@ -5146,6 +5171,13 @@ const app = {
       statusEl.style.background = st.color;
     }
     
+    const liveCrush = document.getElementById('home-live-crush');
+    const liveOnline = document.getElementById('home-live-live');
+    const chaosSub = document.getElementById('home-chaos-sub');
+    if (liveCrush) liveCrush.textContent = `💘 ${this.state.murmulloStats.crushes || 0} crush hoy`;
+    if (liveOnline) liveOnline.textContent = `⚡ ${this.state.murmulloStats.conectados || 0} online`;
+    if (chaosSub) chaosSub.textContent = this.state.murmulloStats.headline || 'Tu curso está on fire';
+
     this.updateColaBadge();
   },
 
