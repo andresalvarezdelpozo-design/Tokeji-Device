@@ -544,15 +544,34 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
-      gap: 10px;
-      padding: 18px 10px 12px;
+      justify-content: flex-start;
+      gap: 7px;
+      padding: 12px 10px 10px;
       background: linear-gradient(135deg, rgba(255,0,160,.16), rgba(255,140,0,.14), rgba(66,153,225,.12));
       border-radius: 18px;
       border: 1px solid rgba(255,255,255,.35);
       backdrop-filter: blur(8px);
       box-shadow: inset 0 1px 0 rgba(255,255,255,.45), 0 10px 24px rgba(0,0,0,.12);
       animation: homeGlow 4s ease-in-out infinite;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .home-chaos-bg {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(circle at 20% 18%, rgba(255,255,255,.28) 0 8%, transparent 9%),
+        radial-gradient(circle at 80% 32%, rgba(255,79,163,.25) 0 7%, transparent 8%),
+        radial-gradient(circle at 66% 74%, rgba(66,153,225,.25) 0 9%, transparent 10%);
+      opacity: .7;
+      animation: chaosDrift 10s ease-in-out infinite;
+    }
+
+    @keyframes chaosDrift {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-4px); }
     }
 
     @keyframes homeGlow {
@@ -561,7 +580,7 @@
     }
 
     .home-avatar {
-      font-size: 60px;
+      font-size: 52px;
       filter: drop-shadow(0 4px 8px rgba(0,0,0,0.15));
       animation: float 3s ease-in-out infinite;
       transform: translateZ(0);
@@ -574,13 +593,13 @@
 
     .home-name {
       font-family: 'Fredoka One', cursive;
-      font-size: 22px;
+      font-size: 19px;
       color: #2D3748;
     }
 
     .home-status {
-      font-size: 11px;
-      padding: 5px 14px;
+      font-size: 10px;
+      padding: 4px 12px;
       border-radius: 20px;
       font-weight: 800;
       color: white;
@@ -591,12 +610,52 @@
     .tokes-badge {
       background: #ECC94B;
       color: #744210;
-      padding: 6px 16px;
-      border-radius: 20px;
-      font-size: 13px;
+      padding: 6px 12px;
+      border-radius: 16px;
+      font-size: 11px;
       font-weight: 800;
-      margin-top: 6px;
+      margin-top: 2px;
       box-shadow: 0 2px 0 #B7791F;
+      max-width: 100%;
+      text-align: center;
+      line-height: 1.2;
+    }
+
+    .home-action-stack {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-top: 2px;
+    }
+
+    .home-action-item {
+      border-radius: 12px;
+      padding: 7px 9px;
+      border: 1px solid rgba(255,255,255,.72);
+      background: rgba(255,255,255,.6);
+      font-size: 10px;
+      font-weight: 800;
+      color: #1A202C;
+      box-shadow: 0 4px 10px rgba(0,0,0,.12);
+      transition: transform .15s ease, box-shadow .15s ease;
+    }
+
+    .home-action-item.focused {
+      transform: scale(1.02);
+      box-shadow: 0 0 0 2px rgba(255,79,163,.45), 0 6px 14px rgba(0,0,0,.16);
+    }
+
+    .home-action-cta {
+      width: 100%;
+      border-radius: 12px;
+      background: linear-gradient(90deg, rgba(128,90,213,.2), rgba(255,79,163,.24));
+      border: 1px solid rgba(255,255,255,.72);
+      padding: 6px 8px;
+      font-size: 10px;
+      font-weight: 800;
+      color: #2D3748;
+      text-align: center;
     }
 
     .home-popup-stack {
@@ -700,10 +759,10 @@
       background: rgba(255,255,255,.45);
       border: 1px solid rgba(255,255,255,.7);
       border-radius: 12px;
-      font-size: 11px;
+      font-size: 10px;
       font-weight: 800;
       color: #2D3748;
-      padding: 8px;
+      padding: 6px 5px;
       text-align: center;
       animation: pulsePill 2s ease-in-out infinite;
     }
@@ -1120,6 +1179,31 @@
     .murmullo-floating.f1 { left: 6px; top: 80px; }
     .murmullo-floating.f2 { right: 8px; top: 112px; animation-delay: .4s; }
     .murmullo-floating.f3 { right: 18px; top: 168px; animation-delay: .8s; }
+
+    .murmullo-personal-line {
+      margin-top: 8px;
+      font-size: 11px;
+      color: #2D3748;
+      background: rgba(255,255,255,.75);
+      border-radius: 10px;
+      padding: 8px;
+      font-weight: 800;
+    }
+
+    .pressing {
+      transform: scale(.96) !important;
+      transition: transform .1s ease !important;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .home-main,
+      .home-live-pill,
+      .home-chaos-bg,
+      .home-avatar,
+      .murmullo-floating {
+        animation: none !important;
+      }
+    }
 
     @keyframes titlePulse {
       0%, 100% { transform: scale(1); opacity: 1; }
@@ -2507,18 +2591,20 @@
           </div>
 
           <div class="page" id="page-home">
-            
             <div class="home-main">
+              <div class="home-chaos-bg" aria-hidden="true"></div>
               <div class="home-chaos-title">🔥 Recreo en directo</div>
               <div class="home-chaos-sub" id="home-chaos-sub">Tu curso se está moviendo fuerte</div>
               <div class="home-avatar" id="home-avatar">🐱</div>
               <div class="home-name" id="home-name">Amigo</div>
               <div class="home-status" id="home-status">🟢 Disponible</div>
               <div class="home-live-row">
-                <div class="home-live-pill" id="home-live-crush">💘 0 crush</div>
-                <div class="home-live-pill" id="home-live-live">⚡ 0 online</div>
+                <div class="home-live-pill" id="home-live-crush">💘 Sin señales fuertes</div>
+                <div class="home-live-pill" id="home-live-live">📌 Pendientes del día</div>
               </div>
-              <div class="tokes-badge" id="tokes-badge">🎯 30/30</div>
+              <div class="home-action-stack" id="home-action-stack"></div>
+              <div class="home-action-cta" id="home-action-cta">OK → Ver Murmullo · C → Menú</div>
+              <div class="tokes-badge" id="tokes-badge">🎯 Amigos: 3/3 · 🤍 1 · 💘 1</div>
             </div>
           </div>
 
@@ -2597,19 +2683,14 @@
             <div class="murmullo-header">
               <div class="murmullo-title">🔮 MURMULLO</div>
               <div class="murmullo-insti" id="murmullo-insti">IES MONCADA</div>
-              <div class="murmullo-conectados"><span id="murmullo-conectados">0</span> conectados</div>
               <div class="murmullo-hotline" id="murmullo-hotline"></div>
             </div>
             <div class="murmullo-grid">
-              <div class="murmullo-card secretos"><div class="emoji">💜</div><div><strong id="murmullo-secretos">0</strong><span> sobres secretos</span></div></div>
-              <div class="murmullo-card rachas"><div class="emoji">🔥</div><div><strong id="murmullo-rachas">0</strong><span> rachas activas</span></div></div>
-              <div class="murmullo-card todox"><div class="emoji">👀</div><div><strong id="murmullo-todox">0</strong><span> ToDox visitados</span></div></div>
-              <div class="murmullo-card nuevos"><div class="emoji">🆕</div><div><strong id="murmullo-nuevos">0</strong><span> nuevos hoy</span></div></div>
+              <div class="murmullo-card secretos"><div class="emoji">📊</div><div><strong id="murmullo-secretos">Hoy alguien dejó señal en encuesta</strong><span> Pulso del día</span></div></div>
+              <div class="murmullo-card rachas"><div class="emoji">💜</div><div><strong id="murmullo-rachas">Hoy varios mandaron señales</strong><span> Sobres secretos</span></div></div>
+              <div class="murmullo-card todox"><div class="emoji">🔥</div><div><strong id="murmullo-todox">Hoy muchos mandaron tokes</strong><span> Ritmo de patio</span></div></div>
             </div>
-            <div class="murmullo-floating f1">💜</div>
-            <div class="murmullo-floating f2">🔥</div>
-            <div class="murmullo-floating f3">✨</div>
-            <div id="murmullo-frases" style="margin-top:8px; font-size:11px; color:#2D3748; background:rgba(255,255,255,.75); border-radius:10px; padding:8px;"></div>
+            <div id="murmullo-frases" class="murmullo-personal-line"></div>
           </div>
 
           <div class="page" id="page-tienda">
@@ -3071,16 +3152,20 @@ const app = {
       companeros: []
     },
     murmulloStats: {
-      conectados: 0,
-      secretos: 0,
       crushes: 0,
-      combates: 0,
-      rachas: 0,
-      todox: 0,
-      nuevos: 0,
-      headline: ''
+      headline: '',
+      cardHeadlines: [
+        'Hoy alguien dejó señal en encuesta',
+        'Hoy varios enviaron señales',
+        'Hoy muchos mandaron tokes'
+      ],
+      personalLine: 'Hoy estás fuera del ruido.'
     },
     homePriorityText: 'Tu curso está on fire',
+    homePendingActions: [],
+    homeActionIndex: 0,
+    homeFlags: {},
+    homeRefreshTimer: null,
     murmulloFrases: [],
     encuestaActiva: null,
     encuestaIndex: 0,
@@ -3127,6 +3212,13 @@ const app = {
         debugEl.scrollTop = debugEl.scrollHeight;
       }
     }
+  },
+
+  pressFeedback() {
+    const box = document.querySelector('#page-home .home-main');
+    if (!box) return;
+    box.classList.add('pressing');
+    setTimeout(() => box.classList.remove('pressing'), 110);
   },
 
   init() {
@@ -3184,17 +3276,14 @@ const app = {
     setTimeout(() => {
       this.checkTokes();
       this.checkRespuestas();
-      this.cargarHomeState();
+      this.refreshHomeState('init');
+      this.cargarEncuestaActiva();
     }, 1000);
     
     setInterval(() => {
       this.checkTokes();
       this.checkRespuestas();
     }, 5000);
-
-    setInterval(() => {
-      this.cargarHomeState();
-    }, 10000);
 
     
     setTimeout(() => this.reintentarRespuestasPendientes(), 10000);
@@ -3499,7 +3588,9 @@ const app = {
         this.updateSettingsFocus();
         break;
       case 'home':
+        this.state.focus = { type: 'homeAction', index: this.state.homeActionIndex || 0 };
         this.updateHome();
+        this.refreshHomeState('enter-home');
         if (this.state.colaMensajes.length > 0 && !this.state.procesandoCola) {
           this.procesarColaMensajes();
         }
@@ -3720,6 +3811,10 @@ const app = {
   handleBack() {
     this.initAudio();
     this.playSound('back');
+    if (this.state.currentPage === 'home') {
+      this.showPage('menu');
+      return;
+    }
     this.goBack();
   },
 
@@ -3836,7 +3931,11 @@ const app = {
         this.selectColorSetup(focus.index);
         break;
       case 'home':
-        this.showPage('menu');
+        this.pressFeedback();
+        const actions = this.state.homePendingActions || [];
+        const action = actions[this.state.homeActionIndex || 0];
+        if (action && typeof action.open === 'function') action.open();
+        else this.showPage('murmullo');
         break;
       case 'menu':
         if (focus.index === 1) {
@@ -3997,6 +4096,15 @@ const app = {
       if (this.state.encuestaIndex > 0) {
         this.state.encuestaIndex--;
         this.renderEncuesta();
+      }
+      return;
+    }
+
+    if (this.state.currentPage === 'home') {
+      if (this.state.homeActionIndex > 0) {
+        this.state.homeActionIndex--;
+        this.state.focus = { type: 'homeAction', index: this.state.homeActionIndex };
+        this.renderHomeActionQueue();
       }
       return;
     }
@@ -4168,6 +4276,17 @@ const app = {
     if (this.state.currentPage === 'combates') {
       this.state.focus.index = this.state.focus.index === 0 ? 1 : 0;
       this.updateCombatesFocus();
+      this.vibrar();
+      return;
+    }
+
+    if (this.state.currentPage === 'home') {
+      const maxHome = (this.state.homePendingActions || []).length - 1;
+      if (this.state.homeActionIndex < maxHome) {
+        this.state.homeActionIndex++;
+        this.state.focus = { type: 'homeAction', index: this.state.homeActionIndex };
+        this.renderHomeActionQueue();
+      }
       this.vibrar();
       return;
     }
@@ -4733,6 +4852,17 @@ const app = {
     if (!curso) return;
     this.state.secretFlow.curso = curso;
 
+    await this.cargarCompanerosCurso(curso);
+    if (!this.state.secretFlow.companeros.length) {
+      this.showMsg('No hay compañeros en ese curso');
+      return;
+    }
+
+    this.state.institutoView.active = false;
+    this.showPage('lista-instituto');
+  },
+
+  async cargarCompanerosCurso(curso) {
     try {
       const response = await fetch(`${BACK}/lista-instituto?userId=${encodeURIComponent(this.miID)}&curso=${encodeURIComponent(curso)}`);
       const data = await response.json();
@@ -4789,7 +4919,7 @@ const app = {
       const tipo = this.state.secretFlow.tipo === 'crush' ? '💘 CRUSH' : '💜 ANÓNIMO';
       titulo.textContent = `${tipo} · ${this.state.secretFlow.curso || ''}`;
     }
-    if (subtitle) subtitle.textContent = 'Elige compañero de tu curso';
+    if (subtitle) subtitle.textContent = `MODO SEÑAL 🤍 · Te queda ${this.state.secretFlow.tipo === 'crush' ? (this.state.homeFlags.crush_left ?? 1) : (this.state.homeFlags.anon_left ?? 1)}`;
 
     const rows = this.state.secretFlow.companeros;
     list.innerHTML = rows.map((c, i) => `
@@ -4836,72 +4966,105 @@ const app = {
 
   renderMurmullo() {
     const instituto = this.state.registroInstituto.instituto || localStorage.getItem('instituto') || 'Tu Instituto';
-    const secretCount = this.state.secretFlow.tipo ? this.state.secretFlow.companeros.length : Math.max(3, Math.floor((this.state.toquesRestantes || 30) / 2));
-    this.state.murmulloStats = {
-      conectados: 90 + Math.floor(Math.random() * 50),
-      secretos: secretCount,
-      rachas: 40 + Math.floor(Math.random() * 70),
-      todox: Math.max(0, (this.todex?.captured?.length || 0) * 2 + 10),
-      nuevos: 1 + Math.floor(Math.random() * 6)
-    };
-
-    const set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = String(val); };
+    const set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = String(val || ''); };
     const instiEl = document.getElementById('murmullo-insti');
     if (instiEl) instiEl.textContent = instituto;
-    set('murmullo-conectados', this.state.murmulloStats.conectados);
-    set('murmullo-secretos', this.state.murmulloStats.secretos);
-    set('murmullo-rachas', this.state.murmulloStats.rachas);
-    set('murmullo-todox', this.state.murmulloStats.todox);
-    set('murmullo-nuevos', this.state.murmulloStats.nuevos);
     const hot = document.getElementById('murmullo-hotline');
-    if (hot) hot.textContent = this.state.murmulloStats.headline || '';
+    if (hot) hot.textContent = this.state.murmulloStats.headline || this.state.homePriorityText;
+
+    const cards = this.state.murmulloStats.cardHeadlines || [];
+    set('murmullo-secretos', cards[0] || 'Hoy alguien dejó señal en encuesta');
+    set('murmullo-rachas', cards[1] || 'Hoy varios enviaron señales');
+    set('murmullo-todox', cards[2] || 'Hoy muchos mandaron tokes');
+
     const frasesEl = document.getElementById('murmullo-frases');
     if (frasesEl) {
-      const frases = this.state.murmulloFrases || [];
-      frasesEl.innerHTML = frases.length ? frases.map(f => `• ${f}`).join('<br>') : '• Hoy el instituto está tranquilo';
+      frasesEl.textContent = this.state.murmulloStats.personalLine || 'Hoy estás fuera del ruido.';
     }
   },
 
-
-  async cargarHomeState() {
-    try {
-      const response = await fetch(`${BACK}/home-state?userId=${encodeURIComponent(this.miID)}`);
-      const data = await response.json();
-      if (!data.ok) return;
-
-      this.state.homePriorityText = data.home?.frase || 'Tu curso está on fire';
-      this.state.murmulloFrases = data.murmullo || [];
-
-      const flags = data.home?.flags || {};
-      this.state.murmulloStats = {
-        ...this.state.murmulloStats,
-        secretos: data.home?.signals_received_today || this.state.murmulloStats.secretos,
-        crushes: data.home?.strong_signals_today || this.state.murmulloStats.crushes,
-        headline: this.state.homePriorityText,
-        conectados: this.state.murmulloStats.conectados || 0
-      };
-
-      if (this.state.currentPage === 'home') this.updateHome();
-      if (this.state.currentPage === 'murmullo') this.renderMurmullo();
-    } catch (e) {
-      this.debug('Error home-state: ' + e.message);
+  getHomePendingActions(flags = {}) {
+    const actions = [];
+    if (flags.survey_pending) {
+      actions.push({ id: 'survey', text: '📊 Encuesta pendiente de hoy', cta: 'OK → Encuesta', open: () => this.abrirEncuesta() });
     }
+    if (flags.has_strong_signal_today || flags.has_signals_today) {
+      actions.push({ id: 'murmullo', text: '👀 Revisa tu murmullo personal', cta: 'OK → Murmullo', open: () => this.showPage('murmullo') });
+    }
+    if ((flags.anon_left || 0) > 0) {
+      actions.push({ id: 'anon', text: `🤍 Enviar anónimo (${flags.anon_left} disponible)`, cta: 'OK → Señal anónima', open: () => this.abrirFlujoSenal('anonimo') });
+    }
+    if ((flags.crush_left || 0) > 0) {
+      actions.push({ id: 'crush', text: `💘 Enviar crush (${flags.crush_left} disponible)`, cta: 'OK → Crush anónimo', open: () => this.abrirFlujoSenal('crush') });
+    }
+    if ((flags.friends_tokes_left || 0) > 0) {
+      actions.push({ id: 'friends', text: `🎯 Tokes a amigos (${flags.friends_tokes_left}/3)`, cta: 'OK → Tokes amigos', open: () => this.showPage('tokes') });
+    }
+    if (!actions.length) {
+      actions.push({ id: 'default', text: '🔮 Ver Murmullo del día', cta: 'OK → Murmullo', open: () => this.showPage('murmullo') });
+    }
+    return actions;
   },
 
-  async cargarMurmulloReal() {
-    try {
-      const response = await fetch(`${BACK}/murmullo-stats?userId=${encodeURIComponent(this.miID)}`);
-      const data = await response.json();
-      if (!data.ok || !data.stats) return;
-      this.state.murmulloStats = {
-        ...this.state.murmulloStats,
-        ...data.stats,
-        rachas: data.stats.rachas || this.state.murmulloStats.rachas
-      };
-      if (this.state.currentPage === 'murmullo') this.renderMurmullo();
-    } catch (e) {
-      this.debug('Error murmullo real: ' + e.message);
-    }
+  renderHomeActionQueue() {
+    const stack = document.getElementById('home-action-stack');
+    if (!stack) return;
+    const actions = this.state.homePendingActions || [];
+    const idx = Math.max(0, Math.min(this.state.homeActionIndex || 0, actions.length - 1));
+    this.state.homeActionIndex = idx;
+    stack.innerHTML = actions.slice(0, 5).map((a, i) => `
+      <div class="home-action-item ${i === idx ? 'focused' : ''}" data-index="${i}">${a.text}</div>
+    `).join('');
+
+    const ctaEl = document.getElementById('home-action-cta');
+    if (ctaEl) ctaEl.textContent = `${actions[idx]?.cta || 'OK → Murmullo'} · C → Menú`;
+  },
+
+  abrirFlujoSenal(tipo) {
+    this.state.secretFlow.tipo = tipo;
+    this.state.secretFlow.curso = this.state.registroInstituto.curso || localStorage.getItem('curso') || CURSOS_INSTITUTO[0];
+    this.state.secretFlow.companeros = [];
+    this.cargarCompanerosCurso(this.state.secretFlow.curso);
+  },
+
+  async refreshHomeState(reason = 'manual') {
+    if (this.state.homeRefreshTimer) clearTimeout(this.state.homeRefreshTimer);
+    this.state.homeRefreshTimer = setTimeout(async () => {
+      const toqueModal = document.getElementById('toque-recibido-modal');
+      const respModal = document.getElementById('response-modal');
+      if ((toqueModal && toqueModal.classList.contains('active')) || (respModal && respModal.classList.contains('active'))) {
+        return;
+      }
+      try {
+        const response = await fetch(`${BACK}/home-state?userId=${encodeURIComponent(this.miID)}`);
+        const data = await response.json();
+        if (!data.ok) return;
+
+        this.state.homePriorityText = data.home?.frase || 'Tu curso está on fire';
+        this.state.homeFlags = data.home?.flags || {};
+        this.state.murmulloFrases = data.murmullo || [];
+        this.state.homePendingActions = this.getHomePendingActions(this.state.homeFlags);
+        this.state.homeActionIndex = Math.min(this.state.homeActionIndex || 0, this.state.homePendingActions.length - 1);
+
+        const frases = this.state.murmulloFrases;
+        this.state.murmulloStats = {
+          ...this.state.murmulloStats,
+          crushes: data.home?.strong_signals_today || 0,
+          headline: this.state.homePriorityText,
+          cardHeadlines: [
+            frases[0] || 'Hoy alguien dejó señal en encuesta',
+            frases[1] || 'Hoy varios enviaron señales',
+            frases[3] || 'Hoy muchos mandaron tokes'
+          ],
+          personalLine: (data.home?.signals_received_today || 0) > 0 ? '👀 Tú hoy has sonado.' : 'Hoy estás fuera del ruido.'
+        };
+
+        if (this.state.currentPage === 'home') this.updateHome();
+        if (this.state.currentPage === 'murmullo') this.renderMurmullo();
+      } catch (e) {
+        this.debug('Error home-state (' + reason + '): ' + e.message);
+      }
+    }, 380);
   },
 
   pushHomePopup(popup) {
@@ -4924,7 +5087,10 @@ const app = {
     }
   },
 
-  abrirEncuesta() {
+  async abrirEncuesta() {
+    if (!this.state.encuestaActiva) {
+      await this.cargarEncuestaActiva();
+    }
     if (!this.state.encuestaActiva) {
       this.showMsg('No hay encuesta activa');
       return;
@@ -4967,6 +5133,7 @@ const app = {
       if (!response.ok || !data.ok) throw new Error(data.error || 'No se pudo votar');
       this.state.encuestaActiva.resultados = data.resultados || [];
       this.state.encuestaActiva.total_votos = data.total_votos || 0;
+      this.refreshHomeState('survey-vote');
       this.mostrarResultadosEncuesta();
     } catch (e) {
       this.showMsg('❌ ' + e.message);
@@ -5001,11 +5168,6 @@ const app = {
     const target = this.state.secretFlow.companeros[this.state.focus.index];
     if (!target) return;
 
-    if (this.state.toquesRestantes <= 0) {
-      this.showMsg('❌ No te quedan tokes hoy');
-      return;
-    }
-
     const esCrush = this.state.secretFlow.tipo === 'crush';
     const payload = {
       de: this.miID,
@@ -5029,6 +5191,7 @@ const app = {
 
       this.state.toquesRestantes = data.toques_restantes || (this.state.toquesRestantes - 1);
       localStorage.setItem('toquesRestantes', this.state.toquesRestantes);
+      this.refreshHomeState('secret-send');
       this.updateHome();
       this.showMsg(esCrush ? '💘 Crush enviado' : '💜 Sobre secreto enviado');
       this.showPage('home');
@@ -5184,24 +5347,30 @@ const app = {
     const badgeEl = document.getElementById('tokes-badge');
     const statusEl = document.getElementById('home-status');
     const avatarEl = document.getElementById('home-avatar');
-    
+
     if (nameEl) nameEl.textContent = nom;
-    if (badgeEl) badgeEl.textContent = `🎯 ${this.state.toquesRestantes}/30`;
     if (avatarEl) avatarEl.textContent = this.state.settings.avatar;
-    
+
     const st = ESTADOS.find(e => e.id === this.state.settings.status) || ESTADOS[0];
     if (statusEl) {
       statusEl.textContent = `${st.emoji} ${st.label}`;
       statusEl.style.background = st.color;
     }
-    
+
+    const flags = this.state.homeFlags || {};
+    const friendLeft = Number.isFinite(flags.friends_tokes_left) ? flags.friends_tokes_left : 3;
+    const anonLeft = Number.isFinite(flags.anon_left) ? flags.anon_left : 1;
+    const crushLeft = Number.isFinite(flags.crush_left) ? flags.crush_left : 1;
+    if (badgeEl) badgeEl.textContent = `🎯 Amigos: ${friendLeft}/3 · 🤍 ${anonLeft} · 💘 ${crushLeft}`;
+
     const liveCrush = document.getElementById('home-live-crush');
-    const liveOnline = document.getElementById('home-live-live');
+    const liveNarrative = document.getElementById('home-live-live');
     const chaosSub = document.getElementById('home-chaos-sub');
-    if (liveCrush) liveCrush.textContent = `💘 ${this.state.murmulloStats.crushes || 0} crush hoy`;
-    if (liveOnline) liveOnline.textContent = `⚡ ${this.state.murmulloStats.conectados || 0} online`;
+    if (liveCrush) liveCrush.textContent = (flags.has_strong_signal_today || flags.has_signals_today) ? '💘 Hoy has recibido señal' : '💘 Sin señales nuevas';
+    if (liveNarrative) liveNarrative.textContent = flags.survey_pending ? '📊 Encuesta pendiente' : '📌 Pendientes al día';
     if (chaosSub) chaosSub.textContent = this.state.homePriorityText || this.state.murmulloStats.headline || 'Tu curso está on fire';
 
+    this.renderHomeActionQueue();
     this.updateColaBadge();
   },
 
@@ -5638,8 +5807,8 @@ const app = {
       return;
     }
     
-    if (this.state.toquesRestantes <= 0) {
-      this.showMsg('❌ No te quedan tokes hoy');
+    if ((this.state.homeFlags?.friends_tokes_left ?? 3) <= 0) {
+      this.showMsg('❌ Ya alcanzaste 3 tokes de amigos hoy');
       return;
     }
     
@@ -5693,6 +5862,7 @@ const app = {
         
         this.state.toquesRestantes = data.toques_restantes || (this.state.toquesRestantes - 1);
         localStorage.setItem('toquesRestantes', this.state.toquesRestantes);
+        this.refreshHomeState('friend-toke-send');
         this.updateHome();
         
         this.todex.total_toques_enviados = (this.todex.total_toques_enviados || 0) + 1;
@@ -6103,6 +6273,7 @@ const app = {
           const data = await response.json();
           this.debug('Respuesta OK: ' + JSON.stringify(data));
           this.showMsg(`Respondiste ${emoji}`);
+          this.refreshHomeState('toke-response');
           enviado = true;
           break;
         } else {
