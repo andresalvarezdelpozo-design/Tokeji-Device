@@ -7,7 +7,7 @@
   const surveys = [
     {
       hour: 15, // hora 24h
-      minute: 0,
+      minute: 18,
       question: '¿Qué modo prefieres hoy?',
       options: ['Caos', 'Normal', 'Exploración', 'Social'],
       answered: false
