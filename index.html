@@ -587,6 +587,73 @@
       box-shadow: 0 2px 0 #B7791F;
     }
 
+    .home-popup-stack {
+      position: absolute;
+      top: 14px;
+      left: 10px;
+      right: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      z-index: 40;
+      pointer-events: none;
+    }
+
+    .home-popup {
+      background: rgba(18, 22, 34, 0.88);
+      border: 1px solid rgba(255,255,255,0.18);
+      color: #fff;
+      border-radius: 14px;
+      padding: 10px 12px;
+      font-size: 11px;
+      font-weight: 800;
+      line-height: 1.4;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      animation: slideInTop .25s ease;
+    }
+
+    .home-popup.focused {
+      border-color: #FF4FA3;
+      box-shadow: 0 0 0 2px rgba(255,79,163,.45), 0 8px 20px rgba(0,0,0,.25);
+      transform: scale(1.01);
+    }
+
+    @keyframes slideInTop {
+      from { transform: translateY(-10px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .encuesta-option {
+      width: 100%;
+      border: 2px solid rgba(255,255,255,0.25);
+      background: rgba(255,255,255,0.08);
+      color: #fff;
+      border-radius: 14px;
+      padding: 12px;
+      font-size: 12px;
+      font-weight: 800;
+      text-align: left;
+      margin-bottom: 10px;
+    }
+
+    .encuesta-option.focused {
+      border-color: #fff;
+      background: linear-gradient(135deg, #FF4FA3, #805AD5);
+      box-shadow: 0 0 0 2px rgba(255,255,255,.25);
+    }
+
+    .murmullo-hotline {
+      margin-top: 8px;
+      font-size: 11px;
+      color: #FFF4B0;
+      font-weight: 800;
+      text-align: center;
+      text-shadow: 0 0 10px rgba(255,255,255,0.35);
+    }
+
     .cola-badge {
       position: absolute;
       top: 5px;
@@ -2353,6 +2420,7 @@
           </div>
 
           <div class="page" id="page-home">
+            <div class="home-popup-stack" id="home-popup-stack"></div>
             <div class="home-main">
               <div class="home-avatar" id="home-avatar">🐱</div>
               <div class="home-name" id="home-name">Amigo</div>
@@ -2437,6 +2505,7 @@
               <div class="murmullo-title">🔮 MURMULLO</div>
               <div class="murmullo-insti" id="murmullo-insti">IES MONCADA</div>
               <div class="murmullo-conectados"><span id="murmullo-conectados">0</span> conectados</div>
+              <div class="murmullo-hotline" id="murmullo-hotline"></div>
             </div>
             <div class="murmullo-grid">
               <div class="murmullo-card secretos"><div class="emoji">💜</div><div><strong id="murmullo-secretos">0</strong><span> sobres secretos</span></div></div>
@@ -2495,6 +2564,8 @@
             </div>
           </div>
 
+          <div class="page" id="page-encuesta"></div>
+
           <div class="page" id="page-settings">
             <div class="setup-title">⚙️ Ajustes</div>
             <div class="settings-list" id="settings-list">
@@ -2548,6 +2619,19 @@
               <button onclick="app.rechazarDesafio()" style="padding: 12px 25px; background: #E53E3E; color: white; border: none; border-radius: 20px; font-weight: 800; font-family: Nunito; cursor: pointer; box-shadow: 0 4px 0 #C53030;">Rechazar</button>
               <button onclick="app.aceptarDesafio()" style="padding: 12px 25px; background: #48BB78; color: white; border: none; border-radius: 20px; font-weight: 800; font-family: Nunito; cursor: pointer; box-shadow: 0 4px 0 #38A169;">⚔️ Aceptar</button>
             </div>
+          </div>
+
+          <div class="selector-modal" id="encuesta-screen" style="background: linear-gradient(145deg, #1A202C, #2D3748); color: white;">
+            <div class="selector-title" id="encuesta-title" style="color:white;">📊 Flash Poll</div>
+            <div id="encuesta-question" style="font-size:14px; font-weight:800; text-align:center; margin-bottom:10px;">Cargando encuesta...</div>
+            <div id="encuesta-meta" style="font-size:11px; opacity:.9; margin-bottom:14px;">—</div>
+            <div id="encuesta-options" style="width:100%;"></div>
+          </div>
+
+          <div class="selector-modal" id="encuesta-resultados-screen" style="background: linear-gradient(145deg, #702459, #D53F8C); color: white;">
+            <div class="selector-title" style="color:white;">🎉 Resultados</div>
+            <div id="encuesta-resultados-list" style="width:100%;"></div>
+            <div style="font-size:11px; margin-top:12px; opacity:.9;">Pulsa OK o C para cerrar</div>
           </div>
 
           <!-- NUEVO: Selector de defensa (dentro de la pantalla) -->
@@ -2895,10 +2979,17 @@ const app = {
     murmulloStats: {
       conectados: 0,
       secretos: 0,
+      crushes: 0,
+      combates: 0,
       rachas: 0,
       todox: 0,
-      nuevos: 0
+      nuevos: 0,
+      headline: ''
     },
+    homePopups: [],
+    popupFocusIndex: 0,
+    encuestaActiva: null,
+    encuestaIndex: 0,
     audioInitialized: false,
     confirmIndex: 0,
     toquesMostrados: new Set(),
@@ -2999,12 +3090,19 @@ const app = {
     setTimeout(() => {
       this.checkTokes();
       this.checkRespuestas();
+      this.cargarMurmulloReal();
+      this.cargarEncuestaActiva();
     }, 1000);
     
     setInterval(() => {
       this.checkTokes();
       this.checkRespuestas();
     }, 5000);
+
+    setInterval(() => {
+      this.cargarMurmulloReal();
+      this.cargarEncuestaActiva();
+    }, 15000);
     
     setTimeout(() => this.reintentarRespuestasPendientes(), 10000);
     
@@ -3218,6 +3316,8 @@ const app = {
     document.getElementById('desafio-recibido-screen').classList.remove('active');
     document.getElementById('selector-defensa-screen').classList.remove('active');
     document.getElementById('combate-vs-screen').classList.remove('active');
+    document.getElementById('encuesta-screen').classList.remove('active');
+    document.getElementById('encuesta-resultados-screen').classList.remove('active');
     
     if (page === 'home') {
       this.updateColaBadge();
@@ -3307,9 +3407,15 @@ const app = {
         break;
       case 'home':
         this.updateHome();
+        this.updateHomePopups();
         if (this.state.colaMensajes.length > 0 && !this.state.procesandoCola) {
           this.procesarColaMensajes();
         }
+        break;
+      case 'encuesta':
+        this.state.focus = { type: 'encuesta', index: this.state.encuestaIndex || 0 };
+        document.getElementById('encuesta-screen').classList.add('active');
+        this.renderEncuesta();
         break;
       case 'qr':
         this.generarQR();
@@ -3431,6 +3537,16 @@ const app = {
     
     if (document.getElementById('combate-vs-screen').classList.contains('active')) {
       this.cerrarPantallaVS();
+      return;
+    }
+
+    if (document.getElementById('encuesta-resultados-screen').classList.contains('active')) {
+      this.cerrarResultadosEncuesta();
+      return;
+    }
+
+    if (this.state.currentPage === 'encuesta') {
+      this.showPage('home', false);
       return;
     }
     
@@ -3628,7 +3744,18 @@ const app = {
         this.selectColorSetup(focus.index);
         break;
       case 'home':
-        this.showPage('menu');
+        if (this.state.homePopups.length > 0) {
+          const popup = this.state.homePopups[this.state.popupFocusIndex];
+          if (popup?.tipo === 'encuesta') {
+            this.abrirEncuesta();
+          } else if (popup?.tipo === 'murmullo') {
+            this.showPage('murmullo');
+          } else {
+            this.showPage('menu');
+          }
+        } else {
+          this.showPage('menu');
+        }
         break;
       case 'menu':
         if (focus.index === 1) {
@@ -3695,6 +3822,13 @@ const app = {
         break;
       case 'settings':
         this.activateSetting(focus.index);
+        break;
+      case 'encuesta':
+        if (document.getElementById('encuesta-resultados-screen').classList.contains('active')) {
+          this.cerrarResultadosEncuesta();
+        } else {
+          this.votarEncuestaActual();
+        }
         break;
     }
   },
@@ -3775,6 +3909,38 @@ const app = {
       this.state.focus.index = this.state.focus.index === 0 ? 1 : 0;
       this.updateCombatesFocus();
       this.vibrar();
+      return;
+    }
+
+    if (this.state.currentPage === 'home' && this.state.homePopups.length > 0) {
+      if (this.state.popupFocusIndex < this.state.homePopups.length - 1) {
+        this.state.popupFocusIndex++;
+        this.updateHomePopups();
+      }
+      return;
+    }
+
+    if (this.state.currentPage === 'encuesta') {
+      if (this.state.encuestaActiva && this.state.encuestaIndex < (this.state.encuestaActiva.opciones || []).length - 1) {
+        this.state.encuestaIndex++;
+        this.renderEncuesta();
+      }
+      return;
+    }
+
+    if (this.state.currentPage === 'home' && this.state.homePopups.length > 0) {
+      if (this.state.popupFocusIndex > 0) {
+        this.state.popupFocusIndex--;
+        this.updateHomePopups();
+      }
+      return;
+    }
+
+    if (this.state.currentPage === 'encuesta') {
+      if (this.state.encuestaIndex > 0) {
+        this.state.encuestaIndex--;
+        this.renderEncuesta();
+      }
       return;
     }
     
@@ -4143,6 +4309,12 @@ const app = {
           this.updateGridFocus();
         }
         break;
+      case 'encuesta':
+        if (this.state.encuestaIndex > 0) {
+          this.state.encuestaIndex--;
+          this.renderEncuesta();
+        }
+        break;
     }
   },
 
@@ -4245,6 +4417,13 @@ const app = {
           this.updateGridFocus();
         }
         break;
+    }
+
+    if (this.state.currentPage === 'home' && this.state.homePopups.length > 0) {
+      if (this.state.popupFocusIndex < this.state.homePopups.length - 1) {
+        this.state.popupFocusIndex++;
+        this.updateHomePopups();
+      }
     }
   },
 
@@ -4623,6 +4802,142 @@ const app = {
     set('murmullo-rachas', this.state.murmulloStats.rachas);
     set('murmullo-todox', this.state.murmulloStats.todox);
     set('murmullo-nuevos', this.state.murmulloStats.nuevos);
+    const hot = document.getElementById('murmullo-hotline');
+    if (hot) hot.textContent = this.state.murmulloStats.headline || '';
+  },
+
+  async cargarMurmulloReal() {
+    try {
+      const response = await fetch(`${BACK}/murmullo-stats?userId=${encodeURIComponent(this.miID)}`);
+      const data = await response.json();
+      if (!data.ok || !data.stats) return;
+      this.state.murmulloStats = {
+        ...this.state.murmulloStats,
+        ...data.stats,
+        rachas: data.stats.rachas || this.state.murmulloStats.rachas
+      };
+      if (this.state.currentPage === 'murmullo') this.renderMurmullo();
+      this.pushHomePopup({
+        tipo: 'murmullo',
+        icono: '🔥',
+        texto: data.stats.headline || 'Tu instituto se está moviendo fuerte'
+      });
+      this.updateHomePopups();
+    } catch (e) {
+      this.debug('Error murmullo real: ' + e.message);
+    }
+  },
+
+  pushHomePopup(popup) {
+    const dup = this.state.homePopups.find(p => p.texto === popup.texto && p.tipo === popup.tipo);
+    if (dup) return;
+    this.state.homePopups.unshift({ ...popup, id: `p_${Date.now()}_${Math.random()}` });
+    this.state.homePopups = this.state.homePopups.slice(0, 4);
+    if (this.state.popupFocusIndex >= this.state.homePopups.length) {
+      this.state.popupFocusIndex = Math.max(0, this.state.homePopups.length - 1);
+    }
+  },
+
+  updateHomePopups() {
+    const stack = document.getElementById('home-popup-stack');
+    if (!stack) return;
+    stack.innerHTML = this.state.homePopups.map((p, i) => `
+      <div class="home-popup ${i === this.state.popupFocusIndex ? 'focused' : ''}" data-index="${i}">
+        <span style="font-size:16px;">${p.icono || '✨'}</span>
+        <span>${p.texto}</span>
+      </div>
+    `).join('');
+  },
+
+  async cargarEncuestaActiva() {
+    try {
+      const response = await fetch(`${BACK}/encuestas/activa?userId=${encodeURIComponent(this.miID)}`);
+      const data = await response.json();
+      if (!data.ok || !data.encuesta) return;
+      this.state.encuestaActiva = data.encuesta;
+      this.pushHomePopup({
+        tipo: 'encuesta',
+        icono: '📊',
+        texto: `Flash Poll: ${data.encuesta.pregunta}`
+      });
+      if (this.state.currentPage === 'home') this.updateHomePopups();
+      if (this.state.currentPage === 'encuesta') this.renderEncuesta();
+    } catch (e) {
+      this.debug('Error encuesta: ' + e.message);
+    }
+  },
+
+  abrirEncuesta() {
+    if (!this.state.encuestaActiva) {
+      this.showMsg('No hay encuesta activa');
+      return;
+    }
+    this.state.encuestaIndex = 0;
+    this.showPage('encuesta');
+  },
+
+  renderEncuesta() {
+    const encuesta = this.state.encuestaActiva;
+    if (!encuesta) return;
+    const q = document.getElementById('encuesta-question');
+    const meta = document.getElementById('encuesta-meta');
+    const opts = document.getElementById('encuesta-options');
+    if (q) q.textContent = encuesta.pregunta;
+    if (meta) meta.textContent = `${encuesta.curso || 'Curso'} · ${encuesta.total_votos || 0} votos`;
+    if (opts) {
+      opts.innerHTML = (encuesta.opciones || []).map((op, i) => `
+        <div class="encuesta-option ${i === this.state.encuestaIndex ? 'focused' : ''}" data-index="${i}">
+          ${String.fromCharCode(65 + i)} · ${op}
+        </div>
+      `).join('');
+    }
+  },
+
+  async votarEncuestaActual() {
+    const encuesta = this.state.encuestaActiva;
+    if (!encuesta) return;
+    try {
+      const response = await fetch(`${BACK}/encuestas/votar`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          userId: this.miID,
+          encuestaId: encuesta.id,
+          opcion: this.state.encuestaIndex
+        })
+      });
+      const data = await response.json();
+      if (!response.ok || !data.ok) throw new Error(data.error || 'No se pudo votar');
+      this.state.encuestaActiva.resultados = data.resultados || [];
+      this.state.encuestaActiva.total_votos = data.total_votos || 0;
+      this.mostrarResultadosEncuesta();
+    } catch (e) {
+      this.showMsg('❌ ' + e.message);
+    }
+  },
+
+  mostrarResultadosEncuesta() {
+    const encuesta = this.state.encuestaActiva;
+    const list = document.getElementById('encuesta-resultados-list');
+    if (!encuesta || !list) return;
+    const total = Math.max(1, encuesta.total_votos || 1);
+    const resultados = encuesta.resultados || [];
+    list.innerHTML = (encuesta.opciones || []).map((op, i) => {
+      const votos = resultados[i] || 0;
+      const pct = Math.round((votos / total) * 100);
+      return `<div style="margin-bottom:10px;">
+        <div style="display:flex; justify-content:space-between; font-size:11px; font-weight:800;"><span>${op}</span><span>${pct}%</span></div>
+        <div style="height:12px; background:rgba(0,0,0,.25); border-radius:8px; overflow:hidden; margin-top:4px;">
+          <div style="height:100%; width:${pct}%; background:linear-gradient(90deg,#F6E05E,#ED64A6);"></div>
+        </div>
+      </div>`;
+    }).join('');
+    document.getElementById('encuesta-resultados-screen').classList.add('active');
+  },
+
+  cerrarResultadosEncuesta() {
+    document.getElementById('encuesta-resultados-screen').classList.remove('active');
+    this.showPage('home', false);
   },
 
   async selectCompaneroInstituto() {

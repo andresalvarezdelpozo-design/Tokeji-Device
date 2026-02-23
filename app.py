@@ -21,7 +21,9 @@ def cargar_datos():
             "respuestas_recibidas": {},
             "desafios_pendientes": {},
             "combates_finalizados": [],
-            "perfiles": {}
+            "perfiles": {},
+            "encuestas": [],
+            "votos_encuesta": {}
         }
 
 def guardar_datos():
@@ -32,7 +34,9 @@ def guardar_datos():
             "respuestas_recibidas": respuestas_recibidas,
             "desafios_pendientes": desafios_pendientes,
             "combates_finalizados": combates_finalizados,
-            "perfiles": perfiles
+            "perfiles": perfiles,
+            "encuestas": encuestas,
+            "votos_encuesta": votos_encuesta
         }, f)
 
 datos = cargar_datos()
@@ -42,6 +46,41 @@ respuestas_recibidas = datos.get("respuestas_recibidas", {})
 desafios_pendientes = datos["desafios_pendientes"]
 combates_finalizados = datos.get("combates_finalizados", [])
 perfiles = datos.get("perfiles", {})
+encuestas = datos.get("encuestas", [])
+votos_encuesta = datos.get("votos_encuesta", {})
+
+
+def generar_encuesta_demo():
+    ahora = int(time.time())
+    return {
+        "id": f"poll_{ahora}",
+        "pregunta": "¿Quién reparte mejor vibra hoy?",
+        "curso": "3º ESO",
+        "instituto": "",
+        "opciones": [
+            "El/la que siempre anima 💪",
+            "El/la de los memes 😂",
+            "La mente estratégica 🧠",
+            "Yo obvio 😎"
+        ],
+        "creada": ahora,
+        "expira": ahora + 3600,
+        "activa": True
+    }
+
+
+def asegurar_encuesta_activa(instituto=""):
+    ahora = int(time.time())
+    for encuesta in encuestas:
+        if encuesta.get("activa") and encuesta.get("expira", 0) > ahora:
+            if not instituto or encuesta.get("instituto", "") in ["", instituto]:
+                return encuesta
+
+    demo = generar_encuesta_demo()
+    demo["instituto"] = instituto or ""
+    encuestas.append(demo)
+    guardar_datos()
+    return demo
 
 EMOJIS_DATABASE = [
     {"id": i, "rarity": r} for i, r in enumerate([
@@ -394,6 +433,123 @@ def lista_instituto():
             })
 
         return jsonify(ok=True, companeros=companeros)
+    except Exception as e:
+        return jsonify(ok=False, error=str(e)), 500
+
+
+@app.route("/murmullo-stats", methods=["GET"])
+def murmullo_stats():
+    try:
+        user_id = request.args.get("userId", "").strip()
+        if not user_id:
+            return jsonify(ok=False, error="Falta userId"), 400
+
+        perfil = perfiles.get(user_id, {})
+        instituto = perfil.get("instituto", "")
+        curso = perfil.get("curso", "")
+
+        usuarios_instituto = [p for p in perfiles.values() if p.get("instituto") == instituto] if instituto else []
+        conectados = max(5, len(usuarios_instituto) * 3)
+
+        ahora = int(time.time())
+        secretos_hoy = 0
+        crush_hoy = 0
+        for lista_toques in toques_recibidos.values():
+            for t in lista_toques:
+                if ahora - t.get("hora", 0) > 86400:
+                    continue
+                if instituto and t.get("instituto_destino") != instituto:
+                    continue
+                if t.get("tipo") == "crush":
+                    crush_hoy += 1
+                elif t.get("tipo") == "anonimo":
+                    secretos_hoy += 1
+
+        combates_hoy = len([c for c in combates_finalizados if ahora - c.get("timestamp", 0) < 86400])
+        todox_hoy = sum(len(v.get("todox_visitados", [])) for v in perfiles.values() if (not instituto or v.get("instituto") == instituto))
+        nuevos_hoy = len([p for p in perfiles.values() if ahora - p.get("fecha_registro", 0) < 86400 and (not instituto or p.get("instituto") == instituto)])
+
+        return jsonify(ok=True, stats={
+            "instituto": instituto or "Tu instituto",
+            "curso": curso,
+            "conectados": conectados,
+            "secretos": secretos_hoy,
+            "crushes": crush_hoy,
+            "combates": combates_hoy,
+            "todox": todox_hoy,
+            "nuevos": nuevos_hoy,
+            "headline": f"Tu curso está on fire: {crush_hoy} crush y {secretos_hoy} secretos hoy"
+        })
+    except Exception as e:
+        return jsonify(ok=False, error=str(e)), 500
+
+
+@app.route("/encuestas/activa", methods=["GET"])
+def encuesta_activa():
+    try:
+        user_id = request.args.get("userId", "").strip()
+        instituto = perfiles.get(user_id, {}).get("instituto", "") if user_id else ""
+
+        encuesta = asegurar_encuesta_activa(instituto)
+        votos = votos_encuesta.get(encuesta["id"], {})
+        total = len(votos)
+        conteo = [0 for _ in encuesta.get("opciones", [])]
+
+        for opcion in votos.values():
+            if isinstance(opcion, int) and 0 <= opcion < len(conteo):
+                conteo[opcion] += 1
+
+        return jsonify(ok=True, encuesta={
+            "id": encuesta["id"],
+            "pregunta": encuesta["pregunta"],
+            "curso": encuesta.get("curso", ""),
+            "opciones": encuesta.get("opciones", []),
+            "expira": encuesta.get("expira"),
+            "total_votos": total,
+            "resultados": conteo,
+            "ya_votaste": bool(user_id and user_id in votos)
+        })
+    except Exception as e:
+        return jsonify(ok=False, error=str(e)), 500
+
+
+@app.route("/encuestas/votar", methods=["POST"])
+def votar_encuesta():
+    try:
+        data = request.get_json() or {}
+        user_id = data.get("userId", "").strip()
+        encuesta_id = data.get("encuestaId", "").strip()
+        opcion = data.get("opcion")
+
+        if not all([user_id, encuesta_id]) or opcion is None:
+            return jsonify(ok=False, error="Faltan datos requeridos"), 400
+
+        encuesta = next((e for e in encuestas if e.get("id") == encuesta_id), None)
+        if not encuesta:
+            return jsonify(ok=False, error="Encuesta no encontrada"), 404
+
+        ahora = int(time.time())
+        if encuesta.get("expira", 0) <= ahora:
+            encuesta["activa"] = False
+            guardar_datos()
+            return jsonify(ok=False, error="Encuesta finalizada"), 400
+
+        if not isinstance(opcion, int) or opcion < 0 or opcion >= len(encuesta.get("opciones", [])):
+            return jsonify(ok=False, error="Opción inválida"), 400
+
+        if encuesta_id not in votos_encuesta:
+            votos_encuesta[encuesta_id] = {}
+
+        votos_encuesta[encuesta_id][user_id] = opcion
+        guardar_datos()
+
+        votos = votos_encuesta.get(encuesta_id, {})
+        conteo = [0 for _ in encuesta.get("opciones", [])]
+        for op in votos.values():
+            if isinstance(op, int) and 0 <= op < len(conteo):
+                conteo[op] += 1
+
+        return jsonify(ok=True, resultados=conteo, total_votos=len(votos))
     except Exception as e:
         return jsonify(ok=False, error=str(e)), 500
 
