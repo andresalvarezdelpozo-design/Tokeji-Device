@@ -572,7 +572,7 @@
 
     .menu-grid {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(3, 1fr);
       grid-template-rows: repeat(3, 1fr);
       gap: 10px;
       width: 100%;
@@ -1456,8 +1456,8 @@
       z-index: 150;
       animation: fadeIn 0.3s ease;
       padding: 16px;
-      background: radial-gradient(circle at 50% 35%, rgba(255,255,255,0.25) 0%, rgba(0,0,0,0.55) 70%);
-      backdrop-filter: blur(6px);
+      background: radial-gradient(circle at 50% 35%, rgba(255,255,255,0.35) 0%, rgba(0,0,0,0.62) 72%);
+      backdrop-filter: blur(8px);
     }
 
     .envio-animacion.active {
@@ -1471,21 +1471,21 @@
 
     .envio-avatar-container {
       position: relative;
-      width: 100px;
-      height: 100px;
+      width: 108px;
+      height: 108px;
       margin-bottom: 14px;
-      background: rgba(255,255,255,0.14);
-      border: 1px solid rgba(255,255,255,0.35);
-      border-radius: 22px;
+      background: rgba(255,255,255,0.18);
+      border: 1px solid rgba(255,255,255,0.5);
+      border-radius: 24px;
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 10px 24px rgba(0,0,0,0.32), inset 0 1px 0 rgba(255,255,255,0.3);
+      box-shadow: 0 0 28px rgba(255,0,160,0.42), 0 10px 24px rgba(0,0,0,0.32), inset 0 1px 0 rgba(255,255,255,0.3);
     }
 
     .envio-avatar {
       position: absolute;
-      font-size: 60px;
+      font-size: 64px;
       animation: enviarAnim 1.5s ease-in-out;
       filter: drop-shadow(0 10px 20px rgba(0,0,0,0.3));
       top: 0;
@@ -1494,7 +1494,7 @@
 
     .envio-emoji-toke {
       position: absolute;
-      font-size: 34px;
+      font-size: 38px;
       bottom: -4px;
       right: -4px;
       animation: enviarAnim 1.5s ease-in-out 0.2s both;
@@ -1512,7 +1512,7 @@
     .envio-texto {
       color: white;
       font-family: 'Fredoka One', cursive;
-      font-size: 20px;
+      font-size: 21px;
       margin-top: 8px;
       text-shadow: 0 4px 8px rgba(0,0,0,0.3);
       animation: textoPop 0.5s ease 0.3s both;
@@ -1531,12 +1531,29 @@
     }
 
     .envio-check {
-      font-size: 60px;
-      color: #48BB78;
-      margin-top: 20px;
+      font-size: 44px;
+      color: #7BFF9A;
+      margin-top: 10px;
       animation: checkPop 0.5s ease 1s both;
-      text-shadow: 0 4px 8px rgba(0,0,0,0.3);
+      text-shadow: 0 0 16px rgba(123,255,154,0.75), 0 4px 8px rgba(0,0,0,0.3);
       display: none;
+    }
+
+    .envio-confirm {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      font-weight: 900;
+      color: rgba(255,255,255,0.92);
+      text-shadow: 0 0 10px rgba(255,255,255,0.4);
+      opacity: 0;
+      transform: translateY(8px);
+      transition: all 0.28s ease;
+    }
+
+    .envio-confirm.show {
+      opacity: 1;
+      transform: translateY(0);
     }
 
     @keyframes checkPop {
@@ -1559,7 +1576,11 @@
       z-index: 150;
       text-align: center;
       color: white;
-      animation: slideUp 0.5s ease;
+      animation: slideUp 0.35s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      background: linear-gradient(145deg, rgba(255,0,160,0.84) 0%, rgba(255,107,53,0.84) 100%);
+      backdrop-filter: blur(8px);
+      border: 2px solid rgba(255,255,255,0.28);
+      box-shadow: inset 0 0 30px rgba(255,255,255,0.08), 0 0 32px rgba(255,0,160,0.35);
     }
 
     @keyframes slideUp {
@@ -1634,13 +1655,14 @@
       align-items: center;
       justify-content: center;
       border-radius: 10px;
-      background: rgba(255,255,255,0.22);
-      border: 1px solid rgba(255,255,255,0.38);
+      background: rgba(255,255,255,0.2);
+      border: 1px solid rgba(255,255,255,0.52);
       font-size: 9px;
       text-align: center;
       padding: 3px 2px;
       transition: all 0.2s ease;
       overflow: visible;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.16);
     }
 
     .respuesta-btn .emoji {
@@ -1660,17 +1682,18 @@
       max-width: 100%;
     }
 
+    .respuesta-btn.focused,
     .theme-pastel .respuesta-btn.focused {
       background: #fff;
       color: #5A4A6A;
-      transform: scale(1.1);
-      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      transform: scale(1.08);
+      box-shadow: 0 0 0 2px rgba(255,255,255,0.75), 0 8px 16px rgba(0,0,0,0.24);
     }
 
     .theme-gas-caos .respuesta-btn.focused {
       background: #FF00A0;
       border-color: #fff;
-      transform: scale(1.15) rotate(2deg);
+      transform: scale(1.12) rotate(1deg);
       box-shadow: 0 0 20px #FF00A0;
       animation: respuesta-pulse 0.3s ease-in-out infinite alternate;
     }
@@ -1705,8 +1728,8 @@
     }
 
     @keyframes respuesta-pulse {
-      from { transform: scale(1.1); }
-      to { transform: scale(1.2); }
+      from { transform: scale(1.08); }
+      to { transform: scale(1.13); }
     }
 
     .respuesta-recibida-modal {
@@ -1715,7 +1738,7 @@
       left: 0;
       right: 0;
       bottom: 0;
-      background: linear-gradient(145deg, #4299E1, #2B6CB0);
+      background: linear-gradient(145deg, rgba(255,0,160,0.86) 0%, rgba(255,107,53,0.86) 48%, rgba(247,147,30,0.86) 100%);
       display: none;
       flex-direction: column;
       align-items: center;
@@ -1725,6 +1748,9 @@
       text-align: center;
       color: white;
       animation: fadeIn 0.3s ease;
+      backdrop-filter: blur(9px);
+      border: 2px solid rgba(255,255,255,0.28);
+      box-shadow: inset 0 0 30px rgba(255,255,255,0.09), 0 0 26px rgba(255,0,160,0.3);
     }
 
     .respuesta-recibida-modal.active {
@@ -1751,22 +1777,22 @@
     }
 
     .respuesta-recibida-emoji {
-      font-size: 34px;
+      font-size: 46px;
       margin: 10px 0;
       animation: bounceIn 0.6s ease 0.2s both;
       filter: drop-shadow(0 5px 15px rgba(0,0,0,0.3));
     }
 
     .respuesta-recibida-btn {
-      background: white;
-      color: #4299E1;
+      background: rgba(255,255,255,0.95);
+      color: #A1006D;
       border: none;
       padding: 12px 40px;
       border-radius: 25px;
       font-size: 16px;
       font-weight: 800;
       cursor: pointer;
-      box-shadow: 0 4px 0 rgba(0,0,0,0.2);
+      box-shadow: 0 4px 0 rgba(85,0,55,0.35);
       margin-top: 20px;
       transition: all 0.2s ease;
     }
@@ -2077,6 +2103,104 @@
       text-shadow: 0 4px 8px rgba(0,0,0,0.5);
     }
 
+    .screen-header {
+      text-align: center;
+      font-family: 'Fredoka One', cursive;
+      color: #fff;
+      font-size: 18px;
+      margin-bottom: 6px;
+      text-shadow: 0 0 14px rgba(255,255,255,0.8);
+    }
+
+    .murmullo-instituto {
+      text-align: center;
+      color: #fff4fb;
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: .3px;
+    }
+
+    .murmullo-alumnos {
+      text-align: center;
+      color: #d8f4ff;
+      font-size: 11px;
+      margin-bottom: 10px;
+      text-shadow: 0 0 8px rgba(0,255,255,0.45);
+    }
+
+    .murmullo-feed {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 6px;
+      width: 100%;
+    }
+
+    .murmullo-frase {
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.4);
+      color: #fff;
+      border-radius: 12px;
+      padding: 10px 10px;
+      font-size: 12px;
+      line-height: 1.3;
+      font-weight: 800;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+      backdrop-filter: blur(8px);
+      text-shadow: 0 0 7px rgba(255,255,255,0.45);
+      transition: transform .2s ease, box-shadow .2s ease;
+    }
+
+    .murmullo-frase.focused {
+      transform: scale(1.03);
+      border-color: #00ffff;
+      box-shadow: 0 0 0 2px rgba(0,255,255,0.3), 0 10px 18px rgba(255,0,160,0.35);
+    }
+
+    .murmullo-frase .tag {
+      display: inline-block;
+      margin-right: 6px;
+      font-size: 10px;
+      font-weight: 900;
+      background: rgba(0,0,0,0.25);
+      border: 1px solid rgba(255,255,255,0.28);
+      border-radius: 10px;
+      padding: 2px 8px;
+      vertical-align: middle;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+    }
+
+    .murmullo-cta {
+      margin-top: 8px;
+      text-align: center;
+      font-size: 11px;
+      font-weight: 900;
+      color: #fff;
+      padding: 10px;
+      border-radius: 12px;
+      background: rgba(0,0,0,0.24);
+      border: 1px dashed rgba(255,255,255,0.35);
+    }
+
+    .btn-actualizar {
+      margin-top: 10px;
+      width: 100%;
+      border: none;
+      border-radius: 14px;
+      padding: 10px;
+      font-size: 12px;
+      font-weight: 900;
+      color: #fff;
+      background: linear-gradient(90deg, #ff00a0, #ff6b35);
+      box-shadow: 0 4px 0 rgba(140,0,90,0.5);
+    }
+
+    .btn-actualizar:active {
+      transform: translateY(3px);
+      box-shadow: 0 1px 0 rgba(140,0,90,0.5);
+    }
+
     /* NUEVO: Selector de amigo para combate dentro de la pantalla */
     .selector-amigo-screen {
       position: absolute;
@@ -2264,22 +2388,13 @@
             <div id="view-murmullos" class="view">
               <div class="screen-header">🔮 MURMULLO</div>
               <div class="murmullo-instituto" id="murmullo-nombre-instituto">Cargando...</div>
-              <div class="murmullo-alumnos" id="murmullo-total-alumnos">0 alumnos</div>
+              <div class="murmullo-alumnos" id="murmullo-total-alumnos">Sin señal social todavía</div>
 
-              <div class="murmullo-seccion">
-                <div class="murmullo-titulo">HOY EN TU INSTITUTO</div>
-                <div class="murmullo-stat"><span class="stat-icon">💜</span><span class="stat-numero" id="stat-sobres">0</span><span class="stat-label">sobres secretos</span></div>
-                <div class="murmullo-stat"><span class="stat-icon">🔥</span><span class="stat-numero" id="stat-rachas">0</span><span class="stat-label">rachas activas</span></div>
-                <div class="murmullo-stat"><span class="stat-icon">👀</span><span class="stat-numero" id="stat-todox">0</span><span class="stat-label">ToDox visitados</span></div>
-                <div class="murmullo-stat"><span class="stat-icon">🆕</span><span class="stat-numero" id="stat-nuevos">0</span><span class="stat-label">nuevos hoy</span></div>
+              <div class="murmullo-feed" id="murmullo-feed">
+                <div class="murmullo-frase focused" data-index="0"><span class="tag">ahora</span> Cargando murmullos...</div>
               </div>
 
-              <div class="murmullo-seccion">
-                <div class="murmullo-titulo">TENDENCIAS</div>
-                <div class="murmullo-tendencia" id="tendencia-curso">• Curso + rachas: --</div>
-                <div class="murmullo-tendencia" id="tendencia-sobre">• Sobre + usado: --</div>
-                <div class="murmullo-tendencia" id="tendencia-hora">• Hora pico: --</div>
-              </div>
+              <div class="murmullo-cta" id="murmullo-cta">Pulsa OK para actualizar vibes</div>
 
               <button class="btn-actualizar" onclick="app.cargarMurmullos()">🔄 Actualizar</button>
             </div>
@@ -2418,6 +2533,7 @@
             <div class="envio-texto">¡Toque Enviado!</div>
             <div class="envio-destino" id="envio-destino-anim">A: Amigo</div>
             <div class="envio-check">✅</div>
+            <div class="envio-confirm" id="envio-confirm">confirmado · directo al caos</div>
           </div>
 
           <div id="popup-recepcion" class="toque-recibido-modal popup">
@@ -3050,7 +3166,8 @@ const app = {
         this.cargarMurmullos();
         const murEvt = document.getElementById('view-murmullos');
         if (murEvt) murEvt.dispatchEvent(new Event('show'));
-        this.state.focus = { type: 'contacts', index: 0 };
+        this.state.focus = { type: 'murmullo', index: 0 };
+        this.updateMurmulloFocus();
         break;
       case 'todox':
         this.renderTodex();
@@ -3432,6 +3549,10 @@ const app = {
         if (focus.index === 0) this.jugarVSIA();
         else this.jugarVSAmigo();
         break;
+      case 'murmullo':
+        this.cargarMurmullos();
+        this.showMsg('🔄 Murmullo actualizado');
+        break;
       case 'settings':
         this.activateSetting(focus.index);
         break;
@@ -3553,6 +3674,13 @@ const app = {
           this.state.focus.index -= 5;
           this.updateGridFocus();
           this.scrollToFocused('todex-grid');
+        }
+        break;
+      case 'murmullo':
+        if (index > 0) {
+          this.state.focus.index--;
+          this.updateMurmulloFocus();
+          this.scrollToFocused('murmullo-feed');
         }
         break;
       case 'combates':
@@ -3699,6 +3827,15 @@ const app = {
           this.scrollToFocused('todex-grid');
         }
         break;
+      case 'murmullo': {
+        const maxMur = Math.max(0, document.querySelectorAll('#murmullo-feed .murmullo-frase').length - 1);
+        if (index < maxMur) {
+          this.state.focus.index++;
+          this.updateMurmulloFocus();
+          this.scrollToFocused('murmullo-feed');
+        }
+        break;
+      }
       case 'combates':
         this.state.focus.index = index === 1 ? 0 : 1;
         this.updateCombatesFocus();
@@ -4006,6 +4143,11 @@ const app = {
     });
   },
 
+  updateMurmulloFocus() {
+    const frases = document.querySelectorAll('#murmullo-feed .murmullo-frase');
+    frases.forEach((el, i) => el.classList.toggle('focused', i === this.state.focus.index));
+  },
+
   scrollToFocused(containerId) {
     const container = document.getElementById(containerId);
     if (!container) return;
@@ -4181,29 +4323,77 @@ const app = {
   },
 
   async cargarMurmullos() {
-    const userId = this.miID;
-    const perfilResp = await fetch(`${BACK}/perfil?userId=${userId}`);
-    const perfil = await perfilResp.json();
-    const instituto = perfil.instituto;
+    const instiEl = document.getElementById('murmullo-nombre-instituto');
+    const alumnosEl = document.getElementById('murmullo-total-alumnos');
+    const feed = document.getElementById('murmullo-feed');
+    const cta = document.getElementById('murmullo-cta');
+    if (!instiEl || !alumnosEl || !feed || !cta) return;
 
-    if (!instituto) {
-      this.showMsg('Primero registra tu instituto');
-      return;
+    try {
+      const perfilResp = await fetch(`${BACK}/perfil?userId=${this.miID}`);
+      const perfil = await perfilResp.json();
+      const instituto = perfil.instituto;
+
+      if (!instituto) {
+        instiEl.textContent = 'Instituto no configurado';
+        alumnosEl.textContent = 'Configura tu centro para activar Murmullo';
+        feed.innerHTML = `
+          <div class="murmullo-frase focused" data-index="0"><span class="tag">setup</span> Activa tu instituto y entra en el salseo real de tu gente.</div>
+          <div class="murmullo-frase" data-index="1"><span class="tag">tip</span> Ve a tu perfil y confirma provincia · instituto · curso.</div>
+        `;
+        cta.textContent = '🏫 Configura instituto para ver actividad real';
+        this.state.focus = { type: 'murmullo', index: 0 };
+        this.updateMurmulloFocus();
+        return;
+      }
+
+      instiEl.textContent = instituto;
+      const stats = await fetch(`${BACK}/estadisticas-instituto?instituto=${encodeURIComponent(instituto)}`).then(r => r.json());
+
+      const total = stats.total_alumnos || 0;
+      const sobres = stats.sobres_secretos_hoy || 0;
+      const rachas = stats.rachas_activas || 0;
+      const todox = stats.todox_visitados_hoy || 0;
+      const nuevos = stats.nuevos_hoy || 0;
+      const cursoTop = stats.curso_mas_rachas || 'tu curso';
+      const sobreTop = stats.sobre_mas_usado || '💜';
+      const pico = stats.hora_pico || '--:--';
+
+      alumnosEl.textContent = `${total} conectados · vibes en tiempo real`;
+
+      const frases = [];
+      if (sobres > 0) frases.push(`💜 Hoy han volado <b>${sobres}</b> sobres secretos. Está calentito en ${instituto}.`);
+      if (rachas > 0) frases.push(`🔥 <b>${cursoTop}</b> va on fire: ${rachas} rachas activas metiendo presión.`);
+      if (todox > 0) frases.push(`👀 Se han cotilleado <b>${todox}</b> ToDox hoy. Hay hambre de drama.`);
+      if (nuevos > 0) frases.push(`🆕 Han entrado ${nuevos} nuevos hoy. Se mueve el tablero.`);
+      if (sobreTop && sobreTop !== '--') frases.push(`🎯 El mood del día va por <b>${sobreTop}</b>.`);
+      if (pico && pico !== '--:--') frases.push(`⏰ Hora más caliente: <b>${pico}</b>. Si entras ahí, pasa de todo.`);
+
+      if (!frases.length) {
+        frases.push('🌙 Ahora está tranquilo... pero suele explotar al recreo.');
+        frases.push('🚀 Sé de los primeros en mover fichas hoy y marca tendencia.');
+      }
+
+      feed.innerHTML = frases.slice(0, 6).map((frase, i) => `
+        <div class="murmullo-frase ${i === 0 ? 'focused' : ''}" data-index="${i}">
+          <span class="tag">${i === 0 ? 'ahora' : (i === 1 ? 'se lía' : 'tu insti')}</span>${frase}
+        </div>
+      `).join('');
+
+      cta.textContent = frases.length > 2
+        ? '🔥 Pulsa OK para refrescar el salseo'
+        : '✨ Pulsa OK para ver si despega la actividad';
+
+      this.state.focus = { type: 'murmullo', index: 0 };
+      this.updateMurmulloFocus();
+    } catch (e) {
+      instiEl.textContent = 'Murmullo sin conexión';
+      alumnosEl.textContent = 'No pudimos cargar datos ahora';
+      feed.innerHTML = `<div class="murmullo-frase focused" data-index="0"><span class="tag">error</span> No hay señal con el servidor. Reintenta en unos segundos.</div>`;
+      cta.textContent = '⚠️ Pulsa OK para reintentar';
+      this.state.focus = { type: 'murmullo', index: 0 };
+      this.updateMurmulloFocus();
     }
-
-    document.getElementById('murmullo-nombre-instituto').textContent = instituto;
-
-    const stats = await fetch(`${BACK}/estadisticas-instituto?instituto=${encodeURIComponent(instituto)}`).then(r => r.json());
-
-    document.getElementById('murmullo-total-alumnos').textContent = (stats.total_alumnos || 0) + ' alumnos conectados';
-    document.getElementById('stat-sobres').textContent = stats.sobres_secretos_hoy || 0;
-    document.getElementById('stat-rachas').textContent = stats.rachas_activas || 0;
-    document.getElementById('stat-todox').textContent = stats.todox_visitados_hoy || 0;
-    document.getElementById('stat-nuevos').textContent = stats.nuevos_hoy || 0;
-
-    document.getElementById('tendencia-curso').textContent = '• Curso + rachas: ' + (stats.curso_mas_rachas || '--');
-    document.getElementById('tendencia-sobre').textContent = '• Sobre + usado: ' + (stats.sobre_mas_usado || '--');
-    document.getElementById('tendencia-hora').textContent = '• Hora pico: ' + (stats.hora_pico || '--');
   },
 
   getRachaIcono(estado) {
@@ -4833,19 +5023,23 @@ const app = {
 
   mostrarConfirmacionEnvio() {
     const check = document.querySelector('.envio-check');
+    const confirmTxt = document.getElementById('envio-confirm');
     if (check) {
       check.style.display = 'block';
       check.style.animation = 'none';
       check.offsetHeight;
       check.style.animation = 'checkPop 0.5s ease both';
     }
+    if (confirmTxt) confirmTxt.classList.add('show');
   },
 
   ocultarAnimacionEnvio() {
     const anim = document.getElementById('envio-animacion');
     const check = document.querySelector('.envio-check');
+    const confirmTxt = document.getElementById('envio-confirm');
     if (anim) anim.classList.remove('active');
     if (check) check.style.display = 'none';
+    if (confirmTxt) confirmTxt.classList.remove('show');
   },
 
   verificarDesbloqueos() {
