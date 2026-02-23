@@ -1,100 +1,125 @@
 // tokeji-chaos-popups.js
-
 (() => {
   const deviceScreen = document.getElementById('device-screen');
-  if (!deviceScreen) return console.error('No se encontró #device-screen');
+  const deviceButtons = {
+    ok: document.getElementById('btn-ok'),
+    back: document.getElementById('btn-c'),
+    up: document.getElementById('btn-up'),
+    down: document.getElementById('btn-down'),
+    left: document.getElementById('btn-left'),
+    right: document.getElementById('btn-right'),
+  };
 
+  if (!deviceScreen || !deviceButtons.ok) {
+    console.warn('Tokeji Popups: contenedor o botones no encontrados');
+    return;
+  }
+
+  // Configuración de encuestas: hora en 24h, mensaje y opciones
   const surveys = [
     {
-      hour: 15, // hora 24h
-      minute: 18,
-      question: '¿Qué modo prefieres hoy?',
-      options: ['Caos', 'Normal', 'Exploración', 'Social'],
-      answered: false
+      hour: 15, // ejemplo: 15 = 3 PM
+      minute: 0,
+      question: '¿Cómo te sientes hoy?',
+      options: ['Bien', 'Normal', 'Mal', 'Otro'],
     },
-    // puedes añadir más encuestas aquí
+    {
+      hour: 18,
+      minute: 30,
+      question: '¿Te gustó el último combate?',
+      options: ['Sí', 'No', 'Más o menos', 'No lo vi'],
+    }
   ];
 
   let queue = [];
+  let currentSurvey = null;
 
-  function renderSurvey(survey) {
-    deviceScreen.innerHTML = `
-      <div class="survey-card">
-        <p class="survey-question">${survey.question}</p>
-        <ul class="survey-options">
-          ${survey.options.map((o, i) => `<li data-index="${i}">▶ ${o}</li>`).join('')}
-        </ul>
-        <p class="survey-instructions">Usa las flechas para elegir, OK para confirmar, C para cancelar</p>
-      </div>
-    `;
-
-    let currentIndex = 0;
-    const optionsEls = deviceScreen.querySelectorAll('.survey-options li');
-    highlightOption(currentIndex, optionsEls);
-
-    function highlightOption(index, optionsEls) {
-      optionsEls.forEach((el, i) => {
-        el.style.background = i === index ? '#333' : 'transparent';
-        el.style.color = i === index ? '#fff' : '#000';
-      });
-    }
-
-    function handleDeviceButton(event) {
-      // Solo usamos botones del dispositivo según tu código
-      // Simulamos que tu app dispara estos eventos
-      if (event.type !== 'deviceButton') return;
-
-      const btn = event.detail.button; // 'UP','DOWN','LEFT','RIGHT','OK','C'
-
-      if (btn === 'UP') currentIndex = (currentIndex - 1 + optionsEls.length) % optionsEls.length;
-      if (btn === 'DOWN') currentIndex = (currentIndex + 1) % optionsEls.length;
-      if (btn === 'LEFT') currentIndex = (currentIndex - 1 + optionsEls.length) % optionsEls.length;
-      if (btn === 'RIGHT') currentIndex = (currentIndex + 1) % optionsEls.length;
-      if (btn === 'C') {
-        closeSurvey();
-        return;
-      }
-      if (btn === 'OK') {
-        survey.answered = true;
-        console.log(`Encuesta respondida: ${survey.options[currentIndex]}`);
-        closeSurvey();
-        return;
-      }
-      highlightOption(currentIndex, optionsEls);
-    }
-
-    function closeSurvey() {
-      deviceScreen.innerHTML = '';
-      window.removeEventListener('deviceButton', handleDeviceButton);
-      nextSurvey();
-    }
-
-    window.addEventListener('deviceButton', handleDeviceButton);
-  }
-
-  function nextSurvey() {
-    if (queue.length > 0) {
-      const next = queue.shift();
-      renderSurvey(next);
-    }
-  }
+  function pad(n) { return n.toString().padStart(2,'0'); }
 
   function checkSurveys() {
     const now = new Date();
-    surveys.forEach(survey => {
-      if (!survey.answered && !queue.includes(survey)) {
-        if (now.getHours() > survey.hour || (now.getHours() === survey.hour && now.getMinutes() >= survey.minute)) {
-          queue.push(survey);
-        }
+    surveys.forEach(s => {
+      const surveyTime = new Date();
+      surveyTime.setHours(s.hour, s.minute, 0, 0);
+      if (now >= surveyTime && !queue.includes(s) && currentSurvey !== s) {
+        queue.push(s);
       }
     });
-    if (queue.length > 0 && deviceScreen.innerHTML === '') {
-      nextSurvey();
+  }
+
+  function renderSurvey(survey) {
+    if (!survey) return;
+    currentSurvey = survey;
+
+    const html = `
+      <div class="popup-survey" style="
+        width: 90%; margin: auto; background:#222; color:#fff;
+        padding:10px; border-radius:8px; text-align:center;
+      ">
+        <div style="margin-bottom:10px; font-weight:bold;">${survey.question}</div>
+        <ul style="list-style:none; padding:0;">
+          ${survey.options.map((opt,i)=>`<li data-index="${i}" style="margin:5px 0;">${opt}</li>`).join('')}
+        </ul>
+        <div style="margin-top:10px; font-size:0.8em;">Usa botones del dispositivo para elegir, OK para enviar, C para salir</div>
+      </div>
+    `;
+    deviceScreen.innerHTML = html;
+    highlightOption(0);
+  }
+
+  let selectedIndex = 0;
+
+  function highlightOption(index) {
+    const options = deviceScreen.querySelectorAll('li');
+    options.forEach((li,i)=>{
+      li.style.background = i===index?'#555':'transparent';
+    });
+    selectedIndex = index;
+  }
+
+  function handleButton(e) {
+    if (!currentSurvey) return;
+    const options = deviceScreen.querySelectorAll('li');
+    switch(e) {
+      case 'up': highlightOption((selectedIndex-1+options.length)%options.length); break;
+      case 'down': highlightOption((selectedIndex+1)%options.length); break;
+      case 'ok':
+        console.log('Tokeji encuesta respuesta:', currentSurvey.question, options[selectedIndex].innerText);
+        closeSurvey();
+        break;
+      case 'back': closeSurvey(); break;
     }
   }
 
-  // Revisa cada 30s si hay encuestas pendientes
-  setInterval(checkSurveys, 30000);
-  // También revisa inmediatamente al cargar
-  checkSurveys();
+  function closeSurvey() {
+    deviceScreen.innerHTML = '';
+    currentSurvey = null;
+    if (queue.length>0) nextSurvey();
+  }
+
+  function nextSurvey() {
+    if (currentSurvey) return;
+    if (queue.length === 0) return;
+    const next = queue.shift();
+    renderSurvey(next);
+  }
+
+  // Botones
+  Object.entries(deviceButtons).forEach(([name, btn])=>{
+    if(!btn) return;
+    btn.addEventListener('click',()=>handleButton(name));
+  });
+
+  // Revisar encuestas cada 30 segundos
+  setInterval(()=>{
+    checkSurveys();
+    nextSurvey();
+  }, 30000);
+
+  // Inicial
+  window.addEventListener('load',()=>{
+    checkSurveys();
+    nextSurvey();
+  });
+
 })();
