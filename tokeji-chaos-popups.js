@@ -1,125 +1,117 @@
 // tokeji-chaos-popups.js
-(() => {
-  const deviceScreen = document.getElementById('device-screen');
-  const deviceButtons = {
-    ok: document.getElementById('btn-ok'),
-    back: document.getElementById('btn-c'),
-    up: document.getElementById('btn-up'),
-    down: document.getElementById('btn-down'),
-    left: document.getElementById('btn-left'),
-    right: document.getElementById('btn-right'),
-  };
+window.addEventListener('load', () => {
+  console.log('Tokeji PopUps iniciado...');
 
-  if (!deviceScreen || !deviceButtons.ok) {
-    console.warn('Tokeji Popups: contenedor o botones no encontrados');
-    return;
-  }
+  const deviceScreen = document.getElementById('device-screen'); // Pantalla del dispositivo
+  const popupQueue = [];
 
-  // Configuración de encuestas: hora en 24h, mensaje y opciones
+  // Ejemplo de encuestas
   const surveys = [
     {
-      hour: 15, // ejemplo: 15 = 3 PM
-      minute: 0,
-      question: '¿Cómo te sientes hoy?',
-      options: ['Bien', 'Normal', 'Mal', 'Otro'],
+      id: 1,
+      question: "¿Cuál es tu modo favorito?",
+      options: ["Normal", "Caos", "Duelo", "Exploración"],
+      time: "15:00", // hora de activación
+      shown: false
     },
     {
-      hour: 18,
-      minute: 30,
-      question: '¿Te gustó el último combate?',
-      options: ['Sí', 'No', 'Más o menos', 'No lo vi'],
+      id: 2,
+      question: "¿Quieres desbloquear un premio?",
+      options: ["Sí", "No", "Quizás", "Más tarde"],
+      time: "16:00",
+      shown: false
     }
   ];
 
-  let queue = [];
-  let currentSurvey = null;
-
-  function pad(n) { return n.toString().padStart(2,'0'); }
+  // Convertir hora en minutos para comparar
+  function timeToMinutes(hhmm) {
+    const [hh, mm] = hhmm.split(':').map(Number);
+    return hh * 60 + mm;
+  }
 
   function checkSurveys() {
     const now = new Date();
-    surveys.forEach(s => {
-      const surveyTime = new Date();
-      surveyTime.setHours(s.hour, s.minute, 0, 0);
-      if (now >= surveyTime && !queue.includes(s) && currentSurvey !== s) {
-        queue.push(s);
+    const currentMinutes = now.getHours() * 60 + now.getMinutes();
+
+    surveys.forEach(survey => {
+      if (!survey.shown && currentMinutes >= timeToMinutes(survey.time)) {
+        popupQueue.push(survey);
+        survey.shown = true; // evitar que se vuelva a poner en cola
+      }
+    });
+
+    if (popupQueue.length > 0) {
+      showPopup(popupQueue[0]);
+    }
+  }
+
+  function showPopup(survey) {
+    // Crear pop-up estilo Chaos
+    const popup = document.createElement('div');
+    popup.id = 'tokeji-popup';
+    popup.style.position = 'absolute';
+    popup.style.top = '10%';
+    popup.style.left = '10%';
+    popup.style.width = '80%';
+    popup.style.height = '60%';
+    popup.style.background = 'rgba(30,30,30,0.95)';
+    popup.style.color = 'white';
+    popup.style.border = '3px solid #f0f';
+    popup.style.borderRadius = '12px';
+    popup.style.padding = '10px';
+    popup.style.zIndex = '9999';
+    popup.style.display = 'flex';
+    popup.style.flexDirection = 'column';
+    popup.style.justifyContent = 'space-between';
+
+    // Pregunta
+    const question = document.createElement('div');
+    question.textContent = survey.question;
+    question.style.fontSize = '1.2em';
+    question.style.marginBottom = '10px';
+    popup.appendChild(question);
+
+    // Opciones
+    const optionsDiv = document.createElement('div');
+    optionsDiv.style.display = 'grid';
+    optionsDiv.style.gridTemplateColumns = '1fr 1fr';
+    optionsDiv.style.gap = '10px';
+
+    survey.options.forEach((opt, i) => {
+      const btn = document.createElement('button');
+      btn.textContent = opt;
+      btn.style.padding = '10px';
+      btn.style.fontSize = '1em';
+      btn.style.cursor = 'pointer';
+      btn.onclick = () => {
+        console.log(`Encuesta ${survey.id} seleccionada: ${opt}`);
+        closePopup();
+      };
+      optionsDiv.appendChild(btn);
+    });
+
+    popup.appendChild(optionsDiv);
+
+    // Añadir al dispositivo
+    deviceScreen.appendChild(popup);
+
+    function closePopup() {
+      popup.remove();
+      popupQueue.shift();
+      if (popupQueue.length > 0) {
+        showPopup(popupQueue[0]);
+      }
+    }
+
+    // Solo se abre con OK del dispositivo
+    window.addEventListener('deviceButton', (e) => {
+      if (e.detail === 'ok') {
+        popup.style.display = 'flex';
       }
     });
   }
 
-  function renderSurvey(survey) {
-    if (!survey) return;
-    currentSurvey = survey;
-
-    const html = `
-      <div class="popup-survey" style="
-        width: 90%; margin: auto; background:#222; color:#fff;
-        padding:10px; border-radius:8px; text-align:center;
-      ">
-        <div style="margin-bottom:10px; font-weight:bold;">${survey.question}</div>
-        <ul style="list-style:none; padding:0;">
-          ${survey.options.map((opt,i)=>`<li data-index="${i}" style="margin:5px 0;">${opt}</li>`).join('')}
-        </ul>
-        <div style="margin-top:10px; font-size:0.8em;">Usa botones del dispositivo para elegir, OK para enviar, C para salir</div>
-      </div>
-    `;
-    deviceScreen.innerHTML = html;
-    highlightOption(0);
-  }
-
-  let selectedIndex = 0;
-
-  function highlightOption(index) {
-    const options = deviceScreen.querySelectorAll('li');
-    options.forEach((li,i)=>{
-      li.style.background = i===index?'#555':'transparent';
-    });
-    selectedIndex = index;
-  }
-
-  function handleButton(e) {
-    if (!currentSurvey) return;
-    const options = deviceScreen.querySelectorAll('li');
-    switch(e) {
-      case 'up': highlightOption((selectedIndex-1+options.length)%options.length); break;
-      case 'down': highlightOption((selectedIndex+1)%options.length); break;
-      case 'ok':
-        console.log('Tokeji encuesta respuesta:', currentSurvey.question, options[selectedIndex].innerText);
-        closeSurvey();
-        break;
-      case 'back': closeSurvey(); break;
-    }
-  }
-
-  function closeSurvey() {
-    deviceScreen.innerHTML = '';
-    currentSurvey = null;
-    if (queue.length>0) nextSurvey();
-  }
-
-  function nextSurvey() {
-    if (currentSurvey) return;
-    if (queue.length === 0) return;
-    const next = queue.shift();
-    renderSurvey(next);
-  }
-
-  // Botones
-  Object.entries(deviceButtons).forEach(([name, btn])=>{
-    if(!btn) return;
-    btn.addEventListener('click',()=>handleButton(name));
-  });
-
-  // Revisar encuestas cada 30 segundos
-  setInterval(()=>{
-    checkSurveys();
-    nextSurvey();
-  }, 30000);
-
-  // Inicial
-  window.addEventListener('load',()=>{
-    checkSurveys();
-    nextSurvey();
-  });
-
-})();
+  // Revisar encuestas al cargar y cada minuto
+  checkSurveys();
+  setInterval(checkSurveys, 60000);
+});
