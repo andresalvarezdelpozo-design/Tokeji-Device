@@ -12,14 +12,14 @@
     {
       question: "¿Qué prefieres para el recreo?",
       options: ["Chocolate", "Chicles", "Fruta", "Agua"],
-      hour: 12, // 12 PM
-      minute: 0
+      hour: 14, // 2 PM
+      minute: 30
     },
     {
       question: "¿Quién ganará la partida de hoy?",
       options: ["Equipo rojo", "Equipo azul"],
       hour: 15, // 3 PM
-      minute: 30
+      minute: 0
     }
   ];
 
