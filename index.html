@@ -600,6 +600,7 @@
     }
 
     .home-popup-stack {
+      display: none;
       position: absolute;
       top: 14px;
       left: 10px;
@@ -1293,6 +1294,34 @@
     .selector-item.focused {
       transform: scale(1.08);
       box-shadow: 0 0 0 4px rgba(255,107,157,0.5), 0 4px 0 rgba(0,0,0,0.2);
+    }
+
+
+    #color-selector .selector-grid,
+    #status-selector .selector-grid,
+    #theme-selector .selector-grid {
+      max-width: 200px;
+      gap: 10px;
+      padding: 6px;
+      max-height: 240px;
+    }
+
+    #color-selector .selector-item,
+    #status-selector .selector-item,
+    #theme-selector .selector-item {
+      width: 68px;
+      height: 68px;
+      border-width: 3px;
+      border-radius: 12px;
+      padding: 6px;
+      box-shadow: 0 2px 0 rgba(0,0,0,0.2);
+    }
+
+    #color-selector .selector-item::after,
+    #status-selector .selector-item::after,
+    #theme-selector .selector-item::after {
+      bottom: -16px;
+      font-size: 9px;
     }
 
     #page-curso-secreto .selector-grid {
@@ -2478,7 +2507,7 @@
           </div>
 
           <div class="page" id="page-home">
-            <div class="home-popup-stack" id="home-popup-stack"></div>
+            
             <div class="home-main">
               <div class="home-chaos-title">🔥 Recreo en directo</div>
               <div class="home-chaos-sub" id="home-chaos-sub">Tu curso se está moviendo fuerte</div>
@@ -3050,8 +3079,6 @@ const app = {
       nuevos: 0,
       headline: ''
     },
-    homePopups: [],
-    popupFocusIndex: 0,
     encuestaActiva: null,
     encuestaIndex: 0,
     audioInitialized: false,
@@ -3154,8 +3181,6 @@ const app = {
     setTimeout(() => {
       this.checkTokes();
       this.checkRespuestas();
-      this.cargarMurmulloReal();
-      this.cargarEncuestaActiva();
     }, 1000);
     
     setInterval(() => {
@@ -3163,10 +3188,6 @@ const app = {
       this.checkRespuestas();
     }, 5000);
 
-    setInterval(() => {
-      this.cargarMurmulloReal();
-      this.cargarEncuestaActiva();
-    }, 15000);
     
     setTimeout(() => this.reintentarRespuestasPendientes(), 10000);
     
@@ -3471,7 +3492,6 @@ const app = {
         break;
       case 'home':
         this.updateHome();
-        this.updateHomePopups();
         if (this.state.colaMensajes.length > 0 && !this.state.procesandoCola) {
           this.procesarColaMensajes();
         }
@@ -3964,16 +3984,6 @@ const app = {
       this.vibrar();
       return;
     }
-
-
-    if (this.state.currentPage === 'encuesta') {
-      if (this.state.encuestaActiva && this.state.encuestaIndex < (this.state.encuestaActiva.opciones || []).length - 1) {
-        this.state.encuestaIndex++;
-        this.renderEncuesta();
-      }
-      return;
-    }
-
 
     if (this.state.currentPage === 'encuesta') {
       if (this.state.encuestaIndex > 0) {
@@ -4850,36 +4860,17 @@ const app = {
         rachas: data.stats.rachas || this.state.murmulloStats.rachas
       };
       if (this.state.currentPage === 'murmullo') this.renderMurmullo();
-      this.pushHomePopup({
-        tipo: 'murmullo',
-        icono: '🔥',
-        texto: data.stats.headline || 'Tu instituto se está moviendo fuerte'
-      });
-      this.updateHomePopups();
     } catch (e) {
       this.debug('Error murmullo real: ' + e.message);
     }
   },
 
   pushHomePopup(popup) {
-    const dup = this.state.homePopups.find(p => p.texto === popup.texto && p.tipo === popup.tipo);
-    if (dup) return;
-    this.state.homePopups.unshift({ ...popup, id: `p_${Date.now()}_${Math.random()}` });
-    this.state.homePopups = this.state.homePopups.slice(0, 4);
-    if (this.state.popupFocusIndex >= this.state.homePopups.length) {
-      this.state.popupFocusIndex = Math.max(0, this.state.homePopups.length - 1);
-    }
+    // Fase 0: popups de Home desactivados temporalmente
   },
 
   updateHomePopups() {
-    const stack = document.getElementById('home-popup-stack');
-    if (!stack) return;
-    stack.innerHTML = this.state.homePopups.map((p, i) => `
-      <div class="home-popup ${i === this.state.popupFocusIndex ? 'focused' : ''}" data-index="${i}">
-        <span style="font-size:16px;">${p.icono || '✨'}</span>
-        <span>${p.texto}</span>
-      </div>
-    `).join('');
+    // Fase 0: popups de Home desactivados temporalmente
   },
 
   async cargarEncuestaActiva() {
@@ -4888,12 +4879,6 @@ const app = {
       const data = await response.json();
       if (!data.ok || !data.encuesta) return;
       this.state.encuestaActiva = data.encuesta;
-      this.pushHomePopup({
-        tipo: 'encuesta',
-        icono: '📊',
-        texto: `Flash Poll: ${data.encuesta.pregunta}`
-      });
-      if (this.state.currentPage === 'home') this.updateHomePopups();
       if (this.state.currentPage === 'encuesta') this.renderEncuesta();
     } catch (e) {
       this.debug('Error encuesta: ' + e.message);
