@@ -23,7 +23,8 @@ def cargar_datos():
             "combates_finalizados": [],
             "perfiles": {},
             "encuestas": [],
-            "votos_encuesta": {}
+            "votos_encuesta": {},
+            "eventos": []
         }
 
 def guardar_datos():
@@ -36,7 +37,8 @@ def guardar_datos():
             "combates_finalizados": combates_finalizados,
             "perfiles": perfiles,
             "encuestas": encuestas,
-            "votos_encuesta": votos_encuesta
+            "votos_encuesta": votos_encuesta,
+            "eventos": eventos
         }, f)
 
 datos = cargar_datos()
@@ -48,6 +50,77 @@ combates_finalizados = datos.get("combates_finalizados", [])
 perfiles = datos.get("perfiles", {})
 encuestas = datos.get("encuestas", [])
 votos_encuesta = datos.get("votos_encuesta", {})
+eventos = datos.get("eventos", [])
+
+
+def inicio_dia_ts(ts=None):
+    ahora = int(ts or time.time())
+    return ahora - (ahora % 86400)
+
+
+def log_event(event_type, **payload):
+    evento = {"type": event_type, "ts": int(time.time())}
+    evento.update(payload)
+    eventos.append(evento)
+    limite = int(time.time()) - (14 * 86400)
+    eventos[:] = [e for e in eventos if e.get("ts", 0) >= limite]
+
+
+def eventos_hoy(filtro=None):
+    ini = inicio_dia_ts()
+    out = [e for e in eventos if e.get("ts", 0) >= ini]
+    if filtro:
+        out = [e for e in out if filtro(e)]
+    return out
+
+
+def etiqueta_banda(valor):
+    if valor <= 0:
+        return ""
+    if valor <= 2:
+        return "alguien"
+    if valor <= 6:
+        return "varios"
+    if valor <= 15:
+        return "muchos"
+    return "demasiados"
+
+
+def resumen_home_user(user_id):
+    ini = inicio_dia_ts()
+    ev_hoy = [e for e in eventos if e.get("ts", 0) >= ini]
+    recibidas = [e for e in ev_hoy if e.get("to") == user_id and e.get("type") in ["survey_vote", "anonymous_signal", "profile_view"]]
+    fuertes = [e for e in recibidas if e.get("type") == "anonymous_signal"]
+    encuesta = [e for e in ev_hoy if e.get("type") == "survey_vote" and e.get("from") == user_id]
+
+    tokes_enviados = len([e for e in ev_hoy if e.get("type") == "toke_sent" and e.get("from") == user_id and e.get("channel") == "friends"])
+    anon_enviados = len([e for e in ev_hoy if e.get("type") == "anonymous_signal" and e.get("from") == user_id])
+
+    flags = {
+        "survey_pending": len(encuesta) == 0,
+        "has_signals_today": len(recibidas) > 0,
+        "has_strong_signal_today": len(fuertes) > 0,
+        "friends_tokes_left": max(0, 3 - tokes_enviados),
+        "anon_left": max(0, 2 - anon_enviados)
+    }
+
+    if flags["survey_pending"]:
+        frase = "📊 Encuesta pendiente de hoy"
+    elif flags["has_strong_signal_today"]:
+        frase = "🤍 Has recibido una señal"
+    elif flags["has_signals_today"]:
+        frase = "👀 Hoy has sonado"
+    elif flags["anon_left"] > 0:
+        frase = f"🤍 Te quedan {flags['anon_left']} anónimos hoy"
+    else:
+        frase = "🔥 Tu curso está tranquilo por ahora"
+
+    return {
+        "frase": frase,
+        "flags": flags,
+        "signals_received_today": len(recibidas),
+        "strong_signals_today": len(fuertes)
+    }
 
 
 def generar_encuesta_demo():
@@ -149,6 +222,11 @@ def toque():
             "instituto_destino": instituto_destino
         })
         
+        if tipo == "anonimo" or tipo == "crush":
+            log_event("anonymous_signal", from_user=de, to=para, instituto=instituto_destino or "", signal_type=tipo)
+        else:
+            log_event("toke_sent", from_user=de, to=para, toke_id=num, channel="friends")
+
         guardar_datos()
         
         toques_restantes = 30 - (contador + 1)
@@ -206,6 +284,7 @@ def enviar_respuesta():
             "hora": int(time.time())
         })
         
+        log_event("toke_response", from_user=de, to=para, response=respuesta)
         guardar_datos()
         
         return jsonify(ok=True, mensaje="Respuesta enviada")
@@ -541,6 +620,7 @@ def votar_encuesta():
             votos_encuesta[encuesta_id] = {}
 
         votos_encuesta[encuesta_id][user_id] = opcion
+        log_event("survey_vote", from_user=user_id, to=f"option_{opcion}", encuesta_id=encuesta_id)
         guardar_datos()
 
         votos = votos_encuesta.get(encuesta_id, {})
@@ -552,6 +632,43 @@ def votar_encuesta():
         return jsonify(ok=True, resultados=conteo, total_votos=len(votos))
     except Exception as e:
         return jsonify(ok=False, error=str(e)), 500
+
+
+
+@app.route("/home-state", methods=["GET"])
+def home_state():
+    try:
+        user_id = request.args.get("userId", "").strip()
+        if not user_id:
+            return jsonify(ok=False, error="Falta userId"), 400
+
+        perfil = perfiles.get(user_id, {})
+        instituto = perfil.get("instituto", "")
+
+        ev_hoy = eventos_hoy(lambda e: (not instituto) or e.get("instituto", "") in ["", instituto])
+        c_survey = len([e for e in ev_hoy if e.get("type") == "survey_vote"])
+        c_anon = len([e for e in ev_hoy if e.get("type") == "anonymous_signal"])
+        c_views = len([e for e in ev_hoy if e.get("type") == "profile_view"])
+        c_tokes = len([e for e in ev_hoy if e.get("type") == "toke_sent"])
+        c_resp = len([e for e in ev_hoy if e.get("type") == "toke_response"])
+
+        murmullo = []
+        if c_survey > 0:
+            murmullo.append(f"Hoy {etiqueta_banda(c_survey)} han dejado señal en encuesta")
+        if c_anon > 0:
+            murmullo.append(f"Hoy {etiqueta_banda(c_anon)} han enviado anónimos")
+        if c_views > 0:
+            murmullo.append(f"Hoy hubo {etiqueta_banda(c_views)} miradas en ToDox")
+        if c_tokes > 0:
+            murmullo.append(f"Hoy {etiqueta_banda(c_tokes)} han mandado tokes")
+        if c_resp > 0:
+            murmullo.append(f"Hoy {etiqueta_banda(c_resp)} han respondido tokes")
+
+        personal = resumen_home_user(user_id)
+        return jsonify(ok=True, home=personal, murmullo=murmullo[:5])
+    except Exception as e:
+        return jsonify(ok=False, error=str(e)), 500
+
 
 @app.route("/health", methods=["GET"])
 def health_check():
