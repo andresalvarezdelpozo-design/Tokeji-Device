@@ -91,17 +91,19 @@ def resumen_home_user(user_id):
     ev_hoy = [e for e in eventos if e.get("ts", 0) >= ini]
     recibidas = [e for e in ev_hoy if e.get("to") == user_id and e.get("type") in ["survey_vote", "anonymous_signal", "profile_view"]]
     fuertes = [e for e in recibidas if e.get("type") == "anonymous_signal"]
-    encuesta = [e for e in ev_hoy if e.get("type") == "survey_vote" and e.get("from") == user_id]
+    encuesta = [e for e in ev_hoy if e.get("type") == "survey_vote" and e.get("from_user") == user_id]
 
-    tokes_enviados = len([e for e in ev_hoy if e.get("type") == "toke_sent" and e.get("from") == user_id and e.get("channel") == "friends"])
-    anon_enviados = len([e for e in ev_hoy if e.get("type") == "anonymous_signal" and e.get("from") == user_id])
+    tokes_enviados = len([e for e in ev_hoy if e.get("type") == "toke_sent" and e.get("from_user") == user_id and e.get("channel") == "friends"])
+    anon_enviados = len([e for e in ev_hoy if e.get("type") == "anonymous_signal" and e.get("from_user") == user_id and e.get("signal_type") == "anonimo"])
+    crush_enviados = len([e for e in ev_hoy if e.get("type") == "anonymous_signal" and e.get("from_user") == user_id and e.get("signal_type") == "crush"])
 
     flags = {
         "survey_pending": len(encuesta) == 0,
         "has_signals_today": len(recibidas) > 0,
         "has_strong_signal_today": len(fuertes) > 0,
         "friends_tokes_left": max(0, 3 - tokes_enviados),
-        "anon_left": max(0, 2 - anon_enviados)
+        "anon_left": max(0, 1 - anon_enviados),
+        "crush_left": max(0, 1 - crush_enviados)
     }
 
     if flags["survey_pending"]:
@@ -155,6 +157,18 @@ def asegurar_encuesta_activa(instituto=""):
     guardar_datos()
     return demo
 
+
+def cuotas_toke_hoy(user_id):
+    ev_hoy = eventos_hoy(lambda e: e.get("from_user") == user_id)
+    amigos = len([e for e in ev_hoy if e.get("type") == "toke_sent" and e.get("channel") == "friends"])
+    anon = len([e for e in ev_hoy if e.get("type") == "anonymous_signal" and e.get("signal_type") == "anonimo"])
+    crush = len([e for e in ev_hoy if e.get("type") == "anonymous_signal" and e.get("signal_type") == "crush"])
+    return {
+        "friends_left": max(0, 3 - amigos),
+        "anon_left": max(0, 1 - anon),
+        "crush_left": max(0, 1 - crush)
+    }
+
 EMOJIS_DATABASE = [
     {"id": i, "rarity": r} for i, r in enumerate([
         "comun", "comun", "comun", "raro", "epico", "comun", "raro", "comun", "raro", "comun",
@@ -202,7 +216,16 @@ def toque():
 
         clave_usuario = f"rl:{de}"
         contador = toques_por_usuario.get(clave_usuario, 0)
-        
+
+        cuotas = cuotas_toke_hoy(de)
+        es_secreto = tipo in ["anonimo", "crush"]
+        if not es_secreto and cuotas["friends_left"] <= 0:
+            return jsonify(ok=False, error="Límite diario de 3 tokes a amigos alcanzado", toques_restantes=0)
+        if tipo == "anonimo" and cuotas["anon_left"] <= 0:
+            return jsonify(ok=False, error="Ya usaste tu anónimo de hoy", toques_restantes=0)
+        if tipo == "crush" and cuotas["crush_left"] <= 0:
+            return jsonify(ok=False, error="Ya usaste tu crush anónimo de hoy", toques_restantes=0)
+
         if contador >= 30:
             return jsonify(ok=False, error="Límite de 30 tokes alcanzado", toques_restantes=0)
 
@@ -229,7 +252,8 @@ def toque():
 
         guardar_datos()
         
-        toques_restantes = 30 - (contador + 1)
+        cuotas_post = cuotas_toke_hoy(de)
+        toques_restantes = cuotas_post["friends_left"]
         return jsonify(ok=True, mensaje="Toke enviado", toques_restantes=toques_restantes)
 
     except Exception as e:
