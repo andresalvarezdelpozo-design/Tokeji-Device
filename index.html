@@ -2776,6 +2776,9 @@ const app = {
     const mur = document.getElementById('view-murmullos');
     if (mur) mur.addEventListener('show', () => this.cargarMurmullos());
 
+    this.syncPerfilBackend();
+    this.syncContactosDesdeBackend();
+
     this.showPage('splash', false);
   },
 
@@ -3136,6 +3139,7 @@ const app = {
     this.showMsg(c ? `🎨 ${c.name}` : 'Color cambiado');
     
     this.generarQR();
+    this.syncPerfilBackend();
     this.showPage('home', false);
   },
 
@@ -3366,12 +3370,14 @@ const app = {
           return;
         }
         localStorage.setItem('miNombre', nom);
+        this.syncPerfilBackend();
         this.showPage('avatar', false);
         break;
       case 'avatar':
         const avatarSel = AVATARES[focus.index];
         this.state.settings.avatar = avatarSel;
         localStorage.setItem('avatar', avatarSel);
+        this.syncPerfilBackend();
         this.showPage('color', false);
         break;
       case 'color':
@@ -4022,6 +4028,67 @@ const app = {
     `).join('');
   },
 
+  async syncPerfilBackend() {
+    try {
+      const nombre = localStorage.getItem('miNombre') || 'Amigo';
+      const payload = {
+        userId: this.miID,
+        nombre,
+        avatar: this.state.settings.avatar,
+        provincia: localStorage.getItem('provincia') || undefined,
+        instituto: localStorage.getItem('instituto') || undefined,
+        curso: localStorage.getItem('curso') || undefined
+      };
+      await fetch(`${BACK}/perfil`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+    } catch (e) {
+      this.debug('No se pudo sincronizar perfil: ' + e.message);
+    }
+  },
+
+  async syncContactosDesdeBackend() {
+    try {
+      const res = await fetch(`${BACK}/amigos?userId=${this.miID}`);
+      const data = await res.json();
+      const amigos = data.amigos || [];
+      let actualizado = false;
+      amigos.forEach(amigo => {
+        if (amigo?.id && amigo?.nombre) {
+          if (this.contactos[amigo.id] !== amigo.nombre) {
+            this.contactos[amigo.id] = amigo.nombre;
+            actualizado = true;
+          }
+          if (amigo.avatar) localStorage.setItem('avatar_' + amigo.id, amigo.avatar);
+        }
+      });
+      if (actualizado) {
+        localStorage.setItem('cts', JSON.stringify(this.contactos));
+      }
+    } catch (e) {
+      this.debug('No se pudieron sincronizar amigos: ' + e.message);
+    }
+  },
+
+  async persistirAmigoBackend(amigoId, amigoNombre, amigoAvatar) {
+    try {
+      await fetch(`${BACK}/perfil`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId: amigoId, nombre: amigoNombre, avatar: amigoAvatar || '👤' })
+      });
+      await fetch(`${BACK}/amigos/agregar`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId: this.miID, amigoId })
+      });
+    } catch (e) {
+      this.debug('Error persistiendo amigo backend: ' + e.message);
+    }
+  },
+
   renderVariantes() {
     const container = document.getElementById('variantes-list');
     const title = document.getElementById('variantes-title');
@@ -4076,10 +4143,19 @@ const app = {
     container.innerHTML = html;
   },
 
-  eliminarAmigo(id) {
+  async eliminarAmigo(id) {
     if (confirm('¿Eliminar este amigo?')) {
       delete this.contactos[id];
       localStorage.setItem('cts', JSON.stringify(this.contactos));
+      try {
+        await fetch(`${BACK}/amigos/eliminar`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ userId: this.miID, amigoId: id })
+        });
+      } catch (e) {
+        this.debug('No se pudo eliminar amigo en backend: ' + e.message);
+      }
       this.renderEnviarList();
       this.renderContacts();
       this.showMsg('✅ Amigo eliminado');
@@ -4145,6 +4221,14 @@ const app = {
       const data = await res.json();
       const amigos = data.amigos || [];
       this.state.amigosData = amigos;
+
+      amigos.forEach(amigo => {
+        if (amigo?.id && amigo?.nombre) {
+          this.contactos[amigo.id] = amigo.nombre;
+          if (amigo.avatar) localStorage.setItem('avatar_' + amigo.id, amigo.avatar);
+        }
+      });
+      localStorage.setItem('cts', JSON.stringify(this.contactos));
 
       const contador = document.getElementById('amigos-contador');
       if (contador) contador.textContent = `${amigos.length}/50`;
@@ -4615,6 +4699,7 @@ const app = {
           localStorage.setItem('avatar_' + id, avatar);
         }
         localStorage.setItem('cts', JSON.stringify(this.contactos));
+        this.persistirAmigoBackend(id, nombre, avatar);
         this.showMsg(`✅ ${nombre} agregado`);
         
         if (this.state.currentPage === 'enviar') {

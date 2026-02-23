@@ -534,6 +534,32 @@ def obtener_perfil():
     return jsonify(ok=True, **perfil)
 
 
+@app.route("/perfil", methods=["POST"])
+def guardar_perfil():
+    try:
+        data = request.get_json() or {}
+        user_id = data.get("userId")
+        if not user_id:
+            return jsonify(ok=False, error="Falta userId"), 400
+
+        perfil_actual = perfiles.get(user_id, {})
+        perfiles[user_id] = {
+            **perfil_actual,
+            "nombre": data.get("nombre") or perfil_actual.get("nombre") or "Alumno",
+            "avatar": data.get("avatar") or perfil_actual.get("avatar") or "👤",
+            "provincia": data.get("provincia") or perfil_actual.get("provincia"),
+            "instituto": data.get("instituto") or perfil_actual.get("instituto"),
+            "curso": data.get("curso") or perfil_actual.get("curso"),
+            "fecha_registro": perfil_actual.get("fecha_registro") or int(time.time()),
+            "todox_visitados": perfil_actual.get("todox_visitados", [])
+        }
+
+        guardar_datos()
+        return jsonify(ok=True, perfil=perfiles[user_id])
+    except Exception as e:
+        return jsonify(ok=False, error=str(e)), 500
+
+
 @app.route("/amigos", methods=["GET"])
 def obtener_amigos():
     user_id = request.args.get("userId")
@@ -578,6 +604,57 @@ def obtener_amigos():
         })
 
     return jsonify(ok=True, amigos=amigos_completo)
+
+
+@app.route("/amigos/agregar", methods=["POST"])
+def agregar_amigo():
+    try:
+        data = request.get_json() or {}
+        user_id = data.get("userId")
+        amigo_id = data.get("amigoId")
+
+        if not user_id or not amigo_id:
+            return jsonify(ok=False, error="Faltan userId o amigoId"), 400
+        if user_id == amigo_id:
+            return jsonify(ok=False, error="No puedes agregarte a ti mismo"), 400
+
+        if user_id not in amigos:
+            amigos[user_id] = []
+        if amigo_id not in amigos[user_id]:
+            amigos[user_id].append(amigo_id)
+
+        if amigo_id not in amigos:
+            amigos[amigo_id] = []
+        if user_id not in amigos[amigo_id]:
+            amigos[amigo_id].append(user_id)
+
+        guardar_datos()
+        return jsonify(ok=True, amigos=amigos.get(user_id, []))
+    except Exception as e:
+        return jsonify(ok=False, error=str(e)), 500
+
+
+@app.route("/amigos/eliminar", methods=["POST"])
+def eliminar_amigo_backend():
+    try:
+        data = request.get_json() or {}
+        user_id = data.get("userId")
+        amigo_id = data.get("amigoId")
+
+        if not user_id or not amigo_id:
+            return jsonify(ok=False, error="Faltan userId o amigoId"), 400
+
+        if user_id in amigos:
+            amigos[user_id] = [a for a in amigos[user_id] if a != amigo_id]
+        if amigo_id in amigos:
+            amigos[amigo_id] = [a for a in amigos[amigo_id] if a != user_id]
+
+        guardar_datos()
+        return jsonify(ok=True)
+    except Exception as e:
+        return jsonify(ok=False, error=str(e)), 500
+
+
 @app.route("/health", methods=["GET"])
 def health_check():
     return jsonify(ok=True, status="running", version="1.1.0")
