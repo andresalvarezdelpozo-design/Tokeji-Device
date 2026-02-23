@@ -2609,6 +2609,7 @@
             <div class="murmullo-floating f1">💜</div>
             <div class="murmullo-floating f2">🔥</div>
             <div class="murmullo-floating f3">✨</div>
+            <div id="murmullo-frases" style="margin-top:8px; font-size:11px; color:#2D3748; background:rgba(255,255,255,.75); border-radius:10px; padding:8px;"></div>
           </div>
 
           <div class="page" id="page-tienda">
@@ -3079,6 +3080,8 @@ const app = {
       nuevos: 0,
       headline: ''
     },
+    homePriorityText: 'Tu curso está on fire',
+    murmulloFrases: [],
     encuestaActiva: null,
     encuestaIndex: 0,
     audioInitialized: false,
@@ -3181,12 +3184,17 @@ const app = {
     setTimeout(() => {
       this.checkTokes();
       this.checkRespuestas();
+      this.cargarHomeState();
     }, 1000);
     
     setInterval(() => {
       this.checkTokes();
       this.checkRespuestas();
     }, 5000);
+
+    setInterval(() => {
+      this.cargarHomeState();
+    }, 10000);
 
     
     setTimeout(() => this.reintentarRespuestasPendientes(), 10000);
@@ -4847,6 +4855,37 @@ const app = {
     set('murmullo-nuevos', this.state.murmulloStats.nuevos);
     const hot = document.getElementById('murmullo-hotline');
     if (hot) hot.textContent = this.state.murmulloStats.headline || '';
+    const frasesEl = document.getElementById('murmullo-frases');
+    if (frasesEl) {
+      const frases = this.state.murmulloFrases || [];
+      frasesEl.innerHTML = frases.length ? frases.map(f => `• ${f}`).join('<br>') : '• Hoy el instituto está tranquilo';
+    }
+  },
+
+
+  async cargarHomeState() {
+    try {
+      const response = await fetch(`${BACK}/home-state?userId=${encodeURIComponent(this.miID)}`);
+      const data = await response.json();
+      if (!data.ok) return;
+
+      this.state.homePriorityText = data.home?.frase || 'Tu curso está on fire';
+      this.state.murmulloFrases = data.murmullo || [];
+
+      const flags = data.home?.flags || {};
+      this.state.murmulloStats = {
+        ...this.state.murmulloStats,
+        secretos: data.home?.signals_received_today || this.state.murmulloStats.secretos,
+        crushes: data.home?.strong_signals_today || this.state.murmulloStats.crushes,
+        headline: this.state.homePriorityText,
+        conectados: this.state.murmulloStats.conectados || 0
+      };
+
+      if (this.state.currentPage === 'home') this.updateHome();
+      if (this.state.currentPage === 'murmullo') this.renderMurmullo();
+    } catch (e) {
+      this.debug('Error home-state: ' + e.message);
+    }
   },
 
   async cargarMurmulloReal() {
@@ -5161,7 +5200,7 @@ const app = {
     const chaosSub = document.getElementById('home-chaos-sub');
     if (liveCrush) liveCrush.textContent = `💘 ${this.state.murmulloStats.crushes || 0} crush hoy`;
     if (liveOnline) liveOnline.textContent = `⚡ ${this.state.murmulloStats.conectados || 0} online`;
-    if (chaosSub) chaosSub.textContent = this.state.murmulloStats.headline || 'Tu curso está on fire';
+    if (chaosSub) chaosSub.textContent = this.state.homePriorityText || this.state.murmulloStats.headline || 'Tu curso está on fire';
 
     this.updateColaBadge();
   },
