@@ -1,203 +1,187 @@
-/* ======================================================
-   TOKEJI – CHAOS POPUPS MVP
-   Solo JS | No rompe HTML | Botones del dispositivo
-   ====================================================== */
+// tokeji-chaos-popups.js
+(() => {
+  const screen = document.querySelector('.screen');
+  const dpad = document.querySelector('.dpad');
+  const okBtn = document.querySelector('.ok-btn');
 
-(function () {
-  console.log("[Tokeji] Chaos system loaded");
+  let currentSurvey = null;
+  let selectedOption = 0;
 
-  /* ---------- CONFIG ---------- */
-  const TEST_MODE = true; // 🔥 ponlo en false en producción
-  const STORAGE_KEY = "tokeji_poll_voted_";
+  // Lista de encuestas programadas
+  const surveysSchedule = [
+    {
+      question: "¿Qué prefieres para el recreo?",
+      options: ["Chocolate", "Chicles", "Fruta", "Agua"],
+      hour: 12, // 12 PM
+      minute: 0
+    },
+    {
+      question: "¿Quién ganará la partida de hoy?",
+      options: ["Equipo rojo", "Equipo azul"],
+      hour: 15, // 3 PM
+      minute: 30
+    }
+  ];
 
-  const POLL = {
-    id: "pasillo_001",
-    question: "👀 Ahora mismo en tu clase hay...",
-    options: [
-      "Alguien pensando en su crush",
-      "Dos personas mirándose",
-      "Un secreto a punto de salir",
-    ],
-  };
+  function createSurvey(survey) {
+    // Pop-up container dentro de la pantalla
+    const popup = document.createElement('div');
+    popup.classList.add('encuesta-screen', 'active');
+    popup.style.zIndex = 500;
 
-  /* ---------- STYLE INJECTION ---------- */
-  const style = document.createElement("style");
-  style.innerHTML = `
-  .tokeji-overlay {
-    position: fixed;
-    inset: 0;
-    background: radial-gradient(circle at top, #1b1b2f, #000);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 9999;
-    animation: fadeIn 0.4s ease;
+    // Header
+    const header = document.createElement('div');
+    header.classList.add('encuesta-header');
+    const badge = document.createElement('div');
+    badge.classList.add('encuesta-badge');
+    badge.textContent = "ENCUESTA CHAOS 🔥";
+    header.appendChild(badge);
+    popup.appendChild(header);
+
+    // Pregunta
+    const question = document.createElement('div');
+    question.classList.add('encuesta-pregunta');
+    question.textContent = survey.question;
+    popup.appendChild(question);
+
+    // Opciones
+    const optionsContainer = document.createElement('div');
+    optionsContainer.classList.add('opciones-grid');
+    survey.options.forEach((opt, i) => {
+      const btn = document.createElement('div');
+      btn.classList.add('opcion-btn');
+      btn.dataset.index = i;
+
+      const letra = document.createElement('div');
+      letra.classList.add('opcion-letra');
+      letra.textContent = String.fromCharCode(65 + i); // A, B, C...
+
+      const text = document.createElement('div');
+      text.classList.add('opcion-text');
+      text.textContent = opt;
+
+      btn.appendChild(letra);
+      btn.appendChild(text);
+      optionsContainer.appendChild(btn);
+    });
+
+    popup.appendChild(optionsContainer);
+
+    // Añadimos al screen
+    screen.appendChild(popup);
+
+    // Guardamos referencia
+    currentSurvey = {
+      popup,
+      optionsContainer,
+      survey,
+      selectedOption
+    };
+
+    highlightOption();
   }
 
-  .tokeji-popup {
-    width: 90%;
-    max-width: 420px;
-    background: linear-gradient(135deg, #ff0080, #7928ca);
-    border-radius: 20px;
-    padding: 24px;
-    color: white;
-    box-shadow: 0 0 40px rgba(255,0,128,0.6);
-    animation: float 3s ease-in-out infinite;
+  function highlightOption() {
+    if (!currentSurvey) return;
+    const buttons = currentSurvey.optionsContainer.querySelectorAll('.opcion-btn');
+    buttons.forEach((btn, i) => {
+      if (i === currentSurvey.selectedOption) {
+        btn.classList.add('focused');
+      } else {
+        btn.classList.remove('focused');
+      }
+    });
   }
 
-  .tokeji-question {
-    font-size: 1.2rem;
-    text-align: center;
-    margin-bottom: 20px;
-  }
-
-  .tokeji-option {
-    padding: 14px;
-    margin: 10px 0;
-    border-radius: 14px;
-    background: rgba(0,0,0,0.25);
-    transition: all 0.2s;
-  }
-
-  .tokeji-option.active {
-    background: rgba(255,255,255,0.25);
-    transform: scale(1.05);
-    box-shadow: 0 0 15px #fff;
-  }
-
-  .tokeji-results {
-    margin-top: 10px;
-  }
-
-  .tokeji-bar {
-    height: 12px;
-    background: rgba(255,255,255,0.2);
-    border-radius: 10px;
-    overflow: hidden;
-    margin-top: 6px;
-  }
-
-  .tokeji-bar-fill {
-    height: 100%;
-    background: #00ffd5;
-    width: 0%;
-    animation: grow 1s forwards;
-  }
-
-  @keyframes fadeIn {
-    from { opacity: 0 }
-    to { opacity: 1 }
-  }
-
-  @keyframes float {
-    0%,100% { transform: translateY(0) }
-    50% { transform: translateY(-8px) }
-  }
-
-  @keyframes grow {
-    to { width: var(--w) }
-  }
-  `;
-  document.head.appendChild(style);
-
-  /* ---------- UTILS ---------- */
-  function alreadyVotedToday() {
-    const today = new Date().toDateString();
-    return localStorage.getItem(STORAGE_KEY + POLL.id) === today;
-  }
-
-  function markVoted() {
-    const today = new Date().toDateString();
-    localStorage.setItem(STORAGE_KEY + POLL.id, today);
-  }
-
-  /* ---------- POPUP ---------- */
-  let selectedIndex = 0;
-  let overlay, popup;
-
-  function showPoll() {
-    if (!TEST_MODE && alreadyVotedToday()) return;
-
-    overlay = document.createElement("div");
-    overlay.className = "tokeji-overlay";
-
-    popup = document.createElement("div");
-    popup.className = "tokeji-popup";
-
-    popup.innerHTML = `
-      <div class="tokeji-question">${POLL.question}</div>
-      ${POLL.options
-        .map(
-          (opt, i) =>
-            `<div class="tokeji-option ${
-              i === 0 ? "active" : ""
-            }">${opt}</div>`
-        )
-        .join("")}
-    `;
-
-    overlay.appendChild(popup);
-    document.body.appendChild(overlay);
-
-    document.addEventListener("keydown", handleKeys);
-  }
-
-  /* ---------- RESULTS ---------- */
+  // Función para mostrar resultados
   function showResults() {
-    popup.innerHTML = `
-      <div class="tokeji-question">🔥 Lo que se siente en el pasillo…</div>
-      <div class="tokeji-results">
-        ${POLL.options
-          .map(
-            (opt) => `
-          <div>${opt}
-            <div class="tokeji-bar">
-              <div class="tokeji-bar-fill" style="--w:${
-                30 + Math.random() * 60
-              }%"></div>
-            </div>
-          </div>
-        `
-          )
-          .join("")}
-      </div>
-    `;
+    if (!currentSurvey) return;
+    const { popup, survey, selectedOption } = currentSurvey;
+    const optionsBtns = popup.querySelectorAll('.opcion-btn');
 
-    markVoted();
+    optionsBtns.forEach((btn, i) => {
+      btn.classList.remove('focused');
+      btn.style.pointerEvents = 'none';
+      if (i === selectedOption) {
+        btn.style.background = 'linear-gradient(90deg, #00ff00, #00cc00)';
+        btn.style.color = '#000';
+        btn.style.boxShadow = '0 0 20px #00ff00';
+      } else {
+        btn.style.opacity = 0.5;
+      }
+    });
 
+    const resultText = document.createElement('div');
+    resultText.style.textAlign = 'center';
+    resultText.style.marginTop = '20px';
+    resultText.style.color = '#fff';
+    resultText.style.fontWeight = '900';
+    resultText.style.fontSize = '16px';
+    resultText.textContent = `¡Elegiste: ${survey.options[selectedOption]}!`;
+    popup.appendChild(resultText);
+
+    // Cierra encuesta después de 5 segundos
     setTimeout(() => {
-      overlay.remove();
-      document.removeEventListener("keydown", handleKeys);
-    }, 7000);
+      popup.remove();
+      currentSurvey = null;
+      selectedOption = 0;
+    }, 5000);
   }
 
-  /* ---------- CONTROLS ---------- */
-  function handleKeys(e) {
-    const options = popup.querySelectorAll(".tokeji-option");
-
-    if (e.key === "ArrowDown") {
-      options[selectedIndex].classList.remove("active");
-      selectedIndex = (selectedIndex + 1) % options.length;
-      options[selectedIndex].classList.add("active");
+  // Control del dispositivo
+  function handleDpad(direction) {
+    if (!currentSurvey) return;
+    const total = currentSurvey.survey.options.length;
+    if (direction === 'up') {
+      currentSurvey.selectedOption = (currentSurvey.selectedOption - 1 + total) % total;
+    } else if (direction === 'down') {
+      currentSurvey.selectedOption = (currentSurvey.selectedOption + 1) % total;
     }
-
-    if (e.key === "ArrowUp") {
-      options[selectedIndex].classList.remove("active");
-      selectedIndex =
-        (selectedIndex - 1 + options.length) % options.length;
-      options[selectedIndex].classList.add("active");
-    }
-
-    if (e.key === "Enter") {
-      showResults();
-    }
+    highlightOption();
   }
 
-  /* ---------- INIT ---------- */
-  if (TEST_MODE) {
-    setTimeout(showPoll, 1500);
-  } else {
-    const hour = new Date().getHours();
-    if (hour === 11 || hour === 18) showPoll();
+  function handleOk() {
+    if (!currentSurvey) return;
+    showResults();
   }
+
+  // Temporizador para encuestas programadas
+  function checkSurveys() {
+    const now = new Date();
+    surveysSchedule.forEach(s => {
+      if (
+        now.getHours() === s.hour &&
+        now.getMinutes() === s.minute &&
+        !s.shown
+      ) {
+        createSurvey(s);
+        s.shown = true; // evita mostrar varias veces
+      }
+    });
+  }
+
+  // Configura botones del dispositivo
+  if (dpad) {
+    dpad.addEventListener('up', () => handleDpad('up'));
+    dpad.addEventListener('down', () => handleDpad('down'));
+    dpad.addEventListener('left', () => handleDpad('up'));
+    dpad.addEventListener('right', () => handleDpad('down'));
+  }
+
+  if (okBtn) {
+    okBtn.addEventListener('click', handleOk);
+  }
+
+  // Intervalo para temporizador
+  setInterval(checkSurveys, 1000);
+
+  // Función pública para agregar nuevas encuestas dinámicamente
+  window.tokejiSurveys = {
+    addSurvey(surveyObj) {
+      surveysSchedule.push(surveyObj);
+    },
+    showSurveyNow(surveyObj) {
+      createSurvey(surveyObj);
+    }
+  };
 })();
