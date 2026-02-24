@@ -545,8 +545,8 @@
       flex-direction: column;
       align-items: center;
       justify-content: flex-start;
-      gap: 7px;
-      padding: 12px 10px 10px;
+      gap: 6px;
+      padding: 10px 10px 10px;
       background: linear-gradient(135deg, rgba(255,0,160,.16), rgba(255,140,0,.14), rgba(66,153,225,.12));
       border-radius: 18px;
       border: 1px solid rgba(255,255,255,.35);
@@ -556,6 +556,12 @@
       overflow: hidden;
       position: relative;
     }
+
+    .home-main.topic-survey { background: linear-gradient(135deg, rgba(128,90,213,.26), rgba(236,72,153,.2), rgba(66,153,225,.12)); }
+    .home-main.topic-murmullo { background: linear-gradient(135deg, rgba(0,136,255,.24), rgba(0,255,255,.18), rgba(99,102,241,.14)); }
+    .home-main.topic-anon,
+    .home-main.topic-crush { background: linear-gradient(135deg, rgba(236,72,153,.24), rgba(249,115,22,.18), rgba(66,153,225,.1)); }
+    .home-main.topic-friends { background: linear-gradient(135deg, rgba(249,115,22,.24), rgba(245,158,11,.18), rgba(236,72,153,.1)); }
 
     .home-chaos-bg {
       position: absolute;
@@ -580,7 +586,7 @@
     }
 
     .home-avatar {
-      font-size: 52px;
+      font-size: 48px;
       filter: drop-shadow(0 4px 8px rgba(0,0,0,0.15));
       animation: float 3s ease-in-out infinite;
       transform: translateZ(0);
@@ -608,89 +614,70 @@
     }
 
     .tokes-badge {
-      background: #ECC94B;
+      background: linear-gradient(135deg, #ECC94B, #F6E05E);
       color: #744210;
-      padding: 6px 12px;
+      padding: 8px 12px;
       border-radius: 16px;
       font-size: 11px;
-      font-weight: 800;
-      margin-top: 2px;
-      box-shadow: 0 2px 0 #B7791F;
+      font-weight: 900;
+      margin-top: auto;
+      box-shadow: 0 4px 0 #B7791F;
       max-width: 100%;
       text-align: center;
       line-height: 1.2;
+      border: 1px solid rgba(255,255,255,.6);
+      z-index: 3;
     }
 
-    .home-action-stack {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      margin-top: 2px;
-    }
-
-    .home-action-item {
-      border-radius: 12px;
-      padding: 7px 9px;
-      border: 1px solid rgba(255,255,255,.72);
-      background: rgba(255,255,255,.6);
-      font-size: 10px;
-      font-weight: 800;
-      color: #1A202C;
-      box-shadow: 0 4px 10px rgba(0,0,0,.12);
-      transition: transform .15s ease, box-shadow .15s ease;
-    }
-
-    .home-action-item.focused {
-      transform: scale(1.02);
-      box-shadow: 0 0 0 2px rgba(255,79,163,.45), 0 6px 14px rgba(0,0,0,.16);
-    }
-
-    .home-action-cta {
+    .home-chaos-hint {
       width: 100%;
       border-radius: 12px;
-      background: linear-gradient(90deg, rgba(128,90,213,.2), rgba(255,79,163,.24));
-      border: 1px solid rgba(255,255,255,.72);
+      background: rgba(0,0,0,.25);
+      border: 1px solid rgba(255,255,255,.35);
       padding: 6px 8px;
       font-size: 10px;
       font-weight: 800;
-      color: #2D3748;
+      color: #FFF;
       text-align: center;
+      text-shadow: 0 0 8px rgba(0,0,0,.35);
+      z-index: 3;
     }
 
     .home-popup-stack {
-      display: none;
-      position: absolute;
-      top: 14px;
-      left: 10px;
-      right: 10px;
+      width: 100%;
       display: flex;
       flex-direction: column;
       gap: 8px;
-      z-index: 40;
-      pointer-events: none;
+      margin-top: 4px;
+      z-index: 3;
     }
 
     .home-popup {
-      background: linear-gradient(135deg, rgba(255,0,160,.28), rgba(255,145,0,.28), rgba(66,153,225,.28));
-      border: 1px solid rgba(255,255,255,0.5);
       color: #fff;
       border-radius: 14px;
-      padding: 10px 12px;
+      padding: 9px 11px;
       font-size: 11px;
-      font-weight: 800;
-      line-height: 1.4;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+      font-weight: 900;
+      line-height: 1.35;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
       display: flex;
       gap: 8px;
       align-items: center;
+      border: 2px solid rgba(255,255,255,.3);
       animation: slideInTop .25s ease;
     }
 
+    .home-popup.survey { background: linear-gradient(135deg, rgba(128,90,213,.9), rgba(159,122,234,.9)); }
+    .home-popup.murmullo { background: linear-gradient(135deg, rgba(0,136,255,.88), rgba(0,255,255,.72)); }
+    .home-popup.anon { background: linear-gradient(135deg, rgba(236,72,153,.9), rgba(244,114,182,.9)); }
+    .home-popup.crush { background: linear-gradient(135deg, rgba(236,72,153,.95), rgba(239,68,68,.85)); }
+    .home-popup.friends { background: linear-gradient(135deg, rgba(249,115,22,.9), rgba(245,158,11,.9)); }
+    .home-popup.default { background: linear-gradient(135deg, rgba(99,102,241,.86), rgba(236,72,153,.82)); }
+
     .home-popup.focused {
-      border-color: #FF4FA3;
-      box-shadow: 0 0 0 2px rgba(255,79,163,.45), 0 8px 20px rgba(0,0,0,.25);
-      transform: scale(1.01);
+      border-color: #fff;
+      box-shadow: 0 0 0 2px rgba(255,255,255,.35), 0 10px 24px rgba(0,0,0,.35);
+      transform: scale(1.015);
     }
 
     @keyframes slideInTop {
@@ -703,18 +690,41 @@
       border: 2px solid rgba(255,255,255,0.25);
       background: rgba(255,255,255,0.08);
       color: #fff;
-      border-radius: 14px;
-      padding: 12px;
-      font-size: 12px;
-      font-weight: 800;
+      border-radius: 18px;
+      padding: 14px 12px;
+      font-size: 13px;
+      font-weight: 900;
       text-align: left;
       margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
 
     .encuesta-option.focused {
       border-color: #fff;
-      background: linear-gradient(135deg, #FF4FA3, #805AD5);
-      box-shadow: 0 0 0 2px rgba(255,255,255,.25);
+      background: linear-gradient(135deg, #ff00a0, #ff6b35);
+      box-shadow: 0 0 0 2px rgba(255,255,255,.25), 0 8px 20px rgba(255,0,160,.35);
+      transform: scale(1.02);
+    }
+
+
+    .opcion-letra {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: rgba(0,0,0,.25);
+      border: 1px solid rgba(255,255,255,.35);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      flex: 0 0 auto;
+    }
+
+    .encuesta-option.focused .opcion-letra {
+      background: #fff;
+      color: #ff00a0;
     }
 
     .murmullo-hotline {
@@ -760,9 +770,11 @@
       border: 1px solid rgba(255,255,255,.7);
       border-radius: 12px;
       font-size: 10px;
-      font-weight: 800;
-      color: #2D3748;
-      padding: 6px 5px;
+      font-weight: 900;
+      color: #fff;
+      padding: 7px 6px;
+      text-shadow: 0 0 8px rgba(0,0,0,.35);
+      background: rgba(0,0,0,.2);
       text-align: center;
       animation: pulsePill 2s ease-in-out infinite;
     }
@@ -1135,37 +1147,43 @@
     .murmullo-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 8px;
+      gap: 10px;
       width: 100%;
       position: relative;
       z-index: 2;
     }
 
     .murmullo-card {
-      background: rgba(255,255,255,0.18);
-      border: 2px solid rgba(255,255,255,0.45);
-      border-radius: 12px;
-      min-height: 62px;
+      background: rgba(0,0,0,0.28);
+      border: 2px solid rgba(255,255,255,0.34);
+      border-radius: 16px;
+      min-height: 84px;
       display: flex;
       align-items: center;
-      justify-content: center;
-      gap: 6px;
+      justify-content: flex-start;
+      gap: 8px;
       color: white;
-      font-size: 10px;
-      text-align: center;
-      box-shadow: 0 0 14px rgba(0,0,0,0.15);
+      font-size: 11px;
+      text-align: left;
+      box-shadow: 0 8px 20px rgba(0,0,0,.26);
       animation: beatSmall 1.8s ease-in-out infinite;
+      padding: 10px;
     }
 
+    .murmullo-card.secretos { border-color: rgba(236,72,153,.8); }
+    .murmullo-card.rachas { border-color: rgba(139,92,246,.8); }
+    .murmullo-card.todox { border-color: rgba(249,115,22,.8); }
+    .murmullo-card.nuevos { border-color: rgba(6,182,212,.8); }
+
     .murmullo-card .emoji {
-      font-size: 20px;
+      font-size: 24px;
       animation: floatEmoji 1.2s ease-in-out infinite;
     }
 
     .murmullo-card strong {
-      font-size: 14px;
+      font-size: 12px;
       display: block;
-      line-height: 1;
+      line-height: 1.2;
     }
 
     .murmullo-floating {
@@ -1179,6 +1197,28 @@
     .murmullo-floating.f1 { left: 6px; top: 80px; }
     .murmullo-floating.f2 { right: 8px; top: 112px; animation-delay: .4s; }
     .murmullo-floating.f3 { right: 18px; top: 168px; animation-delay: .8s; }
+
+
+    .murmullo-feed {
+      margin-top: 10px;
+      background: rgba(0,0,0,.26);
+      border: 2px solid rgba(255,255,255,.2);
+      border-radius: 14px;
+      padding: 10px;
+      color: #fff;
+      font-size: 11px;
+      line-height: 1.45;
+    }
+
+    .murmullo-feed .item {
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+      padding: 5px 0;
+      border-bottom: 1px solid rgba(255,255,255,.14);
+    }
+
+    .murmullo-feed .item:last-child { border-bottom: 0; }
 
     .murmullo-personal-line {
       margin-top: 8px;
@@ -2602,8 +2642,8 @@
                 <div class="home-live-pill" id="home-live-crush">💘 Sin señales fuertes</div>
                 <div class="home-live-pill" id="home-live-live">📌 Pendientes del día</div>
               </div>
-              <div class="home-action-stack" id="home-action-stack"></div>
-              <div class="home-action-cta" id="home-action-cta">OK → Ver Murmullo · C → Menú</div>
+              <div class="home-popup-stack" id="home-popup-stack"></div>
+              <div class="home-chaos-hint" id="home-chaos-hint">OK → Abrir aviso · C → Menú</div>
               <div class="tokes-badge" id="tokes-badge">🎯 Amigos: 3/3 · 🤍 1 · 💘 1</div>
             </div>
           </div>
@@ -2681,15 +2721,17 @@
 
           <div class="page" id="page-murmullo">
             <div class="murmullo-header">
-              <div class="murmullo-title">🔮 MURMULLO</div>
+              <div class="murmullo-title">🔮 MURMULLO CHAOS</div>
               <div class="murmullo-insti" id="murmullo-insti">IES MONCADA</div>
               <div class="murmullo-hotline" id="murmullo-hotline"></div>
             </div>
             <div class="murmullo-grid">
-              <div class="murmullo-card secretos"><div class="emoji">📊</div><div><strong id="murmullo-secretos">Hoy alguien dejó señal en encuesta</strong><span> Pulso del día</span></div></div>
-              <div class="murmullo-card rachas"><div class="emoji">💜</div><div><strong id="murmullo-rachas">Hoy varios mandaron señales</strong><span> Sobres secretos</span></div></div>
-              <div class="murmullo-card todox"><div class="emoji">🔥</div><div><strong id="murmullo-todox">Hoy muchos mandaron tokes</strong><span> Ritmo de patio</span></div></div>
+              <div class="murmullo-card secretos"><div class="emoji">💜</div><div><strong id="murmullo-secretos">Hoy alguien dejó señal</strong><span>señales</span></div></div>
+              <div class="murmullo-card rachas"><div class="emoji">📊</div><div><strong id="murmullo-rachas">Encuesta en movimiento</strong><span>pulso</span></div></div>
+              <div class="murmullo-card todox"><div class="emoji">🔥</div><div><strong id="murmullo-todox">Tokes al máximo</strong><span>ritmo</span></div></div>
+              <div class="murmullo-card nuevos"><div class="emoji">👀</div><div><strong id="murmullo-nuevos">Miradas en ToDox</strong><span>ruido</span></div></div>
             </div>
+            <div class="murmullo-feed" id="murmullo-feed"></div>
             <div id="murmullo-frases" class="murmullo-personal-line"></div>
           </div>
 
@@ -4280,6 +4322,16 @@ const app = {
       return;
     }
 
+    if (this.state.currentPage === 'encuesta') {
+      const max = (this.state.encuestaActiva?.opciones || []).length - 1;
+      if (this.state.encuestaIndex < max) {
+        this.state.encuestaIndex++;
+        this.renderEncuesta();
+      }
+      this.vibrar();
+      return;
+    }
+
     if (this.state.currentPage === 'home') {
       const maxHome = (this.state.homePendingActions || []).length - 1;
       if (this.state.homeActionIndex < maxHome) {
@@ -4976,6 +5028,14 @@ const app = {
     set('murmullo-secretos', cards[0] || 'Hoy alguien dejó señal en encuesta');
     set('murmullo-rachas', cards[1] || 'Hoy varios enviaron señales');
     set('murmullo-todox', cards[2] || 'Hoy muchos mandaron tokes');
+    set('murmullo-nuevos', cards[3] || 'Hoy hubo miradas en ToDox');
+
+    const feed = document.getElementById('murmullo-feed');
+    if (feed) {
+      const frases = this.state.murmulloFrases || [];
+      const items = frases.slice(0, 4).map((f, i) => `<div class="item"><span>${['💜','📊','🔥','👀'][i] || '✨'}</span><span>${f}</span></div>`).join('');
+      feed.innerHTML = items || '<div class="item"><span>✨</span><span>Hoy el patio está tranquilo.</span></div>';
+    }
 
     const frasesEl = document.getElementById('murmullo-frases');
     if (frasesEl) {
@@ -4986,38 +5046,49 @@ const app = {
   getHomePendingActions(flags = {}) {
     const actions = [];
     if (flags.survey_pending) {
-      actions.push({ id: 'survey', text: '📊 Encuesta pendiente de hoy', cta: 'OK → Encuesta', open: () => this.abrirEncuesta() });
+      actions.push({ id: 'survey', icon: '📊', text: 'Encuesta pendiente de hoy', cta: 'OK → Encuesta', open: () => this.abrirEncuesta() });
     }
     if (flags.has_strong_signal_today || flags.has_signals_today) {
-      actions.push({ id: 'murmullo', text: '👀 Revisa tu murmullo personal', cta: 'OK → Murmullo', open: () => this.showPage('murmullo') });
+      actions.push({ id: 'murmullo', icon: '👀', text: 'Revisa tu murmullo personal', cta: 'OK → Murmullo', open: () => this.showPage('murmullo') });
     }
     if ((flags.anon_left || 0) > 0) {
-      actions.push({ id: 'anon', text: `🤍 Enviar anónimo (${flags.anon_left} disponible)`, cta: 'OK → Señal anónima', open: () => this.abrirFlujoSenal('anonimo') });
+      actions.push({ id: 'anon', icon: '🤍', text: `Enviar anónimo (${flags.anon_left} disponible)`, cta: 'OK → Señal anónima', open: () => this.abrirFlujoSenal('anonimo') });
     }
     if ((flags.crush_left || 0) > 0) {
-      actions.push({ id: 'crush', text: `💘 Enviar crush (${flags.crush_left} disponible)`, cta: 'OK → Crush anónimo', open: () => this.abrirFlujoSenal('crush') });
+      actions.push({ id: 'crush', icon: '💘', text: `Enviar crush (${flags.crush_left} disponible)`, cta: 'OK → Crush anónimo', open: () => this.abrirFlujoSenal('crush') });
     }
     if ((flags.friends_tokes_left || 0) > 0) {
-      actions.push({ id: 'friends', text: `🎯 Tokes a amigos (${flags.friends_tokes_left}/3)`, cta: 'OK → Tokes amigos', open: () => this.showPage('tokes') });
+      actions.push({ id: 'friends', icon: '🎯', text: `Tokes a amigos (${flags.friends_tokes_left}/3)`, cta: 'OK → Tokes amigos', open: () => this.showPage('tokes') });
     }
     if (!actions.length) {
-      actions.push({ id: 'default', text: '🔮 Ver Murmullo del día', cta: 'OK → Murmullo', open: () => this.showPage('murmullo') });
+      actions.push({ id: 'default', icon: '🔮', text: 'Ver Murmullo del día', cta: 'OK → Murmullo', open: () => this.showPage('murmullo') });
     }
     return actions;
   },
 
   renderHomeActionQueue() {
-    const stack = document.getElementById('home-action-stack');
+    const stack = document.getElementById('home-popup-stack');
     if (!stack) return;
     const actions = this.state.homePendingActions || [];
     const idx = Math.max(0, Math.min(this.state.homeActionIndex || 0, actions.length - 1));
     this.state.homeActionIndex = idx;
-    stack.innerHTML = actions.slice(0, 5).map((a, i) => `
-      <div class="home-action-item ${i === idx ? 'focused' : ''}" data-index="${i}">${a.text}</div>
+    stack.innerHTML = actions.slice(0, 3).map((a, i) => `
+      <div class="home-popup ${a.id || 'default'} ${i === idx ? 'focused' : ''}" data-index="${i}"><span style="font-size:18px;">${a.icon || '✨'}</span><span>${a.text}</span></div>
     `).join('');
 
-    const ctaEl = document.getElementById('home-action-cta');
-    if (ctaEl) ctaEl.textContent = `${actions[idx]?.cta || 'OK → Murmullo'} · C → Menú`;
+    const hint = document.getElementById('home-chaos-hint');
+    if (hint) hint.textContent = `${actions[idx]?.cta || 'OK → Murmullo'} · C → Menú`;
+
+    const homeMain = document.querySelector('#page-home .home-main');
+    if (homeMain) {
+      homeMain.classList.remove('topic-survey','topic-murmullo','topic-anon','topic-crush','topic-friends');
+      const t = actions[idx]?.id || 'default';
+      if (t === 'survey') homeMain.classList.add('topic-survey');
+      if (t === 'murmullo' || t === 'default') homeMain.classList.add('topic-murmullo');
+      if (t === 'anon') homeMain.classList.add('topic-anon');
+      if (t === 'crush') homeMain.classList.add('topic-crush');
+      if (t === 'friends') homeMain.classList.add('topic-friends');
+    }
   },
 
   abrirFlujoSenal(tipo) {
@@ -5110,7 +5181,7 @@ const app = {
     if (opts) {
       opts.innerHTML = (encuesta.opciones || []).map((op, i) => `
         <div class="encuesta-option ${i === this.state.encuestaIndex ? 'focused' : ''}" data-index="${i}">
-          ${String.fromCharCode(65 + i)} · ${op}
+          <span class="opcion-letra">${String.fromCharCode(65 + i)}</span><span>${op}</span>
         </div>
       `).join('');
     }
@@ -5367,8 +5438,8 @@ const app = {
     const liveNarrative = document.getElementById('home-live-live');
     const chaosSub = document.getElementById('home-chaos-sub');
     if (liveCrush) liveCrush.textContent = (flags.has_strong_signal_today || flags.has_signals_today) ? '💘 Hoy has recibido señal' : '💘 Sin señales nuevas';
-    if (liveNarrative) liveNarrative.textContent = flags.survey_pending ? '📊 Encuesta pendiente' : '📌 Pendientes al día';
-    if (chaosSub) chaosSub.textContent = this.state.homePriorityText || this.state.murmulloStats.headline || 'Tu curso está on fire';
+    if (liveNarrative) liveNarrative.textContent = `📌 ${Math.max(1,(this.state.homePendingActions || []).length)} avisos en cola`;
+    if (chaosSub) chaosSub.textContent = flags.survey_pending ? 'Tu curso se está moviendo fuerte' : (this.state.homePriorityText || this.state.murmulloStats.headline || 'Tu curso está on fire');
 
     this.renderHomeActionQueue();
     this.updateColaBadge();
