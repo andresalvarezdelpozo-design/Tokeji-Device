@@ -3282,6 +3282,8 @@ const app = {
     murmulloFrases: [],
     encuestaActiva: null,
     encuestaIndex: 0,
+    encuestaTimer: null,
+    encuestaRemainingSec: null,
     audioInitialized: false,
     confirmIndex: 0,
     toquesMostrados: new Set(),
@@ -3615,6 +3617,8 @@ const app = {
     document.getElementById('combate-vs-screen').classList.remove('active');
     document.getElementById('encuesta-screen').classList.remove('active');
     document.getElementById('encuesta-resultados-screen').classList.remove('active');
+
+    if (page !== 'encuesta') this.stopEncuestaTimer();
     
     if (page === 'home') {
       this.updateColaBadge();
@@ -5228,6 +5232,40 @@ const app = {
     // Fase 0: popups de Home desactivados temporalmente
   },
 
+  stopEncuestaTimer() {
+    if (this.state.encuestaTimer) {
+      clearInterval(this.state.encuestaTimer);
+      this.state.encuestaTimer = null;
+    }
+  },
+
+  getEncuestaRemainingSec() {
+    const encuesta = this.state.encuestaActiva;
+    if (!encuesta || !encuesta.expira) return null;
+    return Math.max(0, Math.floor(Number(encuesta.expira) - (Date.now() / 1000)));
+  },
+
+  formatEncuestaCountdown(totalSec) {
+    const sec = Math.max(0, Number(totalSec || 0));
+    const mm = String(Math.floor(sec / 60)).padStart(2, '0');
+    const ss = String(sec % 60).padStart(2, '0');
+    return `${mm}:${ss}`;
+  },
+
+  startEncuestaTimer() {
+    this.stopEncuestaTimer();
+    this.state.encuestaRemainingSec = this.getEncuestaRemainingSec();
+    this.state.encuestaTimer = setInterval(() => {
+      const sec = this.getEncuestaRemainingSec();
+      this.state.encuestaRemainingSec = sec;
+      if (this.state.currentPage === 'encuesta') this.renderEncuesta();
+      if (sec !== null && sec <= 0) {
+        this.stopEncuestaTimer();
+        this.showMsg('⏱️ Encuesta finalizada');
+      }
+    }, 1000);
+  },
+
   async cargarEncuestaActiva() {
     try {
       const response = await fetch(`${BACK}/encuestas/activa?userId=${encodeURIComponent(this.miID)}`);
@@ -5249,6 +5287,8 @@ const app = {
       return;
     }
     this.state.encuestaIndex = 0;
+    this.state.encuestaRemainingSec = this.getEncuestaRemainingSec();
+    this.startEncuestaTimer();
     this.showPage('encuesta');
   },
 
@@ -5259,7 +5299,11 @@ const app = {
     const meta = document.getElementById('encuesta-meta');
     const opts = document.getElementById('encuesta-options');
     if (q) q.textContent = encuesta.pregunta;
-    if (meta) meta.textContent = `${encuesta.curso || 'Curso'} · ${encuesta.total_votos || 0} votos`;
+    const remain = this.state.encuestaRemainingSec !== null ? this.state.encuestaRemainingSec : this.getEncuestaRemainingSec();
+    if (meta) {
+      const countdown = remain === null ? '' : (remain > 0 ? ` · ⏱️ ${this.formatEncuestaCountdown(remain)}` : ' · ⏱️ Finalizada');
+      meta.textContent = `${encuesta.curso || 'Curso'} · ${encuesta.total_votos || 0} votos${countdown}`;
+    }
     if (opts) {
       opts.innerHTML = (encuesta.opciones || []).map((op, i) => `
         <div class="encuesta-option ${i === this.state.encuestaIndex ? 'focused' : ''}" data-index="${i}">
@@ -5272,6 +5316,11 @@ const app = {
   async votarEncuestaActual() {
     const encuesta = this.state.encuestaActiva;
     if (!encuesta) return;
+    const remain = this.getEncuestaRemainingSec();
+    if (remain !== null && remain <= 0) {
+      this.showMsg('⏱️ Esta encuesta ya terminó');
+      return;
+    }
     try {
       const response = await fetch(`${BACK}/encuestas/votar`, {
         method: 'POST',
@@ -5314,6 +5363,7 @@ const app = {
 
   cerrarResultadosEncuesta() {
     document.getElementById('encuesta-resultados-screen').classList.remove('active');
+    this.stopEncuestaTimer();
     this.showPage('home', false);
   },
 
