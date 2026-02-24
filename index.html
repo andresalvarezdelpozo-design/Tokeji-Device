@@ -121,8 +121,8 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      margin-top: 8px;
-      margin-bottom: 8px;
+      margin-top: 4px;
+      margin-bottom: 4px;
     }
 
     .screen {
@@ -238,13 +238,13 @@
 
     .status-bar {
       position: absolute;
-      top: 8px;
-      left: 12px;
-      right: 12px;
+      top: 4px;
+      left: 10px;
+      right: 10px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: 9px;
+      font-size: 8px;
       font-weight: 800;
       color: #718096;
       z-index: 10;
@@ -253,7 +253,7 @@
 
     .content {
       flex: 1;
-      padding: 28px 12px 12px;
+      padding: 20px 12px 10px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -1088,6 +1088,93 @@
       animation: titlePulse 1.8s ease-in-out infinite;
     }
 
+    .streak-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 9px;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-weight: 900;
+      background: #FFE8A3;
+      color: #744210;
+      border: 1px solid rgba(255,255,255,.6);
+    }
+
+    .streak-badge.warning {
+      background: #FED7D7;
+      color: #9B2C2C;
+    }
+
+    .streak-badge.broken {
+      background: #E2E8F0;
+      color: #4A5568;
+    }
+
+    .perfil-alumno-card {
+      width: 100%;
+      background: rgba(255,255,255,.86);
+      border: 2px solid rgba(255,255,255,.75);
+      border-radius: 16px;
+      padding: 10px;
+      margin-bottom: 8px;
+      box-shadow: 0 8px 20px rgba(0,0,0,.18);
+    }
+
+    .perfil-alumno-top {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 6px;
+    }
+
+    .perfil-alumno-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #ff6b35, #ff00a0);
+      color: #fff;
+      font-size: 24px;
+      border: 2px solid #fff;
+    }
+
+    .perfil-alumno-nombre { font-size: 14px; font-weight: 900; color: #2D3748; }
+    .perfil-alumno-meta { font-size: 10px; color: #4A5568; font-weight: 700; }
+    .perfil-alumno-tag { font-size: 9px; color: #6B46C1; font-weight: 800; }
+    .perfil-alumno-todox { font-size: 11px; font-weight: 900; color: #2D3748; }
+    .perfil-alumno-streak { font-size: 11px; font-weight: 900; color: #B7791F; margin-top: 4px; }
+
+    .perfil-alumno-grid {
+      width: 100%;
+      flex: 1;
+      display: grid;
+      grid-template-columns: repeat(10, 1fr);
+      gap: 4px;
+      overflow-y: auto;
+      padding-bottom: 2px;
+    }
+
+    .perfil-alumno-emoji {
+      height: 24px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255,255,255,.22);
+      border: 1px solid rgba(255,255,255,.55);
+      font-size: 13px;
+      user-select: none;
+      pointer-events: none;
+    }
+
+    .perfil-alumno-emoji.locked {
+      color: rgba(45,55,72,.35);
+      background: rgba(255,255,255,.1);
+    }
+
     .murmullo-header {
       text-align: center;
       margin-bottom: 8px;
@@ -1106,14 +1193,6 @@
       font-size: 11px;
       font-weight: 800;
       margin-top: 2px;
-    }
-
-    .murmullo-conectados {
-      color: #D6F7FF;
-      font-size: 9px;
-      font-weight: 700;
-      margin-top: 2px;
-      animation: beatSmall 1.4s ease-in-out infinite;
     }
 
     .murmullo-grid {
@@ -2686,6 +2765,23 @@
             <div class="list-container" id="lista-instituto-list"></div>
           </div>
 
+          <div class="page" id="page-perfil-alumno">
+            <div class="setup-title" id="perfil-alumno-title">👤 Perfil</div>
+            <div class="perfil-alumno-card">
+              <div class="perfil-alumno-top">
+                <div class="perfil-alumno-avatar" id="perfil-alumno-avatar">👤</div>
+                <div style="flex:1;">
+                  <div class="perfil-alumno-nombre" id="perfil-alumno-nombre">Alumno</div>
+                  <div class="perfil-alumno-meta" id="perfil-alumno-meta">Curso</div>
+                  <div class="perfil-alumno-tag" id="perfil-alumno-tag">Instituto</div>
+                </div>
+              </div>
+              <div class="perfil-alumno-todox" id="perfil-alumno-todox">ToDox: 0 / 150</div>
+              <div class="perfil-alumno-streak" id="perfil-alumno-streak">🔥 Racha: —</div>
+            </div>
+            <div class="perfil-alumno-grid" id="perfil-alumno-grid"></div>
+          </div>
+
           <div class="page" id="page-murmullo">
             <div class="murmullo-header">
               <div class="murmullo-title">🔮 MURMULLO CHAOS</div>
@@ -3155,6 +3251,12 @@ const app = {
       curso: null,
       companeros: []
     },
+    perfilAlumno: {
+      active: false,
+      source: '',
+      data: null
+    },
+    streakMetaByFriend: {},
     institutoView: {
       active: false,
       cursoFiltro: 'todos',
@@ -3247,6 +3349,7 @@ const app = {
       this.contactos = JSON.parse(localStorage.getItem("cts")) || {};
       this.todex = JSON.parse(localStorage.getItem("todex")) || { captured: [], total_toques_enviados: 0, emojis_stats: {} };
       this.state.streaksByFriend = JSON.parse(localStorage.getItem('streaksByFriend') || '{}') || {};
+      this.state.streakMetaByFriend = JSON.parse(localStorage.getItem('streakMetaByFriend') || '{}') || {};
       if (!this.todex.emojis_stats) this.todex.emojis_stats = {};
       this.state.settings.sonido = localStorage.getItem('sonido') !== 'off';
       this.state.settings.vibracion = localStorage.getItem('vibracion') !== 'off';
@@ -3580,6 +3683,10 @@ const app = {
         this.renderMurmullo();
         this.state.focus = { type: 'murmullo', index: 0 };
         break;
+      case 'perfil-alumno':
+        this.renderPerfilAlumno();
+        this.state.focus = { type: 'perfilAlumno', index: 0 };
+        break;
       case 'contacts':
         this.renderContacts();
         this.state.focus = { type: 'contacts', index: 0 };
@@ -3742,6 +3849,12 @@ const app = {
 
     if (this.state.currentPage === 'encuesta') {
       this.showPage('home', false);
+      return;
+    }
+
+    if (this.state.currentPage === 'perfil-alumno') {
+      if (this.state.perfilAlumno.source === 'friend') this.showPage('contacts', false);
+      else this.showPage('lista-instituto', false);
       return;
     }
     
@@ -3991,7 +4104,10 @@ const app = {
         }
         break;
       case 'contacts':
-        // Ya no hay botón de escanear aquí
+        const amigos = Object.entries(this.contactos);
+        if (amigos[focus.index]) {
+          this.abrirPerfilAlumno(amigos[focus.index][0], true);
+        }
         break;
       case 'qr':
         // El botón de escanear ahora está aquí
@@ -4968,8 +5084,9 @@ const app = {
     const items = document.querySelectorAll('#lista-instituto-list .list-item');
     const selected = items[idx];
     if (!selected) return;
-    const nombre = selected.querySelector('div div')?.textContent || 'Alumno';
-    this.showMsg(`👋 ${nombre}`);
+    const id = selected.dataset.id;
+    if (!id) return;
+    this.abrirPerfilAlumno(id, false);
   },
 
   renderMurmullo() {
@@ -4979,7 +5096,7 @@ const app = {
     if (instiEl) instiEl.textContent = instituto;
     const hot = document.getElementById('murmullo-hotline');
     const top = this.getTopStreakFriend();
-    if (hot) hot.textContent = top ? `🔥 Top racha: ${top.nombre} · ${top.streak}` : (this.state.murmulloStats.headline || this.state.homePriorityText);
+    if (hot) hot.textContent = top ? `🔥 Racha top: ${top.nombre} (${top.streak} días)` : (this.state.murmulloStats.headline || this.state.homePriorityText);
 
     const cards = this.state.murmulloStats.cardHeadlines || [];
     set('murmullo-secretos', (cards[0] || 'Señales en encuesta').slice(0, 34));
@@ -5295,7 +5412,7 @@ const app = {
           <span style="font-size: 26px;">👤</span>
           <div style="flex: 1;">
             <div style="font-weight: 800; color: #2D3748;">${nom}</div>
-            <div style="font-size: 9px; color: #A0AEC0;">${id.substring(0, 10)}... · 🔥 ${this.state.streaksByFriend[id] || 0} rachas</div>
+            <div style="display:flex; align-items:center; gap:6px; margin-top:2px;"><span style="font-size: 9px; color: #A0AEC0;">${id.substring(0, 10)}...</span><span class="streak-badge ${app.getFriendStreakState(id).cls}">🔥 ${this.state.streaksByFriend[id] || 0} · ${app.getFriendStreakState(id).label}</span></div>
           </div>
           <button class="btn-eliminar" onclick="event.stopPropagation(); app.eliminarAmigo('${id}')">✕</button>
         </div>
@@ -5324,6 +5441,71 @@ const app = {
     return { id, nombre, streak: Number(streak)||0 };
   },
 
+  getFriendStreakState(friendId) {
+    const meta = this.state.streakMetaByFriend?.[friendId] || {};
+    const now = Date.now();
+    const lastMutual = Number(meta.lastMutualTs || 0);
+    const streak = Number(this.state.streaksByFriend?.[friendId] || 0);
+    if (!lastMutual || streak <= 0) return { cls: 'broken', label: 'rota' };
+    const elapsed = now - lastMutual;
+    if (elapsed >= 48 * 60 * 60 * 1000) return { cls: 'broken', label: 'rota' };
+    if (elapsed >= 24 * 60 * 60 * 1000) return { cls: 'warning', label: 'en riesgo' };
+    return { cls: 'normal', label: 'activa' };
+  },
+
+  async abrirPerfilAlumno(targetId, isFriend = false) {
+    try {
+      const response = await fetch(`${BACK}/perfil-publico?targetId=${encodeURIComponent(targetId)}`);
+      const data = await response.json();
+      if (!response.ok || !data.ok || !data.perfil) throw new Error(data.error || 'No se pudo cargar perfil');
+      this.state.perfilAlumno.active = true;
+      this.state.perfilAlumno.source = isFriend ? 'friend' : 'instituto';
+      this.state.perfilAlumno.data = data.perfil;
+      this.showPage('perfil-alumno');
+    } catch (e) {
+      this.showMsg('❌ ' + e.message);
+    }
+  },
+
+  renderPerfilAlumno() {
+    const p = this.state.perfilAlumno?.data;
+    if (!p) return;
+    const title = document.getElementById('perfil-alumno-title');
+    const avatar = document.getElementById('perfil-alumno-avatar');
+    const nombre = document.getElementById('perfil-alumno-nombre');
+    const meta = document.getElementById('perfil-alumno-meta');
+    const tag = document.getElementById('perfil-alumno-tag');
+    const todox = document.getElementById('perfil-alumno-todox');
+    const streak = document.getElementById('perfil-alumno-streak');
+    const grid = document.getElementById('perfil-alumno-grid');
+
+    if (title) title.textContent = this.state.perfilAlumno.source === 'friend' ? '👥 Perfil de amigo' : '🏫 Perfil alumno';
+    if (avatar) avatar.textContent = p.avatar || '👤';
+    if (nombre) nombre.textContent = p.nombre || 'Alumno';
+    if (meta) meta.textContent = p.curso || '';
+    if (tag) tag.textContent = this.state.perfilAlumno.source === 'friend' ? 'Amigo' : 'Instituto';
+    if (todox) todox.textContent = `ToDox: ${Number(p.todox_total || 0)} / 150`;
+
+    if (streak) {
+      if (this.state.perfilAlumno.source === 'friend') {
+        const valor = Number(this.state.streaksByFriend?.[p.id] || 0);
+        streak.style.display = 'block';
+        streak.textContent = `🔥 Racha con ${p.nombre || 'amigo'}: ${valor} días`;
+      } else {
+        streak.style.display = 'none';
+      }
+    }
+
+    if (grid) {
+      const unlocked = new Set((p.todox || []).map(v => Number(v)));
+      grid.innerHTML = Array.from({ length: 150 }, (_, i) => {
+        const id = i + 1;
+        const has = unlocked.has(id);
+        return `<div class="perfil-alumno-emoji ${has ? '' : 'locked'}">${has ? (EMOJIS_LIST[i] || '✨') : '·'}</div>`;
+      }).join('');
+    }
+  },
+
   renderContacts() {
     const container = document.getElementById('contacts-list');
     if (!container) return;
@@ -5338,7 +5520,7 @@ const app = {
           <span style="font-size: 26px;">👤</span>
           <div style="flex: 1;">
             <div style="font-weight: 800; color: #2D3748;">${nom}</div>
-            <div style="font-size: 9px; color: #A0AEC0;">${id.substring(0, 10)}... · 🔥 ${this.state.streaksByFriend[id] || 0} rachas</div>
+            <div style="display:flex; align-items:center; gap:6px; margin-top:2px;"><span style="font-size: 9px; color: #A0AEC0;">${id.substring(0, 10)}...</span><span class="streak-badge ${app.getFriendStreakState(id).cls}">🔥 ${this.state.streaksByFriend[id] || 0} · ${app.getFriendStreakState(id).label}</span></div>
           </div>
           <button class="btn-eliminar" onclick="event.stopPropagation(); app.eliminarAmigo('${id}')">✕</button>
         </div>
@@ -5409,7 +5591,7 @@ const app = {
     if (badgeEl) badgeEl.textContent = `🎯 Amigos: ${friendLeft}/3 · 🤍 ${anonLeft} · 💘 ${crushLeft}`;
 
     const chaosSub = document.getElementById('home-chaos-sub');
-    if (chaosSub) chaosSub.textContent = flags.survey_pending ? 'Encuesta pendiente hoy' : (this.state.homePriorityText || this.state.murmulloStats.headline || 'Tu curso está on fire');
+    if (chaosSub) chaosSub.textContent = this.state.homePriorityText || this.state.murmulloStats.headline || 'Tu curso está on fire';
 
     this.renderHomeActionQueue();
     this.updateColaBadge();
@@ -5903,7 +6085,10 @@ const app = {
         
         this.state.toquesRestantes = data.toques_restantes || (this.state.toquesRestantes - 1);
         localStorage.setItem('toquesRestantes', this.state.toquesRestantes);
-        this.state.streaksByFriend[paraId] = (this.state.streaksByFriend[paraId] || 0) + 1;
+        // racha bilateral: marcar envío pendiente de respuesta
+        const meta = this.state.streakMetaByFriend[paraId] || {};
+        this.state.streakMetaByFriend[paraId] = { ...meta, lastSentTs: Date.now(), awaitingResponse: true };
+        localStorage.setItem('streakMetaByFriend', JSON.stringify(this.state.streakMetaByFriend));
         localStorage.setItem('streaksByFriend', JSON.stringify(this.state.streaksByFriend));
         this.refreshHomeState('friend-toke-send');
         this.updateHome();
@@ -6412,6 +6597,20 @@ const app = {
     if (textoEl) textoEl.textContent = `respondió: ${respuesta.texto || 'OK'}`;
     if (emojiEl) emojiEl.textContent = respuesta.respuesta || '👍';
     
+    const friendId = respuesta.de;
+    const meta = this.state.streakMetaByFriend[friendId] || {};
+    const within24h = meta.lastSentTs && (Date.now() - Number(meta.lastSentTs) <= 24 * 60 * 60 * 1000);
+    if (meta.awaitingResponse && within24h) {
+      this.state.streaksByFriend[friendId] = (this.state.streaksByFriend[friendId] || 0) + 1;
+    }
+    this.state.streakMetaByFriend[friendId] = {
+      ...meta,
+      awaitingResponse: false,
+      lastMutualTs: Date.now()
+    };
+    localStorage.setItem('streaksByFriend', JSON.stringify(this.state.streaksByFriend));
+    localStorage.setItem('streakMetaByFriend', JSON.stringify(this.state.streakMetaByFriend));
+
     if (modal) {
       modal.classList.add('active');
       this.playSound('respuesta');

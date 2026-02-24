@@ -540,6 +540,37 @@ def lista_instituto():
         return jsonify(ok=False, error=str(e)), 500
 
 
+@app.route("/perfil-publico", methods=["GET"])
+def perfil_publico():
+    try:
+        target_id = request.args.get("targetId", "").strip()
+        if not target_id:
+            return jsonify(ok=False, error="Falta targetId"), 400
+
+        perfil = perfiles.get(target_id, {})
+        todox = perfil.get("todox_visitados", []) or []
+        todox_limpio = []
+        for valor in todox:
+            try:
+                n = int(valor)
+                if 1 <= n <= 150:
+                    todox_limpio.append(n)
+            except Exception:
+                continue
+
+        return jsonify(ok=True, perfil={
+            "id": target_id,
+            "nombre": perfil.get("nombre", "Alumno"),
+            "avatar": perfil.get("avatar", "👤"),
+            "curso": perfil.get("curso", ""),
+            "instituto": perfil.get("instituto", ""),
+            "todox_total": len(set(todox_limpio)),
+            "todox": sorted(list(set(todox_limpio)))
+        })
+    except Exception as e:
+        return jsonify(ok=False, error=str(e)), 500
+
+
 @app.route("/murmullo-stats", methods=["GET"])
 def murmullo_stats():
     try:
