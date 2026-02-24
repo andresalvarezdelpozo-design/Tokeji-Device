@@ -662,6 +662,63 @@
     .home-popup.friends { background: linear-gradient(135deg, rgba(249,115,22,.9), rgba(245,158,11,.9)); }
     .home-popup.default { background: linear-gradient(135deg, rgba(99,102,241,.86), rgba(236,72,153,.82)); }
 
+    .home-ritual-stack {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 8px;
+      z-index: 3;
+    }
+
+    .home-ritual-btn {
+      border-radius: 12px;
+      border: 2px solid rgba(255,255,255,.42);
+      padding: 8px 10px;
+      color: #fff;
+      font-weight: 900;
+      font-size: 11px;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.25), 0 3px 0 rgba(0,0,0,.26);
+      background: rgba(15,15,26,.55);
+      transition: all .12s ease;
+      text-align: left;
+    }
+
+    .home-ritual-btn .title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      letter-spacing: .3px;
+    }
+
+    .home-ritual-btn .meta {
+      margin-top: 2px;
+      font-size: 10px;
+      opacity: .95;
+      font-weight: 700;
+    }
+
+    .home-ritual-btn.survey { background: linear-gradient(135deg, rgba(128,90,213,.68), rgba(236,72,153,.58)); }
+    .home-ritual-btn.tokes { background: linear-gradient(135deg, rgba(255,107,53,.65), rgba(245,158,11,.6)); }
+    .home-ritual-btn.murmullo { background: linear-gradient(135deg, rgba(0,136,255,.62), rgba(6,182,212,.55)); }
+
+    .home-ritual-btn.focused {
+      transform: scale(1.02);
+      border-color: #fff;
+      box-shadow: 0 0 0 2px rgba(255,255,255,.22), 0 0 16px rgba(0,255,255,.55), 0 4px 0 rgba(0,0,0,.26);
+    }
+
+    .home-ritual-btn.glow {
+      box-shadow: 0 0 0 2px rgba(255,255,255,.15), 0 0 18px rgba(57,255,20,.7), 0 4px 0 rgba(0,0,0,.26);
+      border-color: rgba(255,255,255,.8);
+    }
+
+    .home-ritual-btn.done {
+      filter: saturate(.55) brightness(.8);
+      border-color: rgba(255,255,255,.3);
+      box-shadow: 0 2px 0 rgba(0,0,0,.2);
+    }
+
     @keyframes pulseToast {
       0%,100% { transform: scale(1); }
       50% { transform: scale(1.02); }
@@ -1536,6 +1593,12 @@
       pointer-events: none;
     }
 
+    .perfil-alumno-emoji.focused {
+      border: 2px solid #fff;
+      box-shadow: 0 0 0 2px rgba(255,107,157,.3);
+      transform: scale(1.05);
+    }
+
     .perfil-alumno-emoji.locked {
       color: rgba(45,55,72,.35);
       background: rgba(255,255,255,.1);
@@ -1946,6 +2009,8 @@
       border-radius: 12px;
       box-shadow: 0 2px 0 rgba(0,0,0,0.15);
       padding: 6px;
+      background: rgba(7,10,20,.82);
+      color: #fff;
     }
 
     #page-curso-secreto .selector-item.focused {
@@ -3131,7 +3196,21 @@
               <div class="home-name" id="home-name">Amigo</div>
               <div class="home-status" id="home-status">🟢 Disponible</div>
               <div class="home-popup-stack" id="home-popup-stack"></div>
-                            <div class="tokes-badge" id="tokes-badge">🎯 Amigos: 3/3 · 🤍 1 · 💘 1</div>
+              <div class="home-ritual-stack" id="home-ritual-stack">
+                <div class="home-ritual-btn survey focused" data-index="0">
+                  <div class="title"><span>📊 ENCUESTA</span><span id="ritual-survey-time">--:--</span></div>
+                  <div class="meta" id="ritual-survey-meta">Pendiente</div>
+                </div>
+                <div class="home-ritual-btn tokes" data-index="1">
+                  <div class="title"><span>💌 TOKES</span><span id="ritual-tokes-count">3/3</span></div>
+                  <div class="meta" id="ritual-tokes-meta">Envía tu señal</div>
+                </div>
+                <div class="home-ritual-btn murmullo" data-index="2">
+                  <div class="title"><span>🔮 MURMULLO</span><span id="ritual-murmullo-count">0</span></div>
+                  <div class="meta" id="ritual-murmullo-meta">Sin novedades</div>
+                </div>
+              </div>
+              <div class="tokes-badge" id="tokes-badge" style="display:none;">🎯 Amigos: 3/3 · 🤍 1 · 💘 1</div>
             </div>
           </div>
 
@@ -3730,6 +3809,9 @@ const app = {
     homeToastTimer: null,
     homeToastQueue: [],
     homeFlags: {},
+    navContext: '',
+    ritualStep: 0,
+    ritualDoneToday: false,
     homeRefreshTimer: null,
     streaksByFriend: {},
     murmulloFrases: [],
@@ -3763,7 +3845,8 @@ const app = {
       enSelectorDefensa: false,
       defensaIndex: 0
     },
-    pollingCombates: null
+    pollingCombates: null,
+    combateWinsToday: 0
   },
   
   contactos: {},
@@ -3826,6 +3909,27 @@ const app = {
       this.state.toquesRestantes = 30;
       localStorage.setItem("toquesRestantes", "30");
       localStorage.setItem("ultimaFechaToques", hoy);
+    }
+
+    const ritualFecha = localStorage.getItem('ritualFecha');
+    if (ritualFecha !== hoy) {
+      this.state.ritualStep = 0;
+      this.state.ritualDoneToday = false;
+      localStorage.setItem('ritualFecha', hoy);
+      localStorage.setItem('ritualStep', '0');
+      localStorage.setItem('ritualDoneToday', '0');
+    } else {
+      this.state.ritualStep = parseInt(localStorage.getItem('ritualStep') || '0', 10) || 0;
+      this.state.ritualDoneToday = localStorage.getItem('ritualDoneToday') === '1';
+    }
+
+    const combateFecha = localStorage.getItem('combateWinsFecha');
+    if (combateFecha !== hoy) {
+      this.state.combateWinsToday = 0;
+      localStorage.setItem('combateWinsFecha', hoy);
+      localStorage.setItem('combateWinsToday', '0');
+    } else {
+      this.state.combateWinsToday = parseInt(localStorage.getItem('combateWinsToday') || '0', 10) || 0;
     }
     
     this.applyColor();
@@ -4110,6 +4214,7 @@ const app = {
         this.updateColorSetupFocus();
         break;
       case 'menu':
+        this.state.navContext = '';
         this.state.focus = { type: 'menu', index: this.state.menuIndex };
         this.updateMenuFocus();
         break;
@@ -4145,6 +4250,7 @@ const app = {
       case 'perfil-alumno':
         this.renderPerfilAlumno();
         this.state.focus = { type: 'perfilAlumno', index: 0 };
+        this.updatePerfilAlumnoFocus();
         break;
       case 'contacts':
         this.renderContacts();
@@ -4310,8 +4416,7 @@ const app = {
     }
 
     if (this.state.currentPage === 'encuesta') {
-      this.showPage('home', false);
-      return;
+      this.stopEncuestaTimer();
     }
 
     if (this.state.currentPage === 'perfil-alumno') {
@@ -4400,6 +4505,7 @@ const app = {
     this.initAudio();
     this.playSound('back');
     if (this.state.currentPage === 'home') {
+      this.state.navContext = '';
       this.showPage('menu');
       return;
     }
@@ -4520,27 +4626,10 @@ const app = {
         break;
       case 'home':
         this.pressFeedback();
-        if (this.state.homeFlags?.survey_pending) {
-          this.showOptionSelector('📊 Encuesta pendiente', ['Ver encuesta', 'Ignorar (ir a Murmullo)'], (value) => {
-            if (value === 'Ver encuesta') {
-              this.state.surveyIgnoreCount = 0;
-              this.abrirEncuesta();
-            } else {
-              this.state.surveyIgnoreCount = (this.state.surveyIgnoreCount || 0) + 1;
-              if (this.state.surveyIgnoreCount >= 3) {
-                this.showMsg('🔕 Encuesta pausada por ahora');
-                this.showPage('menu');
-              } else {
-                this.showPage('murmullo');
-              }
-            }
-          }, { chaosSurvey: true });
-        } else {
-          this.state.surveyIgnoreCount = 0;
-          this.showPage('menu');
-        }
+        this.openHomeRitualAction(this.state.focus.index || 0);
         break;
       case 'menu':
+        this.state.navContext = '';
         if (focus.index === 1) {
           this.openInstitutoDesdeMenu();
         } else {
@@ -4708,6 +4797,30 @@ const app = {
     }
 
     if (this.state.currentPage === 'home') {
+      if (this.state.homeActionIndex > 0) {
+        this.state.homeActionIndex--;
+        this.state.focus.index = this.state.homeActionIndex;
+        this.updateHomeRitualFocus();
+      }
+      this.vibrar();
+      return;
+    }
+
+    if (this.state.currentPage === 'qr') {
+      if (this.state.focus.index > 0) {
+        this.state.focus.index--;
+        this.updateQRActionsFocus();
+      }
+      this.vibrar();
+      return;
+    }
+
+    if (this.state.currentPage === 'perfil-alumno') {
+      if (this.state.focus.index >= 10) {
+        this.state.focus.index -= 10;
+        this.updatePerfilAlumnoFocus();
+      }
+      this.vibrar();
       return;
     }
     
@@ -4893,12 +5006,17 @@ const app = {
     }
 
     if (this.state.currentPage === 'home') {
+      if (this.state.homeActionIndex < 2) {
+        this.state.homeActionIndex++;
+        this.state.focus.index = this.state.homeActionIndex;
+        this.updateHomeRitualFocus();
+      }
       this.vibrar();
       return;
     }
 
     if (this.state.currentPage === 'qr') {
-      const max = document.querySelectorAll('#qr-actions .qr-action-btn').length - 1;
+      const max = document.querySelectorAll('#page-qr .qr-action-btn').length - 1;
       if (this.state.focus.index < max) {
         this.state.focus.index++;
         this.updateQRActionsFocus();
@@ -4907,10 +5025,12 @@ const app = {
       return;
     }
 
-    if (this.state.currentPage === 'qr') {
-      if (this.state.focus.index > 0) {
-        this.state.focus.index--;
-        this.updateQRActionsFocus();
+    if (this.state.currentPage === 'perfil-alumno') {
+      const maxPerfil = 149;
+      if (this.state.focus.index < maxPerfil - 9) {
+        this.state.focus.index += 10;
+        if (this.state.focus.index > maxPerfil) this.state.focus.index = maxPerfil;
+        this.updatePerfilAlumnoFocus();
       }
       this.vibrar();
       return;
@@ -5110,6 +5230,12 @@ const app = {
           this.updateGridFocus();
         }
         break;
+      case 'perfilAlumno':
+        if (index % 10 > 0) {
+          this.state.focus.index--;
+          this.updatePerfilAlumnoFocus();
+        }
+        break;
       case 'qr':
         break;
       case 'encuesta':
@@ -5220,6 +5346,12 @@ const app = {
           this.updateGridFocus();
         }
         break;
+      case 'perfilAlumno':
+        if (index % 10 < 9 && index < 149) {
+          this.state.focus.index++;
+          this.updatePerfilAlumnoFocus();
+        }
+        break;
       case 'qr':
         break;
     }
@@ -5317,7 +5449,7 @@ const app = {
   },
 
   updateQRActionsFocus() {
-    document.querySelectorAll('#qr-actions .qr-action-btn').forEach((el, i) => {
+    document.querySelectorAll('#page-qr .qr-action-btn').forEach((el, i) => {
       el.classList.toggle('focused', i === this.state.focus.index);
     });
   },
@@ -5354,6 +5486,12 @@ const app = {
     document.querySelectorAll('.emoji-card').forEach((el, i) => {
       el.classList.toggle('focused', i === this.state.focus.index);
     });
+  },
+
+  updatePerfilAlumnoFocus() {
+    const nodes = document.querySelectorAll('#perfil-alumno-grid .perfil-alumno-emoji');
+    nodes.forEach((el, i) => el.classList.toggle('focused', i === this.state.focus.index));
+    this.scrollToFocused('perfil-alumno-grid');
   },
 
   updateCombatesFocus() {
@@ -5966,7 +6104,12 @@ const app = {
   cerrarResultadosEncuesta() {
     document.getElementById('encuesta-resultados-screen').classList.remove('active');
     this.stopEncuestaTimer();
-    this.showPage('home', false);
+    if (this.state.navContext === 'ritual') {
+      this.completeRitualStep(1);
+      this.showPage('home', false);
+    } else {
+      this.goBack();
+    }
   },
 
   async selectCompaneroInstituto() {
@@ -5999,7 +6142,13 @@ const app = {
       this.refreshHomeState('secret-send');
       this.updateHome();
       this.showMsg(esCrush ? '💘 Crush enviado' : '💜 Sobre secreto enviado');
-      this.showPage('home');
+      if (this.state.navContext === 'ritual') {
+        this.completeRitualStep(2, false);
+        this.completeRitualStep(3, true);
+        this.showPage('murmullo');
+      } else {
+        this.showPage('home');
+      }
     } catch (e) {
       this.showMsg('❌ ' + e.message);
     }
@@ -6172,7 +6321,7 @@ const app = {
       grid.innerHTML = Array.from({ length: 150 }, (_, i) => {
         const id = i + 1;
         const has = unlocked.has(id);
-        return `<div class="perfil-alumno-emoji ${has ? '' : 'locked'}">${has ? (EMOJIS_LIST[i] || '✨') : '·'}</div>`;
+        return `<div class="perfil-alumno-emoji ${has ? '' : 'locked'} ${i === this.state.focus.index ? 'focused' : ''}">${has ? (EMOJIS_LIST[i] || '✨') : '·'}</div>`;
       }).join('');
     }
   },
@@ -6242,6 +6391,90 @@ const app = {
     document.getElementById('ficha-todex-modal').classList.remove('active');
   },
 
+  saveRitualState() {
+    const hoy = new Date().toDateString();
+    localStorage.setItem('ritualFecha', hoy);
+    localStorage.setItem('ritualStep', String(this.state.ritualStep || 0));
+    localStorage.setItem('ritualDoneToday', this.state.ritualDoneToday ? '1' : '0');
+  },
+
+  openHomeRitualAction(index) {
+    this.state.homeActionIndex = Math.max(0, Math.min(2, index || 0));
+    this.updateHomeRitualFocus();
+    this.state.navContext = 'ritual';
+
+    if (this.state.homeActionIndex === 0) {
+      this.state.surveyIgnoreCount = 0;
+      this.abrirEncuesta();
+      return;
+    }
+
+    if (this.state.homeActionIndex === 1) {
+      if ((this.state.ritualStep || 0) < 1 && this.state.homeFlags?.survey_pending) {
+        this.showMsg('Completa encuesta primero');
+        return;
+      }
+      this.showPage('tokes');
+      return;
+    }
+
+    if ((this.state.ritualStep || 0) < 2) {
+      this.showMsg('Envía un toke antes de Murmullo');
+      return;
+    }
+    this.completeRitualStep(3, true);
+    this.showPage('murmullo');
+  },
+
+  completeRitualStep(step, showToast = true) {
+    if ((this.state.ritualStep || 0) < step) {
+      this.state.ritualStep = step;
+      if (this.state.ritualStep >= 3) {
+        this.state.ritualStep = 3;
+        this.state.ritualDoneToday = true;
+        if (showToast) this.showMsg('✅ Ritual acabado de hoy');
+      }
+      this.saveRitualState();
+      this.updateHome();
+    }
+  },
+
+  updateHomeRitualFocus() {
+    const cards = document.querySelectorAll('#home-ritual-stack .home-ritual-btn');
+    cards.forEach((el, i) => el.classList.toggle('focused', i === (this.state.homeActionIndex || 0)));
+  },
+
+  updateHomeRitualUI() {
+    const flags = this.state.homeFlags || {};
+    const surveyPending = !!flags.survey_pending;
+    const friendLeft = Number.isFinite(flags.friends_tokes_left) ? flags.friends_tokes_left : 3;
+    const murmulloCount = Array.isArray(this.state.murmulloFrases) ? this.state.murmulloFrases.length : 0;
+    const remain = this.state.encuestaRemainingSec !== null ? this.state.encuestaRemainingSec : this.getEncuestaRemainingSec();
+
+    const surveyTime = document.getElementById('ritual-survey-time');
+    const surveyMeta = document.getElementById('ritual-survey-meta');
+    const tokesCount = document.getElementById('ritual-tokes-count');
+    const tokesMeta = document.getElementById('ritual-tokes-meta');
+    const murmulloCountEl = document.getElementById('ritual-murmullo-count');
+    const murmulloMeta = document.getElementById('ritual-murmullo-meta');
+
+    if (surveyTime) surveyTime.textContent = surveyPending ? (remain === null ? '--:--' : this.formatEncuestaCountdown(remain)) : 'OK';
+    if (surveyMeta) surveyMeta.textContent = surveyPending ? 'Pendiente ahora' : 'Hecha / no pendiente';
+    if (tokesCount) tokesCount.textContent = `${friendLeft}/3`;
+    if (tokesMeta) tokesMeta.textContent = friendLeft > 0 ? 'Te quedan envíos hoy' : 'Sin tokes de amigos';
+    if (murmulloCountEl) murmulloCountEl.textContent = String(murmulloCount);
+    if (murmulloMeta) murmulloMeta.textContent = murmulloCount > 0 ? 'Hay movimiento nuevo' : 'Sin novedades nuevas';
+
+    const buttons = document.querySelectorAll('#home-ritual-stack .home-ritual-btn');
+    buttons.forEach((btn, i) => {
+      const stepDone = (this.state.ritualStep || 0) > i;
+      btn.classList.toggle('done', stepDone);
+      btn.classList.toggle('glow', !stepDone);
+    });
+
+    this.updateHomeRitualFocus();
+  },
+
   updateHome() {
     const nom = localStorage.getItem('miNombre') || 'Amigo';
     const nameEl = document.getElementById('home-name');
@@ -6268,6 +6501,7 @@ const app = {
     if (chaosSub) chaosSub.textContent = this.state.homePriorityText || this.state.murmulloStats.headline || 'Tu curso está on fire';
 
     this.renderHomeActionQueue();
+    this.updateHomeRitualUI();
     this.updateColaBadge();
   },
 
@@ -6806,7 +7040,13 @@ const app = {
         
         setTimeout(() => {
           this.ocultarAnimacionEnvio();
-          this.showPage('home');
+          if (this.state.navContext === 'ritual') {
+            this.completeRitualStep(2, false);
+            this.completeRitualStep(3, true);
+            this.showPage('murmullo');
+          } else {
+            this.showPage('home');
+          }
         }, 1000);
       } else {
         throw new Error(data.error || `Error ${response.status}`);
@@ -7688,17 +7928,20 @@ const app = {
   procesarResultadoCombate(resultado, oponenteId) {
     const gane = resultado.ganador === this.miID;
     const nombreOponente = this.contactos[oponenteId] || (resultado.modo === 'ia' ? 'IA' : 'Rival');
-    
-    // Si perdí, transferir emoji al ganador
-    if (!gane && resultado.modo !== 'ia') {
-      const emojiPerdido = parseInt(resultado.de === this.miID ? resultado.miEmoji : resultado.suEmoji);
-      this.transferirEmojiPerdido(emojiPerdido, resultado.ganador);
-    }
-    
-    // Si gané, recibir emoji del perdedor (si no es IA)
-    if (gane && resultado.modo !== 'ia') {
-      const emojiGanado = parseInt(resultado.de === this.miID ? resultado.suEmoji : resultado.miEmoji);
-      this.recibirEmojiGanado(emojiGanado);
+
+    if (gane) {
+      this.state.combateWinsToday = (this.state.combateWinsToday || 0) + 1;
+      localStorage.setItem('combateWinsToday', String(this.state.combateWinsToday));
+      if (this.state.combateWinsToday >= 3) {
+        this.state.combateWinsToday = 0;
+        localStorage.setItem('combateWinsToday', '0');
+        this.verificarDesbloqueos();
+        this.showMsg('🏆 3 victorias: ganaste emoji');
+      } else {
+        this.showMsg(`⚔️ Victoria ${this.state.combateWinsToday}/3`);
+      }
+    } else {
+      this.showMsg('🛡️ Derrota sin pérdida de emoji');
     }
     
     this.mostrarPantallaVS({
