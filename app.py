@@ -24,7 +24,8 @@ def cargar_datos():
             "perfiles": {},
             "encuestas": [],
             "votos_encuesta": {},
-            "eventos": []
+            "eventos": [],
+            "friend_links": {}
         }
 
 def guardar_datos():
@@ -38,7 +39,8 @@ def guardar_datos():
             "perfiles": perfiles,
             "encuestas": encuestas,
             "votos_encuesta": votos_encuesta,
-            "eventos": eventos
+            "eventos": eventos,
+            "friend_links": friend_links
         }, f)
 
 datos = cargar_datos()
@@ -51,6 +53,7 @@ perfiles = datos.get("perfiles", {})
 encuestas = datos.get("encuestas", [])
 votos_encuesta = datos.get("votos_encuesta", {})
 eventos = datos.get("eventos", [])
+friend_links = datos.get("friend_links", {})
 
 
 def inicio_dia_ts(ts=None):
@@ -536,6 +539,53 @@ def lista_instituto():
             })
 
         return jsonify(ok=True, companeros=companeros)
+    except Exception as e:
+        return jsonify(ok=False, error=str(e)), 500
+
+
+
+@app.route("/friends/link", methods=["POST"])
+def friends_link():
+    try:
+        data = request.get_json() or {}
+        user_id = (data.get("userId") or "").strip()
+        friend_id = (data.get("friendId") or "").strip()
+        user_name = (data.get("userName") or "Alumno").strip() or "Alumno"
+        user_avatar = (data.get("userAvatar") or "👤").strip() or "👤"
+        friend_name = (data.get("friendName") or "Amigo").strip() or "Amigo"
+        friend_avatar = (data.get("friendAvatar") or "👤").strip() or "👤"
+
+        if not user_id or not friend_id:
+            return jsonify(ok=False, error="Faltan IDs"), 400
+        if user_id == friend_id:
+            return jsonify(ok=False, error="No válido"), 400
+
+        friend_links.setdefault(user_id, {})
+        friend_links.setdefault(friend_id, {})
+        friend_links[user_id][friend_id] = {"nombre": friend_name, "avatar": friend_avatar}
+        friend_links[friend_id][user_id] = {"nombre": user_name, "avatar": user_avatar}
+
+        guardar_datos()
+        return jsonify(ok=True)
+    except Exception as e:
+        return jsonify(ok=False, error=str(e)), 500
+
+
+@app.route("/friends/list", methods=["GET"])
+def friends_list():
+    try:
+        user_id = request.args.get("userId", "").strip()
+        if not user_id:
+            return jsonify(ok=False, error="Falta userId"), 400
+
+        rows = []
+        for fid, meta in (friend_links.get(user_id, {}) or {}).items():
+            rows.append({
+                "id": fid,
+                "nombre": (meta or {}).get("nombre", perfiles.get(fid, {}).get("nombre", "Amigo")),
+                "avatar": (meta or {}).get("avatar", perfiles.get(fid, {}).get("avatar", "👤"))
+            })
+        return jsonify(ok=True, friends=rows)
     except Exception as e:
         return jsonify(ok=False, error=str(e)), 500
 
