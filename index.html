@@ -292,7 +292,7 @@
       text-shadow: 0 4px 0 var(--device-dark), 0 6px 10px rgba(0,0,0,0.2);
       animation: pulse-logo 2s ease-in-out infinite;
       transform: translateZ(0);
-      margin-bottom: 20px;
+      margin-bottom: 8px;
     }
 
     @keyframes pulse-logo {
@@ -303,7 +303,7 @@
     .splash-hint {
       position: absolute;
       bottom: 50px;
-      font-size: 14px;
+      font-size: 10px;
       color: rgba(255,255,255,0.9);
       animation: blink 1.5s infinite;
       font-weight: 700;
@@ -331,10 +331,10 @@
     }
 
     .consent-text {
-      font-size: 12px;
+      font-size: 10px;
       color: #4A5568;
       line-height: 1.5;
-      margin-bottom: 20px;
+      margin-bottom: 8px;
       max-width: 260px;
     }
 
@@ -351,7 +351,7 @@
       border: none;
       border-radius: 12px;
       font-family: 'Nunito', sans-serif;
-      font-size: 14px;
+      font-size: 10px;
       font-weight: 800;
       cursor: pointer;
       transition: all 0.1s ease;
@@ -398,7 +398,7 @@
       padding: 14px;
       border: 3px solid #FFD93D;
       border-radius: 14px;
-      font-size: 22px;
+      font-size: 10px;
       text-align: center;
       text-transform: uppercase;
       font-weight: 800;
@@ -410,7 +410,7 @@
     }
 
     .setup-hint {
-      font-size: 12px;
+      font-size: 10px;
       color: #A0AEC0;
     }
 
@@ -440,7 +440,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 28px;
+      font-size: 13px;
       cursor: pointer;
       transition: all 0.1s ease;
       box-shadow: 0 3px 0 #CBD5E0;
@@ -600,7 +600,7 @@
     .home-status {
       font-size: 9px;
       padding: 4px 12px;
-      border-radius: 20px;
+      border-radius: 12px;
       font-weight: 800;
       color: white;
       background: #48BB78;
@@ -685,8 +685,8 @@
       top: 0; left: 0; right: 0; bottom: 0;
       background: linear-gradient(135deg, #1a0a2e 0%, #2d1b4e 50%, #1a0a2e 100%);
       z-index: 300;
-      padding: 30px 20px;
-      animation: encuestaExplosion 0.6s ease;
+      padding: 16px 12px 10px;
+      animation: encuestaExplosion 0.45s ease;
     }
 
     .encuesta-screen.active {
@@ -702,7 +702,7 @@
 
     .encuesta-header {
       text-align: center;
-      margin-bottom: 18px;
+      margin-bottom: 8px;
       flex-shrink: 0;
     }
 
@@ -710,14 +710,14 @@
       display: inline-block;
       background: linear-gradient(90deg, #ff00a0, #ff6b35);
       color: #fff;
-      padding: 8px 20px;
+      padding: 5px 12px;
       border-radius: 25px;
-      font-size: 12px;
+      font-size: 9px;
       font-weight: 900;
       text-transform: uppercase;
       letter-spacing: 2px;
       animation: badgeShake 2s infinite;
-      margin-bottom: 12px;
+      margin-bottom: 6px;
     }
 
     @keyframes badgeShake {
@@ -727,9 +727,9 @@
 
     .encuesta-pregunta {
       font-family: 'Fredoka One', cursive;
-      font-size: 22px;
+      font-size: 13px;
       color: #fff;
-      line-height: 1.3;
+      line-height: 1.25;
       text-shadow: 0 0 20px rgba(255,255,255,0.5);
       animation: questionPulse 3s infinite;
     }
@@ -741,8 +741,8 @@
 
     .encuesta-contador {
       text-align: center;
-      margin: 8px 0 16px;
-      font-size: 14px;
+      margin: 4px 0 8px;
+      font-size: 10px;
       color: #00ffff;
       font-weight: 800;
       text-shadow: 0 0 10px rgba(0,255,255,0.5);
@@ -750,9 +750,9 @@
     }
 
     .encuesta-contador span {
-      font-size: 28px;
+      font-size: 13px;
       display: block;
-      margin-top: 5px;
+      margin-top: 2px;
       animation: counterTick 1s infinite;
     }
 
@@ -764,7 +764,7 @@
     .opciones-grid {
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 8px;
       flex: 1;
       overflow-y: auto;
       padding-right: 2px;
@@ -772,12 +772,12 @@
 
     .opcion-btn {
       background: rgba(255,255,255,0.1);
-      border: 3px solid rgba(255,255,255,0.3);
-      border-radius: 20px;
-      padding: 16px 14px;
+      border: 2px solid rgba(255,255,255,0.28);
+      border-radius: 14px;
+      padding: 9px 10px;
       color: #fff;
       font-family: 'Nunito', sans-serif;
-      font-size: 15px;
+      font-size: 10px;
       font-weight: 800;
       cursor: pointer;
       position: relative;
@@ -786,8 +786,8 @@
       text-align: left;
       display: flex;
       align-items: center;
-      gap: 12px;
-      min-height: 72px;
+      gap: 8px;
+      min-height: 50px;
     }
 
     .opcion-btn::before {
@@ -806,20 +806,20 @@
     .opcion-btn.focused {
       background: linear-gradient(135deg, #ff00a0 0%, #ff6b35 100%);
       border-color: #fff;
-      transform: scale(1.05) rotate(-1deg);
-      box-shadow: 0 10px 30px rgba(255,0,160,0.5);
+      transform: scale(1.02) rotate(-0.5deg);
+      box-shadow: 0 6px 16px rgba(255,0,160,0.45);
     }
 
     .opcion-letra {
-      width: 40px;
-      height: 40px;
+      width: 26px;
+      height: 26px;
       background: rgba(0,0,0,0.3);
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
       font-weight: 900;
-      font-size: 18px;
+      font-size: 13px;
       flex: 0 0 auto;
     }
 
@@ -828,7 +828,7 @@
       color: #ff00a0;
     }
 
-    .opcion-texto { flex: 1; line-height: 1.25; }
+    .opcion-texto { flex: 1; line-height: 1.2; }
 
     /* Resultados chaos */
     .resultados-screen {
@@ -837,7 +837,7 @@
       top: 0; left: 0; right: 0; bottom: 0;
       background: linear-gradient(135deg, #ff00a0 0%, #ff6b35 50%, #f7931e 100%);
       z-index: 400;
-      padding: 30px 20px;
+      padding: 14px 12px 10px;
       flex-direction: column;
       align-items: center;
       justify-content: flex-start;
@@ -857,10 +857,10 @@
 
     .resultados-titulo {
       font-family: 'Fredoka One', cursive;
-      font-size: 32px;
+      font-size: 20px;
       color: #fff;
       text-align: center;
-      margin-bottom: 20px;
+      margin-bottom: 8px;
       text-shadow: 0 0 30px rgba(0,0,0,0.5);
       animation: titleBounce 1s infinite;
       flex-shrink: 0;
@@ -875,7 +875,7 @@
 
     .resultado-bar {
       width: 100%;
-      margin: 12px 0;
+      margin: 8px 0;
       position: relative;
     }
 
@@ -883,7 +883,7 @@
       display: flex;
       justify-content: space-between;
       color: #fff;
-      font-size: 14px;
+      font-size: 10px;
       font-weight: 800;
       margin-bottom: 8px;
       text-shadow: 0 2px 4px rgba(0,0,0,0.3);
@@ -891,9 +891,9 @@
     }
 
     .resultado-track {
-      height: 35px;
+      height: 22px;
       background: rgba(0,0,0,0.3);
-      border-radius: 20px;
+      border-radius: 12px;
       overflow: hidden;
       position: relative;
       border: 2px solid rgba(255,255,255,0.2);
@@ -901,14 +901,14 @@
 
     .resultado-fill {
       height: 100%;
-      border-radius: 20px;
+      border-radius: 12px;
       display: flex;
       align-items: center;
       justify-content: flex-end;
-      padding-right: 15px;
+      padding-right: 8px;
       color: #fff;
       font-weight: 900;
-      font-size: 14px;
+      font-size: 10px;
       width: 0%;
       animation: fillChaos 1.5s ease forwards;
       position: relative;
@@ -951,9 +951,9 @@
     .resultado-fill.alt3 { background: linear-gradient(90deg, #00ffff, #0088ff); }
 
     .resultados-close {
-      margin-top: 14px;
+      margin-top: 8px;
       color: #fff;
-      font-size: 12px;
+      font-size: 10px;
       font-weight: 800;
       text-shadow: 0 2px 4px rgba(0,0,0,0.3);
     }
@@ -1059,7 +1059,7 @@
       align-items: center;
       justify-content: center;
       gap: 6px;
-      font-size: 12px;
+      font-size: 10px;
       font-weight: 800;
       color: #4A5568;
       transition: all 0.3s ease;
@@ -1105,7 +1105,7 @@
     }
 
     .menu-item .icon {
-      font-size: 32px;
+      font-size: 20px;
       transition: transform 0.3s;
     }
 
@@ -1364,7 +1364,7 @@
     .friend-name {
       font-weight: 900;
       color: #2D3748;
-      font-size: 12px;
+      font-size: 10px;
       line-height: 1.1;
     }
 
@@ -1527,7 +1527,7 @@
 
     .murmullo-floating {
       position: absolute;
-      font-size: 18px;
+      font-size: 13px;
       filter: drop-shadow(0 0 6px rgba(255,255,255,0.7));
       animation: floatEmoji 2s ease-in-out infinite;
       z-index: 1;
@@ -1701,11 +1701,50 @@
       display: flex;
     }
 
+
+    #option-selector.chaos-survey-choice {
+      background: linear-gradient(135deg, #1a0a2e 0%, #2d1b4e 50%, #1a0a2e 100%);
+      justify-content: flex-start;
+      padding: 18px 12px 12px;
+      z-index: 320;
+    }
+
+    #option-selector.chaos-survey-choice .selector-title {
+      color: #fff;
+      font-size: 13px;
+      margin-bottom: 10px;
+      text-shadow: 0 0 16px rgba(255,255,255,.5);
+    }
+
+    #option-selector.chaos-survey-choice #option-selector-list {
+      width: 100%;
+      max-height: 100%;
+    }
+
+    #option-selector.chaos-survey-choice .selector-item {
+      width: 100% !important;
+      min-height: 64px !important;
+      border-radius: 14px !important;
+      border: 2px solid rgba(255,255,255,.28);
+      background: rgba(255,255,255,.1);
+      color: #fff;
+      padding: 10px 12px !important;
+      margin-bottom: 8px;
+      box-shadow: 0 4px 0 rgba(0,0,0,.25);
+    }
+
+    #option-selector.chaos-survey-choice .selector-item.focused {
+      background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+      border-color: #fff;
+      transform: scale(1.02);
+      box-shadow: 0 0 0 2px rgba(255,255,255,.22), 0 8px 18px rgba(247,147,30,.45);
+    }
+
     .selector-title {
       color: #2D3748;
       font-family: 'Fredoka One', cursive;
-      font-size: 18px;
-      margin-bottom: 20px;
+      font-size: 13px;
+      margin-bottom: 8px;
       text-align: center;
       flex-shrink: 0;
     }
@@ -1731,7 +1770,7 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      font-size: 12px;
+      font-size: 10px;
       font-weight: 700;
       transition: all 0.1s ease;
       cursor: pointer;
@@ -1838,8 +1877,8 @@
     .response-title {
       color: white;
       font-family: 'Fredoka One', cursive;
-      font-size: 15px;
-      margin-bottom: 12px;
+      font-size: 10px;
+      margin-bottom: 6px;
       text-align: center;
     }
 
@@ -1875,7 +1914,7 @@
       font-size: 9px;
       font-weight: 800;
       color: #2D3748;
-      margin-top: 5px;
+      margin-top: 2px;
     }
 
     .response-actions {
@@ -1886,8 +1925,8 @@
 
     .response-action {
       padding: 8px 12px;
-      border-radius: 20px;
-      font-size: 12px;
+      border-radius: 12px;
+      font-size: 10px;
       font-weight: 800;
       border: 2px solid rgba(255,255,255,0.3);
       color: white;
@@ -1923,7 +1962,7 @@
 
     .confirm-box {
       background: white;
-      border-radius: 20px;
+      border-radius: 12px;
       padding: 25px;
       width: 100%;
       max-width: 260px;
@@ -1935,13 +1974,13 @@
       font-family: 'Fredoka One', cursive;
       font-size: 20px;
       color: #E53E3E;
-      margin-bottom: 12px;
+      margin-bottom: 6px;
     }
 
     .confirm-text {
       font-size: 13px;
       color: #4A5568;
-      margin-bottom: 20px;
+      margin-bottom: 8px;
       line-height: 1.5;
     }
 
@@ -2201,7 +2240,7 @@
       background: var(--device-color);
       color: white;
       padding: 10px;
-      font-size: 12px;
+      font-size: 10px;
       font-weight: 800;
       text-align: center;
       transform: translateY(100%);
@@ -2262,7 +2301,7 @@
       position: relative;
       width: 120px;
       height: 120px;
-      margin-bottom: 20px;
+      margin-bottom: 8px;
     }
 
     .envio-avatar {
@@ -2387,7 +2426,7 @@
     }
 
     .toque-recibido-mensaje {
-      font-size: 12px;
+      font-size: 10px;
       margin-bottom: 8px;
       padding: 0 10px;
       font-weight: 600;
@@ -2482,12 +2521,12 @@
 
     .respuesta-recibida-nombre {
       font-family: 'Fredoka One', cursive;
-      font-size: 22px;
+      font-size: 10px;
       margin-bottom: 5px;
     }
 
     .respuesta-recibida-texto {
-      font-size: 14px;
+      font-size: 10px;
       opacity: 0.9;
       margin-bottom: 15px;
     }
@@ -2524,7 +2563,7 @@
       left: 50%;
       transform: translate(-50%, -50%);
       background: linear-gradient(145deg, #FFD93D, #F6AD55);
-      border-radius: 20px;
+      border-radius: 12px;
       padding: 20px;
       text-align: center;
       box-shadow: 0 20px 60px rgba(0,0,0,0.4);
@@ -2567,14 +2606,14 @@
     }
 
     .nuevo-emoji-numero {
-      font-size: 18px;
+      font-size: 13px;
       font-weight: 800;
       color: #744210;
       margin-bottom: 3px;
     }
 
     .nuevo-emoji-rareza {
-      font-size: 12px;
+      font-size: 10px;
       font-weight: 700;
       color: #975A16;
       margin-bottom: 8px;
@@ -2587,7 +2626,7 @@
     .nuevo-emoji-stats {
       font-size: 11px;
       color: #975A16;
-      margin-bottom: 12px;
+      margin-bottom: 6px;
       font-weight: 600;
       display: flex;
       justify-content: center;
@@ -2599,7 +2638,7 @@
       color: #D69E2E;
       border: none;
       padding: 10px 30px;
-      border-radius: 20px;
+      border-radius: 12px;
       font-size: 13px;
       font-weight: 800;
       cursor: pointer;
@@ -2633,7 +2672,7 @@
 
     .ficha-todex-content {
       background: white;
-      border-radius: 20px;
+      border-radius: 12px;
       padding: 25px;
       width: 100%;
       max-width: 260px;
@@ -2663,7 +2702,7 @@
     }
 
     .ficha-todex-rareza {
-      font-size: 12px;
+      font-size: 10px;
       font-weight: 800;
       padding: 4px 12px;
       border-radius: 12px;
@@ -2682,7 +2721,7 @@
     .ficha-todex-stats {
       display: flex;
       justify-content: space-around;
-      margin-bottom: 20px;
+      margin-bottom: 8px;
       gap: 10px;
     }
 
@@ -2711,8 +2750,8 @@
       color: white;
       border: none;
       padding: 12px 30px;
-      border-radius: 20px;
-      font-size: 14px;
+      border-radius: 12px;
+      font-size: 10px;
       font-weight: 800;
       cursor: pointer;
       box-shadow: 0 4px 0 #38A169;
@@ -2814,7 +2853,7 @@
 
     .combate-resultado-final {
       font-family: 'Fredoka One', cursive;
-      font-size: 32px;
+      font-size: 20px;
       margin-top: 20px;
       text-shadow: 0 4px 8px rgba(0,0,0,0.5);
     }
@@ -3531,6 +3570,7 @@ const app = {
     selectorType: null,
     selectorIndex: 0,
     optionItems: [],
+    selectorMeta: {},
     pendingToque: null,
     registroInstituto: {
       provincia: '',
@@ -3545,6 +3585,7 @@ const app = {
     perfilAlumno: {
       active: false,
       source: '',
+      preview: null,
       data: null
     },
     streakMetaByFriend: {},
@@ -3688,6 +3729,7 @@ const app = {
       this.checkRespuestas();
       this.refreshHomeState('init');
       this.cargarEncuestaActiva();
+      this.syncPerfilPublico('init');
     }, 1000);
     
     setInterval(() => {
@@ -4083,6 +4125,7 @@ const app = {
     this.showMsg(c ? `🎨 ${c.name}` : 'Color cambiado');
     
     this.generarQR();
+    this.syncPerfilPublico('setup-complete');
     this.showPage('home', false);
   },
 
@@ -4156,8 +4199,9 @@ const app = {
     }
     
     if (this.state.inSelector) {
-      document.querySelectorAll('.selector-modal').forEach(m => m.classList.remove('active'));
+      document.querySelectorAll('.selector-modal').forEach(m => { m.classList.remove('active'); m.classList.remove('chaos-survey-choice'); });
       this.state.inSelector = false;
+      this.state.selectorMeta = {};
       return;
     }
     
@@ -4358,7 +4402,7 @@ const app = {
           this.showOptionSelector('📊 Encuesta pendiente', ['Ver encuesta', 'Ignorar (ir a Murmullo)'], (value) => {
             if (value === 'Ver encuesta') this.abrirEncuesta();
             else this.showPage('murmullo');
-          });
+          }, { chaosSurvey: true });
         } else {
           this.showPage('menu');
         }
@@ -4410,7 +4454,7 @@ const app = {
       case 'contacts':
         const amigos = Object.entries(this.contactos);
         if (amigos[focus.index]) {
-          this.abrirPerfilAlumno(amigos[focus.index][0], true);
+          this.abrirPerfilAlumno(amigos[focus.index][0], true, { nombre: amigos[focus.index][1], avatar: localStorage.getItem('avatar_' + amigos[focus.index][0]) || '👤' });
         }
         break;
       case 'qr':
@@ -5210,7 +5254,7 @@ const app = {
     this.confirmarRegistroInstituto();
   },
 
-  showOptionSelector(title, items, onSelect) {
+  showOptionSelector(title, items, onSelect, options = {}) {
     if (!items || !items.length) {
       this.showMsg('No hay opciones');
       return;
@@ -5219,6 +5263,7 @@ const app = {
     this.state.selectorType = 'options';
     this.state.optionItems = items;
     this.state.optionOnSelect = onSelect;
+    this.state.selectorMeta = options || {};
     this.state.selectorIndex = 0;
 
     const modal = document.getElementById('option-selector');
@@ -5226,6 +5271,7 @@ const app = {
     const titleEl = document.getElementById('option-selector-title');
     if (!modal || !list || !titleEl) return;
 
+    modal.classList.toggle('chaos-survey-choice', !!this.state.selectorMeta.chaosSurvey);
     titleEl.textContent = `▼ ${title}`;
     list.innerHTML = items.map((item, i) => `
       <div class="selector-item ${i === 0 ? 'focused' : ''}" data-index="${i}" style="height: auto; min-height: 48px; width: 100%; border-radius: 12px; padding: 10px 12px; justify-content: flex-start;">
@@ -5263,6 +5309,7 @@ const app = {
     }).catch(() => {});
 
     this.showPage('avatar', false);
+    this.syncPerfilPublico('registro-instituto');
   },
 
   renderCursoSecreto() {
@@ -5335,7 +5382,7 @@ const app = {
           </div>
         </div>`;
       const users = dataRows.map((c, i) => `
-        <div class="list-item" data-index="${i + 1}" data-id="${c.id}">
+        <div class="list-item" data-index="${i + 1}" data-id="${c.id}" data-name="${(c.nombre || 'Alumno').replace(/"/g,'&quot;')}" data-avatar="${c.avatar || '👤'}" data-curso="${c.curso || ''}">
           <span style="font-size: 20px;">${c.avatar || '👤'}</span>
           <div style="flex:1;">
             <div style="font-weight:800; color:#2D3748;">${c.nombre || 'Alumno'}</div>
@@ -5394,7 +5441,7 @@ const app = {
     if (!selected) return;
     const id = selected.dataset.id;
     if (!id) return;
-    this.abrirPerfilAlumno(id, false);
+    this.abrirPerfilAlumno(id, false, { nombre: selected.dataset.name || 'Alumno', avatar: selected.dataset.avatar || '👤', curso: selected.dataset.curso || '' });
   },
 
   renderMurmullo() {
@@ -5507,6 +5554,27 @@ const app = {
     this.state.secretFlow.curso = this.state.registroInstituto.curso || localStorage.getItem('curso') || CURSOS_INSTITUTO[0];
     this.state.secretFlow.companeros = [];
     this.cargarCompanerosCurso(this.state.secretFlow.curso);
+  },
+
+  async syncPerfilPublico(reason = 'manual') {
+    const payload = {
+      userId: this.miID,
+      nombre: localStorage.getItem('miNombre') || 'Alumno',
+      avatar: this.state.settings.avatar || localStorage.getItem('avatar') || '👤',
+      provincia: this.state.registroInstituto.provincia || localStorage.getItem('provincia') || '',
+      instituto: this.state.registroInstituto.instituto || localStorage.getItem('instituto') || '',
+      curso: this.state.registroInstituto.curso || localStorage.getItem('curso') || '',
+      todox: Array.isArray(this.todex?.captured) ? this.todex.captured : []
+    };
+    try {
+      await fetch(`${BACK}/perfil-sync`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+    } catch (e) {
+      this.debug('Sync perfil (' + reason + ') falló: ' + e.message);
+    }
   },
 
   async refreshHomeState(reason = 'manual') {
@@ -5836,17 +5904,27 @@ const app = {
     return { cls: 'normal', label: 'activa' };
   },
 
-  async abrirPerfilAlumno(targetId, isFriend = false) {
+  async abrirPerfilAlumno(targetId, isFriend = false, preview = null) {
     try {
       const response = await fetch(`${BACK}/perfil-publico?targetId=${encodeURIComponent(targetId)}`);
       const data = await response.json();
       if (!response.ok || !data.ok || !data.perfil) throw new Error(data.error || 'No se pudo cargar perfil');
       this.state.perfilAlumno.active = true;
       this.state.perfilAlumno.source = isFriend ? 'friend' : 'instituto';
-      this.state.perfilAlumno.data = data.perfil;
+      this.state.perfilAlumno.preview = preview || null;
+      this.state.perfilAlumno.data = { ...data.perfil, id: targetId };
       this.showPage('perfil-alumno');
     } catch (e) {
-      this.showMsg('❌ ' + e.message);
+      if (preview) {
+        this.state.perfilAlumno.active = true;
+        this.state.perfilAlumno.source = isFriend ? 'friend' : 'instituto';
+        this.state.perfilAlumno.preview = preview || null;
+        this.state.perfilAlumno.data = { id: targetId, nombre: preview.nombre || 'Alumno', avatar: preview.avatar || '👤', curso: preview.curso || '', instituto: '', todox_total: 0, todox: [] };
+        this.showPage('perfil-alumno');
+        this.showMsg('⚠️ Perfil parcial (sin conexión completa)');
+      } else {
+        this.showMsg('❌ ' + e.message);
+      }
     }
   },
 
@@ -5862,25 +5940,32 @@ const app = {
     const streak = document.getElementById('perfil-alumno-streak');
     const grid = document.getElementById('perfil-alumno-grid');
 
+    const preview = this.state.perfilAlumno.preview || {};
+    const nombreFinal = p.nombre && p.nombre !== 'Alumno' ? p.nombre : (preview.nombre || p.nombre || 'Alumno');
+    const avatarFinal = p.avatar && p.avatar !== '👤' ? p.avatar : (preview.avatar || p.avatar || '👤');
+    const cursoFinal = p.curso || preview.curso || '';
+    const todoxList = Array.isArray(p.todox) ? p.todox.map(v => Number(v)).filter(v => Number.isInteger(v) && v >= 1 && v <= 150) : [];
+    const todoxTotal = Number.isFinite(Number(p.todox_total)) && Number(p.todox_total) > 0 ? Number(p.todox_total) : todoxList.length;
+
     if (title) title.textContent = this.state.perfilAlumno.source === 'friend' ? '👥 Perfil de amigo' : '🏫 Perfil alumno';
-    if (avatar) avatar.textContent = p.avatar || '👤';
-    if (nombre) nombre.textContent = p.nombre || 'Alumno';
-    if (meta) meta.textContent = p.curso || '';
-    if (tag) tag.textContent = this.state.perfilAlumno.source === 'friend' ? 'Amigo' : 'Instituto';
-    if (todox) todox.textContent = `ToDox: ${Number(p.todox_total || 0)} / 150`;
+    if (avatar) avatar.textContent = avatarFinal;
+    if (nombre) nombre.textContent = nombreFinal;
+    if (meta) meta.textContent = cursoFinal;
+    if (tag) tag.textContent = this.state.perfilAlumno.source === 'friend' ? 'Amigo' : (p.instituto || 'Instituto');
+    if (todox) todox.textContent = `ToDox: ${todoxTotal} / 150`;
 
     if (streak) {
       if (this.state.perfilAlumno.source === 'friend') {
         const valor = Number(this.state.streaksByFriend?.[p.id] || 0);
         streak.style.display = 'block';
-        streak.textContent = `🔥 Racha con ${p.nombre || 'amigo'}: ${valor} días`;
+        streak.textContent = `🔥 Racha con ${nombreFinal || 'amigo'}: ${valor} días`;
       } else {
         streak.style.display = 'none';
       }
     }
 
     if (grid) {
-      const unlocked = new Set((p.todox || []).map(v => Number(v)));
+      const unlocked = new Set(todoxList);
       grid.innerHTML = Array.from({ length: 150 }, (_, i) => {
         const id = i + 1;
         const has = unlocked.has(id);
@@ -6158,8 +6243,9 @@ const app = {
       this.showMsg(`${s.emoji} ${s.label}`);
       this.updateHome();
     }
-    document.querySelectorAll('.selector-modal').forEach(m => m.classList.remove('active'));
+    document.querySelectorAll('.selector-modal').forEach(m => { m.classList.remove('active'); m.classList.remove('chaos-survey-choice'); });
     this.state.inSelector = false;
+    this.state.selectorMeta = {};
     this.updateSettingsUI();
   },
 
@@ -6566,6 +6652,7 @@ const app = {
       this.todex.emojis_stats[nuevo] = stats;
       
       localStorage.setItem('todex', JSON.stringify(this.todex));
+      this.syncPerfilPublico('unlock');
       
       this.debug('¡Nuevo emoji desbloqueado!: #' + nuevo + ' ' + rareza);
       
@@ -7403,6 +7490,7 @@ const app = {
       this.todex.captured.splice(index, 1);
       delete this.todex.emojis_stats[emojiId];
       localStorage.setItem('todex', JSON.stringify(this.todex));
+      this.syncPerfilPublico('combate-perdido');
       
       // Notificar al backend
       fetch(`${BACK}/transferir-emoji`, {
@@ -7424,6 +7512,7 @@ const app = {
       this.todex.captured.sort((a, b) => a - b);
       this.todex.emojis_stats[emojiId] = calcularStatsBase(emojiId);
       localStorage.setItem('todex', JSON.stringify(this.todex));
+      this.syncPerfilPublico('combate-ganado');
     }
   },
 

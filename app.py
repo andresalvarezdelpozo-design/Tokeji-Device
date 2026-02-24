@@ -571,6 +571,50 @@ def perfil_publico():
         return jsonify(ok=False, error=str(e)), 500
 
 
+
+@app.route("/perfil-sync", methods=["POST"])
+def perfil_sync():
+    try:
+        data = request.get_json() or {}
+        user_id = (data.get("userId") or "").strip()
+        if not user_id:
+            return jsonify(ok=False, error="Falta userId"), 400
+
+        actual = perfiles.get(user_id, {})
+        nombre = (data.get("nombre") or actual.get("nombre") or "Alumno").strip() or "Alumno"
+        avatar = (data.get("avatar") or actual.get("avatar") or "👤").strip() or "👤"
+        provincia = (data.get("provincia") or actual.get("provincia") or "").strip()
+        instituto = (data.get("instituto") or actual.get("instituto") or "").strip()
+        curso = (data.get("curso") or actual.get("curso") or "").strip()
+
+        todox_in = data.get("todox", [])
+        todox_clean = []
+        if isinstance(todox_in, list):
+            for valor in todox_in:
+                try:
+                    n = int(valor)
+                    if 1 <= n <= 150:
+                        todox_clean.append(n)
+                except Exception:
+                    continue
+        todox_clean = sorted(list(set(todox_clean)))
+
+        perfiles[user_id] = {
+            "provincia": provincia,
+            "instituto": instituto,
+            "curso": curso,
+            "nombre": nombre,
+            "avatar": avatar,
+            "fecha_registro": actual.get("fecha_registro", int(time.time())),
+            "todox_visitados": todox_clean if todox_clean else actual.get("todox_visitados", [])
+        }
+
+        guardar_datos()
+        return jsonify(ok=True, todox_total=len(perfiles[user_id].get("todox_visitados", [])))
+    except Exception as e:
+        return jsonify(ok=False, error=str(e)), 500
+
+
 @app.route("/murmullo-stats", methods=["GET"])
 def murmullo_stats():
     try:
