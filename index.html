@@ -678,46 +678,306 @@
       to { transform: translateY(0); opacity: 1; }
     }
 
-    .encuesta-option {
-      width: 100%;
-      border: 2px solid rgba(255,255,255,0.25);
-      background: rgba(255,255,255,0.08);
+    /* ===== PANTALLA ENCUESTA CHAOS ===== */
+    .encuesta-screen {
+      display: none;
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: linear-gradient(135deg, #1a0a2e 0%, #2d1b4e 50%, #1a0a2e 100%);
+      z-index: 300;
+      padding: 30px 20px;
+      animation: encuestaExplosion 0.6s ease;
+    }
+
+    .encuesta-screen.active {
+      display: flex;
+      flex-direction: column;
+    }
+
+    @keyframes encuestaExplosion {
+      0% { transform: scale(0) rotate(-10deg); opacity: 0; }
+      50% { transform: scale(1.1) rotate(5deg); }
+      100% { transform: scale(1) rotate(0); opacity: 1; }
+    }
+
+    .encuesta-header {
+      text-align: center;
+      margin-bottom: 18px;
+      flex-shrink: 0;
+    }
+
+    .encuesta-badge {
+      display: inline-block;
+      background: linear-gradient(90deg, #ff00a0, #ff6b35);
       color: #fff;
-      border-radius: 18px;
-      padding: 14px 12px;
-      font-size: 13px;
+      padding: 8px 20px;
+      border-radius: 25px;
+      font-size: 12px;
       font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      animation: badgeShake 2s infinite;
+      margin-bottom: 12px;
+    }
+
+    @keyframes badgeShake {
+      0%, 100% { transform: rotate(-3deg); }
+      50% { transform: rotate(3deg); }
+    }
+
+    .encuesta-pregunta {
+      font-family: 'Fredoka One', cursive;
+      font-size: 22px;
+      color: #fff;
+      line-height: 1.3;
+      text-shadow: 0 0 20px rgba(255,255,255,0.5);
+      animation: questionPulse 3s infinite;
+    }
+
+    @keyframes questionPulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.02); }
+    }
+
+    .encuesta-contador {
+      text-align: center;
+      margin: 8px 0 16px;
+      font-size: 14px;
+      color: #00ffff;
+      font-weight: 800;
+      text-shadow: 0 0 10px rgba(0,255,255,0.5);
+      flex-shrink: 0;
+    }
+
+    .encuesta-contador span {
+      font-size: 28px;
+      display: block;
+      margin-top: 5px;
+      animation: counterTick 1s infinite;
+    }
+
+    @keyframes counterTick {
+      0%, 100% { transform: scale(1); color: #00ffff; }
+      50% { transform: scale(1.2); color: #ffdd00; }
+    }
+
+    .opciones-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      flex: 1;
+      overflow-y: auto;
+      padding-right: 2px;
+    }
+
+    .opcion-btn {
+      background: rgba(255,255,255,0.1);
+      border: 3px solid rgba(255,255,255,0.3);
+      border-radius: 20px;
+      padding: 16px 14px;
+      color: #fff;
+      font-family: 'Nunito', sans-serif;
+      font-size: 15px;
+      font-weight: 800;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s;
       text-align: left;
-      margin-bottom: 10px;
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
+      min-height: 72px;
     }
 
-    .encuesta-option.focused {
+    .opcion-btn::before {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 100%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: left 0.5s;
+    }
+
+    .opcion-btn.focused::before {
+      left: 100%;
+    }
+
+    .opcion-btn.focused {
+      background: linear-gradient(135deg, #ff00a0 0%, #ff6b35 100%);
       border-color: #fff;
-      background: linear-gradient(135deg, #ff00a0, #ff6b35);
-      box-shadow: 0 0 0 2px rgba(255,255,255,.25), 0 8px 20px rgba(255,0,160,.35);
-      transform: scale(1.02);
+      transform: scale(1.05) rotate(-1deg);
+      box-shadow: 0 10px 30px rgba(255,0,160,0.5);
     }
-
 
     .opcion-letra {
-      width: 30px;
-      height: 30px;
+      width: 40px;
+      height: 40px;
+      background: rgba(0,0,0,0.3);
       border-radius: 50%;
-      background: rgba(0,0,0,.25);
-      border: 1px solid rgba(255,255,255,.35);
-      display: inline-flex;
+      display: flex;
       align-items: center;
       justify-content: center;
       font-weight: 900;
+      font-size: 18px;
       flex: 0 0 auto;
     }
 
-    .encuesta-option.focused .opcion-letra {
+    .opcion-btn.focused .opcion-letra {
       background: #fff;
       color: #ff00a0;
+    }
+
+    .opcion-texto { flex: 1; line-height: 1.25; }
+
+    /* Resultados chaos */
+    .resultados-screen {
+      display: none;
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: linear-gradient(135deg, #ff00a0 0%, #ff6b35 50%, #f7931e 100%);
+      z-index: 400;
+      padding: 30px 20px;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      overflow-y: auto;
+    }
+
+    .resultados-screen.active {
+      display: flex;
+      animation: resultsParty 0.8s ease;
+    }
+
+    @keyframes resultsParty {
+      0% { transform: scale(0) rotate(180deg); }
+      50% { transform: scale(1.2) rotate(-10deg); }
+      100% { transform: scale(1) rotate(0); }
+    }
+
+    .resultados-titulo {
+      font-family: 'Fredoka One', cursive;
+      font-size: 32px;
+      color: #fff;
+      text-align: center;
+      margin-bottom: 20px;
+      text-shadow: 0 0 30px rgba(0,0,0,0.5);
+      animation: titleBounce 1s infinite;
+      flex-shrink: 0;
+    }
+
+    @keyframes titleBounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    #encuesta-resultados-list { width: 100%; }
+
+    .resultado-bar {
+      width: 100%;
+      margin: 12px 0;
+      position: relative;
+    }
+
+    .resultado-label {
+      display: flex;
+      justify-content: space-between;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 800;
+      margin-bottom: 8px;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+      gap: 8px;
+    }
+
+    .resultado-track {
+      height: 35px;
+      background: rgba(0,0,0,0.3);
+      border-radius: 20px;
+      overflow: hidden;
+      position: relative;
+      border: 2px solid rgba(255,255,255,0.2);
+    }
+
+    .resultado-fill {
+      height: 100%;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding-right: 15px;
+      color: #fff;
+      font-weight: 900;
+      font-size: 14px;
+      width: 0%;
+      animation: fillChaos 1.5s ease forwards;
+      position: relative;
+      overflow: hidden;
+      --final-width: 0%;
+    }
+
+    .resultado-fill::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+      animation: shimmer 2s infinite;
+    }
+
+    @keyframes shimmer {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+
+    @keyframes fillChaos {
+      0% { width: 0%; }
+      100% { width: var(--final-width); }
+    }
+
+    .resultado-fill.ganador {
+      background: linear-gradient(90deg, #00ff00 0%, #00cc00 100%) !important;
+      box-shadow: 0 0 30px #00ff00;
+      animation: fillChaos 1.5s ease forwards, winnerPulse 1s infinite;
+    }
+
+    @keyframes winnerPulse {
+      0%, 100% { box-shadow: 0 0 30px #00ff00; }
+      50% { box-shadow: 0 0 50px #00ff00, 0 0 80px #00ff00; }
+    }
+
+    .resultado-fill.alt0 { background: linear-gradient(90deg, #ff00a0, #ff6b35); }
+    .resultado-fill.alt1 { background: linear-gradient(90deg, #ff6b35, #f7931e); }
+    .resultado-fill.alt2 { background: linear-gradient(90deg, #f7931e, #ffdd00); }
+    .resultado-fill.alt3 { background: linear-gradient(90deg, #00ffff, #0088ff); }
+
+    .resultados-close {
+      margin-top: 14px;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 800;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    }
+
+    .murmullo-survey-cta {
+      margin-top: 8px;
+      display: none;
+      text-align: center;
+      font-size: 11px;
+      font-weight: 900;
+      color: #7DF9FF;
+      text-shadow: 0 0 8px rgba(0,255,255,.8), 0 0 16px rgba(255,0,160,.6);
+      border: 1px solid rgba(125,249,255,.6);
+      border-radius: 12px;
+      padding: 6px 10px;
+      background: rgba(20,8,45,.45);
+      animation: neonBlink 1.1s ease-in-out infinite;
+    }
+
+    .murmullo-survey-cta.active { display: block; }
+
+    @keyframes neonBlink {
+      0%,100% { transform: scale(1); opacity: .9; }
+      50% { transform: scale(1.03); opacity: 1; }
     }
 
     .murmullo-hotline {
@@ -2815,6 +3075,7 @@
               <div class="murmullo-title">🔮 MURMULLO CHAOS</div>
               <div class="murmullo-insti" id="murmullo-insti">IES MONCADA</div>
               <div class="murmullo-hotline" id="murmullo-hotline"></div>
+              <div class="murmullo-survey-cta" id="murmullo-survey-cta">📊 ENCUESTA ACTIVA · OK para responder</div>
             </div>
             <div class="murmullo-grid">
               <div class="murmullo-card secretos"><div class="emoji">💜</div><div><strong id="murmullo-secretos">Hoy alguien dejó señal</strong><span>señales</span></div></div>
@@ -2929,21 +3190,19 @@
             </div>
           </div>
 
-          <div class="selector-modal" id="encuesta-screen" style="background: rgba(5,5,15,.45); color: white;">
-            <div style="background: linear-gradient(145deg, #1A202C, #2D3748); color: white; width:92%; max-width:300px; max-height:78%; overflow:auto; border-radius:20px; border:2px solid rgba(255,255,255,.25); padding:16px 14px; box-shadow:0 14px 36px rgba(0,0,0,.45);">
-              <div class="selector-title" id="encuesta-title" style="color:white; margin-bottom:10px;">📊 Flash Poll</div>
-              <div id="encuesta-question" style="font-size:14px; font-weight:800; text-align:center; margin-bottom:10px;">Cargando encuesta...</div>
-              <div id="encuesta-meta" style="font-size:11px; opacity:.9; margin-bottom:14px; text-align:center;">—</div>
-              <div id="encuesta-options" style="width:100%;"></div>
+          <div class="encuesta-screen" id="encuesta-screen">
+            <div class="encuesta-header">
+              <div class="encuesta-badge" id="encuesta-title">⚡ FLASH POLL CHAOS ⚡</div>
+              <div id="encuesta-question" class="encuesta-pregunta">Cargando encuesta...</div>
             </div>
+            <div id="encuesta-meta" class="encuesta-contador">Curso · votos<span>--:--</span></div>
+            <div id="encuesta-options" class="opciones-grid"></div>
           </div>
 
-          <div class="selector-modal" id="encuesta-resultados-screen" style="background: rgba(40,0,25,.45); color: white;">
-            <div style="background: linear-gradient(145deg, #702459, #D53F8C); color: white; width:92%; max-width:300px; max-height:78%; overflow:auto; border-radius:20px; border:2px solid rgba(255,255,255,.25); padding:16px 14px; box-shadow:0 14px 36px rgba(0,0,0,.45);">
-              <div class="selector-title" style="color:white; margin-bottom:10px;">🎉 Resultados</div>
-              <div id="encuesta-resultados-list" style="width:100%;"></div>
-              <div style="font-size:11px; margin-top:12px; opacity:.9; text-align:center;">Pulsa OK o C para cerrar</div>
-            </div>
+          <div class="resultados-screen" id="encuesta-resultados-screen">
+            <div class="resultados-titulo">🎉 RESULTADOS</div>
+            <div id="encuesta-resultados-list"></div>
+            <div class="resultados-close">Pulsa OK o C para cerrar</div>
           </div>
 
           <!-- NUEVO: Selector de defensa (dentro de la pantalla) -->
@@ -4170,6 +4429,10 @@ const app = {
         if (focus.index === 0) this.jugarVSIA();
         else this.jugarVSAmigo();
         break;
+      case 'murmullo':
+        if (this.state.homeFlags?.survey_pending) this.abrirEncuesta();
+        else this.showMsg('Sin encuesta pendiente ahora');
+        break;
       case 'settings':
         this.activateSetting(focus.index);
         break;
@@ -5142,6 +5405,8 @@ const app = {
     const hot = document.getElementById('murmullo-hotline');
     const top = this.getTopStreakFriend();
     if (hot) hot.textContent = top ? `🔥 Racha top: ${top.nombre} (${top.streak} días)` : (this.state.murmulloStats.headline || this.state.homePriorityText);
+    const surveyCta = document.getElementById('murmullo-survey-cta');
+    if (surveyCta) surveyCta.classList.toggle('active', !!this.state.homeFlags?.survey_pending);
 
     const cards = this.state.murmulloStats.cardHeadlines || [];
     set('murmullo-secretos', (cards[0] || 'Señales en encuesta').slice(0, 34));
@@ -5362,13 +5627,14 @@ const app = {
     if (q) q.textContent = encuesta.pregunta;
     const remain = this.state.encuestaRemainingSec !== null ? this.state.encuestaRemainingSec : this.getEncuestaRemainingSec();
     if (meta) {
-      const countdown = remain === null ? '' : (remain > 0 ? ` · ⏱️ ${this.formatEncuestaCountdown(remain)}` : ' · ⏱️ Finalizada');
-      meta.textContent = `${encuesta.curso || 'Curso'} · ${encuesta.total_votos || 0} votos${countdown}`;
+      const top = `${encuesta.curso || 'Curso'} · ${encuesta.total_votos || 0} votos`;
+      const t = remain === null ? '--:--' : (remain > 0 ? this.formatEncuestaCountdown(remain) : 'FINAL');
+      meta.innerHTML = `${top}<span>${t}</span>`;
     }
     if (opts) {
       opts.innerHTML = (encuesta.opciones || []).map((op, i) => `
-        <div class="encuesta-option ${i === this.state.encuestaIndex ? 'focused' : ''}" data-index="${i}">
-          <span class="opcion-letra">${String.fromCharCode(65 + i)}</span><span>${op}</span>
+        <div class="opcion-btn ${i === this.state.encuestaIndex ? 'focused' : ''}" data-index="${i}">
+          <span class="opcion-letra">${String.fromCharCode(65 + i)}</span><span class="opcion-texto">${op}</span>
         </div>
       `).join('');
     }
@@ -5407,15 +5673,18 @@ const app = {
     const encuesta = this.state.encuestaActiva;
     const list = document.getElementById('encuesta-resultados-list');
     if (!encuesta || !list) return;
-    const total = Math.max(1, encuesta.total_votos || 1);
     const resultados = encuesta.resultados || [];
+    const totalReal = resultados.reduce((a, b) => a + (Number(b) || 0), 0);
+    const total = Math.max(1, totalReal || encuesta.total_votos || 1);
+    const maxVotes = Math.max(...resultados.map(v => Number(v) || 0), 0);
     list.innerHTML = (encuesta.opciones || []).map((op, i) => {
-      const votos = resultados[i] || 0;
+      const votos = Number(resultados[i] || 0);
       const pct = Math.round((votos / total) * 100);
-      return `<div style="margin-bottom:10px;">
-        <div style="display:flex; justify-content:space-between; font-size:11px; font-weight:800;"><span>${op}</span><span>${pct}%</span></div>
-        <div style="height:12px; background:rgba(0,0,0,.25); border-radius:8px; overflow:hidden; margin-top:4px;">
-          <div style="height:100%; width:${pct}%; background:linear-gradient(90deg,#F6E05E,#ED64A6);"></div>
+      const ganador = votos === maxVotes && maxVotes > 0;
+      return `<div class="resultado-bar">
+        <div class="resultado-label"><span>${op}</span><span>${pct}%</span></div>
+        <div class="resultado-track">
+          <div class="resultado-fill alt${i % 4} ${ganador ? 'ganador' : ''}" style="--final-width:${pct}%;">${votos}</div>
         </div>
       </div>`;
     }).join('');
