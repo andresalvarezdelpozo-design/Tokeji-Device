@@ -1017,8 +1017,8 @@
 
     .cola-badge {
       position: absolute;
-      top: 5px;
-      right: 5px;
+      top: 26px;
+      right: 6px;
       background: #F56565;
       color: white;
       font-size: 11px;
@@ -1028,7 +1028,10 @@
       box-shadow: 0 2px 0 #C53030;
       animation: pulse-badge 2s infinite;
       display: none;
-      z-index: 50;
+      z-index: 60;
+      max-width: 120px;
+      text-overflow: ellipsis;
+      overflow: hidden;
     }
 
     .cola-badge.active {
@@ -1206,21 +1209,96 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
+      justify-content: flex-start;
+      gap: 6px;
+      padding: 2px 4px 6px;
+      overflow: hidden;
     }
 
     #qr-mio {
       background: white;
-      padding: 16px;
+      padding: 8px;
       border-radius: 16px;
       box-shadow: 0 5px 20px rgba(0,0,0,0.1);
       border: 3px solid #FFD93D;
     }
 
     #qr-mio img {
-      width: 140px;
-      height: 140px;
+      width: 92px;
+      height: 92px;
       display: block;
+    }
+
+
+    .qr-manual-row {
+      width: 100%;
+      display: flex;
+      gap: 6px;
+      align-items: center;
+      margin-top: 2px;
+    }
+
+    .qr-manual-input {
+      flex: 1;
+      min-width: 0;
+      padding: 8px 10px;
+      border-radius: 10px;
+      border: 2px solid rgba(255,255,255,.35);
+      background: rgba(255,255,255,.95);
+      font-size: 10px;
+      font-weight: 700;
+    }
+
+    .qr-actions {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .qr-action-btn {
+      width: 100%;
+      border: 2px solid rgba(255,255,255,.25);
+      border-radius: 12px;
+      padding: 8px 10px;
+      font-size: 11px;
+      font-weight: 800;
+      color: #fff;
+      background: linear-gradient(135deg,#2D3748,#1A202C);
+      box-shadow: 0 3px 0 rgba(0,0,0,.25);
+      text-align: center;
+    }
+
+    .qr-action-btn.focused {
+      background: linear-gradient(135deg,#ff6b35,#f7931e);
+      border-color: #fff;
+      transform: scale(1.02);
+      box-shadow: 0 0 0 2px rgba(255,255,255,.2), 0 6px 16px rgba(247,147,30,.45);
+    }
+
+    #page-lista-instituto .list-item {
+      min-height: 42px;
+      padding: 8px 10px;
+      border-radius: 10px;
+      margin-bottom: 4px;
+    }
+
+    #page-lista-instituto .list-item[data-type="filtro"] {
+      min-height: 34px;
+      padding: 6px 10px;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .list-container::-webkit-scrollbar,
+    .todex-grid::-webkit-scrollbar,
+    .selector-grid::-webkit-scrollbar,
+    .opciones-grid::-webkit-scrollbar,
+    .resultados-screen::-webkit-scrollbar,
+    .encuesta-screen::-webkit-scrollbar {
+      width: 0;
+      height: 0;
+      display: none;
     }
 
     .todex-grid {
@@ -1561,6 +1639,7 @@
 
     .murmullo-personal-line {
       margin-top: 6px;
+      text-align: center;
       font-size: 9px;
       color: #2D3748;
       background: rgba(255,255,255,.75);
@@ -2334,7 +2413,8 @@
       color: white;
       font-family: 'Fredoka One', cursive;
       font-size: 20px;
-      margin-top: 20px;
+      margin-top: 10px;
+      pointer-events: none;
       text-shadow: 0 4px 8px rgba(0,0,0,0.3);
       animation: textoPop 0.5s ease 0.3s both;
     }
@@ -2354,7 +2434,8 @@
     .envio-check {
       font-size: 60px;
       color: #48BB78;
-      margin-top: 20px;
+      margin-top: 10px;
+      pointer-events: none;
       animation: checkPop 0.5s ease 1s both;
       text-shadow: 0 4px 8px rgba(0,0,0,0.3);
       display: none;
@@ -2412,8 +2493,8 @@
     }
 
     .toque-recibido-emoji {
-      font-size: 54px;
-      margin: 10px 0;
+      font-size: 40px;
+      margin: 6px 0;
       animation: bounceIn 0.8s ease 0.2s both;
       filter: drop-shadow(0 10px 20px rgba(0,0,0,0.3));
     }
@@ -2426,8 +2507,8 @@
     }
 
     .toque-recibido-mensaje {
-      font-size: 10px;
-      margin-bottom: 8px;
+      font-size: 11px;
+      margin-bottom: 6px;
       padding: 0 10px;
       font-weight: 600;
       line-height: 1.4;
@@ -2442,11 +2523,12 @@
     .respuestas-container {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 8px;
+      gap: 7px;
       width: 100%;
       max-width: 220px;
-      margin-top: 4px;
-      margin-bottom: 8px;
+      margin-top: 0;
+      margin-bottom: 14px;
+      transform: translateY(-6px);
     }
 
     .respuesta-option {
@@ -2532,13 +2614,13 @@
     }
 
     .respuesta-recibida-emoji {
-      font-size: 50px;
-      margin: 10px 0;
+      font-size: 38px;
+      margin: 6px 0;
       animation: bounceIn 0.6s ease 0.2s both;
       filter: drop-shadow(0 5px 15px rgba(0,0,0,0.3));
     }
 
-    .respuesta-recibida-btn {
+     .respuesta-recibida-btn {
       background: white;
       color: #4299E1;
       border: none;
@@ -2548,7 +2630,8 @@
       font-weight: 800;
       cursor: pointer;
       box-shadow: 0 4px 0 rgba(0,0,0,0.2);
-      margin-top: 20px;
+      margin-top: 10px;
+      pointer-events: none;
       transition: all 0.2s ease;
     }
 
@@ -2854,7 +2937,8 @@
     .combate-resultado-final {
       font-family: 'Fredoka One', cursive;
       font-size: 20px;
-      margin-top: 20px;
+      margin-top: 10px;
+      pointer-events: none;
       text-shadow: 0 4px 8px rgba(0,0,0,0.5);
     }
 
@@ -2939,9 +3023,7 @@
     
     <div class="device-logo">✨ TOKEJI ✨</div>
     <div class="shine"></div>
-    
-    <div class="cola-badge" id="cola-badge">📨 <span id="cola-count">0</span></div>
-    
+
     <div class="screen-container">
       <div class="screen">
         <div class="debug-info" id="debug-info"></div>
@@ -2949,6 +3031,7 @@
           <span>TOKEJI</span>
           <span id="clock">12:00</span>
         </div>
+        <div class="cola-badge" id="cola-badge">📨 <span id="cola-count">0</span></div>
 
         <div class="content">
           <div class="page active" id="page-splash">
@@ -3139,15 +3222,18 @@
           </div>
 
           <div class="page" id="page-qr">
-            <div class="setup-title">Mi Código QR</div>
+            <div class="setup-title">Mi QR + Amigos</div>
             <div class="qr-container">
               <div id="qr-mio"></div>
-              <div style="font-size: 11px; color: #718096; margin-top: 10px; text-align: center;">
-                Escanea para agregar
+              <div style="font-size: 10px; color: #718096; text-align: center; line-height:1.2;">Comparte tu QR o pega el código de un amigo</div>
+              <div class="qr-manual-row">
+                <input id="qr-manual-input" class="qr-manual-input" maxlength="80" placeholder="ID|Nombre|Avatar">
               </div>
-              <button class="qr-scan-btn focused" id="qr-scan-btn" onclick="app.scanQR()">
-                📷 Escanear QR de amigo
-              </button>
+              <div class="qr-actions" id="qr-actions">
+                <div class="qr-action-btn focused" data-index="0">📷 Escanear QR</div>
+                <div class="qr-action-btn" data-index="1">🤝 Agregar por código</div>
+                <div class="qr-action-btn" data-index="2">📲 Compartir por WhatsApp</div>
+              </div>
             </div>
           </div>
 
@@ -3730,6 +3816,7 @@ const app = {
       this.refreshHomeState('init');
       this.cargarEncuestaActiva();
       this.syncPerfilPublico('init');
+      this.syncFriendsFromServer();
     }, 1000);
     
     setInterval(() => {
@@ -4060,6 +4147,8 @@ const app = {
         break;
       case 'qr':
         this.generarQR();
+        this.state.focus = { type: 'qr', index: 0 };
+        this.updateQRActionsFocus();
         break;
     }
     
@@ -4458,10 +4547,7 @@ const app = {
         }
         break;
       case 'qr':
-        // El botón de escanear ahora está aquí
-        if (document.getElementById('qr-scan-btn').classList.contains('focused')) {
-          this.scanQR();
-        }
+        this.handleQRActionOK();
         break;
       case 'todox':
         const id = focus.index + 1;
@@ -4766,6 +4852,25 @@ const app = {
       this.vibrar();
       return;
     }
+
+    if (this.state.currentPage === 'qr') {
+      const max = document.querySelectorAll('#qr-actions .qr-action-btn').length - 1;
+      if (this.state.focus.index < max) {
+        this.state.focus.index++;
+        this.updateQRActionsFocus();
+      }
+      this.vibrar();
+      return;
+    }
+
+    if (this.state.currentPage === 'qr') {
+      if (this.state.focus.index > 0) {
+        this.state.focus.index--;
+        this.updateQRActionsFocus();
+      }
+      this.vibrar();
+      return;
+    }
     
     switch(type) {
       case 'avatar':
@@ -4961,6 +5066,8 @@ const app = {
           this.updateGridFocus();
         }
         break;
+      case 'qr':
+        break;
       case 'encuesta':
         if (this.state.encuestaIndex > 0) {
           this.state.encuestaIndex--;
@@ -5069,6 +5176,8 @@ const app = {
           this.updateGridFocus();
         }
         break;
+      case 'qr':
+        break;
     }
 
   },
@@ -5161,6 +5270,40 @@ const app = {
     items.forEach((el, i) => {
       el.classList.toggle('focused', i === this.state.focus.index);
     });
+  },
+
+  updateQRActionsFocus() {
+    document.querySelectorAll('#qr-actions .qr-action-btn').forEach((el, i) => {
+      el.classList.toggle('focused', i === this.state.focus.index);
+    });
+  },
+
+  handleQRActionOK() {
+    if (this.state.focus.index === 0) {
+      this.scanQR();
+      return;
+    }
+    if (this.state.focus.index === 1) {
+      const input = document.getElementById('qr-manual-input');
+      const codigo = (input?.value || '').trim();
+      if (!codigo) {
+        this.inputManualQR();
+      } else {
+        this.procesarQR(codigo);
+      }
+      return;
+    }
+    this.shareWhatsAppQR();
+  },
+
+  shareWhatsAppQR() {
+    const nom = localStorage.getItem('miNombre') || 'Amigo';
+    const avatar = this.state.settings.avatar || '👤';
+    const code = `${this.miID}|${nom}|${avatar}`;
+    const msg = `✨ Agrégame en Tokeji: ${code}`;
+    const link = `https://wa.me/?text=${encodeURIComponent(msg)}`;
+    window.open(link, '_blank');
+    this.showMsg('📲 Compartiendo por WhatsApp');
   },
 
   updateGridFocus() {
@@ -5377,8 +5520,7 @@ const app = {
         <div class="list-item focused" data-index="0" data-type="filtro" style="border-style:dashed;">
           <span style="font-size: 20px;">🎓</span>
           <div style="flex:1;">
-            <div style="font-weight:800; color:#2D3748;">Filtrar curso</div>
-            <div style="font-size:10px; color:#718096;">${filtro === 'todos' ? 'Todos los cursos' : filtro}</div>
+            <div style="font-weight:900; color:#2D3748; font-size:11px;">Filtrar curso</div>
           </div>
         </div>`;
       const users = dataRows.map((c, i) => `
@@ -5554,6 +5696,25 @@ const app = {
     this.state.secretFlow.curso = this.state.registroInstituto.curso || localStorage.getItem('curso') || CURSOS_INSTITUTO[0];
     this.state.secretFlow.companeros = [];
     this.cargarCompanerosCurso(this.state.secretFlow.curso);
+  },
+
+  async syncFriendsFromServer() {
+    try {
+      const response = await fetch(`${BACK}/friends/list?userId=${encodeURIComponent(this.miID)}`);
+      const data = await response.json();
+      if (!response.ok || !data.ok) return;
+      const rows = data.friends || [];
+      rows.forEach(f => {
+        if (!f.id || f.id === this.miID) return;
+        this.contactos[f.id] = f.nombre || this.contactos[f.id] || 'Amigo';
+        if (f.avatar) localStorage.setItem('avatar_' + f.id, f.avatar);
+      });
+      localStorage.setItem('cts', JSON.stringify(this.contactos));
+      if (this.state.currentPage === 'contacts') this.renderContacts();
+      if (this.state.currentPage === 'enviar') this.renderEnviarList();
+    } catch (e) {
+      this.debug('Sync friends fail: ' + e.message);
+    }
   },
 
   async syncPerfilPublico(reason = 'manual') {
@@ -5806,12 +5967,11 @@ const app = {
     if (!container) return;
     
     container.innerHTML = TOKES_TYPES.map((t, i) => `
-      <div class="toke-item t${t.id} ${i === 0 ? 'focused' : ''}" data-index="${i}">
-        <div style="flex: 1;">
-          <div style="font-weight: 800; color: ${t.color}; font-size: 14px; text-align:center;">${t.emoji} ${t.name}</div>
-          <div style="font-size: 11px; color: #718096; text-align:center;">${t.desc}</div>
+      <div class="toke-item t${t.id} ${i === 0 ? 'focused' : ''}" data-index="${i}" style="background: linear-gradient(135deg, ${t.color}E6, ${t.color}B3); border-color:${t.color};">
+        <div style="flex: 1; text-align:center;">
+          <div style="font-weight: 900; color: #fff; font-size: 13px; text-shadow:0 1px 3px rgba(0,0,0,.35);">${t.emoji} ${t.name}</div>
+          <div style="font-size: 10px; color: rgba(255,255,255,.95);">${t.desc}</div>
         </div>
-        <span style="font-size: 9px; background: #EDF2F7; padding: 2px 6px; border-radius: 10px; color: #4A5568;">4</span>
       </div>
     `).join('');
   },
@@ -6446,8 +6606,15 @@ const app = {
   },
 
   inputManualQR() {
+    const input = document.getElementById('qr-manual-input');
+    const pre = (input?.value || '').trim();
+    if (pre) {
+      this.procesarQR(pre);
+      return;
+    }
     const codigo = prompt('Pega el código del amigo (formato: ID|Nombre|Avatar):');
     if (codigo && codigo.trim()) {
+      if (input) input.value = codigo.trim();
       this.procesarQR(codigo.trim());
     }
   },
@@ -6472,12 +6639,30 @@ const app = {
           return;
         }
         
+        const isNew = !this.contactos[id];
         this.contactos[id] = nombre;
         if (avatar) {
           localStorage.setItem('avatar_' + id, avatar);
         }
         localStorage.setItem('cts', JSON.stringify(this.contactos));
-        this.showMsg(`✅ ${nombre} agregado`);
+        fetch(`${BACK}/friends/link`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            userId: this.miID,
+            friendId: id,
+            userName: localStorage.getItem('miNombre') || 'Alumno',
+            userAvatar: this.state.settings.avatar || '👤',
+            friendName: nombre,
+            friendAvatar: avatar || '👤'
+          })
+        }).catch(() => {});
+        if (isNew) {
+          this.verificarDesbloqueos();
+          this.showMsg(`✅ ${nombre} agregado + regalo 🎁`);
+        } else {
+          this.showMsg(`✅ ${nombre} agregado`);
+        }
         
         if (this.state.currentPage === 'enviar') {
           this.renderEnviarList();
