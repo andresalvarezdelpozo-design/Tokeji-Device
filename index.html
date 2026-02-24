@@ -545,8 +545,8 @@
       flex-direction: column;
       align-items: center;
       justify-content: flex-start;
-      gap: 6px;
-      padding: 10px 10px 10px;
+      gap: 5px;
+      padding: 8px 9px 8px;
       background: linear-gradient(135deg, rgba(255,0,160,.16), rgba(255,140,0,.14), rgba(66,153,225,.12));
       border-radius: 18px;
       border: 1px solid rgba(255,255,255,.35);
@@ -586,7 +586,7 @@
     }
 
     .home-avatar {
-      font-size: 48px;
+      font-size: 44px;
       filter: drop-shadow(0 4px 8px rgba(0,0,0,0.15));
       animation: float 3s ease-in-out infinite;
       transform: translateZ(0);
@@ -599,7 +599,7 @@
 
     .home-name {
       font-family: 'Fredoka One', cursive;
-      font-size: 19px;
+      font-size: 17px;
       color: #2D3748;
     }
 
@@ -620,7 +620,7 @@
       border-radius: 16px;
       font-size: 11px;
       font-weight: 900;
-      margin-top: auto;
+      margin-top: 4px;
       box-shadow: 0 4px 0 #B7791F;
       max-width: 100%;
       text-align: center;
@@ -629,34 +629,27 @@
       z-index: 3;
     }
 
-    .home-chaos-hint {
-      width: 100%;
-      border-radius: 12px;
-      background: rgba(0,0,0,.25);
-      border: 1px solid rgba(255,255,255,.35);
-      padding: 6px 8px;
-      font-size: 10px;
-      font-weight: 800;
-      color: #FFF;
-      text-align: center;
-      text-shadow: 0 0 8px rgba(0,0,0,.35);
-      z-index: 3;
-    }
-
     .home-popup-stack {
-      width: 100%;
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      right: 8px;
       display: flex;
       flex-direction: column;
-      gap: 8px;
-      margin-top: 4px;
-      z-index: 3;
+      gap: 6px;
+      z-index: 6;
+      pointer-events: none;
+    }
+
+    .home-popup-stack:empty {
+      display: none;
     }
 
     .home-popup {
       color: #fff;
       border-radius: 14px;
-      padding: 9px 11px;
-      font-size: 11px;
+      padding: 7px 9px;
+      font-size: 10px;
       font-weight: 900;
       line-height: 1.35;
       box-shadow: 0 8px 20px rgba(0,0,0,0.3);
@@ -665,6 +658,7 @@
       align-items: center;
       border: 2px solid rgba(255,255,255,.3);
       animation: slideInTop .25s ease;
+      pointer-events: auto;
     }
 
     .home-popup.survey { background: linear-gradient(135deg, rgba(128,90,213,.9), rgba(159,122,234,.9)); }
@@ -1157,7 +1151,7 @@
       background: rgba(0,0,0,0.28);
       border: 2px solid rgba(255,255,255,0.34);
       border-radius: 16px;
-      min-height: 84px;
+      min-height: 68px;
       display: flex;
       align-items: center;
       justify-content: flex-start;
@@ -1181,7 +1175,7 @@
     }
 
     .murmullo-card strong {
-      font-size: 12px;
+      font-size: 10px;
       display: block;
       line-height: 1.2;
     }
@@ -1200,14 +1194,14 @@
 
 
     .murmullo-feed {
-      margin-top: 10px;
+      margin-top: 8px;
       background: rgba(0,0,0,.26);
       border: 2px solid rgba(255,255,255,.2);
       border-radius: 14px;
       padding: 10px;
       color: #fff;
-      font-size: 11px;
-      line-height: 1.45;
+      font-size: 10px;
+      line-height: 1.3;
     }
 
     .murmullo-feed .item {
@@ -1221,8 +1215,8 @@
     .murmullo-feed .item:last-child { border-bottom: 0; }
 
     .murmullo-personal-line {
-      margin-top: 8px;
-      font-size: 11px;
+      margin-top: 6px;
+      font-size: 10px;
       color: #2D3748;
       background: rgba(255,255,255,.75);
       border-radius: 10px;
@@ -1517,7 +1511,7 @@
       border: 2px solid transparent;
       border-radius: 12px;
       padding: 6px 4px;
-      font-size: 19px;
+      font-size: 17px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -2067,7 +2061,7 @@
       gap: 8px;
       width: 100%;
       max-width: 220px;
-      margin-top: auto;
+      margin-top: 4px;
       margin-bottom: 8px;
     }
 
@@ -2643,8 +2637,7 @@
                 <div class="home-live-pill" id="home-live-live">📌 Pendientes del día</div>
               </div>
               <div class="home-popup-stack" id="home-popup-stack"></div>
-              <div class="home-chaos-hint" id="home-chaos-hint">OK → Abrir aviso · C → Menú</div>
-              <div class="tokes-badge" id="tokes-badge">🎯 Amigos: 3/3 · 🤍 1 · 💘 1</div>
+                            <div class="tokes-badge" id="tokes-badge">🎯 Amigos: 3/3 · 🤍 1 · 💘 1</div>
             </div>
           </div>
 
@@ -3205,6 +3198,7 @@ const app = {
     },
     homePriorityText: 'Tu curso está on fire',
     homePendingActions: [],
+    homeVisiblePopups: [],
     homeActionIndex: 0,
     homeFlags: {},
     homeRefreshTimer: null,
@@ -3974,10 +3968,7 @@ const app = {
         break;
       case 'home':
         this.pressFeedback();
-        const actions = this.state.homePendingActions || [];
-        const action = actions[this.state.homeActionIndex || 0];
-        if (action && typeof action.open === 'function') action.open();
-        else this.showPage('murmullo');
+        this.abrirHomePopup(0);
         break;
       case 'menu':
         if (focus.index === 1) {
@@ -4143,11 +4134,6 @@ const app = {
     }
 
     if (this.state.currentPage === 'home') {
-      if (this.state.homeActionIndex > 0) {
-        this.state.homeActionIndex--;
-        this.state.focus = { type: 'homeAction', index: this.state.homeActionIndex };
-        this.renderHomeActionQueue();
-      }
       return;
     }
     
@@ -4333,12 +4319,6 @@ const app = {
     }
 
     if (this.state.currentPage === 'home') {
-      const maxHome = (this.state.homePendingActions || []).length - 1;
-      if (this.state.homeActionIndex < maxHome) {
-        this.state.homeActionIndex++;
-        this.state.focus = { type: 'homeAction', index: this.state.homeActionIndex };
-        this.renderHomeActionQueue();
-      }
       this.vibrar();
       return;
     }
@@ -5069,26 +5049,33 @@ const app = {
   renderHomeActionQueue() {
     const stack = document.getElementById('home-popup-stack');
     if (!stack) return;
-    const actions = this.state.homePendingActions || [];
-    const idx = Math.max(0, Math.min(this.state.homeActionIndex || 0, actions.length - 1));
-    this.state.homeActionIndex = idx;
-    stack.innerHTML = actions.slice(0, 3).map((a, i) => `
-      <div class="home-popup ${a.id || 'default'} ${i === idx ? 'focused' : ''}" data-index="${i}"><span style="font-size:18px;">${a.icon || '✨'}</span><span>${a.text}</span></div>
+    const actions = this.state.homeVisiblePopups || [];
+    stack.innerHTML = actions.slice(0, 2).map((a, i) => `
+      <div class="home-popup ${a.id || 'default'}" data-index="${i}" onclick="app.abrirHomePopup(${i})"><span style="font-size:16px;">${a.icon || '✨'}</span><span>${a.text}</span></div>
     `).join('');
-
-    const hint = document.getElementById('home-chaos-hint');
-    if (hint) hint.textContent = `${actions[idx]?.cta || 'OK → Murmullo'} · C → Menú`;
 
     const homeMain = document.querySelector('#page-home .home-main');
     if (homeMain) {
       homeMain.classList.remove('topic-survey','topic-murmullo','topic-anon','topic-crush','topic-friends');
-      const t = actions[idx]?.id || 'default';
+      const t = actions[0]?.id || 'default';
       if (t === 'survey') homeMain.classList.add('topic-survey');
       if (t === 'murmullo' || t === 'default') homeMain.classList.add('topic-murmullo');
       if (t === 'anon') homeMain.classList.add('topic-anon');
       if (t === 'crush') homeMain.classList.add('topic-crush');
       if (t === 'friends') homeMain.classList.add('topic-friends');
     }
+  },
+
+  abrirHomePopup(index = 0) {
+    const actions = this.state.homeVisiblePopups || [];
+    const action = actions[index];
+    if (!action) {
+      this.showPage('murmullo');
+      return;
+    }
+    this.state.homeVisiblePopups.splice(index, 1);
+    this.renderHomeActionQueue();
+    if (typeof action.open === 'function') action.open();
   },
 
   abrirFlujoSenal(tipo) {
@@ -5115,7 +5102,8 @@ const app = {
         this.state.homeFlags = data.home?.flags || {};
         this.state.murmulloFrases = data.murmullo || [];
         this.state.homePendingActions = this.getHomePendingActions(this.state.homeFlags);
-        this.state.homeActionIndex = Math.min(this.state.homeActionIndex || 0, this.state.homePendingActions.length - 1);
+        this.state.homeVisiblePopups = [...this.state.homePendingActions];
+        this.state.homeActionIndex = 0;
 
         const frases = this.state.murmulloFrases;
         this.state.murmulloStats = {
@@ -5438,7 +5426,7 @@ const app = {
     const liveNarrative = document.getElementById('home-live-live');
     const chaosSub = document.getElementById('home-chaos-sub');
     if (liveCrush) liveCrush.textContent = (flags.has_strong_signal_today || flags.has_signals_today) ? '💘 Hoy has recibido señal' : '💘 Sin señales nuevas';
-    if (liveNarrative) liveNarrative.textContent = `📌 ${Math.max(1,(this.state.homePendingActions || []).length)} avisos en cola`;
+    if (liveNarrative) liveNarrative.textContent = '📌 Avisos que saltan en pantalla';
     if (chaosSub) chaosSub.textContent = flags.survey_pending ? 'Tu curso se está moviendo fuerte' : (this.state.homePriorityText || this.state.murmulloStats.headline || 'Tu curso está on fire');
 
     this.renderHomeActionQueue();
