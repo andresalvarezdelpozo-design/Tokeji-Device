@@ -104,7 +104,7 @@ def resumen_home_user(user_id):
         "survey_pending": len(encuesta) == 0,
         "has_signals_today": len(recibidas) > 0,
         "has_strong_signal_today": len(fuertes) > 0,
-        "friends_tokes_left": max(0, 3 - tokes_enviados),
+        "friends_tokes_left": max(0, 5 - tokes_enviados),
         "anon_left": max(0, 1 - anon_enviados),
         "crush_left": max(0, 1 - crush_enviados)
     }
@@ -167,7 +167,7 @@ def cuotas_toke_hoy(user_id):
     anon = len([e for e in ev_hoy if e.get("type") == "anonymous_signal" and e.get("signal_type") == "anonimo"])
     crush = len([e for e in ev_hoy if e.get("type") == "anonymous_signal" and e.get("signal_type") == "crush"])
     return {
-        "friends_left": max(0, 3 - amigos),
+        "friends_left": max(0, 5 - amigos),
         "anon_left": max(0, 1 - anon),
         "crush_left": max(0, 1 - crush)
     }
@@ -223,7 +223,7 @@ def toque():
         cuotas = cuotas_toke_hoy(de)
         es_secreto = tipo in ["anonimo", "crush"]
         if not es_secreto and cuotas["friends_left"] <= 0:
-            return jsonify(ok=False, error="Límite diario de 3 tokes a amigos alcanzado", toques_restantes=0)
+            return jsonify(ok=False, error="Límite diario de 5 tokes a amigos alcanzado", toques_restantes=0)
         if tipo == "anonimo" and cuotas["anon_left"] <= 0:
             return jsonify(ok=False, error="Ya usaste tu anónimo de hoy", toques_restantes=0)
         if tipo == "crush" and cuotas["crush_left"] <= 0:
