@@ -624,6 +624,7 @@
     }
 
     .home-popup-stack {
+      display: none !important;
       position: absolute;
       top: 8px;
       left: 6px;
@@ -681,26 +682,28 @@
       box-shadow: inset 0 1px 0 rgba(255,255,255,.25), 0 3px 0 rgba(0,0,0,.26);
       background: rgba(15,15,26,.55);
       transition: all .12s ease;
-      text-align: left;
+      text-align: center;
     }
 
     .home-ritual-btn .title {
       display: flex;
-      justify-content: space-between;
+      justify-content: center;
       align-items: center;
-      letter-spacing: .3px;
+      letter-spacing: .5px;
+      text-align: center;
     }
 
     .home-ritual-btn .meta {
-      margin-top: 2px;
+      margin-top: 3px;
       font-size: 10px;
-      opacity: .95;
-      font-weight: 700;
+      opacity: .98;
+      font-weight: 800;
+      text-align: center;
     }
 
-    .home-ritual-btn.survey { background: linear-gradient(135deg, rgba(128,90,213,.68), rgba(236,72,153,.58)); }
-    .home-ritual-btn.tokes { background: linear-gradient(135deg, rgba(255,107,53,.65), rgba(245,158,11,.6)); }
-    .home-ritual-btn.murmullo { background: linear-gradient(135deg, rgba(0,136,255,.62), rgba(6,182,212,.55)); }
+    .home-ritual-btn.survey { background: linear-gradient(135deg, #b517ff, #ff2fa5); }
+    .home-ritual-btn.tokes { background: linear-gradient(135deg, #ff7a00, #ffe600); color: #2D3748; }
+    .home-ritual-btn.murmullo { background: linear-gradient(135deg, #00d9ff, #00ff85); color: #10323f; }
 
     .home-ritual-btn.focused {
       transform: scale(1.02);
@@ -714,9 +717,8 @@
     }
 
     .home-ritual-btn.done {
-      filter: saturate(.55) brightness(.8);
-      border-color: rgba(255,255,255,.3);
-      box-shadow: 0 2px 0 rgba(0,0,0,.2);
+      border-color: rgba(255,255,255,.65);
+      box-shadow: 0 3px 0 rgba(0,0,0,.22);
     }
 
     @keyframes pulseToast {
@@ -3198,16 +3200,16 @@
               <div class="home-popup-stack" id="home-popup-stack"></div>
               <div class="home-ritual-stack" id="home-ritual-stack">
                 <div class="home-ritual-btn survey focused" data-index="0">
-                  <div class="title"><span>📊 ENCUESTA</span><span id="ritual-survey-time">--:--</span></div>
-                  <div class="meta" id="ritual-survey-meta">Pendiente</div>
+                  <div class="title">📊 ENCUESTA</div>
+                  <div class="meta" id="ritual-survey-meta">⏱ --:--</div>
                 </div>
                 <div class="home-ritual-btn tokes" data-index="1">
-                  <div class="title"><span>💌 TOKES</span><span id="ritual-tokes-count">3/3</span></div>
-                  <div class="meta" id="ritual-tokes-meta">Envía tu señal</div>
+                  <div class="title">💌 TOKES</div>
+                  <div class="meta" id="ritual-tokes-meta">🎯 3/3 · 🤍 1/1 · 💘 1/1</div>
                 </div>
                 <div class="home-ritual-btn murmullo" data-index="2">
-                  <div class="title"><span>🔮 MURMULLO</span><span id="ritual-murmullo-count">0</span></div>
-                  <div class="meta" id="ritual-murmullo-meta">Sin novedades</div>
+                  <div class="title">🔮 MURMULLO</div>
+                  <div class="meta" id="ritual-murmullo-meta">Novedades: 0</div>
                 </div>
               </div>
               <div class="tokes-badge" id="tokes-badge" style="display:none;">🎯 Amigos: 3/3 · 🤍 1 · 💘 1</div>
@@ -4693,8 +4695,7 @@ const app = {
         else this.jugarVSAmigo();
         break;
       case 'murmullo':
-        if (this.state.homeFlags?.survey_pending) this.abrirEncuesta();
-        else this.showMsg('Sin encuesta pendiente ahora');
+        this.showMsg('🔮 Murmullo abierto');
         break;
       case 'settings':
         this.activateSetting(focus.index);
@@ -5461,12 +5462,12 @@ const app = {
     }
     if (this.state.focus.index === 1) {
       const input = document.getElementById('qr-manual-input');
-      const codigo = (input?.value || '').trim();
-      if (!codigo) {
-        this.inputManualQR();
-      } else {
-        this.procesarQR(codigo);
+      if (input) {
+        input.focus();
+        this.showMsg('✍️ Escribe o pega código y pulsa OK');
       }
+      const codigo = (input?.value || '').trim();
+      if (codigo) this.procesarQR(codigo);
       return;
     }
     this.shareWhatsAppQR();
@@ -6144,11 +6145,8 @@ const app = {
       this.showMsg(esCrush ? '💘 Crush enviado' : '💜 Sobre secreto enviado');
       if (this.state.navContext === 'ritual') {
         this.completeRitualStep(2, false);
-        this.completeRitualStep(3, true);
-        this.showPage('murmullo');
-      } else {
-        this.showPage('home');
       }
+      this.showPage('home');
     } catch (e) {
       this.showMsg('❌ ' + e.message);
     }
@@ -6451,19 +6449,16 @@ const app = {
     const murmulloCount = Array.isArray(this.state.murmulloFrases) ? this.state.murmulloFrases.length : 0;
     const remain = this.state.encuestaRemainingSec !== null ? this.state.encuestaRemainingSec : this.getEncuestaRemainingSec();
 
-    const surveyTime = document.getElementById('ritual-survey-time');
     const surveyMeta = document.getElementById('ritual-survey-meta');
-    const tokesCount = document.getElementById('ritual-tokes-count');
     const tokesMeta = document.getElementById('ritual-tokes-meta');
-    const murmulloCountEl = document.getElementById('ritual-murmullo-count');
     const murmulloMeta = document.getElementById('ritual-murmullo-meta');
 
-    if (surveyTime) surveyTime.textContent = surveyPending ? (remain === null ? '--:--' : this.formatEncuestaCountdown(remain)) : 'OK';
-    if (surveyMeta) surveyMeta.textContent = surveyPending ? 'Pendiente ahora' : 'Hecha / no pendiente';
-    if (tokesCount) tokesCount.textContent = `${friendLeft}/3`;
-    if (tokesMeta) tokesMeta.textContent = friendLeft > 0 ? 'Te quedan envíos hoy' : 'Sin tokes de amigos';
-    if (murmulloCountEl) murmulloCountEl.textContent = String(murmulloCount);
-    if (murmulloMeta) murmulloMeta.textContent = murmulloCount > 0 ? 'Hay movimiento nuevo' : 'Sin novedades nuevas';
+    const anonLeft = Number.isFinite(flags.anon_left) ? flags.anon_left : 1;
+    const crushLeft = Number.isFinite(flags.crush_left) ? flags.crush_left : 1;
+
+    if (surveyMeta) surveyMeta.textContent = surveyPending ? `⏱ ${remain === null ? '--:--' : this.formatEncuestaCountdown(remain)}` : '✅ Hecha / no pendiente';
+    if (tokesMeta) tokesMeta.textContent = `🎯 ${friendLeft}/3 · 🤍 ${anonLeft}/1 · 💘 ${crushLeft}/1`;
+    if (murmulloMeta) murmulloMeta.textContent = `Novedades: ${murmulloCount}`;
 
     const buttons = document.querySelectorAll('#home-ritual-stack .home-ritual-btn');
     buttons.forEach((btn, i) => {
@@ -7042,11 +7037,8 @@ const app = {
           this.ocultarAnimacionEnvio();
           if (this.state.navContext === 'ritual') {
             this.completeRitualStep(2, false);
-            this.completeRitualStep(3, true);
-            this.showPage('murmullo');
-          } else {
-            this.showPage('home');
           }
+          this.showPage('home');
         }, 1000);
       } else {
         throw new Error(data.error || `Error ${response.status}`);
