@@ -563,15 +563,7 @@
     .home-main.topic-friends { background: linear-gradient(135deg, rgba(249,115,22,.24), rgba(245,158,11,.18), rgba(236,72,153,.1)); }
 
     .home-chaos-bg {
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      background:
-        radial-gradient(circle at 20% 18%, rgba(255,255,255,.28) 0 8%, transparent 9%),
-        radial-gradient(circle at 80% 32%, rgba(255,79,163,.25) 0 7%, transparent 8%),
-        radial-gradient(circle at 66% 74%, rgba(66,153,225,.25) 0 9%, transparent 10%);
-      opacity: .7;
-      animation: chaosDrift 10s ease-in-out infinite;
+      display: none;
     }
 
     @keyframes chaosDrift {
@@ -580,7 +572,7 @@
     }
 
     .home-avatar {
-      font-size: 44px;
+      font-size: 36px;
       filter: drop-shadow(0 4px 8px rgba(0,0,0,0.15));
       animation: float 3s ease-in-out infinite;
       transform: translateZ(0);
@@ -668,13 +660,14 @@
       display: flex;
       flex-direction: column;
       gap: 8px;
-      margin-top: 8px;
+      margin-top: 0;
+      transform: translateY(-6px);
       z-index: 3;
     }
 
     .home-ritual-btn {
       border-radius: 12px;
-      border: 2px solid rgba(255,255,255,.42);
+      border: 0;
       padding: 8px 10px;
       color: #fff;
       font-weight: 900;
@@ -706,19 +699,22 @@
     .home-ritual-btn.murmullo { background: linear-gradient(135deg, #00d9ff, #00ff85); color: #10323f; }
 
     .home-ritual-btn.focused {
-      transform: scale(1.02);
-      border-color: #fff;
-      box-shadow: 0 0 0 2px rgba(255,255,255,.22), 0 0 16px rgba(0,255,255,.55), 0 4px 0 rgba(0,0,0,.26);
+      transform: scale(1.03);
+      box-shadow: 0 0 0 2px rgba(255,255,255,.12), 0 0 26px rgba(0,255,255,.85), 0 0 40px rgba(255,0,170,.45), 0 4px 0 rgba(0,0,0,.26);
+      animation: ritualFocusPulse .9s ease-in-out infinite;
     }
 
     .home-ritual-btn.glow {
-      box-shadow: 0 0 0 2px rgba(255,255,255,.15), 0 0 18px rgba(57,255,20,.7), 0 4px 0 rgba(0,0,0,.26);
-      border-color: rgba(255,255,255,.8);
+      box-shadow: 0 0 14px rgba(57,255,20,.65), 0 4px 0 rgba(0,0,0,.26);
     }
 
     .home-ritual-btn.done {
-      border-color: rgba(255,255,255,.65);
       box-shadow: 0 3px 0 rgba(0,0,0,.22);
+    }
+
+    @keyframes ritualFocusPulse {
+      0%,100% { transform: scale(1.03); filter: saturate(1); }
+      50% { transform: scale(1.06); filter: saturate(1.18); }
     }
 
     @keyframes pulseToast {
@@ -1295,6 +1291,10 @@
       gap: 6px;
       align-items: center;
       margin-top: 2px;
+    }
+
+    .qr-manual-row.hidden {
+      display: none;
     }
 
     .qr-manual-input {
@@ -3340,7 +3340,7 @@
               <div class="qr-actions" id="qr-actions">
                 <div class="qr-action-btn focused" data-index="0">📷 Escanear QR</div>
               </div>
-              <div class="qr-manual-row">
+              <div class="qr-manual-row hidden" id="qr-manual-row">
                 <input id="qr-manual-input" class="qr-manual-input" maxlength="80" placeholder="ID|Nombre|Avatar">
               </div>
               <div class="qr-actions">
@@ -4288,6 +4288,7 @@ const app = {
         break;
       case 'qr':
         this.generarQR();
+        this.setQRManualVisible(false);
         this.state.focus = { type: 'qr', index: 0 };
         this.updateQRActionsFocus();
         break;
@@ -5455,19 +5456,37 @@ const app = {
     });
   },
 
+  setQRManualVisible(visible) {
+    const row = document.getElementById('qr-manual-row');
+    const input = document.getElementById('qr-manual-input');
+    if (!row) return;
+    row.classList.toggle('hidden', !visible);
+    if (!visible && input) input.value = '';
+  },
+
   handleQRActionOK() {
     if (this.state.focus.index === 0) {
       this.scanQR();
       return;
     }
     if (this.state.focus.index === 1) {
+      const row = document.getElementById('qr-manual-row');
       const input = document.getElementById('qr-manual-input');
-      if (input) {
-        input.focus();
-        this.showMsg('✍️ Escribe o pega código y pulsa OK');
+      const isHidden = row ? row.classList.contains('hidden') : true;
+      if (isHidden) {
+        this.setQRManualVisible(true);
+        if (input) input.focus();
+        this.showMsg('✍️ Escribe código y pulsa OK');
+        return;
       }
       const codigo = (input?.value || '').trim();
-      if (codigo) this.procesarQR(codigo);
+      if (!codigo) {
+        if (input) input.focus();
+        this.showMsg('Falta el código');
+        return;
+      }
+      this.procesarQR(codigo);
+      this.setQRManualVisible(false);
       return;
     }
     this.shareWhatsAppQR();
@@ -5824,6 +5843,11 @@ const app = {
 
   renderHomeActionQueue() {
     const stack = document.getElementById('home-popup-stack');
+    if (stack) stack.innerHTML = '';
+    const homeMain = document.querySelector('#page-home .home-main');
+    if (homeMain) homeMain.className = 'home-main';
+    return;
+
     if (!stack) return;
 
     if (this.state.homeToastTimer) {
@@ -6878,17 +6902,10 @@ const app = {
   },
 
   inputManualQR() {
+    this.setQRManualVisible(true);
     const input = document.getElementById('qr-manual-input');
-    const pre = (input?.value || '').trim();
-    if (pre) {
-      this.procesarQR(pre);
-      return;
-    }
-    const codigo = prompt('Pega el código del amigo (formato: ID|Nombre|Avatar):');
-    if (codigo && codigo.trim()) {
-      if (input) input.value = codigo.trim();
-      this.procesarQR(codigo.trim());
-    }
+    if (input) input.focus();
+    this.showMsg('✍️ Escribe código y pulsa OK');
   },
 
   procesarQR(data) {
