@@ -1212,6 +1212,39 @@
       box-shadow: 0 2px 0 #F687B3;
     }
 
+    .tokes-tab-bar {
+      width: 100%;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 4px;
+      margin-bottom: 6px;
+    }
+
+    .tokes-tab-chip {
+      text-align: center;
+      border-radius: 9px;
+      padding: 5px 2px;
+      font-size: 9px;
+      font-weight: 900;
+      color: #2D3748;
+      border: 2px solid #E2E8F0;
+      background: rgba(255,255,255,.75);
+    }
+
+    .tokes-tab-chip.active {
+      background: linear-gradient(135deg,#ff6b35,#f7931e);
+      color: #fff;
+      border-color: #fff;
+      box-shadow: 0 0 0 1px rgba(255,255,255,.28), 0 5px 10px rgba(247,147,30,.32);
+    }
+
+    .inbox-item-meta {
+      font-size: 10px;
+      color: #4A5568;
+      font-weight: 800;
+      line-height: 1.25;
+    }
+
     .toke-item.t1 { border-color: #FF0066; background: #FFF0F3; }
     .toke-item.t1.focused { box-shadow: 0 2px 0 #CC0052; }
     .toke-item.t2 { border-color: #FF5400; background: #FFF4F0; }
@@ -3205,14 +3238,14 @@
                 </div>
                 <div class="home-ritual-btn tokes" data-index="1">
                   <div class="title">💌 TOKES</div>
-                  <div class="meta" id="ritual-tokes-meta">🎯 3/3 · 🤍 1/1 · 💘 1/1</div>
+                  <div class="meta" id="ritual-tokes-meta">🎯 5/5 · 🤍 1/1 · 💘 1/1</div>
                 </div>
                 <div class="home-ritual-btn murmullo" data-index="2">
                   <div class="title">🔮 MURMULLO</div>
                   <div class="meta" id="ritual-murmullo-meta">Novedades: 0</div>
                 </div>
               </div>
-              <div class="tokes-badge" id="tokes-badge" style="display:none;">🎯 Amigos: 3/3 · 🤍 1 · 💘 1</div>
+              <div class="tokes-badge" id="tokes-badge" style="display:none;">🎯 Amigos: 5/5 · 🤍 1 · 💘 1</div>
             </div>
           </div>
 
@@ -3727,6 +3760,34 @@ const TOKES_TYPES = [
   { id: 7, emoji: '💘', name: 'CRUSH', desc: 'Crush secreto', color: '#E53E8C' }
 ];
 
+const TOKES_TAB_ORDER = ['mis', 'amigos', 'anonimo', 'crush'];
+const TOKES_TAB_LABEL = {
+  mis: 'MIS TOKES',
+  amigos: 'AMIGOS',
+  anonimo: 'ANÓNIMO',
+  crush: 'CRUSH'
+};
+const TOKES_TAB_ITEMS = {
+  amigos: [
+    { id: 1, emoji: '🔥', name: 'ON FIRE', desc: 'Estás imparable' },
+    { id: 2, emoji: '💕', name: 'CRUSH', desc: 'Pienso en ti' },
+    { id: 3, emoji: '💪', name: 'ÁNIMO', desc: '¡Tú puedes!' },
+    { id: 4, emoji: '📅', name: 'PLANES', desc: '¿Quedamos?' },
+    { id: 5, emoji: '🚨', name: 'URGENTE', desc: '¡Ayuda!' }
+  ],
+  anonimo: [
+    { id: 6, emoji: '💜', name: 'ANÓNIMO', desc: 'Sobre secreto' },
+    { id: 6, emoji: '🤜', name: 'BRO', desc: 'Eres mi bro' },
+    { id: 6, emoji: '⚡', name: 'CRACK', desc: 'Crack del equipo' }
+  ],
+  crush: [
+    { id: 7, emoji: '💘', name: 'CRUSH', desc: 'Crush secreto' },
+    { id: 7, emoji: '💜', name: 'SUAVE', desc: 'Alguien te sonríe' },
+    { id: 7, emoji: '💘', name: 'FUERTE', desc: 'Eres mi crush' },
+    { id: 7, emoji: '💘🔥', name: 'TOTAL', desc: 'No paro de pensar en ti' }
+  ]
+};
+
 const TEMAS = [
   { id: 'pastel', label: 'Pastel', color: '#D4A5E6', emoji: '🎨', msg: '🎨 Pastel' },
   { id: 'gas', label: 'GAS Caos', color: '#FF00A0', emoji: '🔥', msg: '🔥 GAS Caos' },
@@ -3757,6 +3818,9 @@ const app = {
     toquesRestantes: 30,
     selectedCategoria: null,
     selectedVariante: null,
+    tokesTab: 'amigos',
+    tokesItemIndex: 0,
+    tokesInboxIndex: 0,
     settings: {
       sonido: true,
       vibracion: true,
@@ -4221,6 +4285,7 @@ const app = {
         this.updateMenuFocus();
         break;
       case 'tokes':
+        this.state.tokesTab = 'amigos';
         this.renderTokes();
         this.state.focus = { type: 'tokes', index: 0 };
         this.updateTokesFocus();
@@ -4475,7 +4540,7 @@ const app = {
           this.updateMenuFocus();
           break;
         case 'tokes':
-          this.state.focus = { type: 'tokes', index: this.state.selectedCategoria ? this.state.selectedCategoria - 1 : 0 };
+          this.state.focus = { type: 'tokes', index: this.state.tokesItemIndex || 0 };
           this.updateTokesFocus();
           break;
         case 'variantes':
@@ -4641,17 +4706,44 @@ const app = {
           if (target) this.showPage(target);
         }
         break;
-      case 'tokes':
-        this.state.selectedCategoria = TOKES_TYPES[focus.index].id;
-        if (this.state.selectedCategoria === 6 || this.state.selectedCategoria === 7) {
-          this.state.secretFlow.tipo = this.state.selectedCategoria === 6 ? 'anonimo' : 'crush';
+      case 'tokes': {
+        this.state.tokesItemIndex = this.state.focus.index || 0;
+        const tab = this.state.tokesTab || 'amigos';
+        const items = this.getCurrentTokesItems();
+        const item = items[this.state.focus.index];
+        if (!item) return;
+
+        if (tab === 'mis') {
+          const msg = this.state.colaMensajes[this.state.focus.index];
+          if (!msg) return;
+          this.state.colaMensajes.splice(this.state.focus.index, 1);
+          this.state.mensajesPendientes = this.state.colaMensajes.length;
+          this.updateColaBadge();
+          if (msg.tipo === 'toque') this.mostrarToqueRecibido(msg);
+          else this.mostrarRespuestaRecibida(msg);
+          this.state.focus.index = Math.max(0, this.state.focus.index - 1);
+          this.renderTokes();
+          this.updateTokesFocus();
+          return;
+        }
+
+        this.state.selectedCategoria = Number(item.id);
+        this.state.selectedVariante = {
+          emoji: item.emoji,
+          nombre: item.name,
+          texto: item.desc
+        };
+
+        if (tab === 'amigos') {
+          this.showPage('enviar');
+        } else {
+          this.state.secretFlow.tipo = tab === 'crush' ? 'crush' : 'anonimo';
           this.state.secretFlow.curso = null;
           this.state.secretFlow.companeros = [];
           this.showPage('curso-secreto');
-        } else {
-          this.showPage('variantes');
         }
         break;
+      }
       case 'variantes':
         const variantes = CONTEXTOS_TOKES[this.state.selectedCategoria];
         this.state.selectedVariante = variantes[focus.index];
@@ -4849,6 +4941,7 @@ const app = {
       case 'tokes':
         if (index > 0) {
           this.state.focus.index--;
+          this.state.tokesItemIndex = this.state.focus.index;
           this.updateTokesFocus();
           this.scrollToFocused('tokes-list');
         }
@@ -5061,13 +5154,16 @@ const app = {
           this.updateMenuFocus();
         }
         break;
-      case 'tokes':
-        if (index < TOKES_TYPES.length - 1) {
+      case 'tokes': {
+        const maxTokes = this.getCurrentTokesItems().length - 1;
+        if (index < maxTokes) {
           this.state.focus.index++;
+          this.state.tokesItemIndex = this.state.focus.index;
           this.updateTokesFocus();
           this.scrollToFocused('tokes-list');
         }
         break;
+      }
       case 'institutoSetup':
         if (index < 3) {
           this.state.focus.index++;
@@ -5195,6 +5291,11 @@ const app = {
     }
 
     const { type, index } = this.state.focus;
+
+    if (this.state.currentPage === 'tokes') {
+      this.cycleTokesTab(-1);
+      return;
+    }
     
     switch(type) {
       case 'consent':
@@ -5311,6 +5412,11 @@ const app = {
     }
 
     const { type, index } = this.state.focus;
+
+    if (this.state.currentPage === 'tokes') {
+      this.cycleTokesTab(1);
+      return;
+    }
     
     switch(type) {
       case 'consent':
@@ -5833,7 +5939,7 @@ const app = {
       actions.push({ id: 'crush', icon: '💘', text: `Enviar crush (${flags.crush_left} disponible)`, cta: 'OK → Crush anónimo', open: () => this.abrirFlujoSenal('crush') });
     }
     if ((flags.friends_tokes_left || 0) > 0) {
-      actions.push({ id: 'friends', icon: '🎯', text: `Tokes a amigos (${flags.friends_tokes_left}/3)`, cta: 'OK → Tokes amigos', open: () => this.showPage('tokes') });
+      actions.push({ id: 'friends', icon: '🎯', text: `Tokes a amigos (${flags.friends_tokes_left}/5)`, cta: 'OK → Tokes amigos', open: () => this.showPage('tokes') });
     }
     if (!actions.length) {
       actions.push({ id: 'default', icon: '🔮', text: 'Ver Murmullo del día', cta: 'OK → Murmullo', open: () => this.showPage('murmullo') });
@@ -6147,7 +6253,7 @@ const app = {
       para: target.id,
       num: esCrush ? 7 : 6,
       tipo: esCrush ? 'crush' : 'anonimo',
-      contexto: esCrush ? 'Eres el crush de alguien' : 'Alguien ha pensado en ti',
+      contexto: this.state.selectedVariante?.texto || (esCrush ? 'Eres el crush de alguien' : 'Alguien ha pensado en ti'),
       nombreRemitente: 'Alguien',
       avatarRemitente: this.state.settings.avatar,
       instituto_destino: localStorage.getItem('instituto') || ''
@@ -6176,15 +6282,65 @@ const app = {
     }
   },
 
+  getCurrentTokesItems() {
+    const tab = this.state.tokesTab || 'amigos';
+    if (tab === 'mis') {
+      return (this.state.colaMensajes || []).map((msg, i) => ({
+        kind: 'inbox',
+        index: i,
+        de: msg.de,
+        num: msg.num,
+        texto: msg.contexto || '',
+        nombre: this.contactos[msg.de] || msg.nombreRemitente || (msg.tipo === 'crush' ? '(anónimo)' : 'Alguien'),
+        avatar: msg.avatarRemitente || localStorage.getItem('avatar_' + msg.de) || '👤'
+      }));
+    }
+    return TOKES_TAB_ITEMS[tab] || [];
+  },
+
+  cycleTokesTab(dir = 1) {
+    const cur = TOKES_TAB_ORDER.indexOf(this.state.tokesTab || 'amigos');
+    const next = (cur + dir + TOKES_TAB_ORDER.length) % TOKES_TAB_ORDER.length;
+    this.state.tokesTab = TOKES_TAB_ORDER[next];
+    this.state.tokesItemIndex = 0;
+    this.state.focus.index = 0;
+    this.renderTokes();
+    this.updateTokesFocus();
+  },
+
   renderTokes() {
     const container = document.getElementById('tokes-list');
+    const title = document.querySelector('#page-tokes .setup-title');
     if (!container) return;
-    
-    container.innerHTML = TOKES_TYPES.map((t, i) => `
-      <div class="toke-item t${t.id} ${i === 0 ? 'focused' : ''}" data-index="${i}" style="background: linear-gradient(135deg, ${t.color}E6, ${t.color}B3); border-color:${t.color};">
+
+    const tab = this.state.tokesTab || 'amigos';
+    if (title) title.textContent = `💌 TOKES — ${TOKES_TAB_LABEL[tab] || 'AMIGOS'}`;
+
+    const chips = TOKES_TAB_ORDER.map(t => `<div class="tokes-tab-chip ${t === tab ? 'active' : ''}">${TOKES_TAB_LABEL[t]}</div>`).join('');
+    const items = this.getCurrentTokesItems();
+
+    if (tab === 'mis') {
+      const rows = items.map((it, i) => {
+        const cat = TOKES_TYPES.find(t => t.id === Number(it.num)) || TOKES_TYPES[0];
+        return `<div class="toke-item ${i === this.state.focus.index ? 'focused' : ''}" data-index="${i}">
+          <div style="font-size:22px;">${it.avatar}</div>
+          <div style="flex:1;min-width:0;">
+            <div style="font-weight:900; font-size:12px;">${cat.emoji} ${it.nombre}</div>
+            <div class="inbox-item-meta">${cat.name.toUpperCase()} — ${it.texto || cat.desc}</div>
+            <div class="inbox-item-meta">OK: abrir · C: ignorar</div>
+          </div>
+        </div>`;
+      }).join('');
+      container.innerHTML = `<div class="tokes-tab-bar">${chips}</div>${rows || '<div style="text-align:center;color:#718096;font-weight:800;padding:20px;">📬 Sin tokes pendientes</div>'}`;
+      return;
+    }
+
+    container.innerHTML = `<div class="tokes-tab-bar">${chips}</div>` + items.map((t, i) => `
+      <div class="toke-item t${t.id} ${i === this.state.focus.index ? 'focused' : ''}" data-index="${i}" style="background: linear-gradient(135deg, #2D3748E6, #1A202CB3); border-color:#2D3748;">
         <div style="flex: 1; text-align:center;">
           <div style="font-weight: 900; color: #fff; font-size: 13px; text-shadow:0 1px 3px rgba(0,0,0,.35);">${t.emoji} ${t.name}</div>
           <div style="font-size: 10px; color: rgba(255,255,255,.95);">${t.desc}</div>
+          <div style="font-size:9px;color:#FBD38D; margin-top:2px;">[Enviar →]</div>
         </div>
       </div>
     `).join('');
@@ -6469,7 +6625,7 @@ const app = {
   updateHomeRitualUI() {
     const flags = this.state.homeFlags || {};
     const surveyPending = !!flags.survey_pending;
-    const friendLeft = Number.isFinite(flags.friends_tokes_left) ? flags.friends_tokes_left : 3;
+    const friendLeft = Number.isFinite(flags.friends_tokes_left) ? flags.friends_tokes_left : 5;
     const murmulloCount = Array.isArray(this.state.murmulloFrases) ? this.state.murmulloFrases.length : 0;
     const remain = this.state.encuestaRemainingSec !== null ? this.state.encuestaRemainingSec : this.getEncuestaRemainingSec();
 
@@ -6481,7 +6637,7 @@ const app = {
     const crushLeft = Number.isFinite(flags.crush_left) ? flags.crush_left : 1;
 
     if (surveyMeta) surveyMeta.textContent = surveyPending ? `⏱ ${remain === null ? '--:--' : this.formatEncuestaCountdown(remain)}` : '✅ Hecha / no pendiente';
-    if (tokesMeta) tokesMeta.textContent = `🎯 ${friendLeft}/3 · 🤍 ${anonLeft}/1 · 💘 ${crushLeft}/1`;
+    if (tokesMeta) tokesMeta.textContent = `🎯 ${friendLeft}/5 · 🤍 ${anonLeft}/1 · 💘 ${crushLeft}/1`;
     if (murmulloMeta) murmulloMeta.textContent = `Novedades: ${murmulloCount}`;
 
     const buttons = document.querySelectorAll('#home-ritual-stack .home-ritual-btn');
@@ -6511,10 +6667,10 @@ const app = {
     }
 
     const flags = this.state.homeFlags || {};
-    const friendLeft = Number.isFinite(flags.friends_tokes_left) ? flags.friends_tokes_left : 3;
+    const friendLeft = Number.isFinite(flags.friends_tokes_left) ? flags.friends_tokes_left : 5;
     const anonLeft = Number.isFinite(flags.anon_left) ? flags.anon_left : 1;
     const crushLeft = Number.isFinite(flags.crush_left) ? flags.crush_left : 1;
-    if (badgeEl) badgeEl.textContent = `🎯 Amigos: ${friendLeft}/3 · 🤍 ${anonLeft} · 💘 ${crushLeft}`;
+    if (badgeEl) badgeEl.textContent = `🎯 Amigos: ${friendLeft}/5 · 🤍 ${anonLeft} · 💘 ${crushLeft}`;
 
     const chaosSub = document.getElementById('home-chaos-sub');
     if (chaosSub) chaosSub.textContent = this.state.homePriorityText || this.state.murmulloStats.headline || 'Tu curso está on fire';
@@ -6976,8 +7132,8 @@ const app = {
       return;
     }
     
-    if ((this.state.homeFlags?.friends_tokes_left ?? 3) <= 0) {
-      this.showMsg('❌ Ya alcanzaste 3 tokes de amigos hoy');
+    if ((this.state.homeFlags?.friends_tokes_left ?? 5) <= 0) {
+      this.showMsg('❌ Ya alcanzaste 5 tokes de amigos hoy');
       return;
     }
     
