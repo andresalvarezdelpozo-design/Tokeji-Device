@@ -415,7 +415,7 @@
     }
 
     #page-avatar {
-      justify-content: flex-start;
+      justify-content: center;
       align-items: center;
       background: var(--screen-bg);
       height: 100%;
@@ -544,7 +544,7 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: flex-start;
+      justify-content: center;
       gap: 4px;
       padding: 6px 8px 6px;
       background: transparent;
@@ -590,13 +590,7 @@
     }
 
     .home-status {
-      font-size: 9px;
-      padding: 4px 12px;
-      border-radius: 12px;
-      font-weight: 800;
-      color: white;
-      background: #48BB78;
-      box-shadow: 0 2px 0 #2F855A;
+      display: none;
     }
 
     .tokes-badge {
@@ -1055,14 +1049,7 @@
     }
 
     .home-chaos-sub {
-      font-size: 11px;
-      color: #2D3748;
-      font-weight: 800;
-      background: rgba(255,255,255,.65);
-      padding: 6px 12px;
-      border-radius: 14px;
-      border: 1px solid rgba(255,255,255,.7);
-      text-align: center;
+      display: none;
     }
 
     @keyframes pulsePill {
@@ -2005,28 +1992,39 @@
     #color-selector .selector-grid,
     #status-selector .selector-grid,
     #theme-selector .selector-grid {
-      max-width: 200px;
-      gap: 10px;
+      grid-template-columns: repeat(3, 1fr);
+      max-width: 228px;
+      gap: 8px;
       padding: 6px;
-      max-height: 240px;
+      max-height: 248px;
+      justify-items: center;
     }
 
     #color-selector .selector-item,
     #status-selector .selector-item,
     #theme-selector .selector-item {
-      width: 68px;
-      height: 68px;
+      width: 64px;
+      height: 64px;
       border-width: 3px;
       border-radius: 12px;
-      padding: 6px;
+      padding: 4px;
       box-shadow: 0 2px 0 rgba(0,0,0,0.2);
+      overflow: hidden;
+      gap: 2px;
     }
 
     #color-selector .selector-item::after,
     #status-selector .selector-item::after,
     #theme-selector .selector-item::after {
-      bottom: -16px;
-      font-size: 9px;
+      position: static;
+      transform: none;
+      margin-top: 2px;
+      font-size: 8px;
+      color: #fff;
+      text-shadow: 0 1px 2px rgba(0,0,0,.6);
+      text-align: center;
+      white-space: normal;
+      line-height: 1.05;
     }
 
     #page-curso-secreto .selector-grid {
@@ -6336,7 +6334,7 @@ const app = {
     }
 
     container.innerHTML = `<div class="tokes-tab-bar">${chips}</div>` + items.map((t, i) => `
-      <div class="toke-item t${t.id} ${i === this.state.focus.index ? 'focused' : ''}" data-index="${i}" style="background: linear-gradient(135deg, #2D3748E6, #1A202CB3); border-color:#2D3748;">
+      <div class="toke-item t${t.id} ${i === this.state.focus.index ? 'focused' : ''}" data-index="${i}" style="background: linear-gradient(135deg, ${(TOKES_TYPES.find(x => x.id === Number(t.id)) || TOKES_TYPES[0]).color}E6, ${(TOKES_TYPES.find(x => x.id === Number(t.id)) || TOKES_TYPES[0]).color}B3); border-color:${(TOKES_TYPES.find(x => x.id === Number(t.id)) || TOKES_TYPES[0]).color};">
         <div style="flex: 1; text-align:center;">
           <div style="font-weight: 900; color: #fff; font-size: 13px; text-shadow:0 1px 3px rgba(0,0,0,.35);">${t.emoji} ${t.name}</div>
           <div style="font-size: 10px; color: rgba(255,255,255,.95);">${t.desc}</div>
@@ -6867,22 +6865,13 @@ const app = {
     
     items[this.state.selectorIndex].classList.remove('focused');
     
-    if (this.state.selectorType === 'color') {
-      const cols = 2;
-      if (dir === 'right' && this.state.selectorIndex % cols === 0 && this.state.selectorIndex < 7) this.state.selectorIndex++;
-      else if (dir === 'left' && this.state.selectorIndex % cols === 1) this.state.selectorIndex--;
-      else if (dir === 'down' && this.state.selectorIndex < 6) this.state.selectorIndex += 2;
-      else if (dir === 'up' && this.state.selectorIndex >= 2) this.state.selectorIndex -= 2;
-    } else if (this.state.selectorType === 'status') {
-      const cols = 2;
-      if (dir === 'right' && this.state.selectorIndex % cols === 0 && this.state.selectorIndex < 3) this.state.selectorIndex++;
-      else if (dir === 'left' && this.state.selectorIndex % cols === 1) this.state.selectorIndex--;
-      else if (dir === 'down' && this.state.selectorIndex < 2) this.state.selectorIndex += 2;
-      else if (dir === 'up' && this.state.selectorIndex >= 2) this.state.selectorIndex -= 2;
-    } else if (this.state.selectorType === 'theme') {
-      const last = TEMAS.length - 1;
-      if ((dir === 'right' || dir === 'down') && this.state.selectorIndex < last) this.state.selectorIndex++;
-      else if ((dir === 'left' || dir === 'up') && this.state.selectorIndex > 0) this.state.selectorIndex--;
+    if (this.state.selectorType === 'color' || this.state.selectorType === 'status' || this.state.selectorType === 'theme') {
+      const total = this.state.selectorType === 'color' ? COLORES.length : (this.state.selectorType === 'status' ? ESTADOS.length : TEMAS.length);
+      const cols = 3;
+      if (dir === 'right' && this.state.selectorIndex < total - 1 && this.state.selectorIndex % cols < cols - 1) this.state.selectorIndex++;
+      else if (dir === 'left' && this.state.selectorIndex % cols > 0) this.state.selectorIndex--;
+      else if (dir === 'down' && this.state.selectorIndex + cols < total) this.state.selectorIndex += cols;
+      else if (dir === 'up' && this.state.selectorIndex - cols >= 0) this.state.selectorIndex -= cols;
     } else if (this.state.selectorType === 'options') {
       if (dir === 'down' && this.state.selectorIndex < this.state.optionItems.length - 1) this.state.selectorIndex++;
       else if (dir === 'up' && this.state.selectorIndex > 0) this.state.selectorIndex--;
