@@ -768,8 +768,18 @@ def votar_encuesta():
         if encuesta_id not in votos_encuesta:
             votos_encuesta[encuesta_id] = {}
 
+        if user_id in votos_encuesta[encuesta_id]:
+            return jsonify(ok=False, error="Ya votaste esta encuesta"), 409
+
         votos_encuesta[encuesta_id][user_id] = opcion
-        log_event("survey_vote", from_user=user_id, to=f"option_{opcion}", encuesta_id=encuesta_id)
+        instituto_usuario = perfiles.get(user_id, {}).get("instituto", "")
+        log_event(
+            "survey_vote",
+            from_user=user_id,
+            to=f"option_{opcion}",
+            encuesta_id=encuesta_id,
+            instituto=instituto_usuario,
+        )
         guardar_datos()
 
         votos = votos_encuesta.get(encuesta_id, {})
@@ -794,7 +804,7 @@ def home_state():
         perfil = perfiles.get(user_id, {})
         instituto = perfil.get("instituto", "")
 
-        ev_hoy = eventos_hoy(lambda e: (not instituto) or e.get("instituto", "") in ["", instituto])
+        ev_hoy = eventos_hoy(lambda e: (not instituto) or e.get("instituto", "") == instituto)
         c_survey = len([e for e in ev_hoy if e.get("type") == "survey_vote"])
         c_anon = len([e for e in ev_hoy if e.get("type") == "anonymous_signal"])
         c_views = len([e for e in ev_hoy if e.get("type") == "profile_view"])
