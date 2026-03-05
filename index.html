@@ -544,9 +544,9 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: flex-start;
+      justify-content: center;
       gap: 4px;
-      padding: 20px 8px 6px;
+      padding: 6px 8px 6px;
       background: transparent;
       border-radius: 0;
       border: 0;
@@ -572,7 +572,7 @@
     }
 
     .home-avatar {
-      font-size: 52px;
+      font-size: 36px;
       filter: drop-shadow(0 4px 8px rgba(0,0,0,0.15));
       animation: float 3s ease-in-out infinite;
       transform: translateZ(0);
@@ -585,7 +585,7 @@
 
     .home-name {
       font-family: 'Fredoka One', cursive;
-      font-size: 22px;
+      font-size: 17px;
       color: #2D3748;
     }
 
@@ -654,9 +654,8 @@
       display: flex;
       flex-direction: column;
       gap: 8px;
-      margin-top: auto;
-      margin-bottom: 8px;
-      transform: translateY(0);
+      margin-top: 0;
+      transform: translateY(-6px);
       z-index: 3;
     }
 
@@ -1098,7 +1097,7 @@
 
     .menu-item {
       background: linear-gradient(145deg, #ffffff 0%, #f0f0f0 100%);
-      border: 3px solid transparent;
+      border: none;
       border-radius: 16px;
       display: flex;
       flex-direction: column;
@@ -1137,7 +1136,7 @@
     }
 
     .menu-item.focused {
-      border-color: var(--device-color);
+      outline: 3px solid var(--device-color);
       background: linear-gradient(145deg, #FFF5F7 0%, #FFE4EC 100%);
       transform: scale(1.05) translateY(-2px);
       box-shadow: 0 6px 0 var(--device-dark), 0 10px 25px rgba(255,107,157,0.4);
@@ -1178,7 +1177,7 @@
 
     .list-item, .toke-item, .variante-item {
       background: white;
-      border: 2px solid #E2E8F0;
+      border: none;
       border-radius: 14px;
       padding: 12px;
       font-size: 13px;
@@ -1194,7 +1193,7 @@
     }
 
     .list-item.focused, .toke-item.focused, .variante-item.focused {
-      border-color: var(--device-color);
+      outline: 2px solid var(--device-color);
       background: #FFF5F7;
       transform: translateX(3px);
       box-shadow: 0 2px 0 #F687B3;
@@ -1404,10 +1403,19 @@
       cursor: pointer;
     }
 
+    .emoji-card.locked {
+      color: #A0AEC0;
+      filter: grayscale(1);
+      background: #F7FAFC;
+      opacity: 0.95;
+    }
+
     .emoji-card.captured {
       background: #48BB78;
       border-color: #276749;
       color: white;
+      filter: none;
+      opacity: 1;
     }
 
     .emoji-card.focused {
@@ -1772,7 +1780,7 @@
 
     .setting-item {
       background: white;
-      border: 2px solid #E2E8F0;
+      border: none;
       border-radius: 14px;
       padding: 12px;
       display: flex;
@@ -1787,7 +1795,6 @@
     }
 
     .setting-item.focused {
-      border-color: #FF4FA3;
       background: #FFF5F7;
       transform: scale(1.02);
       box-shadow: 0 0 0 3px rgba(255,79,163,0.35), 0 3px 0 #F687B3;
@@ -3142,6 +3149,38 @@
       transform: scale(1.05);
       box-shadow: 0 0 0 3px rgba(159,122,234,0.3), 0 3px 0 #6B46C1;
     }
+
+    .friend-link-celebration {
+      position: fixed;
+      inset: 0;
+      background: rgba(17, 24, 39, 0.78);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 210;
+      backdrop-filter: blur(4px);
+    }
+
+    .friend-link-celebration.active {
+      display: flex;
+      animation: fadeIn .25s ease;
+    }
+
+    .friend-link-card {
+      width: 82%;
+      max-width: 280px;
+      border-radius: 22px;
+      padding: 18px;
+      text-align: center;
+      background: linear-gradient(145deg, #fff8f2, #ffedd5);
+      box-shadow: 0 12px 35px rgba(0,0,0,.35);
+      border: 3px solid rgba(255,255,255,.8);
+      animation: popChaos .45s cubic-bezier(0.68,-0.55,0.265,1.55);
+    }
+
+    .friend-link-avatar { font-size: 44px; margin-bottom: 8px; }
+    .friend-link-title { font-size: 18px; font-weight: 900; color: #7c2d12; margin-bottom: 4px; }
+    .friend-link-sub { font-size: 12px; color: #9a3412; font-weight: 800; }
   </style>
 </head>
 <body>
@@ -3562,6 +3601,15 @@
             <button class="respuesta-recibida-btn" onclick="app.cerrarRespuestaRecibida()">OK</button>
           </div>
 
+
+
+          <div id="friend-link-celebration" class="friend-link-celebration">
+            <div class="friend-link-card">
+              <div class="friend-link-avatar" id="friend-link-avatar">🤝</div>
+              <div class="friend-link-title" id="friend-link-title">¡Nuevo amigo!</div>
+              <div class="friend-link-sub" id="friend-link-sub">Conexión completada</div>
+            </div>
+          </div>
           <div class="nuevo-emoji-notificacion" id="nuevo-emoji-notif">
             <div class="nuevo-emoji-titulo">🎉 ¡Nuevo Emoji!</div>
             <div class="nuevo-emoji-display" id="nuevo-emoji-icon">🎉</div>
@@ -4019,11 +4067,13 @@ const app = {
       this.cargarEncuestaActiva();
       this.syncPerfilPublico('init');
       this.syncFriendsFromServer();
+      this.checkFriendEvents();
     }, 1000);
     
     setInterval(() => {
       this.checkTokes();
       this.checkRespuestas();
+      this.checkFriendEvents();
     }, 5000);
 
     
@@ -5793,7 +5843,8 @@ const app = {
 
   async cargarCompanerosCurso(curso) {
     try {
-      const response = await fetch(`${BACK}/lista-instituto?userId=${encodeURIComponent(this.miID)}&curso=${encodeURIComponent(curso)}`);
+      const instituto = this.getInstitutoActual();
+      const response = await fetch(`${BACK}/lista-instituto?userId=${encodeURIComponent(this.miID)}&curso=${encodeURIComponent(curso)}&instituto=${encodeURIComponent(instituto)}`);
       const data = await response.json();
       this.state.secretFlow.companeros = data.companeros || [];
     } catch (e) {
@@ -5865,7 +5916,9 @@ const app = {
     this.state.institutoView.active = true;
     this.state.institutoView.cursoFiltro = this.state.institutoView.cursoFiltro || 'todos';
     try {
-      const response = await fetch(`${BACK}/lista-instituto?userId=${encodeURIComponent(this.miID)}`);
+      await this.syncPerfilPublico('open-instituto');
+      const instituto = this.getInstitutoActual();
+      const response = await fetch(`${BACK}/lista-instituto?userId=${encodeURIComponent(this.miID)}&instituto=${encodeURIComponent(instituto)}`);
       const data = await response.json();
       this.state.institutoView.companeros = data.companeros || [];
     } catch (e) {
@@ -6028,6 +6081,57 @@ const app = {
       this.debug('Sync friends fail: ' + e.message);
     }
   },
+
+  getInstitutoActual() {
+    return this.state.registroInstituto.instituto || localStorage.getItem('instituto') || '';
+  },
+
+  showFriendLinkedAnimation(nombre, avatar = '🤝', onDone) {
+    const modal = document.getElementById('friend-link-celebration');
+    const avatarEl = document.getElementById('friend-link-avatar');
+    const titleEl = document.getElementById('friend-link-title');
+    const subEl = document.getElementById('friend-link-sub');
+    if (!modal) {
+      if (typeof onDone === 'function') onDone();
+      return;
+    }
+    if (avatarEl) avatarEl.textContent = avatar || '🤝';
+    if (titleEl) titleEl.textContent = `¡${nombre || 'Nuevo amigo'}!`;
+    if (subEl) subEl.textContent = 'Ahora sois amigos en TOKEJI';
+    modal.classList.add('active');
+    this.playSound('unlock');
+    setTimeout(() => {
+      modal.classList.remove('active');
+      if (typeof onDone === 'function') onDone();
+    }, 1300);
+  },
+
+  async checkFriendEvents() {
+    try {
+      const response = await fetch(`${BACK}/friends/events?userId=${encodeURIComponent(this.miID)}`);
+      const data = await response.json();
+      if (!response.ok || !data.ok) return;
+      const events = Array.isArray(data.events) ? data.events : [];
+      for (const ev of events) {
+        if (ev?.type !== 'friend_linked' || !ev.friend?.id) continue;
+        const fid = ev.friend.id;
+        const fname = ev.friend.nombre || 'Amigo';
+        const favatar = ev.friend.avatar || '👤';
+        const wasNew = !this.contactos[fid];
+        this.contactos[fid] = fname;
+        localStorage.setItem('avatar_' + fid, favatar);
+        localStorage.setItem('cts', JSON.stringify(this.contactos));
+        if (wasNew) {
+          this.showFriendLinkedAnimation(fname, favatar, () => this.verificarDesbloqueos());
+        }
+      }
+      if (this.state.currentPage === 'contacts') this.renderContacts();
+      if (this.state.currentPage === 'enviar') this.renderEnviarList();
+    } catch (e) {
+      this.debug('friend events fail: ' + e.message);
+    }
+  },
+
 
   async syncPerfilPublico(reason = 'manual') {
     const payload = {
@@ -6537,8 +6641,8 @@ const app = {
     
     grid.innerHTML = Array(150).fill(0).map((_, i) => {
       const captured = this.todex.captured.includes(i+1);
-      const emoji = captured ? (EMOJIS_LIST[i] || '✨') : '•';
-      return `<div class="emoji-card ${captured ? 'captured' : ''} ${i === 0 ? 'focused' : ''}" data-index="${i}" onclick="app.mostrarFichaTodex(${i+1})">${emoji}</div>`;
+      const emoji = EMOJIS_LIST[i] || '✨';
+      return `<div class="emoji-card ${captured ? 'captured' : 'locked'} ${i === 0 ? 'focused' : ''}" data-index="${i}" onclick="app.mostrarFichaTodex(${i+1})">${emoji}</div>`;
     }).join('');
   },
 
@@ -7054,7 +7158,7 @@ const app = {
     this.showMsg('✍️ Escribe código y pulsa OK');
   },
 
-  procesarQR(data) {
+  async procesarQR(data) {
     this.debug('Procesando QR: ' + data);
     
     let cleanData = data.trim();
@@ -7076,29 +7180,35 @@ const app = {
         
         const isNew = !this.contactos[id];
         this.contactos[id] = nombre;
-        if (avatar) {
-          localStorage.setItem('avatar_' + id, avatar);
-        }
+        if (avatar) localStorage.setItem('avatar_' + id, avatar);
         localStorage.setItem('cts', JSON.stringify(this.contactos));
-        fetch(`${BACK}/friends/link`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            userId: this.miID,
-            friendId: id,
-            userName: localStorage.getItem('miNombre') || 'Alumno',
-            userAvatar: this.state.settings.avatar || '👤',
-            friendName: nombre,
-            friendAvatar: avatar || '👤'
-          })
-        }).catch(() => {});
-        if (isNew) {
-          this.verificarDesbloqueos();
-          this.showMsg(`✅ ${nombre} agregado + regalo 🎁`);
-        } else {
+
+        try {
+          const response = await fetch(`${BACK}/friends/link`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              userId: this.miID,
+              friendId: id,
+              userName: localStorage.getItem('miNombre') || 'Alumno',
+              userAvatar: this.state.settings.avatar || '👤',
+              friendName: nombre,
+              friendAvatar: avatar || '👤'
+            })
+          });
+          const linked = await response.json();
+          if (linked.ok && linked.created) {
+            this.showFriendLinkedAnimation(nombre, avatar || '👤', () => this.verificarDesbloqueos());
+            this.showMsg(`🤝 ${nombre} ahora es tu amigo`);
+            this.checkFriendEvents();
+          } else {
+            this.showMsg(`✅ ${nombre} agregado`);
+          }
+        } catch (_) {
+          if (isNew) this.showFriendLinkedAnimation(nombre, avatar || '👤', () => this.verificarDesbloqueos());
           this.showMsg(`✅ ${nombre} agregado`);
         }
-        
+
         if (this.state.currentPage === 'enviar') {
           this.renderEnviarList();
         } else if (this.state.currentPage === 'contacts') {

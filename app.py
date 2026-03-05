@@ -25,7 +25,8 @@ def cargar_datos():
             "encuestas": [],
             "votos_encuesta": {},
             "eventos": [],
-            "friend_links": {}
+            "friend_links": {},
+            "friend_events": {}
         }
 
 def guardar_datos():
@@ -40,7 +41,8 @@ def guardar_datos():
             "encuestas": encuestas,
             "votos_encuesta": votos_encuesta,
             "eventos": eventos,
-            "friend_links": friend_links
+            "friend_links": friend_links,
+            "friend_events": friend_events
         }, f)
 
 datos = cargar_datos()
@@ -54,6 +56,7 @@ encuestas = datos.get("encuestas", [])
 votos_encuesta = datos.get("votos_encuesta", {})
 eventos = datos.get("eventos", [])
 friend_links = datos.get("friend_links", {})
+friend_events = datos.get("friend_events", {})
 
 
 def inicio_dia_ts(ts=None):
@@ -104,7 +107,7 @@ def resumen_home_user(user_id):
         "survey_pending": len(encuesta) == 0,
         "has_signals_today": len(recibidas) > 0,
         "has_strong_signal_today": len(fuertes) > 0,
-        "friends_tokes_left": max(0, 3 - tokes_enviados),
+        "friends_tokes_left": max(0, 5 - tokes_enviados),
         "anon_left": max(0, 1 - anon_enviados),
         "crush_left": max(0, 1 - crush_enviados)
     }
@@ -167,7 +170,7 @@ def cuotas_toke_hoy(user_id):
     anon = len([e for e in ev_hoy if e.get("type") == "anonymous_signal" and e.get("signal_type") == "anonimo"])
     crush = len([e for e in ev_hoy if e.get("type") == "anonymous_signal" and e.get("signal_type") == "crush"])
     return {
-        "friends_left": max(0, 3 - amigos),
+        "friends_left": max(0, 5 - amigos),
         "anon_left": max(0, 1 - anon),
         "crush_left": max(0, 1 - crush)
     }
@@ -223,7 +226,7 @@ def toque():
         cuotas = cuotas_toke_hoy(de)
         es_secreto = tipo in ["anonimo", "crush"]
         if not es_secreto and cuotas["friends_left"] <= 0:
-            return jsonify(ok=False, error="Límite diario de 3 tokes a amigos alcanzado", toques_restantes=0)
+            return jsonify(ok=False, error="Límite diario de 5 tokes a amigos alcanzado", toques_restantes=0)
         if tipo == "anonimo" and cuotas["anon_left"] <= 0:
             return jsonify(ok=False, error="Ya usaste tu anónimo de hoy", toques_restantes=0)
         if tipo == "crush" and cuotas["crush_left"] <= 0:
@@ -518,7 +521,8 @@ def lista_instituto():
             return jsonify(ok=False, error="Falta userId"), 400
 
         perfil = perfiles.get(user_id, {})
-        instituto_usuario = perfil.get("instituto")
+        instituto_param = request.args.get("instituto", "").strip()
+        instituto_usuario = perfil.get("instituto") or instituto_param
         if not instituto_usuario:
             return jsonify(ok=True, companeros=[])
 
@@ -544,6 +548,30 @@ def lista_instituto():
 
 
 
+def push_friend_event(user_id, payload):
+    if not user_id:
+        return
+    friend_events.setdefault(user_id, [])
+    friend_events[user_id].append(payload)
+    if len(friend_events[user_id]) > 40:
+        friend_events[user_id] = friend_events[user_id][-40:]
+
+
+@app.route("/friends/events", methods=["GET"])
+def friends_events():
+    try:
+        user_id = request.args.get("userId", "").strip()
+        if not user_id:
+            return jsonify(ok=False, error="Falta userId"), 400
+
+        rows = friend_events.get(user_id, [])
+        friend_events[user_id] = []
+        guardar_datos()
+        return jsonify(ok=True, events=rows)
+    except Exception as e:
+        return jsonify(ok=False, error=str(e)), 500
+
+
 @app.route("/friends/link", methods=["POST"])
 def friends_link():
     try:
@@ -562,11 +590,18 @@ def friends_link():
 
         friend_links.setdefault(user_id, {})
         friend_links.setdefault(friend_id, {})
+        is_new = friend_id not in friend_links[user_id]
         friend_links[user_id][friend_id] = {"nombre": friend_name, "avatar": friend_avatar}
         friend_links[friend_id][user_id] = {"nombre": user_name, "avatar": user_avatar}
 
+        if is_new:
+            event_id = f"friend_{int(time.time())}_{random.randint(1000,9999)}"
+            ts = int(time.time())
+            push_friend_event(user_id, {"id": event_id + "_a", "type": "friend_linked", "ts": ts, "friend": {"id": friend_id, "nombre": friend_name, "avatar": friend_avatar}})
+            push_friend_event(friend_id, {"id": event_id + "_b", "type": "friend_linked", "ts": ts, "friend": {"id": user_id, "nombre": user_name, "avatar": user_avatar}})
+
         guardar_datos()
-        return jsonify(ok=True)
+        return jsonify(ok=True, created=is_new)
     except Exception as e:
         return jsonify(ok=False, error=str(e)), 500
 
@@ -768,8 +803,18 @@ def votar_encuesta():
         if encuesta_id not in votos_encuesta:
             votos_encuesta[encuesta_id] = {}
 
+        if user_id in votos_encuesta[encuesta_id]:
+            return jsonify(ok=False, error="Ya votaste esta encuesta"), 409
+
         votos_encuesta[encuesta_id][user_id] = opcion
-        log_event("survey_vote", from_user=user_id, to=f"option_{opcion}", encuesta_id=encuesta_id)
+        instituto_usuario = perfiles.get(user_id, {}).get("instituto", "")
+        log_event(
+            "survey_vote",
+            from_user=user_id,
+            to=f"option_{opcion}",
+            encuesta_id=encuesta_id,
+            instituto=instituto_usuario,
+        )
         guardar_datos()
 
         votos = votos_encuesta.get(encuesta_id, {})
@@ -794,7 +839,7 @@ def home_state():
         perfil = perfiles.get(user_id, {})
         instituto = perfil.get("instituto", "")
 
-        ev_hoy = eventos_hoy(lambda e: (not instituto) or e.get("instituto", "") in ["", instituto])
+        ev_hoy = eventos_hoy(lambda e: (not instituto) or e.get("instituto", "") == instituto)
         c_survey = len([e for e in ev_hoy if e.get("type") == "survey_vote"])
         c_anon = len([e for e in ev_hoy if e.get("type") == "anonymous_signal"])
         c_views = len([e for e in ev_hoy if e.get("type") == "profile_view"])
